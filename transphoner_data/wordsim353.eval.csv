@@ -1,0 +1,14 @@
+wordnetJCS,0.378876439
+wordnetLin,0.36965247
+wordnetPath,0.323985632
+wordnetResnik,0.281761409
+wordnetWuPalmer,0.342460077
+bow,0.308727875
+distAngle,-0.10373729
+distCosine,0.388591273
+distDice,0.251589746
+distHellinger,-0.299618953
+distJS,-0.304192796
+distJaccard,0.246184182
+jaccard,0.341153712
+tfidfBow,0.4645473852933241

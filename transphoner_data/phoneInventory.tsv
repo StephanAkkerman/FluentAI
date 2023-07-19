@@ -1,0 +1,630 @@
+﻿language	family	phoneInventory
+!Xóõ	KHOISAN	ʘ,ǀ,ǁ,ǃ,ǂ,t,ts,k,q,i,e,a,o,u,ɡʘ,ɡǀ,ɡǁ,ɡǃ,ɡǂ,tʰ,tsʰ,kʰ,qʰ,ẽ,ã,õ,ũ,ʘn,ǀn,ǁn,ǃn,ǂn,b,d,dz,ɡ,i̤,e̤,a̤,o̤,ṳ,ʔʘn,ʔǀn,ʔǁn,ʔǃn,ʔǂn,dʰ,dzʰ,aˤ,oˤ,uˤ,ʘn̥,ǀn̥,ǁn̥,ǃn̥,ǂn̥,dʲ,iʔ,eʔ,aʔ,oʔ,uʔ,ʘq,ǀq,ǁq,ǃq,ǂq,tx,tsx,ẽ̤,ã̤,õ̤,ṳ̃,mʘG,mǀG,mǁG,mǃG,mǂG,dx,dzx,a̤ʔ,o̤ʔ,ṳʔ,ʘqʰ,ǀqʰ,ǁqʰ,ǃqʰ,ǂqʰ,tsʼ,kxʼ,ã̤ʔ,õ̤ʔ,ʘx,ǀx,ǁx,ǃx,ǂx,dzʼ,ɡkx’,ãˤ,õˤ,ũˤ,ʘqʔ,ǀqʔ,ǁqʔ,ǃqʔ,ǂqʔ,tʼkxʼ,tsʼkxʼ,aˤʔ,uˤʔ,ʘkxʔ,ǀkxʔ,ǁkxʔ,ǃkxʔ,ǂkxʔ,dʼkxʼ,dzʼkxʼ,a̤ˤ,o̤ˤ,ṳˤ,ʘʰ,ǀʰ,ǁʰ,ǃʰ,ǂʰ,s,x,ã̤ˤ,ʘʔ,ǀʔ,ǁʔ,ǃʔ,ǂʔ,m,n,ɲ,ĩʔ,ãʔ,õʔ,ũʔ,ɡʘx,ɡǀx,ɡǁx,ɡǃx,ɡǂx,ʔm,ʔn,ɡʘʰ,ɡǀʰ,ɡǁʰ,ɡǃʰ,ɡǂʰ,ɡʘkx,ɡǀkx,ɡǁkx,ɡǃkx,ɡǂkx
+Abujhmaria	DRAVIDIAN	p,t̪,ʈ,tʃ,k,b,d̪,ɖ,dʒ,ɡ,iː,uː,s,h,i,u,m,n,ŋ,eː,oː,r,e,o,ɽ,aː,l,a,w,j
+Abun	WEST PAPUAN	p,t,k,b,d,dʒ,ɡ,b,ⁿd,ⁿdʒ,ɡ,i,u,f,s,ʃ,e,o,m,n,ɲ,a,r,w,j
+Acehnese	AUSTRONESIAN	p,t,tʃ,k,ʔ,i,ɯ,u,b,d,dʒ,ɡ,e,ɤ,o,s,ʃ,ɛ,ʌ,ɔ,m,n,ɲ,ŋ,a,r,ĩ,ɯ̃,ũ,l,ɛ̃,ʌ̃,ɔ̃,w,j,h,ã
+Adyghe (Bzhedukh dialect)	NORTH CAUCASIAN	pʰ,tʰ,tsʰ,tʃʰʷ,ʈʂʰ,t̻ɕʰ,kʰʷ,qʰ,qʰʷ,p,t,ts,tʃʷ,ʈʂ,t̻ɕ,k,kʷ,q,qʷ,ə,b,d,dz,dʒʷ,ɖʐ,d̻ʑ,ɡʷ,a,pʼ,tʼ,tsʼ,ʈʂʼ,t̻ɕʼ,kʼ,kʼʷ,ʔ,ʔʷ,ʂʰ,ɕʰ,xʰ,f,s,ɬ,ʃ,ʃʷ,ʂ,ɕ,x,χ,χʷ,ħ,z,ɮ,ʒ,ʒʷ,ʐ,ʑ,ɣ,ʁ,ʁʷ,ɬʼ,ʃʼ,ʃʼʷ,m,n,r,w,j
+Af Tunni Somali (Tunni)	AFRO-ASIATIC (Cushitic)	t̪ʰ,kʰ,ʔ,b,d̪,ɖ,dʒ,ɡ,ɢ,ɪ̘,ʊ̘,ʄ,ɪ,ʊ,f,s,ʃ,h,ɛ̘,ɔ̘,m,n̪,ɲ,ŋ,ɛ,ə,ɔ,r,a̠,a,l,w,j
+Afar	AFRO-ASIATIC (Cushitic)	t,k,iː,uː,b,d,ɖ,ɡ,i,u,f,s,ħ,h,eː,oː,ʕ,e,o,m,n,aː,r,a,w,l,j
+Afrikaans	INDO-EUROPEAN (Germanic)	p,t,k,b,d,əi,oə,i,y,u,f,s,x,œi,œu,ɪ,v,ɦ,øə,ɛː,œː,ɔː,m,n,ŋ,eə,ai,ɛ,œ,ɔ,l,aː,r,a,j
+Afrikaans (in the Transvaal and the Free State)	INDO-EUROPEAN (Germanic)	p,t,k,b,d,əi,oə,i,y,u,f,s,x,œi,œu,ɪ,v,ɦ,øə,ɛː,œː,ɔː,m,n,ŋ,eə,ai,ɛ,œ,ɔ,l,aː,r,a,j
+Agarabi	TRANS-NEW GUINEA	p,t,k,ʔ,b,d,i,u,m,n,e,ə,o,r
+Agta	AUSTRONESIAN	p,t,k,ʔ,b,d,ɡ,i,u,ɸ,s,h,e,o,β,z,a,m,n,ŋ,ɾ,l,w,j
+Ainu	LANGUAGE ISOLATE	p,t,tʃ,k,ʔ,m,n,i,u,s,h,e,o,r,a,w,j
+Akan	NIGER-CONGO (Kwa)	p,t,tɕ,tɕɥ,k,kʷ,ĩ,ũ,i,u,b,d,dz,dʑ,dʑɥ,ɡ,ɡʷ,ẽ̝,õ̝,e̝,o̝,f,s,sʲ,sʷ,ɕ,ɕɥ,h,hʷ,e,o,m,n,ɲ,ɲɥ,ŋ,ŋʷ,ɛ,ɔ,l,ã,a,w,ɹ,j,ɥ
+Akan (Akuapem, Asante)	NIGER-CONGO (Kwa)	p,t,tɕ,tɕɥ,k,kʷ,ĩ,ũ,i,u,b,d,dʑ,dʑɥ,ɡ,ɡʷ,ẽ̝,õ̝,e̝,o̝,f,s,sʲ,sʷ,ɕ,ɕɥ,h,hʷ,e,o,m,n,ɲ,ɲɥ,ŋ,ŋʷ,ɛ,ɔ,l,a̝,ã,a,w,ɹ,j,ɥ
+Akan (Akuapem)	NIGER-CONGO (Kwa)	p,t,tɕ,tɕɥ,k,kʷ,ĩ,ũ,i,u,b,d,dʑ,dʑɥ,ɡ,ɡʷ,ẽ̝,õ̝,e̝,o̝,f,s,sʲ,sʷ,ɕ,ɕɥ,h,hʷ,e,o,m,n,ɲ,ɲɥ,ŋ,ŋʷ,ɛ,ɔ,l,a̝,ã,a,w,ɹ,j,ɥ
+Akan (Asante)	NIGER-CONGO (Kwa)	p,t,tɕ,tɕɥ,k,kʷ,ĩ,ũ,i,u,b,d,dʑ,dʑɥ,ɡ,ɡʷ,ẽ̝,õ̝,e̝,o̝,f,s,sʲ,sʷ,ɕ,ɕɥ,h,hʷ,e,o,m,n,ɲ,ɲɥ,ŋ,ŋʷ,ɛ,ɔ,l,a̝,r,ã,a,w,ɹ,j,ɥ
+Akan (Fante)	NIGER-CONGO (Kwa)	p,t,tɕ,tɕɥ,k,kʷ,ĩ,ũ,i,u,b,d,dʑ,dʑɥ,ɡ,ɡʷ,ẽ̝,õ̝,e̝,o̝,f,s,sʲ,sʷ,ɕ,ɕɥ,h,hʷ,e,o,m,n,ɲ,ɲɥ,ŋ,ŋʷ,ɛ,ɔ,l,ã,a,w,ɹ,j,ɥ
+Alabama	MUSKOGEAN	p,t,tʃ,k,b,iː,oː,f,ɬ,s,h,i,o,m,n,aː,l,a,j,w
+Albanian	INDO-EUROPEAN	p,t,ts,tʃ,c,k,b,d,dz,dʒ,ɟ,ɡ,i,y,u,f,θ,s,ʃ,e,ə,o,v,ð,z,ʒ,a,m,n,ɲ,ŋ,l,ʎ,ɾ,r,w,j,h
+Alyawarra	AUSTRALIAN (Pama-Nyungan)	p,t̪,t,ʈ,c,k,p,t̪ⁿ,tⁿ,ʈⁿ,c,k,i,u,m,n̪,n,ɳ,ɲ,ŋ,a,l̪,l,ɭ,ʎ,ɾ,w,ɽ,j,ij,aj,uw
+Amele	TRANS-NEW GUINEA	t,k,ʔ,b,d,ɡ,ɡ͡b,i,u,f,s,h,e,o,m,n,a,l,w,j
+Amharic	AFRO-ASIATIC (Semitic)	p,t̪,tʃ,k,kʷ,ʔ,b,d̪,dʒ,ɡ,ɡʷ,i,ɨ,u,pʼ,t̪ʼ,tʃʼ,kʼ,kʷʼ,e,ə,o,f,s̪,ʃ,h,hʷ,a,z̪,ʒ,s̪ʼ,m,n̪,ɲ,l,ɾ,j,w
+Angami	SINO-TIBETAN	pʰ,tʰ,p,t,b,d,pfʰ,tsʰ,tʃʰ,i,u,pf,ts,tʃ,e,ə,o,bv,dz,dʒ,a,f,s,ʃ,h,v,z,ʒ,mʰ,nʰ,ɲʰ,i̯o,i̯e,u̯o,m,n,ɲ,ŋ,e̯o,ə̯i,o̯u,lʰ,rʰ,l,r,wʰ,jʰ,w,j
+Anywa (aka Anuak)	NILO-SAHARAN (Nilotic)  	p,t̪θ,t,tʲ,k,i̤ː,i̤,i̤e̤,ṳo̤,ṳː,ṳ,b,d̪ð,d,dʲ,ɡ,ɪː,ɪ,ɪɛ,ʊɔ,ʊː,ʊ,m,n,ɲ,ŋ,e̤ː,e̤,o̤ː,o̤,l,ɛː,ɛ,ɔː,ɔ,r,ʌ̤ː,ʌ̤,w,j,aː,a
+Ao	SINO-TIBETAN	p,t,k,ʔ,ts,i,ɯ,u,s,e,o,z,ʐ,a,m,n,ŋ,l,w,j
+Aoma	NIGER-CONGO (Edoid)	p,t,k,k͡p,b,d,ɡ,ɡ͡b,i,ĩ,u,ũ,f,s,x,h,e,o,v,z,ɣ,ɛ,ɛ̃,ɔ,ɔ̃,m,a,ã,r,l,ɹ,j,w
+Apatani	SINO-TIBETAN	p,t,k,b,d,ɡ,tʃ,i,ɨ,u,dʒ,e,o,s,x,h,a,m,n,ŋ,r,l,j
+Arabana	AUSTRALIAN (Pama-Nyungan)	p,t̪,t,ʈ,c,k,m,n̪,n,ɳ,ɲ,ŋ,i,u,l̪,l,ɭ,ʎ,a,ɾ,r,w,ɻ,j
+Arabic, Abha	AFRO-ASIATIC (Semitic)	t,tˠ,k,ʔ,b,d,dˠ,ɟʝ,ɡ,iː,uː,f,θ,s,sˠ,ç,x,ħ,h,i,u,ð,ðˠ,z,ɣ,ʕ,eː,oː,m,n,aː,l,lˠ,a,ɾ,w,j
+Arabic, Egyptian	AFRO-ASIATIC (Semitic)	t̪,t̪ˤ,k,ʔ,b,d̪,d̪ˤ,ɡ,iː,uː,f,s̪,s̪ˤ,ç,χ,ħ,h,i,u,z̪,z̪ˤ,ʁ,ʕ,eː,oː,m,n̪,aː,l̪,l̪ˤ,a,ɾ̪,ɾ̪ˤ,w,j
+Arabic, Jordanian	AFRO-ASIATIC (Semitic)	t̪,t̪ˤ,tʃ,k,ʔ,b,d̪,dʒ,ɡ,iː,uː,f,θ,s̪,s̪ˤ,ʃ,x,ħ,h,i,u,ð,ðˤ,z̪,ɣ,ʕ,æː,m,n,æ,l,ɾ,w,j
+Arabic, Libyan	AFRO-ASIATIC (Semitic)	t̪,tˤ,k,b,d̪,ɡ,iː,uː,f,s̻,s̻ˤ,ʃ,x,ħ,h,i,u,z̻,z̻ˤ,ʒ,ɣ,ʕ,eː,oː,m,n,æː,aː,l,æ,a,ɾ,w,j
+Arabic, Moroccan	AFRO-ASIATIC (Semitic)	t,tˤ,k,q,ʔ,b,d,dˤ,ɡ,iː,uː,f,s,sˤ,ʃ,x,ħ,h,u,z,ʒ,ɣ,ʕ,e,m,n,æː,l,ɾ,w,j
+Arabic, Moroccan (Northern)	AFRO-ASIATIC (Semitic)	t,tˤ,k,q,ʔ,b,d,dˤ,ɡ,iː,uː,f,s,sˤ,ʃ,x,ħ,h,u,z,ʒ,ɣ,ʕ,e,m,n,æː,l,ɾ,w,j
+Arabic, Muscat	AFRO-ASIATIC (Semitic)	t,tˤ,kʲ,q,ʔ,b,d,ɡʲ,iː,uː,i,u,f,θ,s,sˤ,ç,χ,ħ,h,eː,oː,ð,ðˤ,z,ʁ,ʕ,aː,m,n,a,l,ɾ,j,w
+Arabic, North Israel Bedouin	AFRO-ASIATIC (Semitic)	t̪,t̪ˤ,k,ʔ,b,bˤ,d̪,ɡ,ɡˤ,iː,uː,tʃ,i,u,dʒ,ɟʝ,e,o,f,fˤ,θ,s̪,s̪ˤ,ʃ,x,ħ,h,ə,ð,z̪,ɣ,ʕ,aː,m,mˤ,ðˤ,n,nˤ,a,l̪,l̪ˤ,ɾ,ɾˤ,w,wˤ,j
+Arapesh	TORRICELLI	p,t̪,k,b,d̪,dʒ,ɡ,i,y,u,s,ʃ,h,e,ø,o,m,n,ɲ,a,l,w,j
+Arbore	AFRO-ASIATIC (Cushitic)	p,t,tʃ,k,b,d,dʒ,ɡ,i,u,tʼ,tʃʼ,kʼ,ʔ,ɛ,ɔ,ɓ,ɗ,a,f,s,ʃ,h,z,m,n,ɲ,ŋ,ɾ,l,w,j
+Argobba	AFRO-ASIATIC (Semitic)	t̪,tʃ,k,kʷ,ʔ,b,bʷ,d̪,dʒ,ɡ,ɡʷ,i,ɨ,u,pʼ,t̪ʼ,tʃʼ,kʼ,kʷʼ,e,ə,o,a,f,s̪,ʃ,h,z̪,ʒ,s̪ʼ,m,n̪,ɲ,l̪,ɾ̪,w,j
+Armenian, Agn	INDO-EUROPEAN	pʰ,tʰ,kʰ,b,d,ɡ,i,y,u,tsʰ,tʃʰ,ɛ,ø,ɔ,dz,dʒ,a,f,s,ʃ,χ,h,v,z,ʒ,ʁ,m,n,ɾ,r,l,j
+Armenian, Agulis	INDO-EUROPEAN	pʰ,tʰ,kʰ,b,d,ɡ,i,y,u,tsʰ,tʃʰ,e,ø,o,dz,dʒ,œ,a,f,s,ʃ,χ,h,z,ʒ,ʁ,uj,m,n,ej,oj,ɾ,aj,r,l
+Armenian, Homshetsma	INDO-EUROPEAN	pʰ,tʰ,kʰ,b,d,ɡ,i,u,tsʰ,tʃʰ,ɛ,ɔ,dz,dʒ,a,f,s,ʃ,χ,h,z,ʒ,ʁ,m,n,ɾ,ɹ,l
+Armenian, Karchevian	INDO-EUROPEAN	pʰ,tʰ,kʰ,b,d,ɡ,i,y,ɨ,u,tsʰ,tʃʰ,e,ø,o,dz,dʒ,ɛ,œ,a,f,s,ʃ,χ,h,z,ʒ,ʁ,m,n,ɾ,l
+Armenian, Kirzan	INDO-EUROPEAN	pʰ,tʰ,kʰ,b,d,ɡ,i,u,tsʰ,tʃʰ,ɛ,ɔ,dz,dʒ,a,f,s,ʃ,χ,h,z,ʒ,ʁ,m,n,ɾ,l
+Armenian, Marash	INDO-EUROPEAN	pʰ,tʰ,kʰ,b,d,ɡ,i,y,u,tsʰ,tʃʰ,e,ø,o,dz,dʒ,ɛ,f,s,ʃ,χ,h,a,z,ʒ,ʁ,m,n,ɾ,l
+Armenian, Standard Eastern	INDO-EUROPEAN	pʰ,tʰ,kʰ,b,d,ɡ,i,u,tsʰ,tʃʰ,ɛ,ɔ,dz,dʒ,a,f,s,ʃ,χ,h,z,ʒ,ʁ,m,n,ɾ,l
+Ashuku	NIGER-CONGO	p,t,k,k͡p,ts,b,d,ɡ,ɡ͡b,i,ĩ,ɯ,ɯ̃,u,ũ,dz,ɨ,ɨ̃,f,s,h,ɛ,ɛ̃,ʌ,ʌ̃,ɔ,ɔ̃,v,z,a,ã,m,n,ŋ,r,w,j
+Asmat (Flamingo Bay Dialect)	TRANS-NEW GUINEA	p,t,tʃ,k,f,s,i,u,m,n,e,ə,o,ɾ,a,w,j
+Assiniboine	SIOUAN	p,t̪,tʃ,k,s,ʃ,x,h,i,ĩ,u,ũ,z,ʒ,ɣ,e,o,m,n̪,a,ã,w,j
+Assyrian Neo-Aramaic (Iraqi Koine)	AFRO-ASIATIC (Semitic)	pʰ,tʰ,tʃʰ,cʰ,p,t,tʃ,c,q,ʔ,i,u,b,d,dʒ,ɟ,ɪ,s,ʃ,χ,h,e,o,z,ʒ,ʁ,a,m,n,l,ɾ,ɥ,j
+Assyrian Neo-Aramaic (Jilu dialect)	AFRO-ASIATIC (Semitic)	p,pˤ,t,tˤ,tʃ,tʃˤ,k,q,b,d,dʒ,ɡ,i,u,s,sˤ,ʃ,x,e,o,z,ʒ,ɣ,ɛ,m,n,h,a,l,r,w,j
+Auchi (Yekhee)	NIGER-CONGO (Edoid)	p,t,k,k͡p,b,d,ɡ,ɡ͡b,i,u,ts,k̂,k̂͡p̂,e,o,dz,ɡ̂,ɡ̂͡b̂,ɛ,ɔ,f,s,a,v,m,n,m̂,r,ɺ,ʋ,j,w
+Auyana	TRANS-NEW GUINEA	p,t,k,kʷ,ʔ,b,d,ɡ,ɡʷ,i,u,s,e,ə,o,m,n,a,w,j
+Awa	TRANS-NEW GUINEA	p,t,k,ʔ,b,d,ɡ,i,u,s,e,o,m,n,æ,a,ɒ,w,j
+Axininca Campa (Asháninca)	ARAWAKAN	tʰ,p,t,k,i,tsʰ,tçʰ,o,ts,tç,a,s,ç,h,m,n,ɲ,ŋ,r,rʲ,w,j,ɰ
+Aymara	AYMARAN	pʰ,tʰ,tʃʰ,kʰ,qʰ,p,t,tʃ,k,q,i,u,pʼ,tʼ,tʃʼ,kʼ,qʼ,a,s,χ,h,m,n,ɲ,iː,uː,l,ʎ,aː,ɾ,w,j
+Azari, Iranian (South Azerbaijani)	ALTAIC (Turkic)	p,t̪,tʃ,kʲ,ʔ,b,d̪,dʒ,ɡ,i,y,ɨ,u,f,s,ʃ,x,h,e,ø,o,v,z,ʒ,æ,a,m,n,l,r,j
+Bagri	INDO-EUROPEAN (Indo-Aryan)	pʰ,t̪ʰ,ʈʰ,cʰ,kʰ,p,t̪,ʈ,c,k,ĩː,ũː,bʰ,d̪ʰ,ɖʰ,ɟʰ,ɡʰ,iː,uː,b,d̪,ɖ,ɟ,ɡ,ɪ̃,ʊ̃,s̪,h,ɪ,ʊ,m,n̪,ɳ,ẽː,ə̃,õː,l̪,ɭ,eː,ə,oː,r̪,ɛ̃ː,ãː,ɔ̃ː,ɽ,ɛː,aː,ɔː,w,j
+Balangao	AUSTRONESIAN	p,t,k,ʔ,b,d,ɡ,i,ɨ,u,s,h,e,a,o,m,n,ŋ,l,w,j
+Banoni	AUSTRONESIAN	p,t,tʃ,k,b,d,dʒ,ɡ,i,u,v,ɣ,e,o,s,a,m,n,ŋ,r
+Baré	ARAWAKAN	pʰ,tʰ,kʰ,p,t,tʃ,k,i,u,b,d,e,s,h,a,mʰ,nʰ,m,n,ɻ,wʰ,w,j
+Bari (Kukú dialect)	NILO-SAHARAN (Nilotic)	p,t,k,k͡p,ʔ,b,d,ɟ,ɡ,ɡ͡b,i,ɨ,u,ɓ,ɗ,ɪ,ʊ,s,e,o,m,n,ɲ,ŋ,ŋ͡m,ɛ,ɔ,r,a,l,w,j,ʔj
+Basque	BASQUE	p,t̪,t̻s̻,ts,tʃ,tʲ,k,b,d̪,dʲ,ɡ,i,u,f,s̻,s,ʃ,x,h,e,o,m,n̪,ɲ,a,l,ʎ,ɾ,r
+Bata	AFRO-ASIATIC (Chadic)	p,t,k,k͡p,ʔ,b,d,ɡ,ɡ͡b,ɯ,ɓ,ɗ,ə,b,ⁿd,ɡ,ɡ͡b,a,f,ʃ,h,v,ʒ,ⁿʒ,m,n,ŋ,ɭ,ɽ,w,j
+Batibo Moghamo (Metaʼ)	NIGER-CONGO (Bantu)	p,t,tʃ,k,ʔ,b,d,dʒ,ɡ,ĩ,i,ɨ,u,f,ʃ,ẽ,e,ə,o,ʒ,ã,a,ɔ,m,n,ɲ,ŋ,w
+Beaver, Halfway River	NA-DENE	tʰ,tsʰ,tɬʰ,tʃʰ,kʰ,p,t,ts,tɬ,tʃ,k,i,u,tʼ,tsʼ,tɬʼ,tʃʼ,kʼ,ʔ,e,ə,o,s,ɬ,ʃ,x,a,z,ɮ,ɣ,m,n,w,j,h
+Belizian Creole (Northern Central America Creole English)	CREOLE	p,t,k,ʔ,b,d,ɡ,i,u,f,θ,s,ʂ,ç,h,e,o,v,ð,z,ʐ,ʝ,ɑ,m,n,ŋ,l,iː,uː,r,eː,oː,w,j,ɑː
+Bemba	NIGER-CONGO (Bantu)	p,t,tʃ,k,f,s,ʃ,i,u,β,ɛ,ɔ,m,n,ɲ,ŋ,a,l,w,j
+Bengali	INDO-EUROPEAN (Indo-Aryan)	p,t̪,ʈ,tʃ,k,b,d̪,ɖ,dʒ,ɡ,ĩ,ũ,pʰ,t̪ʰ,ʈʰ,tʃʰ,kʰ,i,u,bʰ,d̪ʰ,ɖʰ,dʒʰ,ɡʰ,ẽ,õ,s,ʃ,h,e,o,z,æ̃,ã,ɑ̃,m,n,ŋ,æ,a,ɑ,l,ɾ,ɽ,o̯,e̯,w,j
+Berbice Dutch Creole	CREOLE	p,t,k,b,d,ɡ,i,u,f,s,ʃ,h,e,o,ɛ,m,n,a,l,r
+Bikele	NIGER-CONGO (Bantu)	p,t,tʃ,k,k͡p,b,d,dʒ,ɡ,i,iː,ɨ,u,uː,p,ⁿt,ⁿtʃ,k,k͡p,e,eː,o,oː,b,ⁿd,ⁿdʒ,ɡ,ɡ͡b,ɛ,ɛː,ə,f,s,a,aː,ɒ,ɒː,m,n,ɲ,ŋ,l,w,j
+Binumarien	TRANS-NEW GUINEA	p,t,k,ʔ,ɸ,s,i,u,m,n,e,o,r,ɽ,a,w,j
+Biri	AUSTRALIAN (Pama-Nyungan)	b,d̪,d,ɟ,ɡ,m,n̪,n,ɲ,ŋ,i,u,l,a,r,w,ɻ,j
+Bisu	SINO-TIBETAN	pʰ,pʲʰ,tʰ,kʰ,kʰʲ,p,pʲ,t,k,kʲ,i,ɯ,u,b,bʲ,d,ɡ,e,ɤ,o,m,mʲ,n,ŋ,a,tsʰ,tɕʰ,ts,tɕ,i̺,f,s,ɕ,x,v,z,ʑ,l
+Blackfoot	ALGIC	p,t,k,ʔ,i,s,h,o,m,n,a,w,j
+Boko/Busa	NIGER-CONGO (Mande)	p,pˡ,t,k,kʲ,kʷ,k͡p,ʔ,b,bˡ,d,ɡ,ɡʲ,ɡʷ,ɡ͡b,i,ĩ,u,ũ,f,fˡ,s,sʷ,e,o,v,vˡ,z,zʷ,ɛ,ɛ̃,ɔ,ɔ̃,m,mˡ,N?,a,ã,l,j,w,h
+Boko/Busa (Kaiama dialect)	NIGER-CONGO (Mande)	p,pˡ,t,k,kʲ,kʷ,k͡p,ʔ,b,bˡ,d,ɡ,ɡʲ,ɡʷ,ɡ͡b,i,ĩ,u,ũ,f,fˡ,s,sʷ,e,o,v,vˡ,z,zʷ,ɛ,ɛ̃,ɔ,ɔ̃,m,mˡ,N?,a,ã,l,j,w,h
+Boruca	CHIBCHAN	t̪,ts,tʃ,k,ʔ,b,d̪,dʒ,ɡ,i,u,s,ʃ,x,e,o,m,n,ɲ,ŋ,a,ɾ
+Brahui	DRAVIDIAN	p,t,ʈ,tʃ,k,ʔ,b,d,ɖ,dʒ,ɡ,f,s,ʃ,x,iː,i,uː,u,z,ʒ,ɣ,eː,e,oː,o,ɬ,aː,a,ɽ,m,n,ɳ,ɲ,ŋ,l,r,ʋ,j
+Breton	INDO-EUROPEAN (Celtic)	p,t,k,b,d,ɡ,ĩ,ỹ,ũ,i,y,u,f,s,ʃ,x,h,ẽ,õ,e,ø,o,v̥,v,ɛ̃,œ̃,ɛ,ɔ,m,n,ã,a,nː,l,lː,r,rː,w,j
+Bribri	CHIBCHAN	p,t̪,t̪͡c,k,ʔ,b,d̪,ĩ,ũ,i,u,t̪s̪,tʃ,ɪ,ʊ,dʒ,ẽ,õ,e,o,s̪,ʃ,x,ã,a,ɺ
+Bukiyip	TORRICELLI	p,t,tʃ,k,b,d,dʒ,ɡ,i,ɨ,u,s,h,e,ə,o,m,n,ɲ,æ,a,l,r,w,j
+Bukusu	NIGER-CONGO (Bantu)	p,tʃ,k,b,d,dʒ,ɡ,i,u,f,s,x,e,o,m,n,ɲ,ŋ,N?,a,l,r,w,j
+Bulgarian	INDO-EUROPEAN (Slavic)	p,pʲ,t,tʲ,c,k,b,bʲ,d,dʲ,ɟ,ɡ,i,ɨ,u,ts,tsʲ,tʃ,e,o,dʒ,a,f,fʲ,s,sʲ,ʃ,x,v,vʲ,z,zʲ,ʒ,m,mʲ,n,nʲ,l,lʲ,r,rʲ,j
+Buriat	ALTAIC	p,t,k,b,d,ɡ,ai,iː,yː,uː,m,n,oi,i,y,u,f,s,ʃ,x,h,ui,eː,øː,oː,v,z,ʒ,ei,e,o,ts,tʃ,yi,aː,w,r,j,a,l
+Burmese	SINO-TIBETAN	pʰ,tʰ,cɕʰ,kʰ,p,t,cɕ,k,ʔ,ai,i,u,b,d,ɟʝ,ɡ,au,ɛ,ʌ,ɔ,sʰ,ei,a,θ,s,ou,ð,z,ĩ,ũ,mʰ,nʰ,ɲʰ,ŋʰ,ɛ̃,ʌ̃,ɔ̃,m,n,ɲ,ŋ,ã,ʍ,ɬ,jʰ,w,l,j,h,r
+Cabécar	CHIBCHAN	p,t̪,k,t̪͡k,b,d̪,ĩ,ũ,i,u,t̪s̪,tʃ,ɪ,ʊ,dʒ,ẽ,õ,e,o,s̪,ʃ,h,ã,a,ɺ
+Cahuilla	UTO-AZTECAN	p,t,tʃ,k,kʷ,q,ʔ,iː,uː,f,s,ʃ,xʷ,x,h,eː,aː,m,n,ɲ,ŋ,l,ʎ,i,u,ɾ,e,w,j,a
+Cantonese	SINO-TIBETAN	pʰ,tʰ,tsʰ,kʰ,kʰʷ,iː,yː,uː,p,t,ts,k,kʷ,ɪ,u,f,s,h,ɛː,œː,oː,m,n,ŋ,e,ø,o,l,ɑː,w,j,ɐ
+Capanahua	PANOAN	p,t,k,ʔ,ts,tʃ,i,ɯ,o,s,ʃ,ʂ,a,β,m,n,ɾ,w,j
+Casiguran Dumagat (Agta)	AUSTRONESIAN	p,t,k,b,d,ɡ,ɪ,ʊ,s,h,ɛ,ə,ɔ,m,n,ŋ,a,l,r,w,j
+Catalan	INDO-EUROPEAN (Italic)	p,t̪,k,kʷ,b,d̪,ɡ,ɡʷ,i,u,f,s,ʃ,e,o,v,z,ʒ,ɛ,ɔ,m,n,ɲ,a,r,l,ʎ,w,j
+Cavineña	TACANAN	p,t,tʲ,k,kʷ,ʔ,b,d,dʲ,i,o,ts,tʃ,e,a,s,ʃ,h,ɾ,ʎ,m,n,ɲ,w,j
+Cayapa (Chachi)	BARBACOAN	p,t,tʲ,k,ʔ,b,d,dʲ,ɡ,i,u,ts,tʃ,e,a,ɸ,s,ʃ,h,m,n,ɲ,ŋ,l,ʎ,r,w,j
+Cebuano	AUSTRONESIAN	p,t̪,k,ʔ,b,d̪,ɡ,i,u,s̪,h,m,n̪,ŋ,a,l̪,ɾ̪,j,w
+Chakosi	NIGER-CONGO (Kwa)	p,pʲ,pʷ,t,tʲ,c,cʷ,k,kʷ,k͡p,k͡pʲ,i,u,b,bʲ,bʷ,d,dʲ,ɟ,ɟʷ,ɡ,ɡʷ,ɡ͡b,ɡ͡bʲ,e,o,f,fʲ,s,sɥ,h,ɛ,ɔ,m,mʲ,n,nʲ,ɲ,ŋ,ŋ͡m,ŋ͡mʲ,a,l,lɥ,ɾ,ĩ,ũ,ɥ̥,ɛ̃,ɔ̃,w,ɥ,ã
+Chamorro	AUSTRONESIAN	p,t,k,ʔ,b,d,ɡ,ts,i,u,dz,e,o,f,s,h,æ,a,m,n,ɲ,ŋ,l,r,w
+Chemehuevi (dialect of Ute-Southern Paiute)	UTO-AZTECAN	p,t,k,kʷ,ʔ,ts,i,ɨ,u,s,h,a,o,v,ɣ,ɣʷ,m,n,ŋ,mʼ,n’,ŋʼ,r,w,j,wʼ,jʼ
+Cheremis, Eastern (Mari)	URALIC (Finno-Ugric)	p,t̪,tʃ,k,b,d̪,ɡ,i,y,u,s̪,ʃ,e,ø,ə,o,z̪,ʒ,a,m,n̪,ɲ,ŋ,ɾ̪,l̪,ʎ,j
+Cherokee (Oklahoma dialect)	IROQUOIAN	t,tʃ,k,iː,oː,s,ʃ,h,aː,m,n,ɬ,i,l,o,w,j,a
+Cherokee (Qualla dialect)	IROQUOIAN	t,k,ʔ,ts,i,u,s,h,e,o,m,n,ʌ̃,l,a,j,w
+Chomo (Dhu, Como Karim)	NIGER-CONGO	p,t,k,ts,b,d,ɡ,i,u,dz,ɨ,f,θ,s,h,ɛ,ɔ,v,ð,z,a,b,ⁿd,ɡ,N?,r,l,w,j
+Chori (Cori)	NIGER-CONGO (Bantu)	p,t,k,kʷ,k͡p,k͡pʷ,b,d,ɡ,ɡʷ,ɡ͡b,ɡ͡bʷ,i,u,ts,kf,e,o,dz,ɛ,ɔ,b,ⁿd,ɡ,ɡʷ,ɡ͡b,a,ⁿdz,f,s,x,xʷ,h,v,z,ɣ,ɣʷ,m,n,ɲ,ŋ,ŋʷ,r,l,j,w
+Chrau	AUSTRO-ASIATIC	p,t,c,k,ʔ,iː,uː,ʔb,ʔd,ɪ,ʊ,b,d,ɟ,ɡ,e̝ː,o̝ː,ʃ,h,e,o,m,n,ɲ,ŋ,ɛː,ɔː,r,a̝,w,l,j,aː
+Ciyao (Yao)	NIGER-CONGO (Bantu)	p,t,tʃ,k,b,d,dʒ,ɡ,i,iː,u,uː,s,e,eː,o,oː,m,n,ɲ,ŋ,a,aː,l,w,ʋ,j
+Coatzospan Mixtec (Coatzospan Mixteco)	OTO-MANGUEAN	t,k,kʷ,ⁿd,iʔi,ɨʔɨ,uʔu,i,ɨ,u,ts,tʃ,eʔe,oʔo,e,o,aʔa,a,ʃ,β,ð,ĩʔĩ,ɨ̃ʔɨ̃,ũʔũ,ĩ,ɨ̃,ũ,m,n,ɲ,ẽʔẽ,ẽ,l,ãʔã,ã
+Coeur dʼAlene	SALISHAN	p,t,kʷ,q,qʷ,pʼ,tʼ,kʼʷ,qʼ,qʼʷ,ʔ,i,ə,u,b,d,ɡʷ,ɛ,a,o,ts,tʃ,tsʼ,tʃʼ,dʒ,s,ʃ,xʷ,χ,χʷ,h,ɬ,m,n,ʀ,ʕ,ʕʷ,mʼ,n’,ʀʼ,ʕʼ,ʕʼʷ,l,lʼ,j,w,jʼ,wʼ
+Cofán (Cofan)	CHIBCHAN	p,t,k,pʰ,tʰ,kʰ,ʔ,i,ɨ,o,b,d,ɡ,ɛ,a,ts,tʃ,tsʰ,tʃʰ,ĩ,ɨ̃,õ,dz,dʒ,ɛ̃,ã,ɸ,s,ʃ,h,β,j,ɣ,m,n,ɲ,r
+Comaltepec Chinantec (Comaltepec Chinanteco)	OTO-MANGUEAN	p,t,k,ʔ,b,d,ɡ,i,ɨ,u,ts,e,o,dz,a,s,h,m,n,ŋ,l,r
+Comanche	UTO-AZTECAN	p,t,k,kʷ,ʔ,ts,i,ɨ,u,s,h,e,o,m,n,a,w,j
+Creole of São Tomé (Sãotomense)	CREOLE	p,t,tʃ,k,dʒ,ɡ,ĩ,ũ,i,u,ɓ,ɗ,ẽ,õ,e,o,f,s,ʃ,ɛ,ɔ,v,z,ʒ,ã,a,m,n,ɲ,l,ʎ,w,j
+Cubeo	KHOISAN	aʔ,N?,ã,aː,N̩,aʔa,aːː,aj,au,ãʔ,ai,ai̯,ãˤ,ă,aˤ,aˤʔ,a,a+,ãʔã,ãː,aɪ,aʊ
+Cuna (San Blas Cuna)	CHIBCHAN	p,t,k,kʷ,s,i,u,m,n,e,o,l,a,r,w,j
+Czech	INDO-EUROPEAN (Slavic)	p,t̪,t̪ʲ,ts,tʃ,k,b,d̪,d̪ʲ,ɡ,iː,uː,f,s,ʃ,x,eː,oː,v,z,ʒ,ɦ,aː,m,n̪,n̪ʲ,l̪,r,i,u,ř,e,o,j,a
+Daga	TRANS-NEW GUINEA	p,t,k,b,d,ɡ,s,i,u,v,e,o,m,n,a,l,w,j
+Dàgáárè	NIGER-CONGO (Gur)	p,t,tʃ,k,k͡p,ʔ,b,d,dʒ,ɡ,ɡ͡b,i,u,f,s,h,ɪ,ʊ,v,z,ɦ,e,o,m,n,ɲ,ŋ,ŋ͡m,ɛ,ɔ,ʔm,a,l,ʔl,r,j,w
+Dagur	ALTAIC	pʰ,tʰ,tʃ,kʰ,b,d,dʒ,ɡ,m,n,i,u,s,ʃ,x,h,e,ɾ,a,o,l,N̩
+Dahalo	AFRO-ASIATIC (Cushitic)	p,t̪,ts,t,tʃ,k,kʷ,ʔ,b,d̪,dz,d,dʒ,ɡ,ɡʷ,iː,uː,pʼ,t̪ʼ,tsʼ,tɬʼ,tʃʼ,kʼ,kʷʼ,i,u,ɓ,ɗ̪,ɗʒ,eː,oː,ǀ,e,o,b,ⁿd̪,ⁿdz,ⁿd,ⁿdʒ,ɡ,ɡʷ,aː,ⁿǀ,ⁿdɮ,a,f,s,ʃ,ħ,h,v,ʕ,m,n,ɲ,r,l,ɬ,w,j
+Dani, Lower Grand Valley	AUSTRONESIAN	p,t,k,kʷ,i,u,s,h,ɪ,ʊ,m,n,ŋ,e,o,l,a,w,j,ʔ
+Danish	INDO-EUROPEAN (Germanic)	p,t,k,b,d,ɡ,i,y,u,f,s,h,ɪ,ʊ,v,ð,ɣ,ø,ʌ,o,m,n,ŋ,ɛ,œ,ɔ,l,æ,a,r,j
+Degema	NIGER-CONGO (Edoid)	p,t,k,k͡p,b,d,dʒ,ɡ,ɡ͡b,ĩ,ũ,ɓ,ɗ,ɪ̃,ʊ̃,f,s,h,i,u,v,ɪ,ʊ,m,n,ɲ,ŋ,ŋʷ,e,o,r,ɛ,ə,ɔ,l,a,j,w
+Delaware (Unami)	ALGIC	p,t,tʃ,k,s,ʃ,x,h,ə,iː,oː,m,n,a,eː,aː,l,w,j
+Desano	TUCANOAN	p,t,k,b,d,ɡ,i,ɯ,u,s,h,e,o,j,a
+Dhaasanac (Daasanach)	AFRO-ASIATIC (Cushitic)	t,c,k,ʔ,b,d,ɟ,ɡ,ɪ,ʊ,ɓ,ɗ,ʄ,ɠ,ɛ,ɔ,f,s,ʃ,a,ð,m,n,ɲ,ŋ,r,l,w,j
+Dhivehi (Maldivian)	INDO-EUROPEAN (Indo-Aryan)	p,t̪,ʈ,c,k,b,d̪,ɖ,ɟ,ɡ,iː,uː,b,ⁿd̪,ⁿɖ,ɡ,i,u,f,s̪,ʂ,h,eː,oː,v,z̪,e,o,m,n̪,aː,l̪,ɭ,a,ɾ,j
+Dholuo (Luo)	NILO-SAHARAN	p,t,c,k,b,d,ɟ,ɡ,i,u,b,ⁿd,ⁿɟ,ɡ,ɪ,ʊ,θ,s,h,e,o,ð,ɛ,ɔ,m,n,ɲ,ŋ,a,l,r,w,j
+Dieri (Diyari)	Austin, Peter (1981) A Grammar of Diyari, South Australia. Cambridge: Cambridge University Press.	p,t̪,t,ʈ,c,k,d,ɖ,i,u,m,n̪,n,ɳ,ɲ,ŋ,a,l̪,l,ɭ,ʎ,ɾ,w,ɻ,j
+Diola-Fogny (Jola-Fogny)	NIGER-CONGO	p,t,c,k,b,d,ɟ,ɡ,i,ɪ,ʊ,u,f,s,h,e,ə,o,m,n,ɲ,ŋ,ɛ,ɔ,l,a,ɹ,w,j
+Djinang/Djinba	AUSTRALIAN (Pama-Nyungan)	p,t,ʈ,c,k,d,ɖ,ɟ,i,u,m,n,ɳ,ɲ,ŋ,a,l,ɭ,r,ɽ,w,j
+Dominican Creole (variety of Lesser Antillean Creole French)	CREOLE	p,t,tʃ,k,b,d,dʒ,ɡ,i,u,f,s,ʃ,h,e,o,v,z,ʒ,a,m,n,ɲ,ŋ,l,w,j
+Doyayo	NIGER-CONGO	p,t,k,k͡p,i,iː,u,uː,b,d,ɡ,ɡ͡b,e,eː,o,oː,ɓ,ɗ,ɛ,ɛː,ɔ,ɔː,f,s,h,a,aː,v,z,m,n,ŋ,ĩ,ĩː,ũ,ũː,l,ɛ̃,ɛ̃ː,ɔ̃,ɔ̃ː,r,ã,ãː,w,j
+Dutch	INDO-EUROPEAN (Germanic)	p,t,k,b,d,i,y,u,f,s,x,ɪ,ʏ,v,z,ɣ,ɦ,e,ø,o,m,n,ŋ,ɛ,œ,ɔ,l,a,ɑ,r,ʋ,j
+Dutch (most varieties)	INDO-EUROPEAN (Germanic)	p,t,k,b,d,i,y,u,f,s,x,ɪ,ʏ,v,z,ɣ,ɦ,e,ø,o,m,n,ŋ,ɛ,œ,ɔ,l,a,ɑ,r,ʋ,j
+Dutch (southern and Belgium)	INDO-EUROPEAN (Germanic)	p,t,k,b,d,i,y,u,f,s,x,ɪ,ʏ,v,z,ɣ,ɦ,e,ø,o,m,n,ŋ,ɛ,œ,ɔ,l,a,ɑ,r,ʋ,j
+Dyirbal	AUSTRALIAN (Pama-Nyungan)	b,d,d̻,ɡ,m,n,n̻,ŋ,i,u,l,ɾ,ɽ,a,w,j
+Edo	NIGER-CONGO (Edoid)	p,t,k,k͡p,b,d,ɡ,ɡ͡b,i,ĩ,u,ũ,f,s,x,h,e,o,v,z,ɣ,ɛ,ɛ̃,ɔ,ɔ̃,m,a,ã,r,r̥,l,ɺ,ʋ,j,w
+Efik	NIGER-CONGO	p,t,k,k͡p,b,d,i,u,f,s,h,e,o,m,n,ɲ,ŋ,ɔ,a,r,w,j
+Egene (Engenni)	NIGER-CONGO (Edoid)	p,t,k,k͡p,b,d,ɡ,ɡ͡b,i,u,ɓ,ɗ,ɪ,ʊ,f,s,e,o,v,z,ɛ,ɔ,m,n,a,r,l,j,w,j̃,w̃
+Ehueun	NIGER-CONGO (Edoid)	t,k,k͡p,b,d,ɡ,ɡ͡b,i,ĩ,u,ũ,ɸ,f,s,h,e,o,β,v,z,ɛ,ɛ̃,ɔ,ɔ̃,r,a,ã,r̥,l,j,w
+Ejagham	NIGER-CONGO (Bantu)	p,t,tʃ,k,k͡p,b,d,dʒ,ɡ,ɡ͡b,i,y,u,f,s,ɛ,ə,ɔ,m,n,ɲ,ŋ,a,ɾ,w,j
+Ejagham (Eyumojok-Ndebaya sub-dialect)	NIGER-CONGO (Bantu)	p,t,tʃ,k,k͡p,b,d,dʒ,ɡ,ɡ͡b,i,y,u,f,s,ɛ,ə,ɔ,m,n,ɲ,ŋ,a,ɾ,w,j
+Ekigusii	NIGER-CONGO (Bantu)	t,cç,k,s,i,u,β,ɣ,e,o,m,n,ɲ,ŋ,ɛ,ɔ,ɾ,a,w,j
+Emhalhe (Somorika)	NIGER-CONGO (Edoid)	p,t,c,k,k͡p,b,d,ɟ,ɡ,ɡ͡b,i,u,t̂,k̂͡p̂,ʊ,b̂,d̂,e,o,f,θ,s,ʃ,h,ɛ,ɔ,v,z,a,v̤,z̤,ʒ̤,h̃,m,n,ɲ,ŋʷ,m̂,n̂,r,ɾ,l,j,w,ɺ
+English	INDO-EUROPEAN (Germanic)	p,t,tʃ,k,b,d,dʒ,ɡ,aɪ,aʊ,f,θ,s,ʃ,h,iː,uː,v,ð,z,ʒ,ɪ,ʊ,m,n,ŋ,eɪ,ə,ɜː,oʊ,l,ɛ,ʌ,ɔː,ɹ,æ,ɑː,w,j
+English (American)	INDO-EUROPEAN (Germanic)	p,t,tʃ,k,b,d,dʒ,ɡ,i,ɪ,ə,ʊ,u,f,θ,s,ʃ,h,e,ɛ,ʌ,ɔ,o,v,ð,z,ʒ,æ,a,m,n,ŋ,l,aʊ,aɪ,ɹ,w,j
+Epie	NIGER-CONGO (Edoid)	p,t,k,k͡p,b,d,ɡ,ɡ͡b,i,ĩ,u,ũ,ɓ,ɗ,ɪ,ɪ̃,ʊ,ʊ̃,f,s,e,ẽ,o,õ,v,z,ɣ,ɛ,ɛ̃,ɔ,ɔ̃,m,a,ã,r,l,j,w
+Eruwa	NIGER-CONGO (Edoid)	p,t,k,k͡p,b,d,ɡ,ɡ͡b,i,ĩ,u,ũ,f,s,x,ɪ,ɪ̃,ʊ,ʊ̃,v,z,ɣ,e,ẽ,o,õ,m,ɛ,ɛ̃,ɔ,ɔ̃,l,a,ã,ʋ,ɹ,j,w
+Esse Ejja	TACANAN	p,t,tʃ,k,kʷ,ʔ,ɓ,ɗ,i,o,s,ʃ,x,h,e,a,m,n,ɲ,w,j
+Estonian	URALIC (Finno-Ugric)	p,t,tʲ,k,f,s,sʲ,ç,h,i,y,u,m,n,nʲ,ŋ,e,ø,ɤ,o,l,lʲ,æ,a,r,ʋ,j
+Evenki	ALTAIC	p,t,tʃ,k,ɪː,ʊː,b,d,dʒ,ɡ,ɪ,ɯ,ʊ,m,n,ɲ,jeː,ɛː,oː,s,x,h,je,ɛ,o,v,ʒ,aː,l,a,r
+Ewe	NIGER-CONGO (Kwa)	p,t,k,k͡p,b,d,ɖ,ɡ,ɡ͡b,i,u,ts,e,o,dz,ɛ,ɔ,ɸ,f,s,x,a,β,v,z,ɦ,m,n,ɲ,ŋ,l,w,j,ɰ
+Faranah-Maninka	NIGER-CONGO	p,t,k,b,d,ɡ,ɡ͡ɓ,i,u,f,s,h,e,o,m,n,ɲ,ɛ,ɔ,r,a,l,w,j
+Faroese	INDO-EUROPEAN (Germanic)	p,t̪,tʃ,k,iː,ʉ,uː,b,d̪,dʒ,ɡ,ɪ,ʏ,ʊ,ʊʏ̯,f,s,ʃ,h,eː,øː,o,oː,m,n̪,ɛ,œ,ɔ,ɔi̯,l̪,a,aː,ai̯,r,ʋ,j
+Faroese (in some districts)	INDO-EUROPEAN (Germanic)	p,t̪,tʃ,k,iː,ʉ,uː,b,d̪,dʒ,ɡ,ɪ,ʏ,ʊ,ʊʏ̯,f,s,ʃ,h,eː,øː,o,oː,m,n̪,ɛ,œ,ɔ,ɔi̯,l̪,a,aː,ai̯,r,ʋ,j
+FeʼFeʼ-Bamileke	NIGER-CONGO (Bantu)	t,c,k,ʔ,i,iː,ɯ,ɯː,u,uː,b,d,ɟ,ɡ,e,eː,ɤː,o,f,s,h,ɔː,v,z,a,aː,ɑ,ɑː,m,n,ŋ
+Fijian, Boumaa	AUSTRONESIAN	p,t̪,k,ʔ,b,ⁿd̪,ɡ,i,u,f,s,e,o,β,z̪,a,m,n̪,ŋ,r,ⁿr,l,j,w
+Finnish	URALIC (Finno-Ugric)	p,t̪,k,d,i,y,u,s,h,e,œ,o,m,n,ŋ,æ,ɑ,l,r,ʋ,j
+Finnish (some dialects)	URALIC (Finno-Ugric)	p,t̪,k,d,i,y,u,s,h,e,œ,o,m,n,ŋ,æ,ɑ,l,r,ʋ,j
+French	INDO-EUROPEAN (Italic)	p,t̪,k,b,d̪,ɡ,i,y,u,f,s̪,ʃ,e,ø,o,v,z̪,ʒ,ɛ,œ,ə,a,ɔ,m,n̪,ɲ,ẽ,œ̃,ã,ɔ̃,ʀ,l̪,ɥ,j,w
+Fulfulde (a dialect of Mali)	NIGER-CONGO	p,t,tʃ,k,ʔ,b,d,dʒ,ɡ,i,u,b,ⁿd,ⁿɟ,ɡ,e,o,ɓ,ɗ,ʄ,a,f,s,h,m,n,ɲ,ŋ,r,l,w,j
+Fyem (Fyam)	NIGER-CONGO	p,pʲ,pʷ,t,tʲ,k,kʲ,kʷ,b,bʲ,bʷ,ⁿd,ⁿdʲ,ɡ,ɡʲ,ɡʷ,i,u,ɓ,ɗ,e,o,ts,a,dz,f,fʲ,fʷ,s,sʲ,sʷ,ʃ,h,hʲ,hʷ,v,z,ʒ,m,mʷ,n,nʲ,ɲ,ŋ,r,rʲ,rʷ,l,lʲ,lʷ,w,j
+Gã	NIGER-CONGO (Kwa)	p,t,k,b,d,ɡ,f,s,ʃ,h,i,u,v,e,o,m,n,ŋ,ɛ,ɔ,l,a,r,w,ɥ,j
+Gade	NIGER-CONGO	p,t,c,k,k͡p,b,d,ɡ,ɡ͡b,i,u,b,ⁿd,ⁿɟ,ɡ,ɪ,ʊ,f,s,e,o,v,z,ɛ,ɔ,m,n,a,r,w,j
+Gadsup	TRANS-NEW GUINEA	p,t,k,ʔ,b,d,i,u,m,n,e,ə,o,j,æ
+Ganda	NIGER-CONGO (Bantu)	p,t,c,k,b,d,ɟ,ɡ,i,u,f,s,e,o,v,z,a,m,n,ɲ,ŋ,l,w,j
+Ganggulida	AUSTRALIAN (Pama-Nyungan)	b,d̪,d̪ʲ,ɖ,ɡ,m,n̪,n̪ʲ,ɳ,ŋ,i,u,r,a,l,w,ɻ,j
+Garawa (Bundjil/Wandji)	AUSTRALIAN	b,d̪,d̪ʲ,ɖ,ɡ,m,n̪,n̪ʲ,ɳ,ŋ,i,u,r,a,l,w,ɻ,j
+Garo	SINO-TIBETAN	p,t,k,ʔ,b,d,ɡ,ts,i,u,dz,e,o,s,h,a,m,n,ŋ,r,w
+Garwa	AUSTRALIAN(?)	b,d̪,d̪ʲ,ɖ,ɡ,m,n̪,n̪ʲ,ɳ,ŋ,i,u,r,a,l,w,ɻ,j
+Georgian	SOUTH CAUCASIAN	pʰ,tʰ,kʰ,pʼ,tʼ,kʼ,qʼ,i,u,b,d,ɡ,e,o,ts,tʃ,a,tsʼ,tʃʼ,dʒ,s,ʃ,x,h,v,z,ʒ,ʒ̥,ɣ,m,n,l,r
+German	INDO-EUROPEAN (Germanic)	p,t,k,b,d,ɡ,i,y,u,pf,ts,ɪ,ʏ,ʊ,f,s,ʃ,x,h,e,ø,o,v,z,ʁ,ɛ,œ,ə,ɔ,m,n,ŋ,æ,a,ɑ,l,j,ai,ɔi,au
+German, Michigan	INDO-EUROPEAN (Germanic)	k,ai,iː,ĩː,uː,b,d,ɡ,au,ɪ,ʊ,f,s,ʃ,x,h,eː,ẽː,oː,õː,m,n,ŋ,e̞,ə,o̞,l,æː,r,aː,ãː,ɑː,w,j,a,ɑ
+Ghotuo	NIGER-CONGO (Edoid)	p,t,k,k͡p,b,d,ɡ,ɡ͡b,i,u,f,s,x,h,e,o,v,z,ɣ,ɛ,ɔ,h̃,a,m,n,m̂,ɾ̃,r,ʋ,l,j,w,ɺ,ĵ
+Gikuyu	NIGER-CONGO (Bantu	t,k,β,ɡ,i,u,θ,ç,h,ĩ,ũ,m,n,ɲ,ŋ,e,o,w,ɹ,j,a
+Giziga	AFRO-ASIATIC (Chadic)	p,t,k,kʷ,b,d,ɡ,ɡʷ,ɓ,ɗ,i,u,b,ⁿd,ɡ,e,o,ts,ə,dz,a,ⁿdz,f,s,v,z,ⁿz,ɬ,ɮ,m,n,ŋ,l,r,w,j,h,ʔ
+Godoberi	NORTH CAUCASIAN	p,t̪,t̪̀,ts,ts̀,tɬ,tʃ,tʃ̀,k,kʷ,k̀,k̀ʷ,q,qʷ,ʕ,ʔ,t̪ʼ,tsʼ,tɬʼ,tʃʼ,kʼ,kʼʷ,qʼ,qʼʷ,iː,uː,b,d̪,ɡ,ɡʷ,i,ĩ,u,ũ,s,s̀,ɬ,ɬ̀,ʃ,ʃ̀,x,xʷ,x̀,x̀ʷ,χ,χʷ,χ̀,χ̀ʷ,ħ,h,eː,oː,z,ʒ,ʁ,ʁʷ,e,o,m,n,aː,l,a,ã,r,w,j
+Gondi, Adilabad	DRAVIDIAN	pʰ,t̪ʰ,ʈʰ,tʃʰ,kʰ,p,t̪,ʈ,tʃ,k,bʰ,d̪ʰ,ɖʰ,dʒʰ,ɡʰ,b,d̪,ɖ,dʒ,ɡ,i,iː,u,uː,m,n̪,ŋ,e,eː,o,oː,s,a,aː,ɽ,r,l,v,j,h
+Gondi, Koya	DRAVIDIAN	p,t̪,ʈ,tʃ,k,t̪ʼ,kʼ,b,d̪,ɖ,dʒ,ɡ,i,iː,u,uː,m,n,ɳ,ŋ,e,eː,o,oː,s̪,a,aː,r,l,v,j
+Gooniyandi	AUSTRALIAN	b,t̪,d,ɖ,ɟ,ɡ,m,n̪,n,ɳ,ɲ,ŋ,i,ɯ,l,ɭ,ʎ,a,ɑ,ɾ,w,ɻ,j
+Grebo	NIGER-CONGO	p,t,c,k,k͡p,b,d,ɟ,ɡ,ɡ͡b,i,ĩ,u,ũ,f,s,h,e,ẽ,o,õ,m̥,n̥,emf,omf,m,n,ɲ,ŋ,ŋ͡m,ɛ,ɛ̃,ɔ,ɔ̃,ŋʷ,a,ã,l̥,ʍ,l,j,w
+Greek	INDO-EUROPEAN	p,t,k,i,u,f,θ,s,x,e,o,v,ð,z,ɣ,a,m,n,r,l
+Guatuso (Maléku Jaíka)	CHIBCHAN	p,t,tʃ,k,dʒ,i,u,ɸ,s,ɬ,x,e,o,m,n,ŋ,a,r,ɾ,l
+Gugu-Bujun	AUSTRALIAN(?)	b,d,dʲ,ɖ,ɡ,m,n,nʲ,ŋ,i,u,r,a,l,w,ɻ,j
+Gujarati	INDO-EUROPEAN (Indo-Aryan)	p,t̪,ʈ,tʃ,k,b,d̪,ɖ,dʒ,ɡ,i,u,s̪,ʃ,e,ə,o,m,n̪,ɳ,N?,æ,a,ɑ,l,ɭ,ɾ,w,j,h
+Gunin/Kwini	AUSTRALIAN (Pama-Nyungan)	b,d,ɖ,ɟ,ɡ,m,n,ɳ,ɲ,ŋ,i,ɨ,u,l,ɭ,ʎ,e,o,r,a,w,ɻ,j
+Gwari (Gbagyi)	NIGER-CONGO	p,t,tʃ,k,k͡p,b,d,dʒ,ɡ,ɡ͡b,i,u,ɓ,e,o,f,s,ʃ,a,v,z,ʒ,m,n,ɲ,ŋʷ,l,j,ɥ,w
+Haitian Creole	CREOLE	p,t,k,b,d,ɡ,ĩ,ũ,i̞,u̞,f,s,ʃ,ẽ,õ,e,o,v,z,ʒ,ə̃,ɛ,ɔ,m,n,a,l,ɹ,j̃,w,j
+Hakka (Kejia)	SINO-TIBETAN	pʰ,tʰ,tsʰ,kʰ,p,t,ts,k,i,y,u,f,s,h,e,o,m,n,ŋ,a,l,w,j
+Halkomelem, Chilliwack	SALISHAN	p,t,kʷ,q,qʷ,pʼ,tʼ,kʼʷ,qʼ,qʼʷ,ʔ,i,u,tʃ,ɛ,ə,o,tθʼ,tɬʼ,tʃʼ,a,θ,ɬ,ʃ,ç,xʷ,χ,χʷ,h,m,l,w,j
+Hatam	WEST PAPUAN	p,t,c,k,b,d,ɟ,ɡ,pː,tː,kː,i,u,s,h,ɛ,a,ɔ,m,n,ɲ,ŋ,mː,nː,ɾ,w,j
+Hausa	AFRO-ASIATIC (Chadic)	t,tʃ,k,kʷ,kʲ,b,d,dʒ,ɡ,ɡʷ,ɡʲ,ai,au,ɓ,ɗ,ɠ,ɠʷ,ɠʲ,ʔ,f,fʲ,s,ʃ,h,iː,uː,z,i,u,sʼ,eː,oː,m,n,e,o,l,aː,ɾ,a,r,ʔj,j,w
+Hebrew	AFRO-ASIATIC (Semitic)	p,t̪,ts,tʃ,k,ʔ,b,d̪,dʒ,ɡ,i,u,f,s̪,ʃ,x,ħ,h,e,o,v,z̪,ʒ,ʁ,ʕ,a,m,n̪,l,j
+Higi (Kamwe)	AFRO-ASIATIC (Chadic)	pʰ,tʰ,kʰ,b,d,ɡ,i,ɨ,ɓ,ɗ,ʔ,e,tsʰ,ɛ,dz,a,f,s,x,v,z,ɣ,v̌,ɬ,ɮ,m,n,ŋ,l,r,w,j
+Hiligaynon	AUSTRONESIAN	p,t,k,ʔ,b,d,ɡ,i,u,s,h,m,n,ŋ,a,ɾ,l,w,j
+Hindi	INDO-EUROPEAN (Indo-Aryan)	pʰ,t̪ʰ,ʈʰ,tʃʰ,kʰ,p,t̪,ʈ,tʃ,k,iː,ĩː,uː,ũː,bʰ,d̪ʰ,ɖʰ,dʒʰ,ɡʰ,i,ĩ,u,ũ,b,d̪,ɖ,dʒ,ɡ,eː,ẽː,oː,õː,f,s,ʃ,x,h,e,ẽ,o,õ,z,ɣ,aː,ãː,mʰ,n̪ʰ,ɛ,ɛ̃,a,ã,ɔ,ɔ̃,m,n̪,ɳ,l̪ʰ,l̪,ɽʰ,r,ɽ,ʋ,j
+Hixkaryana	CARIB	p,t,tʃ,k,b,d,d̻,ɯ,u,f,s,ʃ,h,e,ɔ,m,n,ɲ,æ,ɾ,ɽ,w,j
+Hungarian	URALIC (Finno-Ugric)	p,t,ts,c,cç,k,b,d,dz,ɟ,ɟʝ,ɡ,i,y,u,f,s,ç,h,e,ø,o,v,z,ʝ,æ,a,m,n,ɲ,r,l,j
+Hurza/Ndreme/Vame (Pelasla)	AFRO-ASIATIC (Chadic)	p,t,c,k,kʷ,b,d,ɟ,ɡ,ɡʷ,ɓ,ɗ,i,u,b,ⁿd,ɡ,e,o,ts,ə,dz,a,ⁿdz,f,s,ɕ,v,z,ʑ,ɬ,ɮ,m,n,ŋ,l,r,w,j,h,hʷ
+Ibilo	NIGER-CONGO (Edoid)	p,t,k,k͡p,b,d,ɡ,ɡ͡b,i,u,t̂,k̂,k̂͡p̂,ʊ,b̂,d̂,ɡ̂,ɡ̂͡b̂,e,o,ts,ɛ,ɔ,dz,a,f,s,ʃ,h,v,v̤,z̤,ʒ̤,h̃,m,n,ɲ,ŋʷ,m̂,n̂,m̤,n̤,r,l,j,w,ɺ,l̤
+Icen	NIGER-CONGO	p,t,k,ts,b,d,ɡ,i,ĩ,ɨ,ɨ̃,u,ũ,f,s,ɛ,ɛ̃,ɔ,ɔ̃,v,z,a,ã,m,n,ŋ,r,l,w,j
+Igbo	NIGER-CONGO	p,t,k,kʷ,b,d,ɡ,ɡʷ,i,u,k͡p,ɪ,ʊ,ɡ͡b,e,o,f,s,h,a,ɔ,v,z,ɣ,m,n,ɲ,ŋ,ŋʷ,r,l,j,w
+Ijo, Kolokuma dialect	NIGER-CONGO	p,t,k,k͡p,b,d,ɡ,ɡ͡b,i,u,f,s,ɪ,ʊ,v,z,e,o,m,n,ŋ,ɛ,ɔ,l,a,ɾ,j,w
+Ikalanga (Kalanga)	NIGER-CONGO (Bantu)	pʰ,t̪ʰ,tʰ,kʰ,kʰʷ,p͡kʰ,pɦ,tɦ,kʷɦ,b͡ɡ,p,t̪,k,kʷ,i,u,b,d̪,d,dʷ,ɡ,ɡʷ,e,o,t̪s̪,t̪s̪ʰ,t̪s̪ʰʷ,tʃ,a,d̪z̪,t̪s̪ɦ,d̪z̪ʷ,dʒ,tʃɦ,f,s,sʷ,ʃ,ʃʷ,v,z,zʷ,ʒ,ɦ,m,n,ɲ,ŋ,b,ⁿd,ⁿdʒ,ɡ,r,l,ʋ,j,w,wɦ
+Ilocano	AUSTRONESIAN	p,t̪,k,ʔ,b,d̪,ɡ,i,ɯ,u,s,ɛ,o,m,n̪,ŋ,a,l,r,w,j
+Indonesian	AUSTRONESIAN	p,t,tʃ,k,ʔ,b,d,dʒ,ɡ,s,h,i,u,e,ə,o,m,n,ɲ,ŋ,a,l,r,w,j
+Ingessana	NILO-SAHARAN	p,t̪,t̪ʃ,k,b,d̪,d̪ʒ,ɡ,i,iː,u,uː,f,s̪,e,eː,ə,əː,o,oː,m,n̪,ɲ,ŋ,a,aː,l̪θ,l̪,r̪,w,j
+Inor (dialect of West Gurage)	AFRO-ASIATIC (Semitic)	t,k,tʼ,kʼ,ʔ,i,ɨ,u,b,d,ɡ,e,ə,o,f,ʃ,x,æ,a,z,m,n,l,r,ɥ,j
+Inuktitut, West Greenlandic	ESKIMO-ALEUT	p,t,k,q,s,i,u,v,ʝ,ɣ,ʁ,a,m,n,ŋ,l
+Inupiaq, Barrow (North Alaskan Inupiatun)	ESKIMO-ALEUT	p,t,k,q,s,x,χ,h,i,u,v,ɣ,ʁ,a,ɬ,ʎ̥,l,ʎ,m,n,ɲ,ŋ,r,j
+Iraqw	AFRO-ASIATIC (Cushitic)	p,t,k,q,ʔ,b,d,ɡ,ʕ,iː,uː,ts,tʃ,tɬ,i,u,dʒ,eː,oː,f,s,ʃ,ɬ,x,ħ,h,e,o,m,n,ɲ,ŋ,ɴ,aː,l,a,r,w,j
+Irish (Irish Gaelic)	INDO-EUROPEAN (Celtic)	p,pʲ,t,tʲ,k,kʲ,b,bʲ,d,dʲ,ɡ,ɡʲ,iː,uː,f,fʲ,s,sʲ,x,xʲ,h,hʲ,i,u,vʲ,ṽʲ,ɣ,eː,oː,m,mʲ,n,nʲ,n̟,n̟ʲ,e,ə,o,l,lʲ,l̟,l̟ʲ,aː,r,rʲ,r̟,r̟ʲ,a,w,w̃,j
+Irish (Irish Gaelic) (certain Donegal dialects)	INDO-EUROPEAN (Celtic)	p,pʲ,t,tʲ,k,kʲ,b,bʲ,d,dʲ,ɡ,ɡʲ,iː,uː,f,fʲ,s,sʲ,x,xʲ,h,hʲ,i,u,vʲ,ṽʲ,ɣ,eː,oː,m,mʲ,n,nʲ,n̟,n̟ʲ,e,ə,o,l,lʲ,l̟,l̟ʲ,aː,r,rʲ,r̟,r̟ʲ,a,w,w̃,j
+Irish (Irish Gaelic) (Connacht (except Cois Fhairrge))	INDO-EUROPEAN (Celtic)	p,pʲ,t,tʲ,k,kʲ,b,bʲ,d,dʲ,ɡ,ɡʲ,iː,uː,f,fʲ,s,sʲ,x,xʲ,h,hʲ,i,u,vʲ,ṽʲ,ɣ,eː,oː,m,mʲ,n,nʲ,n̟,n̟ʲ,e,ə,o,l,lʲ,l̟,l̟ʲ,aː,r,rʲ,r̟,r̟ʲ,a,w,w̃,j
+Irish (Irish Gaelic) (Connacht)	INDO-EUROPEAN (Celtic)	p,pʲ,t,tʲ,k,kʲ,b,bʲ,d,dʲ,ɡ,ɡʲ,iː,uː,f,fʲ,s,sʲ,x,xʲ,h,hʲ,i,u,vʲ,ṽʲ,ɣ,eː,oː,m,mʲ,n,nʲ,n̟,n̟ʲ,e,ə,o,l,lʲ,l̟,l̟ʲ,aː,r,rʲ,r̟,r̟ʲ,a,w,w̃,j
+Irish (Irish Gaelic) (Connemara dialect)	INDO-EUROPEAN (Celtic)	p,pʲ,t,tʲ,k,kʲ,b,bʲ,d,dʲ,ɡ,ɡʲ,iː,uː,f,fʲ,s,sʲ,x,xʲ,h,hʲ,i,u,vʲ,ṽʲ,ɣ,eː,oː,m,mʲ,n,nʲ,n̟,n̟ʲ,e,ə,o,l,lʲ,l̟,l̟ʲ,aː,r,rʲ,r̟,r̟ʲ,a,w,w̃,j
+Irish (Irish Gaelic) (Donegal)	INDO-EUROPEAN (Celtic)	p,pʲ,t,tʲ,k,kʲ,b,bʲ,d,dʲ,ɡ,ɡʲ,iː,uː,f,fʲ,s,sʲ,x,xʲ,h,hʲ,i,u,vʲ,ṽʲ,ɣ,eː,oː,m,mʲ,n,nʲ,n̟,n̟ʲ,e,ə,o,l,lʲ,l̟,l̟ʲ,aː,r,rʲ,r̟,r̟ʲ,a,w,w̃,j
+Irish (Irish Gaelic) (eastern area of Gweedore)	INDO-EUROPEAN (Celtic)	p,pʲ,t,tʲ,k,kʲ,b,bʲ,d,dʲ,ɡ,ɡʲ,iː,uː,f,fʲ,s,sʲ,x,xʲ,h,hʲ,i,u,vʲ,ṽʲ,ɣ,eː,oː,m,mʲ,n,nʲ,n̟,n̟ʲ,e,ə,o,l,lʲ,l̟,l̟ʲ,aː,r,rʲ,r̟,r̟ʲ,a,w,w̃,j
+Irish (Irish Gaelic) (except Donegal)	INDO-EUROPEAN (Celtic)	p,pʲ,t,tʲ,k,kʲ,b,bʲ,d,dʲ,ɡ,ɡʲ,iː,uː,f,fʲ,s,sʲ,x,xʲ,h,hʲ,i,u,vʲ,ṽʲ,ɣ,eː,oː,m,mʲ,n,nʲ,n̟,n̟ʲ,e,ə,o,l,lʲ,l̟,l̟ʲ,aː,r,rʲ,r̟,r̟ʲ,a,w,w̃,j
+Irish (Irish Gaelic) (in Clare)	INDO-EUROPEAN (Celtic)	p,pʲ,t,tʲ,k,kʲ,b,bʲ,d,dʲ,ɡ,ɡʲ,iː,uː,f,fʲ,s,sʲ,x,xʲ,h,hʲ,i,u,vʲ,ṽʲ,ɣ,eː,oː,m,mʲ,n,nʲ,n̟,n̟ʲ,e,ə,o,l,lʲ,l̟,l̟ʲ,aː,r,rʲ,r̟,r̟ʲ,a,w,w̃,j
+Irish (Irish Gaelic) (in Dunquin)	INDO-EUROPEAN (Celtic)	p,pʲ,t,tʲ,k,kʲ,b,bʲ,d,dʲ,ɡ,ɡʲ,iː,uː,f,fʲ,s,sʲ,x,xʲ,h,hʲ,i,u,vʲ,ṽʲ,ɣ,eː,oː,m,mʲ,n,nʲ,n̟,n̟ʲ,e,ə,o,l,lʲ,l̟,l̟ʲ,aː,r,rʲ,r̟,r̟ʲ,a,w,w̃,j
+Irish (Irish Gaelic) (in Gweedore)	INDO-EUROPEAN (Celtic)	p,pʲ,t,tʲ,k,kʲ,b,bʲ,d,dʲ,ɡ,ɡʲ,iː,uː,f,fʲ,s,sʲ,x,xʲ,h,hʲ,i,u,vʲ,ṽʲ,ɣ,eː,oː,m,mʲ,n,nʲ,n̟,n̟ʲ,e,ə,o,l,lʲ,l̟,l̟ʲ,aː,r,rʲ,r̟,r̟ʲ,a,w,w̃,j
+Irish (Irish Gaelic) (in Muskerry)	INDO-EUROPEAN (Celtic)	p,pʲ,t,tʲ,k,kʲ,b,bʲ,d,dʲ,ɡ,ɡʲ,iː,uː,f,fʲ,s,sʲ,x,xʲ,h,hʲ,i,u,vʲ,ṽʲ,ɣ,eː,oː,m,mʲ,n,nʲ,n̟,n̟ʲ,e,ə,o,l,lʲ,l̟,l̟ʲ,aː,r,rʲ,r̟,r̟ʲ,a,w,w̃,j
+Irish (Irish Gaelic) (in parts of Munster)	INDO-EUROPEAN (Celtic)	p,pʲ,t,tʲ,k,kʲ,b,bʲ,d,dʲ,ɡ,ɡʲ,iː,uː,f,fʲ,s,sʲ,x,xʲ,h,hʲ,i,u,vʲ,ṽʲ,ɣ,eː,oː,m,mʲ,n,nʲ,n̟,n̟ʲ,e,ə,o,l,lʲ,l̟,l̟ʲ,aː,r,rʲ,r̟,r̟ʲ,a,w,w̃,j
+Irish (Irish Gaelic) (in Ring)	INDO-EUROPEAN (Celtic)	p,pʲ,t,tʲ,k,kʲ,b,bʲ,d,dʲ,ɡ,ɡʲ,iː,uː,f,fʲ,s,sʲ,x,xʲ,h,hʲ,i,u,vʲ,ṽʲ,ɣ,eː,oː,m,mʲ,n,nʲ,n̟,n̟ʲ,e,ə,o,l,lʲ,l̟,l̟ʲ,aː,r,rʲ,r̟,r̟ʲ,a,w,w̃,j
+Irish (Irish Gaelic) (in South Connacht)	INDO-EUROPEAN (Celtic)	p,pʲ,t,tʲ,k,kʲ,b,bʲ,d,dʲ,ɡ,ɡʲ,iː,uː,f,fʲ,s,sʲ,x,xʲ,h,hʲ,i,u,vʲ,ṽʲ,ɣ,eː,oː,m,mʲ,n,nʲ,n̟,n̟ʲ,e,ə,o,l,lʲ,l̟,l̟ʲ,aː,r,rʲ,r̟,r̟ʲ,a,w,w̃,j
+Irish (Irish Gaelic) (Munster)	INDO-EUROPEAN (Celtic)	p,pʲ,t,tʲ,k,kʲ,b,bʲ,d,dʲ,ɡ,ɡʲ,iː,uː,f,fʲ,s,sʲ,x,xʲ,h,hʲ,i,u,vʲ,ṽʲ,ɣ,eː,oː,m,mʲ,n,nʲ,n̟,n̟ʲ,e,ə,o,l,lʲ,l̟,l̟ʲ,aː,r,rʲ,r̟,r̟ʲ,a,w,w̃,j
+Irish (Irish Gaelic) (some Munster dialects)	INDO-EUROPEAN (Celtic)	p,pʲ,t,tʲ,k,kʲ,b,bʲ,d,dʲ,ɡ,ɡʲ,iː,uː,f,fʲ,s,sʲ,x,xʲ,h,hʲ,i,u,vʲ,ṽʲ,ɣ,eː,oː,m,mʲ,n,nʲ,n̟,n̟ʲ,e,ə,o,l,lʲ,l̟,l̟ʲ,aː,r,rʲ,r̟,r̟ʲ,a,w,w̃,j
+Irula	DRAVIDIAN	p,t̪,t,ʈ,tʃ,k,b,d̪,d,ɖ,dʒ,ɡ,i,ɨ,ʉ,u,m,n,ɳ,e,ə,ɵ,o,a,r̪,r,ɽ,v,l,ɭ,j
+Isoko (Uzere dialect)	NIGER-CONGO (Edoid)	p,t̪,t,k,ɓ̥ˠ,b,d̪,d,ɡ,ɡ͡b,i,u,f,s,h,ɪ,ʊ,v,z,ɣ,ɣʷ,e,o,m,ɲ͡n̪,n,ŋʷ,ɛ,ɔ,l,a,ɾˡ,ʋ,ɹ,j
+Italian	INDO-EUROPEAN (Italic)	p,t,c,k,b,d,ɟ,ɡ,i,u,f,s,ʃ,e,o,v,ʒ,ɛ,ɔ,m,n,ɲ,a,l,ʎ,r
+Izi	NIGER-CONGO	p,t,k,k͡p,b,d,ɡ,ɡ͡b,i,u,pf,ts,ɪ,ʊ,bv,dz,e,o,ɸ,s,x,ɛ,ɔ,v,z,ɣ,a,m,n,ŋ,ŋ͡m,l,w,ɹ,j
+Jacaltec	MAYAN	p,t,k,ʔ,tʼ,kʼ,qʼ,i,u,bʼ,e,o,a,ts,tʃ,ʈʂ,tsʼ,tʃʼ,ʈʂʼ,f,s,ʃ,ʂ,χ,h,m,n,ŋ,l,r,w,j
+Jamaican Creole (Southwestern Caribbean Creole English)	CREOLE	p,t,tʃ,k,b,d,dʒ,ɡ,i,u,f,s,ʃ,h,e,o,v,z,a,m,n,ŋ,l,iː,uː,r,aː,w,j
+Japanese	JAPANESE	p,t,k,iː,ɯː,b,d,ɡ,i,ɯ,s,ʃ,h,eː,oː,z,e,o,m,n,aː,ɾ,a,j,ɰ
+Jaqaru	AYMARAN	pʰ,tʰ,cʰ,kʰ,qʰ,p,t,c,k,q,i,u,pʼ,tʼ,cʼ,kʼ,qʼ,a,tsʰ,cçʰ,ʈʂʰ,ts,cç,ʈʂ,tsʼ,cçʼ,ʈʂʼ,s,ɕ,ç,m,n,ɲ,ŋ,l,ʎ,ɾ,w,j
+Javanese	AUSTRONESIAN	p,t,ʈ,tʃ,k,ʔ,b,d,ɖ,dʒ,ɡ,i,u,s,h,e,o,m,n,ɲ,ŋ,ʌ,l,ɛ,ɔ,r,a,w,j
+Jiru (Wuyar)	NIGER-CONGO	p,t,k,ts,b,d,ɟ,ɡ,ɡ͡b,i,u,f,θ,s,ʃ,h,ɨ,v,ð,z,ʒ,ɛ,ɔ,m,n,ɲ,ŋ,N?,a,ɾ,l,w,j
+Jukun (Jukun Takum)	NIGER-CONGO	p,t,k,k͡p,ts,b,d,ɡ,ɡ͡b,i,ĩ,u,ũ,dz,e,ẽ,o,õ,f,s,h,a,ã,v,z,m,n,ŋ,r,w,j
+Jukun (Jukun Takum) (Wukari dialect)	NIGER-CONGO	p,t,k,k͡p,ts,b,d,ɡ,ɡ͡b,i,ĩ,u,ũ,dz,e,ẽ,o,õ,f,s,h,a,ã,v,z,m,n,ŋ,r,w,j
+Kabardian	NORTH CAUCASIAN	p,t,ts,c,kʷ,q,qʷ,ʔ,ʔʷ,b,d,dz,ɟ,ɡʷ,ɨ,pʼ,tʼ,tsʼ,cʼ,kʼʷ,qʼ,qʼʷ,ə,f,s,ʃ,ɬ,ɕ,x,xʷ,χ,χʷ,ħ,h,a,v,z,ʒ,ɮ,ʑ,ɣ,ʁ,ʁʷ,fʼ,ʃʼ,ɬʼ,m,n,r,w
+Kalenjin	NILO-SAHARAN	p,t,cç,k,i,iː,u,uː,s,ɪ,ɪː,ʊ,ʊː,m,n,ɲ,ŋ,e,eː,o,oː,l,ɛ,ɛː,ɔ,ɔː,r,a,aː,ɑ,ɑː,j,w
+Kalenjin, Nandi	NILO-SAHARAN	p,t,c,k,i,u,s,ɪ,ʊ,m,n,ɲ,ŋ,e,o,l,ɛ,ɔ,r,a,w,j,a̞
+Kalispel (dialect of Kalispel-Pend d'Oreille)	SALISHAN	p,t,tɬ,kʷ,q,qʷ,pʼ,tʼ,tɬʼ,kʼʷ,qʼ,qʼʷ,i,ə,u,ts,tʃ,e,a,o,tsʼ,tʃʼ,s,ʃ,ɬ,xʷ,χ,χʷ,h,m,n,mʼ,n’,l,lʼ,j,w,jʼ,wʼ
+Kamba	NIGER-CONGO (Bantu)	t,k,b,d,ɡ,ɢ,i,u,θ,s,ɪ,ʊ,β,ð,ʒ,ɣ,e,ə,ɵ,o,æ,a,m,n,n̻,l,w,j,ɥ,ɰ
+Kana (Khana)	NIGER-CONGO	p,t,k,kʷ,k͡p,ĩ,ũ,b,d,dʒ,ɡ,ɡʷ,ɡ͡p,i,u,f,s,h,e,o,m,n,ɲ,ŋ,ŋʷ,ɛ̃,ɔ̃,r,ɛ,ɔ,l,ã,w,j,a
+Kanakuru	AFRO-ASIATIC (Chadic)	p,t,k,kʷ,b,d,dʷ,ɟ,ɡ,ɡʷ,b,ⁿd,ⁿɟ,ɡ,ɡʷ,i,ə,u,ɓ,ɓʷ,ɗ,ɗʷ,e,a,o,ç,çʷ,ɣ,m,n,ɲ,ŋ,l,w,ɹ,j
+Kannada	DRAVIDIAN	pʰ,t̪ʰ,ʈʰ,kʰ,p,t̪,ʈ,t̻ʃ̻,k,iː,uː,bʰ,d̪ʰ,ɖʰ,ɡʰ,i,u,b,d̪,ɖ,d̻ʒ̻,ɡ,eː,oː,f,s,ʂ,s̻,h,e,o,z,aː,m,n,ɳ,æ,a,r,w,l̪,ɭ,j
+Kanuri	NILO-SAHARAN	p,t,tʃ,k,ʔ,b,d,dʒ,ɡ,i,u,f,s,ʃ,h,e,ə,o,z,ʌ,m,n,a,l,r,w,j
+Kapampangan	AUSTRONESIAN	p,t,k,ʔ,b,d,ɡ,i,u,s,e,o,a,m,n,ŋ,l,ɺ,w,j
+Karanga (Central dialect)	NILO-SAHARAN	p,t,k,b,d,ɡ,i,y,u,f,s,s̪v,ʃ,x,e,o,v,z,z̪v,ʒ,ɣ,ɦ,a,m,n,ŋ,r,w,j
+Karanga (Victoria dialect)	NILO-SAHARAN	p,t,k,b,d,ɡ,i,y,u,f,s,s̪v,ʃ,x,e,o,v,z,z̪v,ʒ,ɣ,ɦ,a,m,n,ŋ,r,w,j
+Karao	AUSTRONESIAN	p,t,tʃ,k,ʔ,b,d,dʒ,i,ɨ,o,ɡʷ,a,s,m,n,ŋ
+Karimojong (Karamojong)	NILO-SAHARAN	p,t,tʃ,k,b,d,dʒ,ɡ,i,y,u,s,ɪ,ɵ,ʊ,ð,z,ɣ,e,o,m,n,ɲ,ŋ,ɛ,œ,ɔ,l,a,ɑ,r,w,j
+Karo Batak	AUSTRONESIAN	p,t̪,tʃ,k,b,d,dʒ,ɡ,i,ɯ,u,s,h,e,ə,o,m,n,ŋ,a,l,r,w,j
+Kashaya	HOKAN	pʰ,t̪ʰ,tʰ,cʰ,kʰ,qʰ,p,t̪,t,c,k,q,ʔ,i,u,pʼ,t̪ʼ,tʼ,cʼ,kʼ,qʼ,e,o,s,ʃ,h,a,sʼ,mʰ,nʰ,m,n,mʼ,n’,wʰ,lʰ,jʰ,w,l,j,wʼ,lʼ,jʼ
+Kashmiri	Indo-Aryan	pʰ,pʲʰ,tʰ,tʲʰ,ʈʰ,ʈʲʰ,kʰ,kʰʲ,p,pʲ,t,tʲ,ʈ,ʈʲ,k,kʲ,ĩː,ɨ̃ː,ũ,ũː,b,bʲ,d,dʲ,ɖ,ɖʲ,ɡ,ɡʲ,i,iː,ɨ,ɨː,u,uː,tsʰ,tsjʰ,cçʰ,ẽ,ẽː,ə̃,ə̃ː,õ,õː,ts,tsʲ,cç,e,eː,ə,əː,o,oː,ɟʝ,ã,ãː,ɔ̃,s,sʲ,ç,h,hʲ,a,aː,ɔ,ɔː,z,zʲ,m,mʲ,n,nʲ,l,lʲ,ɾ,ɾʲ,ʋ,ʋʲ,j
+Kayah Li, Eastern	SINO-TIBETAN	pʰ,tʰ,tʃʰ,kʰ,p,t,tʃ,k,ʔ,i,ɯ,u,b,d,e,ɤ,o,s,h,ɛ,ʌ,ɔ,m,n,ŋ,a,w,l,j,r
+Kedang	AUSTRONESIAN	p,t,k,ʔ,b,d,ɡ,i,i̞,u,u̞,s,h,ɛ,ɛ̞,o,o̞,v,æ,æ̞,a,a̞,m,n,ŋ,l,r,j
+Kharia	AUSTRO-ASIATIC	pʰ,tʰ,ʈʰ,tʃʰ,kʰ,p,t,ʈ,tʃ,k,bʰ,dʰ,ɖʰ,dʒʰ,ɡʰ,i,u,b,d,ɖ,dʒ,ɡ,e,o,s,h,a,m,n,ɲ,ŋ,l,r,ɽ,w,j
+Khmer	AUSTRO-ASIATIC	p,t,c,k,ʔ,b,d,i,ɯ,u,f,s,h,e̝,ə̝,v,ʒ,e,ə,o,m,n,ɲ,ŋ,ɛ,ɔ,r,ɑ,ɒ,l
+Khmuʔ	AUSTRO-ASIATIC	p,t,c,k,ʔ,b,d,ɟ,ɡ,i,ɨ,u,m,n,ɲ,ŋ,e,ə,o,s,h,ɛ,a,ɔ,l,w,r,j
+Kickapoo	ALGIC	p,t,tʃ,k,θ,s,h,i,o,m,n,ɛ,a,w,j
+Kihungan	NIGER-CONGO (Bantu)	pʰ,tʰ,kʰ,t,k,b,d,ɡ,i,u,f,s,h,ɛ,ɔ,v,z,a,m,n,ŋ,l,r,w,j
+Kilivila/Kiriwina	AUSTRONESIAN	p,t,k,b,d,ɡ,pʷ,kʷ,i,u,bʷ,ɡʷ,e,o,s,a,β,m,n,ŋ,ei,oi,mʷ,eu,ou,r,ai,l,au,w,j
+Kimatuumbi	NIGER-CONGO (Bantu)	p,t,tʃ,k,ɓ,ɗ,ʄ,ɠ,i̝,u̝,s,i,u,ɛ,ɔ,m,n,ɲ,ŋ,a,l,w,j
+Kinnauri	SINO-TIBETAN	pʰ,tʰ,ʈʰ,kʰ,p,t,ʈ,k,b,d,ɖ,ɡ,tsʰ,tʃʰ,i,u,ts,tʃ,e,ə,o,dz,dʒ,ɔ,a,s,ʃ,h,z,ʒ,r,l,m,n,ɳ,ɲ,ŋ,w,j
+Kinyamwezi (Nyamwezi)	NIGER-CONGO (Bantu)	p,t,cʃ,k,ɲ̥cʃ,i,u,b,d,ɟ,ɡ,ɪ,ʊ,b,ⁿd,ⁿɟ,ɡ,e,o,f,s,ʃ,h,a,ɱ̥f,n̥s,ɲ̥ʃ,v,z,v,ⁿz,m,n,ɲ,ŋ,m̥,n̥,ɲ̥,ŋ̥,β,l,j,w
+Kinyarwanda (Rwanda)	NIGER-CONGO (Bantu)	p,t,c,k,d,ɟ,ɡ,i,u,pf,ts,tʃ,e,o,f,s,ʃ,ɕ,x,a,β,v,z,ʒ,m,n,ɲ,r,j,w
+Kiowa	KIOWA TANOAN	pʰ,t̪ʰ,kʰ,p,t̪,k,ʔ,i,u,pʼ,t̪ʼ,kʼ,e,o,b,d̪,ɡ,a,ɔ,ts,tsʼ,ĩ,ũ,s,h,ẽ,õ,z,ã,ɔ̃,m,n̪,l̪,j
+Kirghiz	ALTAIC (Turkic)	p,t̪,ts,tʃ,q,b,d̪,dʒ,ɢ,i,y,ɨ,u,f,s,ʃ,x,e,ø,a,o,β,z,ʒ,m,n,ŋ,l,r,j
+Kiribati	AUSTRONESIAN	t,k,b,i,u,v,e,o,m,n,ŋ,a,r,w,ʔ
+Kiribati (northern dialect)	AUSTRONESIAN	t,k,b,i,u,v,e,o,m,n,ŋ,a,r,w,ʔ
+Kiribati (southern dialect)	AUSTRONESIAN	t,k,b,i,u,v,e,o,m,n,ŋ,a,r,w,ʔ
+Kisar	AUSTRONESIAN	p,t,ʈ,k,ʔ,s,h,i,u,m,n,e,a,o,r,l,w,j
+Kisi	NIGER-CONGO (Bantu)	pʰ,tʰ,tʃʰ,kʰ,k͡p,b,ⁿd,ɡ,ɡ͡b,i,u,ɓ,ɗ,ɠ͡ɓ,e,o,f,s,h,ɛ,ɔ,m,n,ɲ,ŋ,a,l,j,w
+Klamath	PENUTIAN	p,t,c,k,q,ʔ,pʼ,tʼ,cʼ,kʼ,qʼ,i,o,b,d,ɟ,ɡ,ɢ,e,a,s,h,m,n,iː,oː,m̥,n̥,eː,aː,mʼ,n’,m̩,n̩,w,l,j,ʍ,l̥,j̥,wʼ,lʼ,jʼ,l̩
+Koiari	TRANS-NEW GUINEA	t,k,b,d,ɡ,i,u,ɸ,s,h,e,o,β,a,m,n,l,j
+Kolami	DRAVIDIAN	p,t̪,ʈ,tʃ,k,b,d̪,ɖ,dʒ,ɡ,iː,uː,s,i,u,z,eː,oː,m,n̪,ŋ,e,o,l,aː,r,a,v,j
+Kombai	TRANS-NEW GUINEA	b,ⁿd,ɟ,ɡ,ɡʷ,m,n,i,y,ɯ,u,ɸ,x,xʷ,e,a,o,l,r,w,ɥ,j
+Koraga, Mudu	DRAVIDIAN	p,t,ʈ,tʃ,k,b,d,ɖ,dʒ,ɡ,i,iː,ɨ,u,uː,m,n,ɳ,e,eː,a,aː,o,oː,s,h,l,ɭ,v,r,j
+Koraga, Onti	DRAVIDIAN	p,t,ʈ,tʃ,k,b,d,ɖ,dʒ,ɡ,i,iː,ɨ,u,uː,m,n,ŋ,e,eː,a,aː,o,oː,s,l,v,r,j
+Koraga, Tappu	DRAVIDIAN	p,t,ʈ,tʃ,k,b,d,ɖ,dʒ,ɡ,i,iː,ɨ,u,uː,m,n,ɳ,e,eː,a,aː,o,oː,s,h,l,ɭ,v,r,j
+Korean	LANGUAGE ISOLATE	pʰ,tʰ,cɕʰ,kʰ,p,t,cɕ,k,i,ɨ,u,p̀,t̀,c̀ɕ,k̀,e,ʌ,o,s,h,ɛ,s̀,a,m,n,ŋ,l
+Koromfé	NIGER-CONGO	p,t,k,b,d,ɡ,ɪ,i,ɪː,iː,ʊ,u,ʊː,uː,f,s,ɪ̃,ĩ,ɪ̃ː,ĩː,ʊ̃,ũ,ʊ̃ː,ũː,v,z,ɛ,e,ɛː,eː,ɔ,o,ɔː,oː,m,n,ŋ,ɛ̃,ẽ,ɛ̃ː,ẽː,ɔ̃,õ,ɔ̃ː,a,ʌ,aː,ʌː,l,ã,ʌ̃,ãː,ʌ̃ː,w,j,h
+Korowai	TRANS-NEW GUINEA	p,t,k,b,d,ɟ,ɡ,i,y,u,b,ⁿd,ɡ,e,ɸ,s,x,ɛ,a,ɔ,m,n,l,ɥ,w,j
+Koyukon, Central Outer	NA-DENE	t,tl,ts,k,q,ʔ,tʼ,tlʼ,tsʼ,kʼ,qʼ,iː,uː,b,d,dl,dz,ɡ,ɢ,ɔː,ɬ,s,x,ʌ,ɔ,z,ɣ,ə,n,aː,l,j
+Kpan (Kente dialect)	NIGER-CONGO	p,t,k,ts,b,d,ɡ,i,ĩ,u,ũ,dz,ɛ,ɛ̃,ɔ,ɔ̃,f,s,h,a,ã,v,z,ɣ,m,n,ŋ,r,w,j
+Kpelle	NIGER-CONGO	p,t,k,k͡p,b,d,ɡ,ɡ͡b,i,u,f,s,h,e,o,v,z,ɣ,ɛ,ɔ,m,n,ɲ,ŋ,a,l,w,j
+Kporo	NIGER-CONGO	p,t,k,k͡p,ts,b,d,ɡ,ɡ͡b,i,ĩ,u,ũ,dz,e,ẽ,ɨ,ɨ̃,o,õ,f,θ,s,h,ɛ,ɛ̃,a,ã,v,ð,z,ɣ,m,n,ŋ,ŋ͡m,r,w,j
+Kristang (Malaccan Creole Portuguese)	CREOLE	p,t,tʃ,k,b,d,dʒ,ɡ,i,u,f,s,e,o,z,ɛ,ə,ɔ,m,n,ɲ,ŋ,a,r,l
+Kriyol (Upper Guinea Crioulo)	CREOLE	p,t,c,k,b,d,ɟ,ɡ,i,u,f,s,e,o,a,m,n,ɲ,ŋ,l,ʎ,ɾ,w,j
+Kui	DRAVIDIAN	p,t̪,ʈ,c,k,b,d̪,ɖ,ɟ,ɡ,i,u,iː,uː,s,h,ɛ,ɔ,ɛː,ɔː,v,a,aː,m,n,ɳ,r,ɽ,l
+Kuku-Yalanji	AUSTRALIAN (Pama-Nyungan)	b,d,d̪ʲ,ɖ,ɡ,m,n,n̪ʲ,ɳ,ŋ,i,u,r,a,l,w,ɻ,j
+Kumiái (Diegueño)	HOKAN	p,t̪,t,cç,k,kʷ,q,s̪,ʃ,x,xʷ,iː,uː,ɬ,ʎ̥,i,u,m,n̪,n,ɲ,l,ʎ,r̪,r,aː,j,w,a
+Kumiái (Jamul Tiipay dialect)	HOKAN	p,t̪,t,tʃ,k,kʷ,ʔ,s̪,ʃ,x,xʷ,iː,uː,ɬ,ʎ̥,i,u,m,n̪,ɲ,ə,l,ʎ,aː,r,a,j,w
+Kurmanji (Kurdish)	INDO-EUROPEAN (Indo-Iranian)	pʰ,tʰ,cʰ,kʰ,p,pˤ,t,tˤ,c,cˤ,k,kˤ,ʔ,i,u,b,d,ɟ,ɡ,ɪ,ʊ,f,s,sˤ,ʃ,x,ħ,h,e,o,z,zˤ,ʒ,æ,a,m,n,l,ɾ,r,w,j,ʕ
+Kurux	DRAVIDIAN	pʰ,tʰ,ʈʰ,tʃʰ,kʰ,p,t,ʈ,tʃ,k,i,iː,u,uː,bʰ,dʰ,ɖʰ,dʒʰ,ɡʰ,e,eː,o,oː,b,d,ɖ,dʒ,ɡ,a,aː,s,h,mʰ,nʰ,m,n,ĩ,ĩː,ũ,ũː,rʰ,ẽ,ẽː,õ,õː,r,ʀ,ã,ãː,l,wʰ,jʰ,w,j
+Kutep (Lissam dialect)	NIGER-CONGO	p,t,k,b,d,ɡ,i,u,dz,e,ɨ,o,b,ⁿd,ɡ,ɛ,a,ⁿdz,f,s,z,m,n,ŋ,N?,l,r,w,j
+Kuvi	DRAVIDIAN	p,t,ʈ,tʃ,k,ʔ,b,d,ɖ,dʒ,ɡ,s,i,u,m,n,ɳ,ŋ,e,o,l,a,r,ɽ,v,j,h
+Kwamera	AUSTRONESIAN	pʷ,p,t,k,kʷ,fʷ,f,s,i,u,mʷ,m,n,ŋ,e,ɨ,o,ɾ,a,v,h
+Lakota	SIOUAN	pʰ,t̪ʰ,cʰ,kʰ,ʔ,p,t̪,c,k,i,u,pʼ,t̪ʼ,cʼ,kʼ,e,o,s̪,ʃ,x,h,a,s̪ʼ,ʃʼ,xʼ,z̪,ʒ,ɣ,l,ã,m,n,w,j
+Lama	NIGER-CONGO	p,t,k,k͡p,cç,i,ɨ,u,f,s,h,ɪ,ʌ̝,ʊ,m,n,ɲ,e,o,r,ɛ,ɔ,l,a,j,w
+Lango	NIGER-CONGO	p,t,tɕ,k,b,d,dʑ,ɡ,i,u,m,n,ɲ,ŋ,ɪ,ʊ,ɾ,e,ə,o,l,ɛ,ɔ,j,w,a
+Lao	TAI-KADAI	pʰ,tʰ,kʰ,tʰʷ,kʰʷ,p,t,tʃ,k,ʔ,tʃʷ,kʷ,b,d,i,ɯ,u,f,s,h,iə,ɯə,uə,sʷ,e,ɤ,o,m,n,ɲ,ŋ,ɛ,ɔ,ŋʷ,a,l,lʷ,r,w,j
+Larike	AUSTRONESIAN	p,t,tʃ,k,ʔ,b,d,dʒ,ɡ,i,u,s,h,e,o,m,n,ŋ,a,l,r,w,j
+Latvian	INDO-EUROPEAN (Baltic)	p,t̪,t̪ʲ,k,b,d̪,d̪ʲ,ɡ,iː,uː,t̪s̪,tʃ,ɛː,oː,d̪z̪,dʒ,æː,aː,f,s̪,ʃ,x,v,z̪,ʒ,i,u,m,n̪,n̪ʲ,ɛ,r̪,l,lʲ,æ,a,j
+Lealao Chinantec (Lealao Chinanteco)	OTO-MANGUEAN	p,t,k,ʔ,b,d,ɡ,i,ɯ,u,f,s,h,e,o,v,z,a,m,n,ŋ,l,r,j
+Lele	AFRO-ASIATIC (Chadic)	p,t,tʃ,k,k͡p,b,d,dʒ,ɡ,ɡ͡b,i,u,ɓ,ɗ,ɛ,ɔ,b,ⁿd,ⁿdʒ,b,a,s,h,m,n,ŋ,r,l,w,j
+Lezgian (Lezgi)	NORTH CAUCASIAN	pʰ,tʰ,tʰʷ,kʰ,kʰʷ,qʰ,qʰʷ,p,t,tʷ,k,kʷ,q,qʷ,ʔ,i,y,u,pʼ,tʼ,tʼʷ,kʼ,kʼʷ,qʼ,qʼʷ,e,b,d,ɡ,ɡʷ,æː,aː,tsʰ,tsʰʷ,tʃʰ,æ,a,ts,tsʷ,tʃ,tsʼ,tsʼʷ,tʃʼ,f,s,sʷ,ʃ,x,χ,χʷ,h,z,zʷ,ʒ,ʁ,ʁʷ,m,n,l,r,w,j
+Limbu	SINO-TIBETAN	pʰ,tʰ,kʰ,i,u,p,t,ts,k,ʔ,e,o,ɛ,ɔ,b,d,ɡ,a,m,n,ŋ,s,iː,uː,ɦ,ɛː,ɔː,w,l,j,aː
+Lingala	NIGER-CONGO (Bantu)	p,t,k,b,d,ɡ,i,u,f,s,e,o,z,ɛ,ɔ,m,n,a,l,w,j
+Lithuanian	INDO-EUROPEAN (Baltic)	p,pʲ,t,tʲ,k,kʲ,iː,uː,b,bʲ,d,dʲ,ɡ,ɡʲ,eː,oː,ts,tsʲ,tʃ,tʃʲ,æː,dz,dzʲ,dʒ,dʒʲ,ɑː,s,sʲ,ʃ,ʃʲ,ɪ,ʊ,z,zʲ,ʒ,ʒʲ,m,mʲ,n,nʲ,ɛ,l,lʲ,r,rʲ,a,ʋ,ʋʲ,j,iɛ,uɔ
+Lomongo (Mongo-Nkundu)	NIGER-CONGO	t,k,ts,tʃ,b,d,dʒ,i,u,ⁿdʒ,e,o,f,s,a,z,m,n,ŋ,l,w,j
+Loniu	AUSTRALIAN (Pama-Nyungan)	p,pʷ,t,tʃ,k,s,h,i,u,m,mʷ,n,ɲ,ŋ,e,o,l,ɛ,ɔ,r,a,w,j
+Lorma	NIGER-CONGO	p,t,k,k͡p,b,d,ɡ,i,u,ɓ,e,o,f,s,ɛ,ɔ,β,v,z,ɣ,a,m,n,ŋ,w̃,j̃,w,l,j
+Lotha	SINO-TIBETAN	pʰ,tʰ,tsʰ,tʃʰ,kʰ,p,pf,t,ts,tʃ,k,pv,f,s,ʃ,h,i,u,v,z,ʒ,e,o,mʰ,nʰ,ɲʰ,ŋʰ,ə,m,n,ɲ,ŋ,a,lʰ,l,rʰ,w,r,j
+Louisiana Creole French	CREOLE	p,t,tʃ,k,i,y,u,b,d,dʒ,ɡ,ɪ,f,s,ʃ,e,ø,o,v,z,ʒ,ɛ,œ,ɔ,m,n,ŋ,æ,a,l,r,ẽ,ɔ̃,w,ɹ,j,ɥ,ã
+Lumasaaba (Masaba)	NIGER-CONGO (Bantu)	p,t,k,b,d,ɡ,i,u,f,s,e,o,β,z,a,m,n,ŋ,l,j
+Lusi	AUSTRONESIAN	p,t,k,b,ⁿd,ɡ,s,h,i,u,β,ɣ,e,o,m,n,ŋ,a,ɾ,r,l,w
+Maale	AFRO-ASIATIC	p,t,c,k,ʔ,b,d,ɟ,ɡ,iː,uː,cʼ,kʼ,i,u,ɓ,ɗ,eː,oː,ts,e,o,s,ʃ,h,aː,z,ʒ,a,sʼ,m,n,l,r,w,j
+Maasai	NILO-SAHARAN	p,t,tʃ,k,b,d,dʒ,ɡ,i,u,ɡʰ,e,o,p*,s,ʃ,a,b*,m,n,ɲ,ŋ,w*,l,ʋ*,r,ʍ,w,j
+Macuxi (Macushi)	CARIB	p,t,k,ʔ,s,iː,ɨː,uː,i,ɨ,u,m,n,ŋ,eː,oː,e,o,ɾ,aː,a,w,j
+Mada	AFRO-ASIATIC (Chadic)	p,t,k,kʷ,b,d,ɡ,ɡʷ,ɓ,ɗ,i,u,b,ⁿd,ɡ,e,ø,o,ts,ə,dz,a,ⁿdz,f,s,v,z,ɬ,ɮ,m,n,ŋ,l,r,w,j,h,hʷ
+Madurese	AUSTRONESIAN	pʰ,t̪ʰ,ʈʰ,tʃʰ,kʰ,p,t̪,ʈ,tʃ,k,ʔ,i,ɨ,ɤ,u,b,d̪,ɖ,dʒ,ɡ,ɛ,ə,ɑ,ɔ,s,m,n,ɲ,ŋ,r,l,j,h
+Maithili	INDO-EUROPEAN (Indo-Aryan)	pʰ,t̪ʰ,ʈʰ,tʃʰ,kʰ,p,t̪,ʈ,tʃ,k,ĩ,ũ,bʰ,d̪ʰ,ɖʰ,dʒʰ,ɡʰ,i,u,b,d̪,ɖ,dʒ,ɡ,ẽ,ə̃,õ,s̪,h,e,ə,o,m,n̪,ŋ,æ̃,ã,ɑ̃,ɾ̪,æ,a,ɑ,l̪
+Malay	AUSTRONESIAN	p,t,tʃ,k,ʔ,b,d,dʒ,ɡ,i,u,f,θ,s,ʃ,x,e,ə,o,v,ð,z,χ,a,m,n,ɲ,ŋ,r,l,w,j,h
+Malayalam	DRAVIDIAN	pʰ,t̪ʰ,ʈʰ,tʃʰ,kʰ,p,t̪,t,ʈ,tʃ,k,bʰ,d̪ʰ,ɖʰ,dʒʰ,ɡʰ,i,iː,u,uː,b,d̪,ɖ,dʒ,ɡ,ə,s,ʂ,ʃ,h,e,eː,o,oː,m,n̪,n,ɳ,ɲ,ŋ,a,aː,ɾ,r,l,ɭ,ʐ,v,j
+Maltese	AFRO-ASIATIC (Semitic)	p,t,k,ʔ,b,d,ɡ,uː,ts,tʃ,ɪː,ʊː,dʒ,ɪ,ʊ,f,s,ʃ,h,ɛː,ɔː,v,z,ɛ,ɔ,m,n,ɐː,l,ɐ,ɹ,w,j
+Mam (Northern Mam)	MAYAN	p,t,kʲ,k,ʔ,tʼ,kʼʲ,kʼ,ɪ,ʊ,ɛ,ɔ,ɓ,ɠ̥,a,ts,tʃ,ʈʂ,qχ,tsʼ,tʃʼ,ʈʂʼ,iː,uː,s,ʃ,ʂ,x,eː,oː,m,n,a̝ː,ɾ,w,l,j
+Mandan	SIOUAN	p,t,k,ʔ,i,u,iː,uː,ĩ,ũ,s,ʃ,x,e,o,eː,oː,w,r,h,æ,a,æː,aː,ã
+Mandarin	SINO-TIBETAN	pʰ,tʰ,tsʰ,ʈʂʰ,cɕ,kʰ,p,t,ts,ʈʂ,cɕʰ,k,i,y,u,f,s,ʂ,ɕ,χ,e,o,m,n,ŋ,a,l,ɹ,w
+Mandikakan (Mandinka) (Pakawu dialect)	NIGER-CONGO	p,t,tʃ,k,iː,uː,b,d,dʒ,eː,ɔː,f,s,h,aː,m,n,ɲ,ŋ,l,i,u,r,e,ɔ,j,w,a
+Mandinkakan (Mandinka) (Guinea Bissau dialect)	NIGER-CONGO	t,tʃ,k,ĩ,ũ,iː,uː,b,d,dʒ,ẽ,ɔ̃,eː,ɔː,f,s,h,ã,aː,m,n,ɲ,ŋ,l,i,u,r,e,ɔ,j,w,a
+Mangap-Mbula	AUSTRONESIAN	p,t̪,k,b,d̪,ɡ,b,ⁿd̪,ɡ,i,u,s,e,o,z,a,m,n̪,ŋ,l,r,w,j
+Manipuri	SINO-TIBETAN	pʰ,tʰ,kʰ,p,t,c,k,b,d,ɟ,ɡ,i,ə,u,s,h,e,a,o,m,n,ŋ,l,r,w,j
+Maori	AUSTRONESIAN	p,t,k,f,h,i,u,m,n,ŋ,e,o,ɾ,a,w
+Marathi (Cochin)	INDO-EUROPEAN (Indo-Aryan)	pʰ,tʰ,ʈʰ,kʰ,p,t,ʈ,tʃ,k,i,iː,u,uː,bʰ,dʰ,ɖʰ,dʒʰ,ɡʰ,e,eː,o,oː,b,d,ɖ,dʒ,ɡ,ə,əː,s,ʂ,ʃ,h,ɛ,ɛː,ɔ,ɔː,mʰ,nʰ,a,aː,m,n,ɳ,ŋ,vʰ,lʰ,jʰ,v,l,ɭ,j
+Marathi (Kosti)	INDO-EUROPEAN (Indo-Aryan)	pʰ,t̪ʰ,ʈʰ,tʃʰ,kʰ,p,t̪,ʈ,tʃ,k,i,u,bʰ,d̪ʰ,ɖʰ,dʒʰ,ɡʰ,e,ə,o,b,d̪,ɖ,dʒ,ɡ,a,s̪,ʃ,x,mʰ,nʰ,m,n,ɳ,ŋ,rʰ,r,lʰ,v,l,j
+Margi (Marghi Central)	AFRO-ASIATIC (Chadic)	p,pʷ,t,tʷ,p͡t,c,k,kʷ,ʔ,b,bʷ,d,b͡d,ɟ,ɡ,ɡʷ,ts,p͡ts,tʃ,b͡tʃ,dz,b͡dz,dʒ,b͡dʒ,ɓ,ɓʷ,ɗ,b͡ɗ,p,ⁿt,t,c,k,b,ⁿd,d,ɡ,ɡ,ⁿts,ts,ⁿtʃ,tʃ,ⁿdz,dz,ⁿdʒ,dʒ,f,fʷ,s,sʷ,ps,ʃ,ʃ,ç,b͡ç,x,xʷ,v,z,bz,ʒ,ʝ,b͡ʝ,ɣ,ɣʷ,ɬ,ɬʷ,ɬ,ɮ,bɮ,m,mʷ,n,ɲ,ɲ,ŋ,ŋʷ,l,i,u,vɾ,r,e,ə,o,w,ʔw,j,ʔj,a
+Marshallese	AUSTRONESIAN	p,t̪,k,kʷ,tʲ,bʷ,mʲ,n̪,ɳ,ŋ,i,mʷ,ɳʷ,ŋʷ,e,l̪,a,lˠ,lˠʷ,r̪,r,rʷ,w,j,h
+Martuthunira	AUSTRALIAN (Pama-Nyungan)	p,t̪,t,ʈ,c,k,iː,uː,m,n̪,n,ɳ,ɲ,ŋ,i,u,l̪,l,ɭ,ʎ,aː,r,a,w,ɻ,j
+Marwari (Shekhawati dialect)	INDO-EUROPEAN (Indo-Aryan)	pʰ,t̪ʰ,ʈʰ,cʰ,kʰ,p,t̪,ʈ,c,k,ĩː,ũː,bʰ,d̪ʰ,ɖʰ,ɟʰ,ɡʰ,iː,uː,b,d̪,ɖ,ɟ,ɡ,ɪ̃,ʊ̃,s̪,h,ɪ,ʊ,m,n̪,ɳ,ẽː,ə̃,õː,l̪,ɭ,eː,ə,oː,r̪,ɛ̃ː,ãː,ɔ̃ː,ɽ,ɛː,aː,ɔː,w,j
+Masalit	NILO-SAHARAN	t,c,k,b,d,ɡ,i,ɨ,u,f,s,ʃ,h,e,ɜ,ʌ,o,ʒ,ɛ,ɔ,m,n,ɲ,ŋ,a,l,r,j,w
+Maya (Yucatan)	MAYAN	p,t,k,pʼ,tʼ,kʼ,ʔ,i,u,ɓ,e,o,ts,tʃ,a,tsʼ,tʃʼ,s,ʃ,h,m,n,ɲ,l,r,j,w
+Maya, Chontal (Tabasco Chontal)	MAYAN	p,t̪,k,ʔ,pʼ,t̪ʼ,kʼ,i,u,b,d̪,ɡ,ɨ̞,ts,tʃ,e,o,tsʼ,tʃʼ,a,ɸ,s,ç,h,m,n̪,ɲ,l,ɾ,r,j,w
+Maya, Itzaj (Itzá)	MAYAN	p,t̪,k,pʼ,t̪ʼ,kʼ,i,u,ɓ,ɨ̞,t̪s̪,tʃ,e,o,t̪s̪ʼ,tʃʼ,a,s,ʃ,h,m,n̪,iː,uː,l̪,eː,oː,r,aː,w,j
+Mbili	NIGER-CONGO (Bantu)	t,tː,k,kː,ʔ,b,d,ɡ,iː,uː,pf,ts,tʃ,tːʃ,i,ɨ,u,bv,dz,dʒ,dːʒ,eː,f,fː,s,ʃ,x,h,e,β,v,z,ʒ,ɣ,ɣ̀,ɛː,əː,ɔː,m,mː,n,nː,ŋ,ɛ,ə,ɔ,l,lː,aː,w,ɥ,j,a
+Melanesian Pidgin English (Tok Pisin)	CREOLE	p,t,tʃ,k,b,d,dʒ,ɡ,i,u,f,s,ʃ,ɪ,ʊ,v,e,o,m,n,ɲ,ɛ,ə,ɔ,r,æ,ɑ,l,h
+Melayu Betawi	CREOLE	p,t,tʃ,k,ʔ,b,d,dʒ,ɡ,ʃ,i,u,m,n,ɲ,ŋ,e,o,r,ə,l,a,w,j,h
+Mende	NIGER-CONGO	p,t,k,k͡p,b,d,ɡ,ɡ͡b,i,u,b,ⁿd,ⁿʒ,ɡ,ɡ͡b,e,o,f,s,ɛ,ɔ,v,ʒ,ɦ,a,m,n,ɲ,ŋ,l,j,w
+Menomini	ALGIC	p,t,tʃ,k,ʔ,i,u,iː,uː,s,h,e,o,eː,oː,m,n,æ,a,æː,aː,w,j
+Meriam (Mer)	TRANS-NEW GUINEA	p,t,k,b,d,ɡ,s,i,u,z,e,o,m,n,a,r,w,j
+Mikasuki	MUSKOGEAN	p,t,tʃ,k,ĩː,õː,iː,oː,b,ĩ,õ,i,o,f,ʃ,ãː,aː,ɬ,ã,a,m,n,w,l,j,h
+Mikir	SINO-TIBETAN	pʰ,tʰ,kʰ,p,t,k,ʔ,bʰ,dʰ,ɡʰ,b,d,ɡ,i,u,tsʰ,e,o,ts,a,dz,h,m,n,ŋ,l,r,v,j
+Miogliola Ligurian	INDO-EUROPEAN (Italic)	p,t,k,b,d,ɡ,iː,yː,uː,ts,tʃ,i,y,u,dz,dʒ,eː,øː,oː,f,s,ʃ,e,ø,o,v,z,ʒ,æː,ɑː,ɔː,m,n,ɲ,ŋ,æ,ɑ,l,ʎ,ɾ
+Mishmi	SINO-TIBETAN	p,t,k,b,d,ɡ,i,ɨ,u,tʃ,e,o,dʒ,a,s,h,z,m,n,ŋ,ẽ,õ,l,ã,r,w,j
+Mising	SINO-TIBETAN	p,t,k,b,d,ɡ,ts,i,ɨ˞,u,z,ə˞,m,n,ɲ,ŋ,e,a,ɔ,r,l,au,ɔi,w,j
+Mixe, Lowland (Coatlán variety)	MIXE-ZOQUE	p,t,k,ʔ,b,d,ɡ,i,ɨ,u,ts,e,o,dz,a,h,m,n,ŋ,w,j
+Mixe, Lowland (Guichicovi variety)	MIXE-ZOQUE	p,t,k,ʔ,ts,i,ɨ,u,iː,ɨː,uː,iːː,ɨːː,uːː,ʃ,h,e,ə,o,eː,oː,eːː,oːː,m,n,a,aː,aːː,w,j
+Mixe, Lowland (San José El Paraíso variety)	MIXE-ZOQUE	p,t,k,ʔ,i,ɨ,u,ts,e,o,a,ʃ,h,m,n,ŋ,l,ɾ,r,w,j
+Mixe, Lowland (San Juan el Paraíso variety)	MIXE-ZOQUE	p,t,k,ʔ,b,d,ɡ,i,ɨ,u,ts,e,o,dz,a,h,m,n,ŋ,w,j
+Mixe, Midland	MIXE-ZOQUE	p,t,c,k,ʔ,ʃ,h,i,ɨ,u,m,n,e,o,w,j,æ,a
+Mixe, Midland (Atitlán variety)	MIXE-ZOQUE	p,t,c,k,ʔ,ʃ,h,i,ɨ,u,m,n,e,o,w,j,æ,a
+Mixe, Midland (Cacalotepec variety)	MIXE-ZOQUE	p,t,c,k,ʔ,ʃ,h,i,ɨ,u,m,n,e,o,w,j,æ,a
+Mixe, Midland (Cotzocón variety)	MIXE-ZOQUE	p,t,c,k,ʔ,ʃ,h,i,ɨ,u,m,n,e,o,w,j,æ,a
+Mixe, Midland (Jaltepec variety)	MIXE-ZOQUE	p,t,c,k,ʔ,ʃ,h,i,ɨ,u,m,n,e,o,w,j,æ,a
+Mixe, Midland (Juquila variety)	MIXE-ZOQUE	p,t,c,k,ʔ,ʃ,h,i,ɨ,u,m,n,e,o,w,j,æ,a
+Mixe, Midland (Matamoros variety)	MIXE-ZOQUE	p,t,c,k,ʔ,ʃ,h,i,ɨ,u,m,n,e,o,w,j,æ,a
+Mixe, Midland (Muxmetacán variety)	MIXE-ZOQUE	p,t,c,k,ʔ,ʃ,h,i,ɨ,u,m,n,e,o,w,j,æ,a
+Mixe, Midland (Puxmetacán variety)	MIXE-ZOQUE	p,t,c,k,ʔ,ʃ,h,i,ɨ,u,m,n,e,o,w,j,æ,a
+Mixe, North Highland (Totontepec Mixe)	MIXE-ZOQUE	p,t,c,k,ʔ,d,ɡ,i,ɨ,u,ts,e,ʌ,ʊ,s,ʃ,h,æ,a,o,v,ʒ,m,n,j
+Mixe, South Highland (Mixistlán variety)	MIXE-ZOQUE	p,t,c,k,ʔ,ʃ,h,i,ɨ,u,m,n,e,o,æ,ɑ,w,j
+Mixe, South Highland (Tepantlali variety)	MIXE-ZOQUE	p,t,c,k,ʔ,ʃ,h,i,ɨ,u,m,n,e,o,æ,a,w,j
+Mixe, South Highland (Tepuxtepec variety)	MIXE-ZOQUE	p,t,c,k,ʔ,ʃ,h,i,ɨ,u,m,n,e,o,a,w,j
+Mixe, South Highland (Tlahuitoltepec variety)	MIXE-ZOQUE	p,t,c,k,ʔ,ʃ,h,i,ɨ,u,m,n,e,ʊ,a,o,w,j
+Mofu	AFRO-ASIATIC (Chadic)	p,t,k,kʷ,b,d,ɡ,ɡʷ,ɓ,ɗ,i,u,b,ⁿd,ɡ,ɡʷ,e,o,ts,ə,dz,a,ⁿdz,f,s,v,z,ⁿz,ɬ,ɮ,m,n,ŋ,l,r,w,j,h,hʷ,ʔ
+Mohawk	IROQUOIAN	t,k,ʔ,s,h,i,ũ,n,e,ʌ̃,o,r,a,w,j
+Mojave (Mohave)	HOKAN	p,t̪,ʈ,tʃ,kʲ,k,kʷ,q,qʷ,ʔ,iː,i,uː,u,θ,s,ʃ,h,hʷ,eː,e,ə,oː,o,v,ð,aː,a,m,n,ɳ,nʲ,l,lʲ,r,w,j
+Mokilese	AUSTRONESIAN	p,pʷ,t,c,k,i,u,s,e,o,m,mʷ,n,ŋ,ɛ,ɔ,l,a,r
+Moloko (Melokwo)	AFRO-ASIATIC (Chadic)	p,t,k,kʷ,b,d,ɡ,ɡʷ,ɓ,ɗ,i,u,b,ⁿd,ɡ,e,ø,o,ts,ə,dz,a,f,s,v,z,ɬ,ɮ,m,n,ŋ,l,r,w,j,h,hʷ
+Mongolian (Halh Mongolian)	ALTAIC	t̪ʰ,b,d̪,ɡ,i,ʉ,ɨ,u,t̪s̪,tʃʰ,e,ɵ,a,o,d̪z̪,dʒ,s,ʃ,x,β,m,n̪,l,r
+Montagnais	ALGIC	p,t,tʃ,k,iː,uː,i,u,ʃ,h,eː,m,n,aː,a
+Montagnais (some areas)	ALGIC	p,t,tʃ,k,iː,uː,i,u,ʃ,h,eː,m,n,aː,a
+Muktile (Matal)	AFRO-ASIATIC (Chadic)	p,t,c,k,kʷ,b,d,ɟ,ɡ,ɡʷ,ɓ,ɗ,i,u,ts,o,dz,ə,f,s,ɕ,a,v,z,ʑ,ɬ,ɮ,m,n,ŋ,l,r,w,j,h,hʷ
+Mumuye (Zing dialect)	NIGER-CONGO	p,t,k,k͡p,b,d,ɡ,ɡ͡b,i,u,ɓ,o,f,s,ʃ,ɛ,ɔ,v,z,ʒ,a,m,n,ɲ,r,ĩ,ũ,l,ɛ̃,õ,j,w,h,ã
+Muna	AUSTRONESIAN	p,t,k,b,d̪,d,ɡ,p,ⁿt,k,i,u,b,ⁿd,ɡ,ɛ,ɔ,ɓ,a,f,s,h,ʁ,ⁿs,m,n,ŋ,r,l,w
+Mundari	AUSTRO-ASIATIC	p,t,ʈ,tʃ,k,i,u,b,d,ɖ,dʒ,ɡ,iʔi,uʔu,s,h,e,o,m,n,ɳ,ɲ,ŋ,eʔe,oʔo,l,a,r,ɽ,aʔa,w,j
+Mupun	AFRO-ASIATIC (Chadic)	p,t,tʃ,k,b,d,dʒ,ɡ,i,u,ɓ,ɗ,e,o,f,s,h,a,v,z,m,n,ŋ,iː,uː,l,eː,oː,r,aː,w,j
+Mupun (Jipari dialect)	AFRO-ASIATIC (Chadic)	p,t,tʃ,k,b,d,dʒ,ɡ,i,u,ɓ,ɗ,e,o,f,s,h,a,v,z,m,n,ŋ,iː,uː,l,eː,oː,r,aː,w,j
+Muruwari	AUSTRALIAN (Pama-Nyungan)	p,t̪,t,ʈ,c,k,m,n̪,n,ɳ,ɲ,ŋ,iː,uː,l,ɭ,i,u,r,aː,ɾ,a,w,ɻ,j
+Muyang	AFRO-ASIATIC (Chadic)	p,t,c,k,kʷ,b,d,ɟ,ɡ,ɡʷ,ɓ,ɗ,i,ʉ,u,b,ⁿd,ɡ,e,o,ts,ə,dz,a,ⁿdz,f,s,ɕ,v,z,ʑ,ɬ,ɮ,m,n,ŋ,l,r,w,j,h,hʷ
+Mwera	NIGER-CONGO (Bantu)	pʼ,tʰ,tʃ,k,b,d,dʒ,ɡ,i,u,m,n,ɲ,ŋ,e,o,l,a,β,h,j,w
+Nagamese (Naga Pidgin)	CREOLE	pʰ,tʰ,kʰ,p,t,k,i,u,bʰ,dʰ,ɡʰ,e,o,b,d,ɡ,ɔ,s,ʃ,h,aː,z,m,n,ŋ,l,r,w,j
+Nahual, Michoacán (Michoacán Nahuatl)	UTO-AZTECAN	p,t,k,kʷ,ʔ,i,u,ts,tʃ,e,o,s,ʃ,h,a,m,n,l,ʍ,j̥,w,j
+Nahuatl, Huasteca	UTO-AZTECAN	p,t,k,kʷ,ʔ,ɡ,i,ts,tʃ,tɬ,e,o,s,ʃ,a,m,n,l,iː,ʍ,h,eː,oː,w,j,aː
+Nahuatl, North Puebla	UTO-AZTECAN	p,t,k,kʷ,ʔ,ts,tɬ,tʃ,i,o,s,ʃ,e,a,m,n,l,w,j
+Nahuatl, Tetelcingo	UTO-AZTECAN	p,t,k,kʷ,i,u,ts,tɬ,tʃ,ɪ,o,s,ʃ,ie,ɔ,m,n,e,a,l,r,w,j,h
+Nalik	AUSTRONESIAN	p,t,k,b,d,ɡ,i,u,s,e,o,β,v,z,a,ɒ,m,n,ŋ,l,ai,oi,au,r,ei,ou,w,j
+Nangikurrunggurr/Ngankikuringkurr	AUSTRALIAN	p,t,c,k,b,d,ɡ,ɸ,ʂ,ʃ,i,u,m,n,ɲ,ŋ,e,a,l,ʎ,r,ɾ,w,j
+Navajo (Navaho)	NA-DENE	t,k,kʷ,tʼ,kʼ,iː,ĩː,b,d,ɡ,eː,oː,ẽː,õː,ts,tʃ,tɬ,aː,ãː,tsʼ,tʃʼ,tɬʼ,dz,dʒ,dl,i,ĩ,s,ʃ,ɬ,x,xʷ,h,e,o,ẽ,õ,z,ʒ,l,ʝ,ɣ,ɣʷ,a,ã,ʝʼ,m,n,mʼ,n’
+Ndebele, Northern Transvaal	NIGER-CONGO (Bantu)	pʼ,pʼ,t̪ʼ,n̪t̪ʼ,tlʼ,tʃʼ,kʼ,kxʼ,ŋkxʼ,pʰ,pʰ,pʃʰ,tlʰ,tʰ,ⁿtʰ,tsʰ,tʃʰ,kʰ,kxʰ,dʒ,ⁿdʒ,b,d̪,dl,ⁿdl,ⁿd,dz,b̥,mb̥,d̥,nd̥,ɟ̥,ɡ̥,ŋɡ̥,ʄ,ɠ,f,f,s,ⁿs,s̞,n̞s̞,ʃ,x,χ,β,v,v,ɣ,ɦ,ɬ,ⁿɬ,m,n̪,n,n̞,ɲ,ŋ,i,u,r,ɪ,ʊ,ɾ,e,o,l,ɛ,ɔ,w,j,ɑ
+Ndyuka	CREOLE	p,t,k,b,d,ɡ,i,u,f,s,h,e,o,a,m,n,l,w,j
+Ngiti	NILO-SAHARAN	p,t,ʈɽ,c,k,k͡p,b,d,ɖɽ,ɟ,ɡ,ɡ͡b,i,u,ɓ̥,ɖ˞,ʄ̥,ʔ,ɪ,ʊ,ɓ,ɗ,ʄ,e,o,b,ⁿd,ɳɖɽ,ⁿɟ,ɡ,ɡ͡b,ɛ,ɔ,pf,ts,a,bv,dz,f,s,h,v,z,v,ⁿz,m,n,ɲ,β,l,r,j,w
+Ngiyambaa	AUSTRALIAN (Pama-Nyungan)	b,d̪,d,ɟ,ɡ,m,n̪,n,ɲ,ŋ,i,u,l,ʎ,a,r,w,ɻ,j
+Nguna (North Efate)	AUSTRONESIAN	p,t̪,k,ɸ,s,i,u,v,e,o,m,n̪,ŋ,a,mβ,l,w,ɾ
+Ngura	AUSTRALIAN(?)	p,t̪,t̪ʲ,ʈ,k,d,m,n̪,n̪ʲ,ɳ,ŋ,i,u,r,a,l,lʲ,ɭ,w,j
+Nhanda (Yinggarda)	AUSTRALIAN (Pama-Nyungan)	p,t̪,t,ʈ,c,k,b,d̪,d,ɖ,ɟ,ɡ,i,u,m,n̪,n,ɳ,ɲ,ŋ,a,l̪,l,ɭ,ʎ,w,ɻ,j,ʔ
+Nigerian English (Nigerian Pidgin)	CREOLE	p,t,tʃ,k,k͡p,b,d,dʒ,ɡ,ɡ͡b,i,u,f,s,ʃ,h,e,o,v,z,ɛ,ɔ,m,n,ŋ,a,ɾ,l,w,j
+Nimboran	TRANS-NEW GUINEA	p,t̪,k,b,d̪,ɡ,i,ɨ,u,s̪,h,e,o,m,n̪,ŋ,a,r
+Nisgha (Nisgaʼa)	PENUTIAN	p,t̪,ts,k,kʷ,q,i,u,iː,uː,pʼ,t̪ʼ,tsʼ,tɬʼ,kʼ,kʼʷ,qʼ,e,o,eː,oː,s,ɬ,x,xʷ,χ,a,aː,m,n,l,j,w,h,mʼ,n’,lʼ,jʼ,wʼ,ʔ
+Nkore-Kiga	NIGER-CONGO (Bantu)	p,t,tʃ,k,b,d,ɡ,ɪ,ʊ,f,s,ʃ,h,ɛ,o,v,z,ʒ,ɑ,m,n,ɲ,w,ɹ,j
+Noni (Noone)	NIGER-CONGO (Bantu)	t,tʃ,k,ʔ,b,d,dʒ,ɡ,i,iː,u,uː,f,s,ʃ,e,eː,o,oː,m,n,ɲ,ŋ,ɛ,ɛː,ɔ,ɔː,w,l,j,ɰ,a,aː
+Noon	NIGER-CONGO	p,t,c,k,ʔ,b,d,ɟ,ɡ,i,iː,u,uː,b,ⁿd,ⁿɟ,ɡ,ɪ,ɪː,ʊ,ʊː,ɓ,ɗ,ʄ,e,eː,o,oː,f,s,h,ɛ,ɛː,ɔ,ɔː,m,n,ɲ,ŋ,ə,əː,r,a,aː,l,w,j
+Nuer	NILO-SAHARAN	p,t̪,t,c,k,q,b,d,ɡ,ʔ,i,u,pɸ,ɪ,ə,ʊ,ɸ,θ,š,ç,h,e,o,β,ð,ʝ,ɦ,ɛ,ɔ,m,n̪,n,ɲ,ŋ,ʌ,l,ɑ,r,w,j
+Nuuchahnulth (Tsishaath Nootka)	WAKASHAN	p,t,k,kʷ,q,qʷ,ʔ,iː,uː,pʼ,tʼ,kʼ,kʼʷ,qʼ,qʼʷ,ʔˤ,ts,tɬ,tʃ,aː,tsʼ,tɬʼ,tʃʼ,s,ɬ,ɬʷ,ʃ,x,xʷ,χ,χʷ,ħ,ħʷ,h,i,u,m,n,a,mʼ,n’,j,w,jʼ,wʼ
+Nyangumata	AUSTRALIAN (Pama-Nyungan)	p,t,ʈ,c,k,m,n,ɳ,ɲ,ŋ,i,u,l,ɭ,ʎ,a,r,w,ɻ,j
+Nyanja	NIGER-CONGO (Bantu)	p,t,tʃ,k,b,d,dʒ,ɡ,i,u,f,s,e,o,v,z,a,m,n,ŋ,l,w,j
+Nyanja (Chichewa dialect)	NIGER-CONGO (Bantu)	pʰ,pʰʷ,pʰ,tʰ,tʰʷ,ⁿtʰ,kʰ,kʰʷ,kʰ,p,pʷ,p,t,tʷ,ⁿt,k,kʷ,ⁿk,b,bʷ,b,bʷ,d,dʷ,ⁿd,ⁿdʷ,ɟ,ⁿɟ,ɡ,ɡʷ,ɡ,i,u,tʃʰ,tʃʰʷ,ⁿtʃʰʷ,ɪ,ʊ,ps,ts,tʃ,tʃʷ,ⁿtʃʷ,e,o,dz,dʒ,ɛ,ɔ,bʲ,a,f,fʷ,f,s,sʷ,ⁿs,ʃ,v,vʷ,v,z,zʷ,ⁿz,m,mʷ,n,nʷ,ŋ,l,l,w,j,nʲ,ⁿɡʷ
+Nyulnyul	AUSTRALIAN	b,d,ɖ,ɟ,ɡ,m,n,ɳ,ɲ,ŋ,i,u,l,ɭ,ʎ,a,r,w,ɻ,j
+Ojibwa, Central	ALGIC	p,t,tʃ,k,kʷ,b,d,dʒ,ɡ,ɡʷ,i,iː,s,ʃ,o,eː,oː,z,ʒ,a,aː,m,n,ŋ,w,j,h,hʷ
+Ojibwa, Eastern	ALGIC	pː,tː,tːʃː,kː,i,iː,p,t,tʃ,k,ʔ,o,eː,oː,sː,ʃː,a,aː,s,ʃ,m,n
+Okpe	NIGER-CONGO (Edoid)	p,t,c,k,k͡p,b,d,ɟ,ɡ,ɡ͡b,i,ĩ,u,ũ,ɸ,f,s,ç,h,ɪ,ɪ̃,ʊ,ʊ̃,v,z,ʝ,ɣ,ɣʷ,e,ẽ,o,õ,m,r,ɛ,ɛ̃,ɔ,ɔ̃,ɾ,a,ã,l,ʋ,j,w
+Oloma	NIGER-CONGO (Edoid)	p,t,c,k,k͡p,b,d,ɟ,ɡ,ɡ͡b,i,u,t̂,k̂,k̂͡p̂,e,o,d̂,ɡ̂,ɡ̂͡b̂,ɛ,ɔ,f,s,ʃ,h,a,v,z,v̤,z̤,ʒ̤,m,n,ɲ,ŋʷ,m̂,n̂,ɺ,ʋ,ɹ,j,w
+Oneida	IROQUOIAN	t,k,ʔ,s,h,i,ũ,n,e,ʌ̃,o,l,a,w,j
+Onondaga	IROQUOIAN	t,k,ʔ,i,ũ,s,h,e,o,n,ɛ̃,w,j,æ,a
+Oriya, Kotia (Adivasi Oriya)	INDO-EUROPEAN (Indo-Aryan)	p,t̪,ʈ,tʃ,k,ĩ,ũ,ĩː,ũː,b,d̪,ɖ,dʒ,ɡ,ẽ,õ,ẽː,õː,s,h,ã,ãː,m,n,ɳ,ŋ,i,u,iː,uː,l,e,o,eː,oː,ɾ,ɽ,a,aː
+Orma	AFRO-ASIATIC (Cushitic)	t,tʃ,k,b,d,dʒ,ɡ,i,u,pʼ,tʼ,tʃʼ,kʼ,e,o,ɗ,a,f,s,ʃ,h,m,n,ɲ,ŋ,r,l,w,j
+Oromo, Boraana (Borana-Arsi-Guji Oromo)	AFRO-ASIATIC (Cushitic)	t,tʃ,k,b,d,dʒ,ɡ,i,u,pʼ,tʼ,tʃʼ,kʼ,e,o,ɗ,a,f,s,ʃ,h,m,n,ɲ,ŋ,r,l,w,j
+Oromo, Harar (Eastern Oromo)	AFRO-ASIATIC (Cushitic)	pʼ,t̪ʼ,tʃʼ,kʼ,ʔ,t̪,tʃ,i,u,dʼ,e,o,b,d̪,dʒ,ɡ,a,f,s,ʃ,x,h,m,n,ɲ,l,r,w,j
+Oromo, Waata (Sanye)	AFRO-ASIATIC (Cushitic)	t,tʃ,k,b,d,dʒ,ɡ,i,u,pʼ,tʼ,tʃʼ,kʼ,e,o,ɗ,a,f,s,ʃ,h,m,n,ɲ,ŋ,r,l,w,j
+Oshindonga	NIGER-CONGO (Bantu)	p,t,k,ʔ,ts,i,u,f,θ,s,ʃ,x,h,e,o,v,ð,z,ɣ,a,m,n,ɲ,w,l,j
+Ostyak, Eastern (Khanty)	URALIC (Finno-Ugric)	p,t,ʈʂ,c,k,s,i,y,ɯ,u,m,n,ɳ,ɲ,ŋ,e,ø,o,l,ɭ,ʎ,æ,a,r,w,j,ɣ,ə̆,ø̆,ă,ŏ
+Oʼodham (Papago)	UTO-AZTECAN	p,t̪,tʃ,k,b,d̪,ɖ,dʒ,ɡ,ʔ,i,ɨ,u,s,ʂ,h,a,o,m,n̪,ɲ,ɽ,w
+Paiute, Northern	UTO-AZTECAN	p,t,k,kʷ,ʔ,b,d,ɡ,ɡʷ,i,ɨ,u,ts,a,o,dz,dʒ,s,h,z,mː,nː,ŋː,m,n,ŋ,w,j
+Palauan	AUSTRONESIAN	t̪,k,ʔ,b,d̪,i,u,s,e,ə,o,m,ŋ,a,r,l
+Papiamentu	CREOLE	p,t,k,b,d,ɡ,i,y,u,f,s,x,h,e,ø,o,v,z,ɛ,ɔ,m,n,a,l,r,w,j
+Passamaquoddy-Maliseet (Malecite-Passamaquoddy)	ALGIC	p,t,tʃ,k,kʷ,i,o,s,h,ə,m,n,e,a,l,w,j
+Pawnee	CADDOAN	p,t,k,ts,i,u,iː,uː,s,h,e,a,eː,aː,ɾ,w
+Paʼanci	AFRO-ASIATIC (Chadic)	p,t,c,k,kʷ,ʔ,b,d,ɟ,ɡ,ɡʷ,kʼ,kʼʷ,i,u,ɓ,ɗ,e,o,b,ⁿd,ⁿɟ,ɡ,ɡʷ,a,f,s,ɕ,v,z,ʑ,ei,au,sʼ,ɬ,ɬʼ,ɮ,l,r,m,n,h,hʷ,hʲ,j,w,ɦ,ɦʲ,ɦʷ,jʼ
+Pech (Paya)	CHIBCHAN	p,t,k,kʷ,ʔ,b,i,u,s,ʃ,h,e,o,m,n,a,ɾ,r,ĩ,ũ,l,ẽ,õ,j,w,ã
+Pengo	DRAVIDIAN	p,t̪,ʈ,c,k,b,d̪,ɖ,ɡ,i,u,iː,uː,dz,e,o,eː,oː,s,h,a,aː,β,z,m,n,ɳ,ŋ,r,ɽ,l,j
+Pero	AFRO-ASIATIC (Chadic)	p,t,tʃ,k,i,u,b,d,dʒ,ɡ,e,o,ɓ,ɗ,a,m,n,ŋ,r,iː,uː,l,eː,oː,w,j,aː
+Pero (Gwandum dialect)	AFRO-ASIATIC (Chadic)	p,t,tʃ,k,i,u,b,d,dʒ,ɡ,e,o,ɓ,ɗ,a,m,n,ŋ,r,iː,uː,l,eː,oː,w,j,aː
+Persian	INDO-EUROPEAN (Indo-Iranian)	p,t̪,tʃ,k,ʔ,b,d̪,dʒ,ɡ,i,u,f,s,ʃ,x,h,e,o,v,z,ʒ,æ,a,m,n,l,r,j
+Pileni	AUSTRONESIAN	p,t,k,pʰ,tʰ,kʰ,b,ⁿd,i,u,f,s,e,o,v,a,m,n,ŋ,mʰ,nʰ,ŋʰ,l,lʰ
+Pima Bajo	UTO-AZTECAN	p,t,k,ʔ,b,d,ɡ,iː,ɨː,uː,i,ɨ,u,s,h,oː,o,v,aː,a,m,n,l,w,j
+Pitjantjatjara/Western Desert Language	AUSTRALIAN (Pama-Nyungan)	p,t̪ʲ,t,ʈ,k,m,n̪ʲ,n,ɳ,ŋ,i,u,l̪ʲ,l,ɭ,iː,uː,r,ɽ,a,w,j,aː
+Polish	INDO-EUROPEAN (Slavic)	p,pʲ,t̪,k,kʲ,b,bʲ,d̪,ɡ,ɡʲ,i,u,t̪s̪,t̺s̺ʲ,tʃ,cç,ẽ,õ,d̪z̪,d̪z̪ʲ,dʒ,ɟʝ,e,o,f,fʲ,s̪,s̪ʲ,ʃ,ç,x,xʲ,a,v,vʲ,z̪,z̪ʲ,ʒ,ʝ,m,mʲ,n,nʲ,ɲ,r,l,w,wʲ,j
+Popoluca, Oluta	MIXE-ZOQUE	p,t,c,tʃ,k,ʔ,iː,ɨː,uː,s,ʃ,h,eː,aː,oː,v,m,n,i,ɨ,u,e,a,o,j
+Popoluca, Sayula	MIXE-ZOQUE	p,t,c,tʃ,k,ʔ,b,d,ɡ,iː,ɨː,uː,eː,aː,oː,s,ʃ,h,i,ɨ,u,m,n,e,a,o,ɾ,w,j
+Portuguese (Brazilian)	INDO-EUROPEAN (Italic)	p,t,k,b,d,ɡ,f,s,ʃ,i,ɨ,u,v,z,ʒ,e,ɐ,o,m,n,ɲ,ɛ,ɔ,l,ʎ,a,ɾ,ʀ,w,j
+Portuguese (European)	INDO-EUROPEAN (Italic)	p,t,k,b,d,ɡ,f,s,ʃ,i,ɨ,u,v,z,ʒ,e,ɐ,o,m,n,ɲ,ɛ,ɔ,l,ʎ,a,ɾ,ʀ,w,j
+Pulaar	NIGER-CONGO	p,t,c,k,b,d,ɟ,ɡ,i,u,ɓ,ɗ,ʄ,e,o,m,n,ɲ,ŋ,ɛ,ɔ,f,s,a,r,l,w,j,h
+Pulu Annian	AUSTRONESIAN	p,t,k,pˠ,s,i,ɨ,u,ð,e,ə,o,m,n,ŋ,a,mˠ,l,w,j
+Punjabi	INDO-EUROPEAN (Indo-Aryan)	pʰ,t̪ʰ,ʈʰ,cʰ,kʰ,ĩ,ũ,p,t̪,ʈ,c,k,i,u,b,d̪,ɖ,ɟ,ɡ,ɪ,ʊ,s̪,ʂ,h,ẽ,õ,e,o,m,n̪,ɳ,æ̃,ɔ̃,ɽ,ʀ,æ,ə,ɔ,l̪,ɭ,ã,w,j,a
+Purik	SINO-TIBETAN	pʰ,t̪ʰ,tʰ,kʰ,p,t̪,t,k,q,b,d̪,d,ɡ,iː,uː,tsʰ,tʃʰ,i,u,ts,tʃ,eː,oː,dʒ,e,o,s,ʃ,χ,h,aː,z,ʒ,ʁ,a,m,n,ɲ,ŋ,l,r,w,j
+Quechua, Cuzco (Cuzco Kechua)	QUECHUAN	pʰ,tʰ,tʃʰ,kʰ,qʰ,ʔ,p,t,tʃ,k,q,ɪ,ʊ,pʼ,tʼ,tʃʼ,kʼ,qʼ,a+,s,h,m,n,ɲ,l,ʎ,ɾ,w,j
+Quechua, Ecuadorean Highland (as spoken in Bolivar Province)	QUECHUAN	pʰ,tʰ,kʰ,p,t,k,i,u,b,d,ɡ,a,ts,tʃ,s,ʃ,h,z,ʒ,m,n,ɲ,l,ɾ,w,j
+Quechua, Huallaga (Huanaco)	QUECHUAN	p,t,tʃ,k,q,i,u,s,ʃ,h,e,o,ʐ,a,m,n,ɲ,l,ʎ,iː,uː,ɾ,eː,oː,w,j,aː
+Quechua, Junín (San Pedro de Cajas variety)	QUECHUAN	p,t,ʈʂ,cç,k,i,u,b,d,ɡ,e,o,ɸ,s,ç,x,χ,a,m,n,ɲ,ŋ,l,ʎ,iː,uː,r,ɽ,eː,oː,w,j,aː
+Quechua, Tarma (variety of North Junín Quechua)	QUECHUAN	p,t,ʈʂ,cç,k,i,u,b,d,ɡ,e,o,ɸ,s,ç,x,a,m,n,ɲ,ŋ,l,ʎ,iː,uː,r,ɽ,eː,oː,w,j,aː
+Quichoa, Chimborazo (Chimborazo Highland Quechua)	QUECHUAN	pʰ,t̪ʰ,tʰ,tʲʰ,kʰ,p,t̪,t,tʲ,k,ʔ,i,u,b,d̪,dʲ,ɡ,a,t̪s̪,s̪,ʃ,ʂ,x,h,z̪,ʒ,m,n̪,ɲ,l̪,ɽ,w,j
+Quichua, Ecuador (Puyo Pongo variety)	QUECHUAN	p,pʲ,t,c,k,kʲ,b,d,ɡ,i,u,ts,tʃ,a,dz,dʒ,s,ʃ,h,m,n,ɲ,r,l,ʎ,w,j
+Quichua, Imbabura Highland	QUECHUAN	p,t̪,c,k,pʼ,t̪ʼ,cʼ,kʼ,i,u,a,ts,cç,cçʼ,ɸ,s,ç,x,β,z,ʝ,m,n,ɲ,l,ʎ,r,w,j
+Rao	SEPIK-RAMU	p,t,tʃ,k,ʔ,b,d,dʒ,ɡ,i,ɨ,u,b,ⁿd,ɡ,e,ə,o,ʔb,ʔd,a,f,s,h,v,z,m,n,ŋ,r,w,j
+Rapanui	AUSTRONESIAN	p,t̪,k,ʔ,h,i,u,v,e,o,m,n̪,ŋ,a,r
+Resígaro	ARAWAKAN	pʰ,tʰ,kʰ,p,t,tʲ,k,ʔ,ɪ,ɯ,b,d,dʲ,ɡ,ɛ,ɔ,tsʰ,cɕʰ,a,ts,cɕ,dz,ɟʑ,f,s,ɕ,h,v,ʑ,m̥,n̥,ɲ̥,m,n,ɲ
+Romani, Burgenland-Romani	INDO-EUROPEAN (Indo-Aryan)	pʰ,t̪ʰ,kʰ,p,t̪,k,i,u,b,d̪,ɡ,e,o,t̪s̪,tʃ,a,f,s̪,ʃ,h,v,z̪,ʒ,ʝ,m,n,ɲ,ŋ,r,l
+Romanian	INDO-EUROPEAN (Italic)	p,t,k,b,d,ɡ,i,ɨ,u,ts,tʃ,e,ə,o,dʒ,a,f,s,ʃ,h,v,z,ʒ,e̯a,o̯a,m,n,l,ɾ,w,j
+Rotuman	AUSTRONESIAN	p,t,tʃ,k,ʔ,f,s,h,i,u,v,e,o,m,n,ŋ,a,ɾ,l
+Runyankore (Nyankore)	NIGER-CONGO (Bantu)	t,tʃ,k,i,u,b,d,ɡ,e,o,f,s,ʃ,h,a,v,m,n,ɲ,iː,uː,r,eː,oː,w,j,aː
+Runyoro-Rutooro (Nyoro/Tooro)	NIGER-CONGO (Bantu)	p,t̪,tʃ,k,b,d,dʒ,ɡ,i,u,f,s,h,e,o,β,v,z,a,m,n,ɲ,l,r,w,j
+Russian	INDO-EUROPEAN (Slavic)	p,pʲ,t̪,t̪ʲ,k,b,bʲ,d̪,d̪ʲ,ɡ,i,ɨ,u,t̪s̪,tʃ,ʃtʃ,ɛ,ɔ,f,fʲ,s̪,s̪ʲ,ʃ,x,a,v,vʲ,z̪,z̪ʲ,ʒ,m,mʲ,n̪,n̪ʲ,r̪,r̪ʲ,l̪,l̪ʲ,j
+Saami, Central South(-Lappish)	URALIC (Finno-Ugric)	p,t,tsʰ,tʃʰ,k,b,d,ts,tʃ,ɡ,i,y,ɨ,ʉ,u,f,s,ʃ,h,ɨ̞,m,n,ɲ,ŋ,e,ʌ,ɵ,o,r,ə,l,ɐ,ɑ,ʋ,j
+Sacapultec (Sacapulteco)	MAYAN	p,t,kʲ,k,q,pʼ,tʼ,kʼʲ,kʼ,qʼ,ʔ,i,u,e,o,ts,tʃ,a,tsʼ,tʃʼ,s,ʃ,x,iː,uː,m,n,ŋ,eː,oː,l,aː,ɽ,w,j
+Sahaptin, Northern (Cowlitz-Klickitat-Walla Walla?)	PENUTIAN	p,t,k,kʷ,q,qʷ,pʼ,tʼ,kʼ,kʼʷ,qʼ,qʼʷ,i,u,ts,tɬ,tʃ,ə,tθʼ,tsʼ,tɬʼ,tʃʼ,a,s,ʃ,x,xʷ,χ,χʷ,h,hʷ,m,n,ɬ,l,w,j
+Saibai	AUSTRALIAN(?)	p,t,ʈ,k,b,d,ɖ,ɡ,s,i,u,z,e,ə,m,n,ŋ,a,r,l,w,j
+Salish, Straits (Samish dialect)	SALISHAN	p,t,kʷ,q,qʷ,ʔ,i,pʼ,tʼ,kʼʷ,qʼ,qʼʷ,e,ə,tʃ,a,tθʼ,tɬʼ,tʃʼ,s,ɬ,ʃ,xʷ,χ,χʷ,h,m,n,ɴ,mʼ,n’,ɴʼ,l,j,w,lʼ,jʼ,wʼ
+Sango	CREOLE	p,t,k,k͡p,b,d,ɡ,ɡ͡b,i,u,b,ⁿd,ɡ,ɡ͡b,e,o,ɓ,ɛ,ɔ,f,s,h,a,v,z,ⁿz,ũ,r,ɛ̃,ɔ̃,l,ã,m,n,w,j
+Santali	AUSTRO-ASIATIC	pʰ,tʰ,ʈʰ,tʃʰ,kʰ,p,t,ʈ,tʃ,k,i,u,pʼ,tʼ,tʃʼ,kʼ,e,ə,o,bʰ,dʰ,ɖʰ,dʒʰ,ɡʰ,ɛ,ɔ,b,d,ɖ,dʒ,ɡ,a,s,h,m,n,ŋ,ĩ,ũ,ɽʰ,ẽ,ə̃,õ,r,ɽ,ɛ̃,ɔ̃,l,ã,w,j
+Sawai	AUSTRONESIAN	p,t,k,b,d,ɡ,i,u,f,s,e,o,m,n,ŋ,ɛ,a,ɔ,l,w,j
+Secoya	TUCANOAN	p,t,tʃ,k,kʷ,ʔ,d,i,ɨ,u,s,ɛ,a,o,m,n,w,j,h
+Sekani	NA-DENE	pʰ,tʰ,kʷ,p,t,ʔ,i,u,pʼ,tʼ,kʼʷ,e,ə,o,tsʰ,tɬʰ,tʃʰ,a,ts,tɬ,tʃ,tsʼ,tɬʼ,tʃʼ,s,ɬ,ɕ,x,h,z,l,j,ɣ,m,n
+Selepet	TRANS-NEW GUINEA	p,t̪,k,b,d̪,ɡ,i,u,s,h,e,o,m,n̪,ŋ,a,ɔ,l,r,w,j
+Sema	SINO-TIBETAN	p,t,k,q,b,d,ɡ,ts,f,s,x,h,i,ɨ,u,z,ɣ,e,o,m,n,ŋ,a,l,w,j
+Senoufo, Cebaara Senoufo	NIGER-CONGO	p,t,k,k͡p,b,d,ɡ,ɡ͡b,ĩ,ĩː,i,iː,ũ,ũː,u,uː,f,s,e,eː,eʔ,oʔ,o,oː,v,z,ɛ̃ː,ɛː,ɛ̃ʔ,ɛʔ,ɔ̃ʔ,ɔʔ,ɔ̃,ɔ̃ː,ɔ,ɔː,m,ãʔ,aʔ,w,l,j,ã,ãː,a,aː
+Senoufo, Supyire	NIGER-CONGO	p,t,tʃ,k,ʔ,b,d,dʒ,ɡ,i,ĩ,u,ũ,f,s,ʃ,e,o,v,z,ʒ,ɛ,ɛ̃ː,ɔ,ɔ̃,m,n,ɲ,ŋ,a,ã,l,j,w
+Sentani	TRANS-NEW GUINEA	k,b,d,i,u,f,h,e,ə,o,m,n,ɛ,l,a,w,j
+Sentani (central dialect)	TRANS-NEW GUINEA	k,b,d,i,u,f,h,e,ə,o,m,n,ɛ,l,a,w,j
+Sepečides-Romani	INDO-EUROPEAN (Indo-Aryan)	pʰ,tʰ,tʃʰ,kʰ,p,t,tʃ,k,i,u,b,d,dʒ,ɡ,e,ə,o,f,s̪,ʃ,x,h,a,v,z̪,ʝ,m,n,ɾ,l
+Serbo-Croatian (Cres Čakavian)	INDO-EUROPEAN (Slavic)	p,t,c,k,b,d,ɡ,i,u,f,s,ʃ,x,e,o,v,z,ʒ,a,m,n,l,r,j
+Shambala	NIGER-CONGO (Bantu)	p,t,tʃ,k,b,d,dʒ,ɡ,i,u,f,s,ʃ,h,e,o,v,z,ɣ,a,m,n,ɲ,ŋ,l,w,j
+Shilluk	NILO-SAHARAN	pʰ,t̪ʰ,tʰ,cʰ,kʰ,i̝,i̝ː,u̝,u̝ː,p,t̪,t,c,k,i,iː,u,uː,b,d̪,d,ɟ,ɡ,e̝,e̝ː,ɔ̝,ɔ̝ː,m,mː,n̪,n̪ː,n,nː,ɲ,ɲː,ŋ,ŋː,e,eː,ɔ,ɔː,ɾ,r,a̝,a̪ː,w,wː,l,lː,j,jː,a,aː
+Shiriana Yanam (Ninam)	YANOMAM	tʰ,p,t,tʃ,k,i,ɯ,s,ʃ,h,e,ə,o,m,n,a,r,w
+Shona (Central)	NIGER-CONGO (Bantu)	p,t̪,k,p͡k,tʃ͡kʷ,kʷ,b,d̪,ɡ,b͡ɡ,dɣw,ɡʷ,i,u,b,ⁿd̪,ɡ,e,o,pf,t̪s̪,tsʷ,tʃ,tʃ͡k,ts͡kʷ,tʃ͡kʷ,a,bv,d̪z̪,dzʷ,dʒ,dʒ͡ɡ,dzɣw,dʒ͡ɣʷ,ⁿdʒ,ɓ,ɗ,m,n̪,ɲ,ŋ,m͡ŋ,ɲ͡ŋ,nŋw,ɲ͡ŋw,ŋʷ,r,r͡ɣw,f,s̪,sʷ,ʃ,s͡kʷ,s͡kʷ,ʃ͡kʷ,v,z̪,zʷ,ʒ,ɦ,z͡ɣw,zʷ͡ɣw,ʒ͡ɣw,ɦʲ,v,n̪z̪,nzʷ,ʋ,j,w
+Shona (Eastern)	NIGER-CONGO (Bantu)	p,t̪,k,p͡k,tʃ͡kʷ,kʷ,b,d̪,ɡ,b͡ɡ,dɣw,ɡʷ,i,u,b,ⁿd̪,ɡ,e,o,pf,t̪s̪,tsʷ,tʃ,tʃ͡k,ts͡kʷ,tʃ͡kʷ,a,bv,d̪z̪,dzʷ,dʒ,dʒ͡ɡ,dzɣw,dʒ͡ɣʷ,ⁿdʒ,ɓ,ɗ,m,n̪,ɲ,ŋ,m͡ŋ,ɲ͡ŋ,nŋw,ɲ͡ŋw,ŋʷ,r,r͡ɣw,f,s̪,sʷ,ʃ,s͡kʷ,s͡kʷ,ʃ͡kʷ,v,z̪,zʷ,ʒ,ɦ,z͡ɣw,zʷ͡ɣw,ʒ͡ɣw,ɦʲ,v,n̪z̪,nzʷ,ʋ,j,w
+Shona (Zezuru)	NIGER-CONGO (Bantu)	p,t̪,k,p͡k,tʃ͡kʷ,kʷ,b,d̪,ɡ,b͡ɡ,dɣw,ɡʷ,i,u,b,ⁿd̪,ɡ,e,o,pf,t̪s̪,tsʷ,tʃ,tʃ͡k,ts͡kʷ,tʃ͡kʷ,a,bv,d̪z̪,dzʷ,dʒ,dʒ͡ɡ,dzɣw,dʒ͡ɣʷ,ⁿdʒ,ɓ,ɗ,m,n̪,ɲ,ŋ,m͡ŋ,ɲ͡ŋ,nŋw,ɲ͡ŋw,ŋʷ,r,r͡ɣw,f,s̪,sʷ,ʃ,s͡kʷ,s͡kʷ,ʃ͡kʷ,v,z̪,zʷ,ʒ,ɦ,z͡ɣw,zʷ͡ɣw,ʒ͡ɣw,ɦʲ,v,n̪z̪,nzʷ,ʋ,j,w
+Shoshoni, Western	UTO-AZTECAN	p,t,k,kʷ,ʔ,ts,i,ɨ,u,iː,ɨː,uː,s,h,e,o,eː,oː,m,n,a,aː,j,w
+Si-Luyana	NIGER-CONGO (Bantu)	p,t,c,k,f,s,i,u,β,e,o,m,n,a,w,l,j
+Sie	AUSTRONESIAN	p,t,k,s,h,i,u,v,ɣ,e,o,m,n,ŋ,a,l,ɾ,w,j
+Sinaugoro	AUSTRONESIAN	t,k,kʷ,b,d,ɡ,ɡʷ,f,i,u,v,r,ɣ,ɣʷ,e,o,s,a,m,n,l
+Siona	TUCANOAN	p,t,tʃ,k,kʷ,ʔ,pʼ,tʼ,tʃʼ,kʼ,kʼʷ,i,ɨ,u,s,h,hʷ,ɛ,a,o,sʼ,m,n,ĩ,ɨ̃,ũ,w,j,æ̃,ã,õ
+Slavey, North	NA-DENE	t,ts,tl,tʃ,k,kʷ,tʼ,tsʼ,tlʼ,tʃʼ,kʼ,kʼʷ,ʔ,i,u,b,d,dz,dl,dʒ,ɡ,e,s,ɬ,ʃ,x,ʍ,h,ɛ,ɔ,z,l,ʒ,ɣ,w,a,m,n,j
+Slavey, North (Bearlake variety)	NA-DENE	t,ts,tl,tʃ,k,kʷ,tʼ,tsʼ,tlʼ,tʃʼ,kʼ,kʼʷ,ʔ,i,u,b,d,dz,dl,dʒ,ɡ,e,s,ɬ,ʃ,x,ʍ,h,ɛ,ɔ,z,l,ʒ,ɣ,w,a,m,n,j
+Slavey, North (Hare variety)	NA-DENE	k,kʷ,tʼ,tsʼ,tlʼ,tʃʼ,kʼ,kʼʷ,ʔ,i,u,b,d,dz,dl,dʒ,ɡ,e,s,ʃ,x,h,ɛ,ɔ,z,l,ʒ,ɣ,w,a,m,n,j
+Slavey, North (innovative Bearlake variety)	NA-DENE	t,ts,tl,tʃ,k,kʷ,tʼ,tsʼ,tlʼ,tʃʼ,kʼ,kʼʷ,ʔ,i,u,b,d,dz,dl,dʒ,ɡ,e,s,ɬ,ʃ,x,ʍ,h,ɛ,ɔ,z,l,ʒ,ɣ,w,a,m,n,j
+Slavey, North (innovative Hare variety)	NA-DENE	k,kʷ,tʼ,tsʼ,tlʼ,tʃʼ,kʼ,kʼʷ,ʔ,i,u,b,d,dz,dl,dʒ,ɡ,e,s,ʃ,x,h,ɛ,ɔ,z,l,ʒ,ɣ,w,a,m,n,j
+Slavey, North (Mountain variety)	NA-DENE	p,t,ts,tl,tʃ,k,pʼ,tʼ,tsʼ,tlʼ,tʃʼ,kʼ,ʔ,i,u,b,d,dz,dl,dʒ,ɡ,f,s,ɬ,ʃ,x,ʍ,h,ɛ,ɔ,v,z,l,ʒ,ɣ,w,a,m,n,j
+Slavey, South (Slavey)	NA-DENE	tθ,t,ts,tl,tʃ,k,tθʼ,tʼ,tsʼ,tlʼ,tʃʼ,kʼ,ʔ,i,u,b,dð,d,dz,dl,dʒ,ɡ,ɡʷ,ɛ,ɔ,θ,s,ɬ,ʃ,x,h,a,ð,z,l,ʒ,ɣ,w,m,n,j
+Slovak	INDO-EUROPEAN (Slavic)	p,t,tʲ,k,b,d,dʲ,ɡ,uo,iː,uː,ts,tʃ,ie,ɛː,ɔː,dz,dʒ,ia,aː,f,s,ʃ,x,z,ʒ,ɣ,i,u,m,n,nʲ,ɛ,ɔ,l,r,lʲ,æ,a,lː,rː,ʋ,j
+Slovene	INDO-EUROPEAN (Slavic)	p,t,k,b,d,ɡ,i,u,ts,tʃ,e,o,dʒ,ə,f,s,ʃ,x,ɛ,ɔ,v,z,ʒ,a,m,n,l,r,j
+So (Soo)	NILO-SAHARAN	p,t,c,k,kʷ,ʔ,b,d,ɟ,ɡ,ɡʷ,i,u,ɓ,ɗ,ʄ,ɠ,ɪ,ʊ,s,e,o,m,n,ɲ,ŋ,ɛ,ɔ,l,a,r,w,j
+Somali	AFRO-ASIATIC (Cushitic)	t̪,tʃ,k,d,iː,uː,χ,e,o,β,ð,ɣ,ɛː,ə,ɔː,f,s,ʃ,ħ,h,aː,ʕ,m,n,r,l,w,j
+Sotho (Southern dialect)	NIGER-CONGO (Bantu)	pʰ,tʰ,tsʰ,tʃʰ,ǃʰ,pʃʰ,kʰ,kxʰ,pʼ,tʼ,tsʼ,tʃʼ,ǃ,pʃʼ,kʼ,i,u,b,dʒ,bʒ,ɪ,ʊ,f,s,ʃ,fʃ,h,e,o,ɛ,ɔ,m,n,ɲ,nǃ,ŋ,ɑ,l,ɬ,r,j,w
+Spanish (European)	INDO-EUROPEAN (Italic)	p,t̪,tʃ,k,b,d̪,dʒ,ɡ,i,u,f,θ,s,x,e,o,m,n,ɲ,a,r,ɾ,l,ʎ,w,j
+Sre	AUSTRO-ASIATIC	pʰ,tʰ,cʰ,kʰ,p,t,c,k,ʔ,b,d,ɟ,ɡ,i,ɯ,u,ɓ,ɗ,e,ə,o,s,h,ɛ,ɔ,mʰ,nʰ,ɲʰ,a,ɑ,m,n,ɲ,ŋ,l,r,w,j
+Sri Lanka Creole Portuguese (Indo-Portuguese)	CREOLE	p,t,tʃ,k,b,d,dʒ,ɡ,i,u,f,s,e,ə,o,z,æ,ɔ,m,n,ɲ,r,iː,uː,l,eː,oː,w,j,æː,aː,ɔː
+St. Lucian Creole	CREOLE	p,t,tʃ,k,i,u,b,d,dʒ,ɡ,e,o,f,s,ʃ,x,h,ɛ,ɔ,v,z,ʒ,a,ɑ,l,m,n,ŋ,ẽ,õ,j,w,ã
+Svan	SOUTH CAUCASIAN	pʰ,t̪ʰ,tsʰ,tʃʰ,kʰ,qʰ,pʼ,t̪ʼ,tsʼ,tʃʼ,kʼ,qʼ,i,y,u,b,d̪,dz,dʒ,ɡ,e,œ,ə,o,s,ʃ,χ,h,æ,a,z,ʒ,ʁ,m,n,l,r,w,j
+Swahili	NIGER-CONGO (Bantu)	p,t,tʃ,k,ɓ,ɗ,ʄ,ɠ,i,u,b,ⁿd,ⁿdʒ,ɡ,e,o,f,θ,s,ʃ,x,h,a,v,ð,z,ɣ,v,ⁿz,m,n,ɲ,ŋ,r,l,w,j
+Swazi (Swati)	NIGER-CONGO (Bantu)	pʰ,tʰ,kʰ,ǀʰ,ǃʰ,p,ⁿt,k,k,ǀ,nǀ,ǃ,nǃ,i,u,pʼ,tʼ,kʼ,nkǀ,nkǃ,ɛ,ɔ,b,b,d,ⁿd,ɡ,ɡ,ɡǀ,ɡǃ,a,tsʰ,tɸʰ,nɡǀ,nɡǃ,ⁿts,ⁿtɸ,tsʼ,ⁿtsʼ,tʃʼ,ⁿtʃʼ,kxʼ,dz,ⁿdz,dβ,ⁿdβ,ⁿdʒ,ɓ,f,f,s,ⁿs,ɬ,ⁿɬ,ʃ,ⁿʃ,v,v,z,ⁿz,ɮ,ⁿɮ,ɦ,m,n,ɲ,ŋ,l,w,j
+Swedish	INDO-EUROPEAN (Germanic)	p,t̪,ʈ,k,b,d̪,ɖ,ɡ,iː,yː,ʉ̟ː,f,s̪,ʂ,i,y,ɵ,ʊ,v,eː,øː,ə,oː,m,n̪,ɳ,ɛ,œ,ɔ,l̪,ɭ,a,ɑː,r
+Tacana	TACANAN	p,t,k,kʷ,ʔ,b,d,i,o,β,ð,e,a,ʈʂ,tʃ,ʂ,ʃ,h,m,n,ɾ,ɾð,w,j
+Tagalog	AUSTRONESIAN	p,t̪,k,ʔ,b,d̪,ɡ,i,u,s̪,h,e,o,m,n̪,ŋ,a,l,ɾ,w,j
+Talysh, Northern	INDO-EUROPEAN (Indo-Iranian)	p,t̪,tʃ,k,b,d̪,dʒ,ɡ,i,y,f,s̪,ʃ,x,ħ,e,ə,o,v,z̪,ʒ,ɣ,aː,m,n,a,l,r,j
+Tamasheq	AFRO-ASIATIC (Berber)	t,tˤ,k,q,b,d,dˤ,ɟ,ɡ,iː,uː,s,ʃ,x,h,eː,ə,oː,z,zˤ,ʒ,ʁ,æ,aː,m,n,ŋ,l,r,w,j
+Tamasheq (Tadraq variety)	AFRO-ASIATIC (Berber)	t,tˤ,k,q,b,d,dˤ,ɟ,ɡ,iː,uː,s,ʃ,x,h,eː,ə,oː,z,zˤ,ʒ,ʁ,æ,aː,m,n,ŋ,l,r,w,j
+Tamazight (Ait Ayache dialect)	AFRO-ASIATIC (Berber)	t̪,t̪ˤ,k,kʷ,q,qʷ,t̪ː,t̪ˤː,kː,kʷː,qː,qʷː,b,d̪,d̪ˤ,ɡ,ɡʷ,i,u,bː,d̪ː,d̪ˤː,ɡː,ɡʷː,a,f,s̪,s̪ˤ,ʃ,χ,ħ,h,hʷ,fː,s̪ː,s̪ˤː,ʃː,χː,hʷː,z̪,z̪ˤ,ʒ,ʁ,ʕ,z̪ː,z̪ˤː,ʒː,ʁː,m,n,nˤ,mː,nː,nˤː,l̪,l̪ˤ,l̪ː,l̪ˤː,r,rˤ,rː,rˤː,j,w,jː,wː
+Tamazight (Ayt Ndhir dialect)	AFRO-ASIATIC (Berber)	tʃ,dʒ,i,u,f,θ,s,ʃ,x,xʷ,χ,ħ,h,a,β,ð,ðˤ,z,zˤ,ʒ,ɣ,ɣʷ,ʁ,ʕ,m,n,l,r,j,w
+Tamil	DRAVIDIAN	p,t,ʈ,c,k,iː,uː,s,i,u,m,n,ɳ,ɾ,eː,oː,r,e,o,l,ʎ,aː,ʋ,j,a
+Tangale	AFRO-ASIATIC (Chadic)	p,t,tʷ,k,kʷ,ʔ,b,bʷ,d̪,d,dʷ,dʒ,ɡ,ɡʷ,i,u,ɓ,ɓʷ,ɗ,ɗʷ,i̞,u̞,s,sʷ,ʃ,ʃʷ,h,e,o,z,zʷ,ʒ,ʒʷ,e̞,o̞,m,b,n,ⁿd,ⁿdʒ,ŋ,ɡ,a,l,r,rʷ,w,j,jʷ
+Tangkhul	SINO-TIBETAN	pʰ,tʰ,kʰ,p,t,tʃ,k,f,s,ʃ,h,i,u,z,e,o,m,n,ŋ,ə,l,a,r,w,j
+Tarangan, River West	AUSTRONESIAN	t̪,k,b,d,ɡ,i,u,ɸ,s,e,o,m,n,ŋ,ɛ,ɔ,l,a,r,j
+Tarangan, West	AUSTRONESIAN	t̪,k,b,d,ɡ,i,u,ɸ,s,e,o,m,n,ŋ,ɛ,ɔ,l,a,r,j,w
+Tashlhiyt	AFRO-ASIATIC (Berber)	t,ǃt,k,kʷ,q,qʷ,b,d,ǃd,ɡ,ɡʷ,i,u,f,s,ǃs,ʃ,ǃʃ,χ,χʷ,ħ,a,z,ǃz,ʒ,ǃʒ,ʁ,ʁʷ,ʕ,ɦ,m,n,ǃn,l,lǃ,r,ǃr,w,j
+Tashlhiyt (Haha)	AFRO-ASIATIC (Berber)	t,ǃt,k,kʷ,q,qʷ,b,d,ǃd,ɡ,ɡʷ,i,u,f,s,ǃs,ʃ,ǃʃ,χ,χʷ,ħ,a,z,ǃz,ʒ,ǃʒ,ʁ,ʁʷ,ʕ,ɦ,m,n,ǃn,l,lǃ,r,ǃr,w,j
+Tashlhiyt (Imdlawn)	AFRO-ASIATIC (Berber)	t,ǃt,k,kʷ,q,qʷ,b,d,ǃd,ɡ,ɡʷ,i,u,f,s,ǃs,ʃ,ǃʃ,χ,χʷ,ħ,a,z,ǃz,ʒ,ǃʒ,ʁ,ʁʷ,ʕ,ɦ,m,n,ǃn,l,lǃ,r,ǃr,w,j
+Tauya	TRANS-NEW GUINEA	p,t,k,ʔ,kʷ,ʔʷ,i,u,f,s,e,o,m,n,a,r,w,j
+Tawala	AUSTRONESIAN	p,t,k,ʔ,b,d,ɡ,pʷ,kʷ,i,u,bʷ,ɡʷ,e,o,m,n,a,mʷ,s,h,j,ɭ,w
+Telugu	DRAVIDIAN	p,t,ts,ʈ,k,b,d,dz,ɖ,ɡ,iː,uː,f,s,ʂ,h,i,u,m,n,eː,oː,r,e,o,l,aː,ʋ,j,a
+Temne	NIGER-CONGO	p,t̪,t,k,b,d,ɡ͡b,i,ɨ,u,f,s,h,e,ʌ,o,m,n,ŋ,ɛ,a,ɔ,l,r,w,j
+Tepecano	UTO-AZTECAN	p,t̪,k,ʔ,b,d̪,ɡ,i,ɨ,ɯ,o,s,ʃ,h,a,β,m,n̪,r
+Tepehuan, Northern	UTO-AZTECAN	p,t,tʲ,k,b,d,dʲ,ɡ,i,ɨ,u,tʃ,a,o,s,ʃ,x,v,m,n,ɲ,l,r
+Tepehuan, Southeastern	UTO-AZTECAN	p,t,k,ʔ,i,ɯ,u,b,d,ɡ,ʌ,o,s,h,a,v,m,n,iː,ɯː,uː,r,ʌː,oː,j,aː
+Tepetotutla Chinantec (Tepetotutla Chinanteco)	OTO-MANGUEAN	p,t,c,k,ʔ,b,d,ɟ,ɡ,i,ɯ,u,f,s,h,e,ɤ,o,m,n,ŋ,a,l,r,w,j,ɰ
+Teribe	CHIBCHAN	pʰ,tʰ,kʰ,p,t,tʃ,k,i,u,b,d,ɡ,ɪ,ʊ,s,ʃ,h,e,o,z,ʒ,a,ɑ,m,n,ɲ,ŋ,ɺ,ĩ,ũ,r,ẽ,õ,w,j,ã
+Tetun, Fehan	AUSTRONESIAN	t,k,ʔ,b,d,i,u,f,s,h,e,o,m,n,a,l,r,w
+Thai (Central)	TAI-KADAI	pʰ,tʰ,tʃʰ,kʰ,p,t,tʃ,k,ʔ,iː,ɯː,uː,b,d,i,ɯ,u,f,s,h,eː,ɤː,oː,m,n,ŋ,e,ɤ,o,l,ɛː,aː,ɔː,r,ɛ,a,ɔ,w,j
+Thai (Northeastern)	TAI-KADAI	pʰ,tʰ,tʃʰ,kʰ,p,t,tʃ,k,ʔ,iː,ɯː,uː,b,d,i,ɯ,u,f,s,h,eː,ɤː,oː,m,n,ŋ,e,ɤ,o,l,ɛː,aː,ɔː,r,ɛ,a,ɔ,w,j
+Thompson	SALISHAN	p,t̪,t,tʃ,k,kʷ,q,qʷ,ʔ,i,i̟,u,pʼ,tɬʼ,tʃʼ,kʼ,kʼʷ,qʼ,qʼʷ,ə,ɬ,s,ʃ,x,xʷ,χ,χʷ,h,e,ə̟,o,m,n,l,z,j,ɣ,w,ʕ,ʕʷ,a,mʼ,n’,lʼ,zʼ,jʼ,ɣʼ,wʼ,ʕʼ,ʕʼʷ
+Tibetan	SINO-TIBETAN	pʰ,tʰ,ʈʰ,kʰ,qʰ,p,t,ʈ,k,q,tsʰ,tʃʰ,i,y,u,ts,tʃ,ɪ,ʊ,s,ʃ,h,e,ø,o,m̥ʰ,ɲ̥ʰ,ŋ̥ʰ,ɛ,ɔ,m,n,ɳ,ɲ,ŋ,ə,l̥ʰ,r̥ʰ,a,l,r,j,w
+Tigre	AFRO-ASIATIC (Semitic)	t̪,k,ʔ,b,d̪,dʒ,ɡ,i,u,t̪ʼ,tsʼ,tʃʼ,kʼ,e,o,f,s,ʃ,ħ,h,aː,z,ʕ,a,m,n̪,l,ɾ,w,j
+Tigrinya	AFRO-ASIATIC (Semitic)	p,t,k,kʷ,ʔ,b,d,ɡ,ɡʷ,ʕ,iː,uː,tʼ,kʼ,kʷʼ,i,ɨ,u,f,s,ħ,h,eː,oː,z,ɛ,ʌ,o,sʼ,aː,ɔː,m,n,a,ɔ,l,r,w,j
+Tiri/Tinrin	AUSTRONESIAN	p,pʷ,t̪,ʈ,c,k,kʷ,b,bʷ,ⁿd̪,ⁿɖ,ɡ,ɡʷ,i,ɯ,u,f,fʷ,ʂ,h,hʷ,e,o,v,ð,ɣ,ɛ,a,ɔ,m,mʷ,n̪,ɳ,ɲ,r,ɽ,ĩ,ɯ̃,ũ,w,j,ɛ̃,ã,ɔ̃
+Tiriyó (Trió)	CARIB	p,t,k,s,h,i,ɨ,u,m,n,e,ə,o,ɾ,a,w,j
+Tirmaga	NILO-SAHARAN	t,c,k,b,d,ɟ,ɡ,i,u,ɓ,ɗ,ʄ,ɠ,e,o,s,h,ɛ,ɔ,z,a,m,n,ɲ,ŋ,ɾ,l,w,j
+Tiv	NIGER-CONGO (Bantu)	p,t,tʃ,k,k͡p,ʔ,b,d,dʒ,ɡ,ɡ͡b,i,u,b,ⁿd,ⁿdʒ,ɡ,e,o,ts,ɔ,dz,a,f,s,ʃ,h,v,z,ɣ,m,n,ɲ,ŋ,l,r,w,j
+Toba	MATACO-GUAICURU	p,t,tʃ,k,q,ʔ,dʒ,ɡ,ʛ,i,o,s,ʃ,h,e,a,m,n,ɲ,l,ʎ,iː,oː,ɾ,eː,aː,w,j
+Tojolabal Maya	MAYAN	p,t,k,ʔ,i,u,tʼ,kʼ,e,o,bʼ,a,tz,tʃ,tzʼ,tʃʼ,s,ʃ,x,m,n,l,r,w,j
+Tokelauan	AUSTRONESIAN	p,t,k,ɸ,h,i,u,v,e,o,m,n,ŋ,a,l
+Totonac, Misantla	TOTONACAN	p,t,k,q,ʔ,ts,tʃ,i,u,iː,uː,s,ʃ,h,a,aː,ɬ,m,n,ḭ,ṵ,ḭː,ṵː,l,a̰,a̰ː,w,j
+Totonac, Misantla (San Marcos variety)	TOTONACAN	p,t,k,q,ʔ,ts,tʃ,i,u,iː,uː,s,ʃ,h,a,aː,ɬ,m,n,ḭ,ṵ,ḭː,ṵː,l,a̰,a̰ː,w,j
+Totonac, Misantla (Yecuatla variety)	TOTONACAN	p,t,k,q,ʔ,ts,tʃ,i,u,iː,uː,s,ʃ,h,a,aː,ɬ,m,n,ḭ,ṵ,ḭː,ṵː,l,a̰,a̰ː,w,j
+Tsakhur	NORTH CAUCASIAN	p,t̪,t̪ʷ,k,kʲ,q,qʷ,qˤ,ʔ,pʼ,t̪ʼ,kʼ,qʼ,qʷʼ,qˤʼ,ʕʼ,pː,t̪ː,kː,qː,b,d̪,d̪ʲ,ɡ,ɡʲ,ɢ,ɢˤ,t̪s̪,tʃ,tʃʷ,t̪s̪ʼ,tʃʼ,tʃʷʼ,t̪s̪ː,d̪z̪,dʒ,x,xʲ,xʷ,χ,χʷ,χˤ,h,hˤ,f,s̪,ʃ,xː,χː,s̪ː,ʃː,ɣ,ʁ,ʁˤ,z̪,m,n,l,lʲ,i,iˤ,u,uˤ,r,e,eˤ,ə,əˤ,o,oˤ,w,j,a,aˤ
+Tsimshian, Coast	PENUTIAN	p,t,k,kʷ,q,pʼ,tʼ,kʼ,kʼʷ,qʼ,ɯ,u,ts,ɪ,tsʼ,ɛ,ɔ,dz,æ,s,ɬ,χ,m,n,mʼ,n’,w,l,j,ɰ,h,wʼ,lʼ,jʼ,ɰʼ,ʔ
+Tswana	NIGER-CONGO (Bantu)	ʘ,ǀ,ǃ,ǁ,ǂ,nǀ,nǁ,pʰ,tʰ,tsʰ,tlʰ,tʃʰ,kʰ,kxʰ,pʼ,tʼ,tsʼ,tlʼ,tʃʼ,kʼ,i,u,b,dʒ,e,o,ɸ,s,ʃ,x,h,ɛ,ɔ,r,l,a,m,n,ɲ,ŋ,w,j
+Tukang Besi	AUSTRONESIAN	p,t̪,k,ʔ,ɡ,ɓ,ɗ̪,p,n̪t̪,k,i,ɯ,b,ⁿd̪,ɡ,ɛ,o,s,h,a,β,ⁿs,m,n,ɲ,ŋ,r,l
+Turkana	NILO-SAHARAN	p,t,c,k,b,d,ɟ,ɡ,i,u,i̥,u̥,s,ɪ,ʊ,ɪ̥,ʊ̥,m,n,ɲ,ŋ,e,o,e̥,o̥,l,ɛ,ɔ,ɛ̥,ɔ̥,r,a,ḁ,j,w
+Turkish	ALTAIC (Turkic)	p,t̪,tʃ,k,b,d̪,dʒ,ɡ,i,y,ɨ,u,f,s,ʃ,h,e,ø,a,o,v,z,ʒ,l,m,n̪,r,j
+Turkmen	ALTAIC (Turkic)	p,t,k,b,d,ɡ,i,y,u,ts,tʃ,ɛ,ø,ʌ,ɔ,dʒ,æ,a,f,θ,ʃ,h,ð,ʒ,m,n,ŋ,l,r,w,j
+Tuvaluan	AUSTRONESIAN	p,t,k,f,s,h,i,u,v,e,o,m,n̪,ŋ,a,l
+Tyvan (Tuvin)	ALTAIC (Turkic)	pʰ,tʰ,p,t,tʃ,k,i,y,ɨ,u,ɡ,e,ø,a,o,f,s,ʃ,x,z,ʒ,iː,yː,ɨː,uː,m,n,ŋ,eː,øː,aː,oː,r,l,ʋ,j
+Tzotzil	MAYAN	p,t,k,ʔ,pʼ,tʼ,kʼ,i,u,b,e,o,s,ʃ,x,a,m,n,l,r,v,j
+Tzutujil (Western Tzutujil)	MAYAN	p,t,k,q,pʼ,tʼ,kʼ,qʼ,ʔ,ɪ,ʊ,ɛ,ɔ,ts,tʃ,a̝,tsʼ,tʃʼ,s,ʃ,χ,iː,uː,m,n,eː,oː,l,aː,r,w,j
+Tzutujil (Western Tzutujil) (San Juan variety)	MAYAN	p,t,k,q,pʼ,tʼ,kʼ,qʼ,ʔ,ɪ,ʊ,ɛ,ɔ,ts,tʃ,a̝,tsʼ,tʃʼ,s,ʃ,χ,iː,uː,m,n,eː,oː,l,aː,r,w,j
+Tzutujil (Western Tzutujil) (Santiago Atitlán variety)	MAYAN	p,t,k,q,pʼ,tʼ,kʼ,qʼ,ʔ,ɪ,ʊ,ɛ,ɔ,ts,tʃ,a̝,tsʼ,tʃʼ,s,ʃ,χ,iː,uː,m,n,eː,oː,l,aː,r,w,j,ie,uo
+Ubykh	NORTH CAUCASIAN	p,pˤ,t,tʷ,ts,tsʷ,tʃ,tʂ,t̻ɕ,kʲ,kʷ,qʲ,q,qʷ,qˤ,qˤʷ,b,bˤ,d,dʷ,dz,dzʷ,dʒ,dʐ,d̻ʑ,ɡʲ,ɡʷ,pʼ,pʼˤ,tʼ,tʼʷ,tsʼ,tsʼʷ,tʃʼ,tʂʼ,t̻ɕʼ,tɬʼ,kʼʲ,kʼʷ,qʼʲ,qʼ,qʼʷ,qʼˤ,qʼˤʷ,f,s,sʷ,ʃ,ʃ̥ʷ,ʂ,ɕ,ɬ,x,xʷ,χʲ,χ,χʷ,χˤ,χˤʷ,h,vˤ,z,zʷ,ʒ,ʒ̥ʷ,ʐ,ʑ,ɮ,ɣ,ʁʲ,ʁ,ʁʷ,ʁˤ,ʁˤʷ,m,mˤ,n,r,ə,w,wˤ,j,a
+Uhami (Okpamheri)	NIGER-CONGO (Edoid)	p,t,k,k͡p,b,d,ɡ,ɡ͡b,i,u,f,s,h,ʊ,v,z,e,o,h̃,ɛ,ɔ,m,n,a,r,l,j,w
+Ukrainian	INDO-EUROPEAN (Slavic)	p,t,tʲ,k,kʲ,b,d,dʲ,i,ɨ,u,ts,tsʲ,tʃ,tʃʲ,e,o,dz,dzʲ,dʒ,a,f,s,sʲ,ʃ,ʃʲ,x,v,z,zʲ,ʒ,ʒʲ,ɣ,ɣʲ,m,n,nʲ,l,lʲ,r,rʲ,j
+Ukue	NIGER-CONGO (Edoid)	t̪,t,k,k͡p,b,d̪,d,ɡ,ɡ͡b,i,ĩ,u,ũ,f,h,e,o,β,v,ɛ,ɛ̃,ɔ,ɔ̃,ʃ,a,ã,r̥,r,l,j,w
+Umbundu	NIGER-CONGO (Bantu)	p,t,c,k,b,ⁿd,ⁿɟ,ɡ,ĩ,ũ,i,u,f,s,h,e,o,m,n,ɲ,ŋ,ã,a,ʋ,l,j,ʋ̃,l̃,j̃,ɦ̃
+Uneme	NIGER-CONGO (Edoid)	p,t,k,k͡p,b,d,ɡ,ɡ͡b,i,u,k̂,k̂͡p̂,e,o,ɡ̂,ɡ̂͡b̂,ɛ,ɔ,f,s,h,a,v,z,v̤,z̤,h̃,m,n,m̂,n̂,r,r̥,ʋ,j,w
+Ura	EAST PAPUAN	p,t,k,b,ⁿd,ɡ,ɸ,s,h,i,u,β,ɣ,e,o,m,n,ŋ,a,l,ɾ,w,j
+Urdu, Dakkhini	INDO-EUROPEAN (Indo-Aryan)	pʰ,tʰ,ʈʰ,tʃʰ,kʰ,p,t,ʈ,tʃ,k,i,ĩ,u,ũ,bʰ,dʰ,ɖʰ,dʒʰ,ɡʰ,ɪ,ɪ̃,ʊ,ʊ̃,b,d,ɖ,dʒ,ɡ,e,ẽ,ə,ə̃,o,f,s,ʃ,x,h,a,ã,z,ɣ,mʰ,nʰ,əi,əu,m,n,ɳ,ŋ,əe,əo,lʰ,l,ɭ,ɽʰ,r,ɽ,ʋʰ,jʰ,ʋ,j
+Urhobo	NIGER-CONGO (Edoid)	p,t,c,k,k͡p,b,d,ɟ,ɡ,ɡ͡b,i,ĩ,u,ũ,ɸ,f,s,ɕ,h,e,ẽ,o,õ,v,z,ʑ,ɣ,ɛ,ɛ̃,ɔ,ɔ̃,m,n,ɲ,a,ã,l,ɾˡ,r̥,ʋ,j,w
+Usarufa	TRANS-NEW GUINEA	ʔ,ʔp,ʔt,ʔk,s,β,ɣ,i,u,m,n,e,ə,o,mː,nː,ʔm,ʔn,ɾ,w,j,ʔw,ʔj
+Uvbie	NIGER-CONGO (Edoid)	p,t,c,k,k͡p,b,d,ɟ,ɡ,ɡ͡b,i,ĩ,u,ũ,f,s,ç,h,e,ẽ,o,õ,v,z,ɟʝ,ɛ,ɛ̃,ɔ,ɔ̃,m,ɲ,a,ã,r,ɾ,l,ʋ,j,w
+Vei (Vai)	NIGER-CONGO	p,t,tʃ,k,b,d,ɡ,ɡ͡b,i,u,f,s,h,ʊ,v,z,e,o,m,n,ŋ,ɛ,ɔ,r,ʀ,a,w,j
+Venda	NIGER-CONGO (Bantu)	pʰ,t̪ʰ,tʰ,kʰ,pʰʷ,pʼ,t̪ʼ,tʼ,tʲʼ,kʼ,pʷʼ,b,d̪,d,dʲ,ɡ,bʷ,i,u,pfʰ,tsʰ,tʃʰ,tswʰ,e,o,bv,dz,dʒ,dzʷ,a,ɸ,f,s,ʃ,x,sʷ,β,v,z,ʒ,zʷ,m,n̪,n,ɲ,ŋ,ŋʷ,l̪,l,r,j,w,h
+Vietnamese	AUSTRO-ASIATIC	tʰ,p,t,c,k,tr,i,ɯ,u,b,ɡ,e,ʌ,o,f,s,ʃ,x,h,ʌ̆,v,z,ʒ,æ,a,ɒ,l,ă,m,n,ɲ,ŋ,r,w,j
+Waffa	TRANS-NEW GUINEA	p,t,k,ʔ,b,ⁿd,ɡ,ɸ,s,h,i,u,β,e,ə,o,m,n,ŋ,βm,ɾ̃,ɾ,j
+Wambaya	AUSTRALIAN	b,d,ɖ,ɟ,ɡ,m,n,ɳ,ɲ,ŋ,i,u,l,ɭ,ʎ,a,r,w,ɻ,j
+Wangkangurru	AUSTRALIAN (Pama-Nyungan)	p,t̪,t,ʈ,c,k,m,n̪,n,ɳ,ɲ,ŋ,i,u,l̪,l,ɭ,ʎ,a,ɾ,r,w,ɻ,j
+Wangkangurru (Eastern)	AUSTRALIAN (Pama-Nyungan)	p,t̪,t,ʈ,c,k,m,n̪,n,ɳ,ɲ,ŋ,i,u,l̪,l,ɭ,ʎ,a,ɾ,r,w,ɻ,j
+Waorani	UNCLASSIFIED	p,t,tʃ,k,ĩ,õ,i,o,b,d,ɡ,ẽ,e,m,n,ɲ,ŋ,æ̃,ã,æ,a,w,j
+Warembori	LOWER MAMBERAMO	p,t,k,b,d,b̏,d̏,i,u,s,e,o,m,n,a,m̏,n̏,l,w,j
+Warlpiri	AUSTRALIAN (Pama-Nyungan)	p,t,ʈ,c,k,m,n,ɳ,ɲ,ŋ,i,u,l,ɭ,ʎ,a,ɾ,ɽ,w,ɻ,j
+Warrwa	AUSTRALIAN	k,b,d,ɖ,ɟ,m,n,ɳ,ɲ,ŋ,i,u,l,ɭ,ʎ,a,ɾ,w,ɻ,j
+Welsh	INDO-EUROPEAN (Celtic)	p,t,k,b,d,ɡ,i,ɨ,u,f,θ,s,ʃ,χ,h,ɪ,ɨ̞,ʊ,v,ð,e,o,m,n,ŋ,ɛ,ə,ɒ,ɬ,a,ɑ,l,r̥,r,w,j
+Welsh (north)	INDO-EUROPEAN (Celtic)	p,t,k,b,d,ɡ,i,ɨ,u,f,θ,s,ʃ,χ,h,ɪ,ɨ̞,ʊ,v,ð,e,o,m,n,ŋ,ɛ,ə,ɒ,ɬ,a,ɑ,l,r̥,r,w,j
+Welsh (south)	INDO-EUROPEAN (Celtic)	p,t,k,b,d,ɡ,i,ɨ,u,f,θ,s,ʃ,χ,h,ɪ,ɨ̞,ʊ,v,ð,e,o,m,n,ŋ,ɛ,ə,ɒ,ɬ,a,ɑ,l,r̥,r,w,j
+Wichita	CADDOAN	kʷ,t,k,ʔ,i,iː,iːː,ts,e,eː,eːː,s,a,aː,aːː,r,w,j,h
+Wirangu	AUSTRALIAN (Pama-Nyungan)	b,d̪,d,ʈ,ɟ,ɡ,m,n̪,n,ɳ,ɲ,ŋ,i,u,l̪,l,ɭ,ʎ,a,r,w,ɻ,j
+Wisa (Lala-Bisa)	NIGER-CONGO	p,t,tʃ,k,b,d,ɡ,i,u,f,s,e,o,v,z,a,m,n,ɲ,ŋ,l,w,j
+Wiyot	ALGIC	p,t̪,k,kʷ,ʔ,b,d̪,ɡ,ɡʷ,i,u,ts,tç,ɪ,dʝ,e,o,s,ɬ,ç,x,ɛ,ʌ,ɔ,β,ɣ,æ,a,m,n̪,l,ɾ,r,w,j,h
+Wolaytta	AFRO-ASIATIC	pʰ,t,tʃ,k,ʔ,b,ɖ,ɡ,i,u,pʼ,tʼ,cʼ,kʼ,e,o,ɗ,a,ʔm,ʔn,ʔl,f,s,ʃ,h,z,m,n,r,l,w,j
+Woleaian	AUSTRONESIAN	p,t,tʃ,k,ɸ,f,s,ʂ,x,i,ʉ,u,m,n,ŋ,e,o,mʷ,a,ɺ,ɽ
+Wolio	AUSTRONESIAN	p,t,c,k,ʔ,b,d,ɟ,ɡ,p,ⁿt,ⁿc,k,b,ⁿd,ⁿɟ,ɡ,i,u,s,h,e,o,v,a,m,n,ɲ,ŋ,ʀ,l
+Wolof	NIGER-CONGO	p,t,c,k,q,b,d,ɟ,ɡ,i,iː,u,uː,f,s,x,e,eː,ə,o,oː,m,n,ɲ,ŋ,ɛ,ɛː,ɔ,ɔː,r,a,aː,l,j,w
+Xakas (Khakas)	ALTAIC (Turkic)	p,t,tʃ,k,i,y,ɨ,u,d,dʒ,ɡ,ɪ,s,e,ø,a,o,m,n,ŋ,r,iː,yː,ɨː,uː,l,eː,øː,aː,oː,j
+Xhosa	NIGER-CONGO (Bantu)	pʰ,p,p,tʰ,t,ⁿt,cʰ,c,ⁿc,kʰ,k,k,bʰ,b,b,d,ⁿd,ɟ,ⁿɟ,ɡ,ɡ,ǀʰ,ǀ,nǀ,ǂʰ,ǂ,nǂ,ɡǀ,nɡǀ,ɡǂ,nɡǂ,ǁʰ,ǁ,nǁ,i,u,ɡǁ,nɡǁ,e,o,ts,ⁿts,tʃ,ⁿtʃ,a,dz,ⁿdz,tɬ,ⁿtɬ,dl,ⁿdl,f,f,s,ʃ,h,v,v,z,ʒʰ,ʒ,ɣʰ,ɣ,ʕ,ɬ,m,n,ɲ,ŋ,l,w,j
+Yapese	AUSTRONESIAN	p,t̪,ʈʂ,k,ʔ,b,d̪,ɖʐ,ɡ,iː,uː,pʼ,t̪ʼ,kʼ,eː,øː,f,θ,ʂ,h,ɛː,ɔː,fʼ,θʼ,aː,ɑː,m,n̪,ŋ,mʼ,n̪ʼ,ŋʼ,i,u,l̪,ɽ,e,ø,l̪ʼ,ɛ,ɔ,w,j,a,ɑ,wʼ,jʼ
+Yaqui, Sonora	UTO-AZTECAN	p,t,tʃ,k,ʔ,b,i,u,bʷ,e,o,s,h,a,m,n,l,ɾ,w,j
+Yavapai	HOKAN	pʰ,t̪ʰ,tʃʰ,kʰ,kʰʷ,p,t̪,tʃ,kʲ,k,kʷ,q,qʷ,ʔ,i,u,θ,s,h,ʍ,e,o,β,a,m,n,ɲ,l̪,r,w,j
+Yavapai, Western (Tolkapaya dialect)	HOKAN	p,t,tʃ,kʲ,k,kʷ,q,qʷ,ʔ,θ,s,ʃ,h,hʷ,i,u,v,iː,uː,m,n,nʲ,e,o,l,eː,oː,r,a,w,j,aː
+Yiddish	INDO-EUROPEAN (Germanic)	p,t,k,b,d,ɡ,i,u,ts,ɛ,ɔ,f,s,ʃ,x,a,v,z,ʒ,m,n,ŋ,ej,ɔj,l,aj,r
+Yidiɲ	AUSTRALIAN (Pama-Nyungan)	b,d,ɟ,ɡ,m,n,ɲ,ŋ,i,u,l,a,r,w,ɻ,j
+Yinggarda	AUSTRALIAN (Pama-Nyungan)	p,t̪,t,ʈ,c,k,m,n̪,n,ɳ,ɲ,ŋ,i,u,l̪,l,ɭ,ʎ,a,r,w,ɻ,j
+Yir-Yoront	AUSTRALIAN (Pama-Nyungan)	p,t̪,t,ʈ,c,k,ʔ,m,n̪,n,ɳ,ɲ,ŋ,i,u,l̪,l,ɭ,e,ə,o,ɾ,a,w,ɻ,j
+Yom (Pila)	NIGER-CONGO	p,t,c,k,k͡p,i,iː,u,uː,b,d,ɟ,ɡ,ɡ͡b,ʊ,ʊː,f,s,h,e,eː,o,oː,v,z,ɛ,ɛː,ə,ɔ,ɔː,m,n,ɲ,ŋ,ŋ͡m,a,aː,l,j,w,qɰ
+Yoruba	NIGER-CONGO	t,k,k͡p,b,d,dʒ,ɡ,ɡ͡b,i,ĩ,u,ũ,f,s,ʃ,h,e,o,m,n,ɛ,ɛ̃,ɔ,ɔ̃,r,a,ã,j,w
+Yuchi	LANGUAGE ISOLATE	pʰ,tʰ,kʰ,p,t,k,ʔ,i,u,b,d,ɡ,e,o,tsʰ,tʃʰ,æ,a,ts,tʃ,dz,dʒ,jẽ,ẽ,õ,f,s,ʃ,h,ã,n,ɬ,l,w,j
+Yukuben	NIGER-CONGO	p,t,k,ts,i,u,b,d,ɡ,ɨ,b,ⁿd,ɡ,ɛ,ɔ,f,s,h,a,v,z,ɣ,m,n,ŋ,N?,l,r,w,j
+Yupik, Central	ESKIMO-ALEUT	p,t,k,q,b,d,ɡ,ɢ,i,u,ts,a,f,s,ʃ,x,χ,l,m,n,ŋ,ɴ,w,j
+Yurok	ALGIC	p,t̪,k,kʷ,pʼ,t̪ʼ,kʼ,kʼʷ,ʔ,iː,uː,tʃ,i,u,tʃʼ,ɹː,s,ʃ,h,ɹ,ɬ,oː,ɣ,e,o,m,n̪,aː,l,a,w,r,j
+Zina Kotoko	AFRO-ASIATIC (Chadic)	p,t,tʃ,k,b,d,dʒ,ɡ,i,u,ɓ,ɗ,e,ə,o,f,s,a,v,z,ɣ,m,n,l,r,w,j,h,ʔ
+Zulgo (Zulgwa)	AFRO-ASIATIC (Chadic)	p,t,c,k,kʷ,b,d,ɟ,ɡ,ɡʷ,ɓ,ɗ,i,u,b,ⁿd,ɡ,e,ø,o,ts,ə,ɔ,dz,a,f,s,ɕ,v,z,ʑ,ɬ,ɮ,m,n,ŋ,l,r,w,j,h
+Zulu	NIGER-CONGO (Bantu)	pʰ,tʰ,kʰ,ǀ,ǃ,ǁ,ts,tʃ,ⁿtʃ,k,ǀʰ,ǃʰ,ǁʰ,pʼ,tʼ,kʼ,ɡǀ,ɡǃ,ɡǁ,b,d,dʒ,ⁿdʒ,ɡ,nǀ,nǃ,nǁ,ɓ,f,f,s,ⁿs,ʃ,h,v,v,z,ⁿz,ɦ,ɬ,ⁿdlʼ,klʼ,i,u,ɮ,mnl,e,o,m,n,ɲ,ŋ,a,l,j,w
+Zway	AFRO-ASIATIC (Semitic)	t̪,tʃ,k,ʔ,b,d̪,dʒ,ɡ,i,ɨ,u,t̪ʼ,tʃʼ,kʼ,e,ə,o,f,s̪,ʃ,h,a,z̪,ʒ,m,n̪,ɲ,l̪,ɾ̪,w,j

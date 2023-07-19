@@ -1,0 +1,174 @@
+unicode-ipa,x-sampa,category,description,ASJPcode
+i,i,vowel,close front unrounded vowel,i
+ɪ ĭ I,I,vowel,near-close near-front unrounded vowel,i
+u,u,vowel,close back rounded vowel,u
+ʊ,U,vowel,near-close near-back rounded vowel,u
+e,e,vowel,close-mid front unrounded vowel,e
+ɛ,E,vowel,open-mid front unrounded vowel,E
+o,o,vowel,close-mid back rounded vowel,o
+ɔ,O,vowel,open-mid back rounded vowel,o
+a,a,vowel,open front unrounded vowel,a
+æ,{,vowel,near-open front unrounded vowel,E
+y,y,vowel,close front rounded vowel,i
+ʏ,Y,vowel,near-close near-front rounded vowel,i
+ø,2,vowel,close-mid front rounded vowel,e
+œ,9,vowel,open-mid front rounded vowel,E
+ə ǝ ɚ,@,vowel,schwa,3
+ɘ,@\,vowel,close-mid central unrounded vowel,3
+ɯ,M,vowel,close back unrounded vowel,u
+ɑ,A,vowel,open back unrounded vowel,o
+ɨ,1,vowel,close central unrounded vowel,3
+ɞ,3\,vowel,open-mid central rounded vowel,3
+ɜ ɝ,3,vowel,open-mid central unrounded vowel,3
+ɐ,6,vowel,near-open central vowel,a
+ɤ,7,vowel,close-mid back unrounded vowel,o
+ɵ,8,vowel,close-mid central rounded vowel,3
+ʉ,},vowel,close central rounded vowel,3
+ᵻ ɪ̈,I\,vowel,near-close central unrounded vowel,3
+ɶ,&,vowel,open front rounded vowel,E
+ɒ,Q,vowel,open back rounded vowel,o
+ᵿ ʊ̈,U\,vowel,near-close central rounded vowel,3
+ʌ,V,vowel,open-mid back unrounded vowel,o
+t͡s t͜s ʦ tˢ,ts,affricate,voiceless alveolar affricate,c
+d͡z d͜z ʣ,dz,affricate,voiced alveolar affricate,c
+t͡ʃ t͜ʃ ʧ,tS,affricate,voiceless palato-alveolar affricate,C
+d͡ʒ d͜ʒ ʤ ǰ,dZ,affricate,voiced palato-alveolar affricate,j
+t͡ɕ t͜ɕ ʨ,ts\,affricate,voiceless alveolo-palatal affricate,C
+d͡ʑ d͜ʑ ʥ,dz\,affricate,voiced alveolo-palatal affricate,j
+t͡ɬ t͜ɬ ƛ,tK,affricate,voiceless alveolar lateral affricate,C
+k͡p k͜p,kp,affricate,voiceless labial-velar plosive,p
+ɡ͡b,gb,affricate,voiced labial-velar plosive,b
+ɫ,5,approximant,velarized alveolar lateral approximant,L
+ɥ,H,approximant,labial-palatal approximant,L
+j,j,approximant,palatal approximant,y
+l,l,approximant,alveolar lateral approximant,l
+ʎ,L,approximant,palatal lateral approximant,L
+ɭ,l`,approximant,retroflex lateral approximant,L
+ʟ,L\,approximant,velar lateral approximant,L
+ɰ,M\,approximant,velar approximant,L
+ɹ,r\,approximant,alveolar approximant,L
+ɻ,r\`,approximant,retroflex approximant,L
+ʋ,v\,approximant,labiodental approximant,L
+w,w,approximant,labial-velar approximant,w
+ɾ,4,flap,alveolar flap,r
+ɺ,l\,flap,alveolar lateral flap,r
+ɽ,r`,flap,retroflex flap,r
+β,B,fricative,voiced bilabial fricative,b
+ç,C,fricative,voiceless palatal fricative,c
+ð,D,fricative,voiced dental fricative,8
+f,f,fricative,voiceless labiodental fricative,f
+ɣ,G,fricative,voiced velar fricative,x
+h,h,fricative,voiceless glottal fricative,h
+ɦ,h\,fricative,voiced glottal fricative,h
+ʜ,H\,fricative,voiceless epiglottal fricative,h
+ʝ,j\,fricative,voiced palatal fricative,h
+ɮ,K\,fricative,voiced alveolar lateral fricative,h
+ɬ,K,fricative,voiceless alveolar lateral fricative,L
+ɸ,p\,fricative,voiceless bilabial fricative,p
+ʁ,R,fricative,voiced uvular fricative,X
+s,s,fricative,voiceless alveolar fricative,s
+ɕ,s\,fricative,voiceless alveolo-palatal fricative,s
+ʃ,S,fricative,voiceless postalveolar fricative,S
+ʂ,s`,fricative,voiceless retroflex fricative,S
+θ,T,fricative,voiceless dental fricative,8
+ʢ,<\,fricative,voiced epiglottal fricative,X
+ʕ,?\,fricative,voiced pharyngeal fricative,X
+v,v,fricative,voiced labiodental fricative,v
+ʍ,W,fricative,voiceless labial-velar fricative,v
+ħ,X\,fricative,voiceless pharyngeal fricative,X
+ɧ,x\,fricative,voiceless palatal-velar fricative,x
+x,x,fricative,voiceless velar fricative,x
+χ,X,fricative,voiceless uvular fricative,X
+ʑ,z\,fricative,voiced alveolo-palatal fricative,z
+ʐ,z`,fricative,voiced retroflex fricative,z
+z,z,fricative,voiced alveolar fricative,z
+ʒ,Z,fricative,voiced postalveolar fricative,Z
+ɓ,b_<,implosive,voiced bilabial implosive,b
+ɗ,d_<,implosive,voiced alveolar implosive,d
+ɠ,g_<,implosive,voiced velar implosive,g
+ʛ,G\_<,implosive,voiced uvular implosive,g
+ʄ,J\_<,implosive,voiced palatal implosive,f
+ɱ,F,nasal,labiodental nasal,m
+ɲ,J,nasal,palatal nasal,5
+m,m,nasal,bilabial nasal,m
+n,n,nasal,alveolar nasal,n
+ŋ,N,nasal,velar nasal,N
+ɳ,n`,nasal,retroflex nasal,N
+ɴ,N\,nasal,uvular nasal,N
+b,b,plosive,voiced bilabial plosive,b
+c,c,plosive,voiceless palatal plosive,T
+d,d,plosive,voiced alveolar plosive,d
+ɖ,d`,plosive,voiced retroflex plosive,d
+ʡ,>\,plosive,epiglottal plosive,X
+ɢ,G\,plosive,voiced uvular plosive,g
+ɡ g,g,plosive,voiced velar plosive,g
+ɟ,J\,plosive,voiced palatal plosive,T
+k,k,plosive,voiceless velar plosive,k
+p,p,plosive,voiceless bilabial plosive,p
+q,q,plosive,voiceless uvular plosive,q
+t,t,plosive,voiceless alveolar plosive,t
+ʈ,t`,plosive,voiceless retroflex plosive,t
+ˑ,:\,suprasegmental,half long,
+‿,-\,suprasegmental,linking mark,
+ː,:,suprasegmental,long,
+‖,||,suprasegmental,major (intonation) group,
+|,|,suprasegmental,minor (foot) group,
+ˈ,",suprasegmental,primary stress,
+ˌ,%,suprasegmental,secondary stress,
+̆,_X,suprasegmental,extra-short,
+ʙ,B\,trill,bilabial trill,r
+r,r,trill,alveolar trill,r
+ʀ,R\,trill,uvular trill,r
+̥,_0,diacritic,voiceless,
+̘,_A,diacritic,advanced tongue root,
+̺,_a,diacritic,apical,
+̟,_+,diacritic,advanced,
+˩ ̏ ,_B,diacritic,extra low tone,
+˩˨ ᷅ ,_B_L,diacritic,low rising tone,
+̈,_",diacritic,centralized,
+̜,_c,diacritic,less rounded,
+̪,_d,diacritic,dental,
+ꜜ,!,diacritic,downstep,
+ʼ,_>,diacritic,ejective,
+̴,_e,diacritic,velarized or pharyngealized,
+˥˩ ̂ ,_F _\,diacritic,falling tone,
+↘,<F>,diacritic,global fall,
+ˠ,_G,diacritic,velarized,
+ʰ,_h,diacritic,aspirated,h~
+˦ ́ ,_H,diacritic,high tone,
+˦˥ ᷄ ,_H_T,diacritic,high rising tone,
+ʲ,_j,diacritic,palatalized,y~
+̰,_k,diacritic,creaky voice,
+ˡ,_l,diacritic,lateral release,
+˨ ̀ ,_L,diacritic,low tone,
+,_m,diacritic,laminal,
+˧ ̄ ,_M,diacritic,mid tone,
+,_~,diacritic,nasalization,*
+̼,_N,diacritic,linguolabial,
+ⁿ,_n,diacritic,nasal release,
+̚,_},diacritic,no audible release,
+̯,_^,diacritic,non-syllabic,
+̞,_o,diacritic,lowered,
+̹,_O,diacritic,more rounded,
+ˤ,_?\,diacritic,pharyngealized,
+̙,_q,diacritic,retracted tongue root,
+̠,_-,diacritic,retracted,
+˦˥˦ ᷈ ,_R_F,diacritic,rising falling tone,
+↗,<R>,diacritic,global rise,
+˞,`,diacritic,rhotacization in vowels,
+˩˥̌ ,_/ _R,diacritic,rising tone,
+̝,_r,diacritic,raised,
+,_=,diacritic,syllabic,
+̤,_t,diacritic,breathy voice,
+˥ ̋ ,_T,diacritic,extra high tone,
+̋ꜛ,^,diacritic,upstep,
+̬,_v,diacritic,voiced,"
+ʷ,_w,diacritic,labialized,w~
+̽,_x,diacritic,mid-centralized,
+ǁ,|\|\,click,alveolar lateral click,!
+ǀ,|\,click,dental click,!
+ʘ,O\,click,bilabial click,!
+ǂ,=\,click,palatal click,!
+ǃ,!\,click,postalveolar click,!
+.,.,syllablesep,syllable break,
+ʔ,?,stop,glottal stop,7
