@@ -94,7 +94,31 @@ new_consonants = [
 # TODO: check if this is correct
 consonants = old_consonants + new_consonants
 
-# TODO: add list of verbs
+# TODO: add list of vowels
+old_vowels = [
+    "i",
+    "y",
+    "e",
+    "E",
+    "ø",
+    "ɛ",
+    "œ",
+    "æ",
+    "a",
+    "A",
+    "ɨ",
+    "ʉ",
+    "ə",
+    "u",
+    "U",
+    "o",
+    "O",
+    "ɔ",
+    "ɒ",
+    "I",
+]
+new_vowels = ["ɪ", "ʏ", "ʊ", "ɐ", "ɶ", "ɑ"]
+vowels = old_vowels + new_vowels
 
 # Relevant features for comparing consonants and vowels
 R_c = [

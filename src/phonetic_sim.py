@@ -1,24 +1,45 @@
 # Create phoneme categories
 phoneme_categories = {
-    "aehijouwæɑɒɔəɛɜɪʊʌʔ": 0,  # vowels, semivowels, and weak consonants
-    "bfpv": 1,  # labial consonants
-    "ksxzɡʃʒ": 2,  # velars and sibilant consonants
-    "dtðθ": 3,  # dental consonants
-    "l": 4,  # lateral consonant
-    "mnŋ": 5,  # nasals
-    "ɹ": 6,  # rhotic
+    "iyeøɛœæaɑɒɔəɜɪʊʌɘɵɤʉɨʘuo": 0,  # vowels
+    "wɥɹjɰ": 1,  # semivowels
+    "bfpv": 2,  # bilabial and labiodental plosives/fricatives
+    "m": 3,  # bilabial nasal
+    "θð": 4,  # dental fricatives
+    "tdʈɖ": 5,  # alveolar and post-alveolar plosives
+    "n": 6,  # alveolar nasal
+    "ɳ": 7,  # retroflex nasal
+    "ʃʒ": 8,  # post-alveolar fricatives
+    "ɕʑ": 9,  # alveolo-palatal fricatives
+    "rl": 10,  # alveolar and post-alveolar liquids
+    "ɾɽ": 11,  # flaps
+    "cɟkɡqɢ": 12,  # velar and uvular plosives
+    "ŋɴ": 13,  # velar, uvular, and pharyngeal nasals
+    "xɣχʁħʕ": 14,  # velar, uvular, and pharyngeal fricatives
+    "ʔ": 15,  # glottal stop
+    "ʍh": 16,  # other glottal consonants
+    "ʙrʀ": 17,  # trills
+    "ɬɮ": 18,  # lateral fricatives
+    "ʎʟ": 19,  # lateral approximants
+    "ʦʣʧʤ": 20,  # affricates
+    "ʘǀǃǂǁ": 21,  # clicks
 }
 
 # Flatten the dictionary to map each phoneme to its category
 phoneme_to_category = {
     phoneme: category
-    for category, phonemes in phoneme_categories.items()
+    for phonemes, category in phoneme_categories.items()
     for phoneme in phonemes
 }
 
 
 def phoneme_similarity(phoneme1, phoneme2):
     """Calculates the similarity between two phonemes."""
+    # Test if the phoneme exist in the dictionary
+    if phoneme1 not in phoneme_to_category:
+        print(f"{phoneme1} is not a known phoneme")
+    if phoneme2 not in phoneme_to_category:
+        print(f"{phoneme2} is not a known phoneme")
+
     if phoneme1 == phoneme2:
         return 1
     elif phoneme_to_category.get(phoneme1) == phoneme_to_category.get(phoneme2):
