@@ -15,7 +15,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const sourceRepo = 'GITHUB-USER/GITHUB-REPO';
+            const sourceRepo = 'StephanAkkerman/fintwit-bot';
             // Example: const sourceRepo = 'StephanAkkerman/fintwit-bot';
             const targetOwner = context.repo.owner;
             const targetRepo = context.repo.repo;
