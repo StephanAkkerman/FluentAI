@@ -23,6 +23,10 @@ phoneme_categories = {
     "ʦʣʧʤ": 20,  # affricates
     "ʘǀǃǂǁ": 21,  # clicks
 }
+# ˈ = primary stress
+# . = syllable break
+# ͡  = tie bar
+others = ["ˈ", ".", " ͡  "]
 
 # Flatten the dictionary to map each phoneme to its category
 phoneme_to_category = {
@@ -36,9 +40,11 @@ def phoneme_similarity(phoneme1, phoneme2):
     """Calculates the similarity between two phonemes."""
     # Test if the phoneme exist in the dictionary
     if phoneme1 not in phoneme_to_category:
-        print(f"{phoneme1} is not a known phoneme")
+        return 0
+        # print(f"{phoneme1} is not a known phoneme")
     if phoneme2 not in phoneme_to_category:
-        print(f"{phoneme2} is not a known phoneme")
+        return 0
+        # print(f"{phoneme2} is not a known phoneme")
 
     if phoneme1 == phoneme2:
         return 1
@@ -48,8 +54,12 @@ def phoneme_similarity(phoneme1, phoneme2):
         return 0
 
 
-def word_similarity(word1, word2):
+def word_similarity(word1: str, word2: str) -> float:
     """Calculates the similarity between two words based on their phonemes."""
+    # Remove stress markers
+    word1 = [char for char in word1 if char not in others]
+    word2 = [char for char in word2 if char not in others]
+
     len1 = len(word1)
     len2 = len(word2)
     match_table = [[0] * (len2 + 1) for _ in range(len1 + 1)]

@@ -1,5 +1,3 @@
-# pip install accelerate
-# pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 

@@ -1,20 +1,14 @@
-# This could be a different approach compared to transphoner.py
+# List of supported languages
+# https://docs.google.com/spreadsheets/d/1y7kisk-UZT9LxpQB0xMIF4CkxJt0iYJlWAnyj6azSBE/edit?gid=557940309#gid=557940309
 from transformers import AutoTokenizer, T5ForConditionalGeneration
 
 from phonetic_sim import word_similarity
 
+# https://github.com/lingjzhu/CharsiuG2P
 model = T5ForConditionalGeneration.from_pretrained(
-    "charsiu/g2p_multilingual_byT5_small_100"
+    "charsiu/g2p_multilingual_byT5_small_100", cache_dir="models"
 )
-tokenizer = AutoTokenizer.from_pretrained("google/byt5-small")
-
-# tokenized English words
-# words = ["Char", "siu", "is", "a", "Cantonese", "style", "of", "barbecued", "pork"]
-# words = ["<eng-us>: " + i for i in words]
-
-# Indonesian
-# words = ["Kucing", "adalah", "hewan", "peliharaan", "yang", "lucu"]
-# words = ["<ind>: " + i for i in words]
+tokenizer = AutoTokenizer.from_pretrained("google/byt5-small", cache_dir="models")
 
 
 def g2p(words):
@@ -34,6 +28,8 @@ indonesian_word = g2p(["<ind>: Kucing"])
 # https://en.wiktionary.org/wiki/hello#English (UK)
 # IPA: /həˈləʊ/, /hɛˈləʊ/
 english_word = g2p(["<eng-uk>: Hello"])
-print(english_word[0], indonesian_word[0])
-score = word_similarity(english_word[0], indonesian_word[0])
+dutch_word = g2p(["<dut>: Koekje"])
+
+print(dutch_word[0], indonesian_word[0])
+score = word_similarity(dutch_word[0], indonesian_word[0])
 print(score)

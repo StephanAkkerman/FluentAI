@@ -1,4 +1,13 @@
 # FluentAI
+
+<p align="center">
+  <img src="https://img.shields.io/badge/python-3.10-blue.svg" alt="Supported versions">
+  <img src="https://img.shields.io/github/license/StephanAkkerman/FluentAI.svg?color=brightgreen" alt="License">
+  <a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Code style: black"></a>
+</p>
+
+---
+
 > [!CAUTION]
 > This project is currently under development, please see the issues to see everything that still needs to be done before this is ready to use.
 
