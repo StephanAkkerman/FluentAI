@@ -1,31 +1,17 @@
 import torch
-from diffusers import StableDiffusionPipeline
+from diffusers import AutoPipelineForText2Image
 
 
-# https://huggingface.co/OFA-Sys/small-stable-diffusion-v0
-def small_stable():
-    pipe = StableDiffusionPipeline.from_pretrained(
-        "OFA-Sys/small-stable-diffusion-v0",
+def sd_turbo(prompt: str = "A flashy bottle that stands out from the rest."):
+    pipe = AutoPipelineForText2Image.from_pretrained(
+        "stabilityai/sdxl-turbo",
         torch_dtype=torch.float16,
+        variant="fp16",
         cache_dir="models",
     )
-    pipe = pipe.to("cuda")
-
-    prompt = "A flashy bottle that stands out from the rest."
-    image = pipe(prompt).images[0]
-
-    image.save("apple.png")
-
-
-def mini_sd():
-    pipe = StableDiffusionPipeline.from_pretrained(
-        "lambdalabs/miniSD-diffusers", cache_dir="models"
-    )
-    pipe = pipe.to("cuda")
-
-    prompt = "A flashy bottle that stands out from the rest."
-    image = pipe(prompt, width=256, height=256).images[0]
+    pipe.to("cuda")
+    image = pipe(prompt=prompt, num_inference_steps=1, guidance_scale=0.0).images[0]
     image.save("test.jpg")
 
 
-mini_sd()
+sd_turbo()

@@ -22,14 +22,15 @@ def g2p(words):
     return phones
 
 
-# https://en.wiktionary.org/wiki/kucing#Indonesian
-# IPA(key): /ˈkut͡ʃɪŋ/
-indonesian_word = g2p(["<ind>: Kucing"])
-# https://en.wiktionary.org/wiki/hello#English (UK)
-# IPA: /həˈləʊ/, /hɛˈləʊ/
-english_word = g2p(["<eng-uk>: Hello"])
-dutch_word = g2p(["<dut>: Koekje"])
+def example():
+    # https://en.wiktionary.org/wiki/kucing#Indonesian
+    # IPA(key): /ˈkut͡ʃɪŋ/
+    indonesian_word = g2p(["<ind>: Kucing"])
+    # https://en.wiktionary.org/wiki/hello#English (UK)
+    # IPA: /həˈləʊ/, /hɛˈləʊ/
+    english_word = g2p(["<eng-uk>: Hello"])
+    dutch_word = g2p(["<dut>: Koekje"])
 
-print(dutch_word[0], indonesian_word[0])
-score = word_similarity(dutch_word[0], indonesian_word[0])
-print(score)
+    print(dutch_word[0], indonesian_word[0])
+    score = word_similarity(dutch_word[0], indonesian_word[0])
+    print(score)
