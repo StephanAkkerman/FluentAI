@@ -179,20 +179,23 @@ def get_top_x(word: str = "kucing", language: str = "ind", n: int = 15):
     print(f"Top {n} similar sounding words to '{word}': {top_5_similar_words}")
 
 
-# TODO: combination of 2 english words
-# get_top_x()
-def test():
-    import panphon.distance
+def save_embeddings(method="average", file_name="embeddings.pkl"):
+    import pickle
 
-    dst = panphon.distance.Distance().feature_edit_distance
+    embeddings = {}
+    ds = load_data()
+    phoneme_to_index = get_phoneme_to_index(ds, transcription_type="ipa")
+    for entry in ds:
+        word = entry["token_ort"]
+        transcription = entry["token_ipa"]
+        embedding = create_word_embedding(transcription, phoneme_to_index, method)
+        embeddings[word] = embedding
 
-    # add all English words here
-    WORDS = ["closing", "cucci", "gnocchi", "kissing"]
-
-    closest_word = min(WORDS, key=lambda x: dst("kucing", x))
-    # cucci
-    print(closest_word)
+    with open(file_name, "wb") as f:
+        pickle.dump(embeddings, f)
+    print(f"Embeddings saved to {file_name}")
 
 
 #  embed all words into vectors and then perform maximum-inner-product-search.
-get_top_x()
+# get_top_x()
+save_embeddings()
