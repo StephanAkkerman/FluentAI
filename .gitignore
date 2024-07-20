@@ -163,3 +163,4 @@ cython_debug/
 #.idea/
 .vscode/settings.json
 src/test.py
+word_embeddings.pkl

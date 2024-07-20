@@ -1,8 +1,11 @@
 # List of supported languages
 # https://docs.google.com/spreadsheets/d/1y7kisk-UZT9LxpQB0xMIF4CkxJt0iYJlWAnyj6azSBE/edit?gid=557940309#gid=557940309
+import sys
+
 from transformers import AutoTokenizer, T5ForConditionalGeneration
 
-from phonetic_sim import word_similarity
+sys.path.append(".")
+from src.phonetic_sim import word_similarity
 
 # https://github.com/lingjzhu/CharsiuG2P
 model = T5ForConditionalGeneration.from_pretrained(

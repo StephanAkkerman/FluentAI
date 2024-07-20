@@ -21,13 +21,17 @@ def load_data():
     # Filter for English language entries
     ds = ds.filter(lambda x: x["lang"] == "en")
 
+    return ds
+
+
+def get_phoneme_to_index(ds, transcription_type="ipa"):
     # Extract all phonemes from IPA and ARPAbet transcriptions
-    ipa_phonemes = set(itertools.chain.from_iterable(ds["token_ipa"]))
+    ipa_phonemes = set(itertools.chain.from_iterable(ds[f"token_{transcription_type}"]))
 
     # Create a mapping from phoneme to index
     phoneme_to_index = {phoneme: idx for idx, phoneme in enumerate(ipa_phonemes)}
 
-    return ds, phoneme_to_index
+    return phoneme_to_index
 
 
 def one_hot_encode_phonemes(transcription, phoneme_to_index):
@@ -114,11 +118,6 @@ def get_top_n_similar_words(
     # ]
     transcription = word
 
-    # Create the word embedding for the input word
-    new_word_embedding = create_word_embedding(
-        transcription, phoneme_to_index, method="average"
-    ).reshape(1, -1)
-
     # Transform the new word embedding using the same vectorizer
     new_word_transformed = vectorizer.transform([" ".join(transcription)])
     new_word_transformed = np.asarray(new_word_transformed.todense())
@@ -146,8 +145,21 @@ def get_IPA(word: str = "Kucing", language: str = "ind", phoneme_to_index: dict 
     return ipa
 
 
-def get_top_x(word: str = "kucing", language: str = "ind", n: int = 5):
-    ds, phoneme_to_index = load_data()
+def get_top_x(word: str = "kucing", language: str = "ind", n: int = 15):
+    import pandas as pd
+
+    from datasets import Dataset
+
+    # ds = load_data()#.to_pandas()
+    ds = pd.read_csv(
+        "data/eng_latn_us_broad.tsv", names=["token_ort", "token_ipa"], sep="\t"
+    )
+    # Remove spaces in token_ipa
+    ds["token_ipa"] = ds["token_ipa"].apply(lambda x: x.replace(" ", ""))
+    # Convert to dataset
+    ds = Dataset.from_pandas(ds)
+    # print(ds.head())
+    phoneme_to_index = get_phoneme_to_index(ds, transcription_type="ipa")
 
     # Process the dataset
     vectorizer, precomputed_embeddings, pca = process_dataset_with_vectorizer(
@@ -155,7 +167,7 @@ def get_top_x(word: str = "kucing", language: str = "ind", n: int = 5):
     )
 
     top_5_similar_words = get_top_n_similar_words(
-        get_IPA("kucing", language, phoneme_to_index),
+        get_IPA(word, language, phoneme_to_index),
         ds,
         phoneme_to_index,
         vectorizer,
@@ -168,4 +180,19 @@ def get_top_x(word: str = "kucing", language: str = "ind", n: int = 5):
 
 
 # TODO: combination of 2 english words
+# get_top_x()
+def test():
+    import panphon.distance
+
+    dst = panphon.distance.Distance().feature_edit_distance
+
+    # add all English words here
+    WORDS = ["closing", "cucci", "gnocchi", "kissing"]
+
+    closest_word = min(WORDS, key=lambda x: dst("kucing", x))
+    # cucci
+    print(closest_word)
+
+
+#  embed all words into vectors and then perform maximum-inner-product-search.
 get_top_x()
