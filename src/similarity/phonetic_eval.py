@@ -72,7 +72,7 @@ def evaluate_human_similarity(embeddings, data_hs) -> dict:
     return results
 
 
-def main():
+def human_sim():
     with open("embeddings.pkl", "rb") as f:
         embeddings = pickle.load(f)
 
@@ -86,4 +86,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    human_sim()
