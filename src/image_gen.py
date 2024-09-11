@@ -1,17 +1,18 @@
 import torch
-from diffusers import AutoPipelineForText2Image
+from diffusers import DiffusionPipeline
 
 
-def sd_turbo(prompt: str = "A flashy bottle that stands out from the rest."):
-    pipe = AutoPipelineForText2Image.from_pretrained(
-        "stabilityai/sdxl-turbo",
-        torch_dtype=torch.float16,
-        variant="fp16",
+def generate_img(prompt: str = "A flashy bottle that stands out from the rest."):
+    pipe = DiffusionPipeline.from_pretrained(
+        "black-forest-labs/FLUX.1-dev",
+        torch_dtype=torch.bfloat16,  # torch.float16,
+        # variant="fp16",
         cache_dir="models",
     )
     pipe.to("cuda")
-    image = pipe(prompt=prompt, num_inference_steps=1, guidance_scale=0.0).images[0]
+    # Play with these parameters to get different results
+    image = pipe(prompt=prompt, num_inference_steps=1, guidance_scale=3.5).images[0]
     image.save("test.jpg")
 
 
-sd_turbo()
+generate_img()

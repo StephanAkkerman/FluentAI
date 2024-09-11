@@ -1,7 +1,7 @@
 import pandas as pd
 from transphone import read_tokenizer
 
-from phonetic_sim import word_similarity
+from src.similarity.phonetic.phonetic_sim import word_similarity
 
 # https://github.com/xinjli/transphone/blob/main/doc/language.md
 ind_tokenizer = read_tokenizer("ind")

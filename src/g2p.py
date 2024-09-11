@@ -5,7 +5,7 @@ import sys
 from transformers import AutoTokenizer, T5ForConditionalGeneration
 
 sys.path.append(".")
-from src.phonetic_sim import word_similarity
+from src.similarity.phonetic.phonetic_sim import word_similarity
 
 # https://github.com/lingjzhu/CharsiuG2P
 model = T5ForConditionalGeneration.from_pretrained(
@@ -37,3 +37,6 @@ def example():
     print(dutch_word[0], indonesian_word[0])
     score = word_similarity(dutch_word[0], indonesian_word[0])
     print(score)
+
+
+example()

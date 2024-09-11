@@ -82,3 +82,28 @@ def semantic_top5(top_k: int = 5):
     print(f"Top {top_k} nearest neighbors for '{input_word}':")
     for neighbor, similarity in nearest_neighbors:
         print(f"{neighbor}: {similarity:.4f}")
+
+
+def words_distance(word1: str = "cat", word2: str = "dog") -> float:
+    # Load the embeddings from the file
+    with open("word_embeddings.pkl", "rb") as f:
+        data = pickle.load(f)
+        words = data["words"]
+        embeddings = data["embeddings"]
+
+    # Find the index of the first word
+    # What if the word is not in the list?
+    idx1 = words.index(word1.lower())
+
+    # Find the index of the second word
+    idx2 = words.index(word2.lower())
+
+    # Compute the cosine similarity between the two words
+    similarity = cosine_similarity(
+        embeddings[idx1].reshape(1, -1), embeddings[idx2].reshape(1, -1)
+    )[0][0]
+
+    return similarity
+
+
+print(words_distance("cat", "dog"))
