@@ -2,10 +2,10 @@ transphone
 scipy==1.11.1
 numpy==1.25.1
 panphon==0.20.0
-torch==2.0.1
+torch==2.2.0
 editdistance==0.6.2
-requests==2.31.0
-tqdm==4.66.2
+requests==2.32.2
+tqdm==4.66.3
 pyyaml==6.0.1
 phonepiece==1.4.2
 epitran==1.24
