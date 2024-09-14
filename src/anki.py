@@ -1,11 +1,12 @@
 import base64
-import os
 import html
+import os
 
 import requests
 
 
 class AnkiConnect:
+    # https://foosoft.net/projects/anki-connect/
     URL = "http://localhost:8765/"
     VERSION = 6
 
