@@ -164,7 +164,11 @@ def main(method="clts"):
     # Configuration
     data_file = "data/eng_latn_us_broad.tsv"
     clts_path = "data/clts-2.3.0"
-    output_file = "data/eng_latn_us_broad_vectors.csv"
+
+    if method == "clts":
+        output_file = "data/eng_latn_us_broad_vectors.csv"
+    elif method == "panphon":
+        output_file = "data/eng_latn_us_broad_vectors_panphon.csv"
     max_workers = 8  # Adjust based on your system's capabilities
 
     # Validate method
@@ -200,25 +204,6 @@ def main(method="clts"):
             description="Panphon",
         )
 
-    # Padding Vectors
-    print("Calculating maximum vector length for padding...")
-    max_length = ds["vectors"].apply(len).max()
-    print(f"Maximum vector length: {max_length}")
-    print("Padding vectors...")
-    ds["vectors_padded"] = ds["vectors"].apply(
-        lambda x: pad_vector(x, max_length, padding_value=0) if x else []
-    )
-    # Convert to string for CSV compatibility
-    ds["vectors_padded"] = ds["vectors_padded"].apply(lambda x: ";".join(map(str, x)))
-
-    # Optionally rename columns based on method
-    if method == "clts":
-        ds.rename(columns={"vectors_padded": "clts_vectors_padded"}, inplace=True)
-    elif method == "panphon":
-        ds.rename(columns={"vectors_padded": "panphon_vectors_padded"}, inplace=True)
-
-    # Save the result as a new CSV file
-    print(f"Saving the vectors to {output_file}...")
     ds.to_csv(output_file, index=False)
     print(f"Word vectors successfully saved to {output_file}")
 
@@ -228,6 +213,6 @@ if __name__ == "__main__":
     # Options:
     #   - "clts"    : Generate only CLTS vectors.
     #   - "panphon" : Generate only Panphon vectors.
-    method = "clts"  # Change this to "clts" or "panphon" as needed.
+    method = "panphon"  # Change this to "clts" or "panphon" as needed.
 
     main(method)

@@ -4,13 +4,17 @@ from ipa2vec import panphon_vec, soundvec
 from sklearn.metrics.pairwise import cosine_similarity
 
 vectorizer = panphon_vec
-vector_file = "data/eng_latn_us_broad_vectors_panphon.csv"
+vector_file = (
+    "data/eng_latn_us_broad_vectors_panphon.csv"
+    if vectorizer == panphon_vec
+    else "data/eng_latn_us_broad_vectors.csv"
+)
 
 # Load the dataset and only the top 100 rows
 ds = pd.read_csv(vector_file)
 
 # Parse the vectors from string to actual lists
-ds["token_vectors"] = ds["token_vectors"].apply(lambda x: eval(x))
+ds["vectors"] = ds["vectors"].apply(lambda x: eval(x))
 
 
 # Function to pad vectors to the maximum length
@@ -28,15 +32,24 @@ def pad_vectors(vectors):
 
 # Function to find the top 5 closest words
 def find_closest_words(ipa_word, dataset, top_n=5):
+    # Remove entries with empty vectors
+    dataset_cleaned = dataset[
+        dataset["vectors"].apply(lambda x: len(x) > 0)
+    ].reset_index(drop=True)
+
+    print(f"Removed {len(dataset) - len(dataset_cleaned)} entries with empty vectors.")
+
     # Vectorize the input IPA word
     input_vector = np.hstack(vectorizer(ipa_word)).astype(np.float32)
 
     # Flatten the dataset vectors
-    dataset_vectors_flat = [np.hstack(vec) for vec in dataset["token_vectors"]]
+    dataset_vectors_flat = [np.hstack(vec) for vec in dataset_cleaned["vectors"]]
 
     # Pad both input vector and dataset vectors
     all_vectors = [input_vector] + dataset_vectors_flat
+    print("Padding vectors...")
     padded_vectors = pad_vectors(all_vectors)
+    print("Padding complete.")
 
     # Separate the input vector from the dataset
     input_vector_padded = padded_vectors[0].reshape(1, -1)  # Reshape to (1, n_features)
@@ -49,14 +62,14 @@ def find_closest_words(ipa_word, dataset, top_n=5):
 
     # Get the top N most similar words
     top_indices = np.argsort(similarities)[-top_n:][::-1]
-    top_words = dataset.iloc[top_indices]
+    top_words = dataset_cleaned.iloc[top_indices]
 
     return top_words
 
 
 # Example usage
 # You need to pass `sv` (SoundVectors object) that you used to vectorize the IPA in your dataset
-ipa_input = "mɝəkə"  # Input IPA
+ipa_input = "kˈut͡ʃiŋ"  # Input IPA
 closest_words = find_closest_words(ipa_input, ds, top_n=5)
 
 # Display the closest words
