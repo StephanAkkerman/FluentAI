@@ -142,9 +142,9 @@ def main(ipa_input, top_n=5, vectorizer=panphon_vec, vector_column="vectors"):
     - vectorizer: Function used for vectorizing IPA input
     - vector_column: String, name of the column containing vectors
     """
-    
-    cache_file="cache/parsed_dataset.parquet"
-    
+
+    cache_file = "cache/parsed_dataset.parquet"
+
     # Attempt to load from cache
     dataset = load_cache(cache_file)
 
@@ -196,8 +196,8 @@ def main(ipa_input, top_n=5, vectorizer=panphon_vec, vector_column="vectors"):
 
 if __name__ == "__main__":
     # Example usage
-    ipa_input = "mɝəkə"  # "kˈut͡ʃiŋ"
-    top_n = 5
+    ipa_input = "kˈut͡ʃiŋ"
+    top_n = 15
     vectorizer = panphon_vec  # or soundvec
 
     main(ipa_input, top_n, vectorizer)

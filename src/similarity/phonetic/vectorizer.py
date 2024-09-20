@@ -216,3 +216,5 @@ if __name__ == "__main__":
     method = "panphon"  # Change this to "clts" or "panphon" as needed.
 
     main(method)
+
+    main("clts")
