@@ -147,9 +147,6 @@ def main(
 
         # Save to cache
         save_cache(dataset, cache_file)
-    else:
-        # If cached, skip loading and parsing
-        pass
 
     # Find closest words using DTW
     closest_words = find_closest_words_dtw(

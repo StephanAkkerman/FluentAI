@@ -6,129 +6,17 @@ import faiss
 import numpy as np
 import pandas as pd
 from ipa2vec import panphon_vec, soundvec
-
-
-def timer(func):
-    """
-    Decorator to measure the execution time of functions.
-    """
-
-    @functools.wraps(func)
-    def wrapper_timer(*args, **kwargs):
-        print(f"--- Starting '{func.__name__}' ---")
-        start_time = time.time()
-        value = func(*args, **kwargs)
-        end_time = time.time()
-        run_time = end_time - start_time
-        print(f"--- Finished '{func.__name__}' in {run_time:.2f} seconds ---\n")
-        return value
-
-    return wrapper_timer
-
-
-@timer
-def load_dataset(vectorizer, vector_column="vectors"):
-    """
-    Load the dataset based on the vectorizer.
-
-    Parameters:
-    - vectorizer: Function used for vectorizing (panphon_vec or soundvec)
-    - vector_column: String, name of the column containing vectors
-
-    Returns:
-    - DataFrame containing the dataset
-    """
-    vector_file = (
-        "data/eng_latn_us_broad_vectors_panphon.csv"
-        if vectorizer == panphon_vec
-        else "data/eng_latn_us_broad_vectors.csv"
-    )
-    try:
-        df = pd.read_csv(vector_file)
-        print(f"Dataset loaded from {vector_file}.")
-    except FileNotFoundError:
-        raise FileNotFoundError(f"Vector file {vector_file} not found.")
-    return df
-
-
-@timer
-def parse_vectors(dataset, vector_column="vectors"):
-    """
-    Parse the 'vectors' column from strings to actual lists using ast.literal_eval.
-
-    Parameters:
-    - dataset: DataFrame with 'vectors' column as strings
-    - vector_column: String, name of the column containing vectors
-
-    Returns:
-    - DataFrame with 'vectors' column as lists
-    """
-    try:
-        dataset[vector_column] = dataset[vector_column].apply(ast.literal_eval)
-        print(f"Parsed '{vector_column}' column from strings to lists.")
-    except Exception as e:
-        raise ValueError(f"Error parsing '{vector_column}' column: {e}")
-    return dataset
-
-
-@timer
-def flatten_vectors(dataset, vector_column="vectors"):
-    """
-    Flatten each vector in the 'vectors' column using np.hstack, handling empty vectors.
-
-    Parameters:
-    - dataset: DataFrame with 'vectors' column as lists of lists
-    - vector_column: String, name of the column containing vectors
-
-    Returns:
-    - List of flattened vectors
-    """
-
-    def safe_hstack(vec):
-        if len(vec) > 0:
-            return np.hstack(vec)
-        else:
-            # Determine sub-vector size if possible
-            return np.array([0.0])  # Adjust this as needed
-
-    dataset_vectors_flat = [safe_hstack(vec) for vec in dataset[vector_column]]
-    print(f"Flattened {len(dataset_vectors_flat)} vectors.")
-    return dataset_vectors_flat
-
-
-@timer
-def pad_vectors(vectors):
-    """
-    Pad all vectors to the maximum length with zeros.
-
-    Parameters:
-    - vectors: List of NumPy arrays
-
-    Returns:
-    - List of padded NumPy arrays
-    """
-    max_len = max(vec.shape[0] for vec in vectors)
-    padded_vectors = [
-        np.pad(vec, (0, max_len - len(vec)), "constant") for vec in vectors
-    ]
-    print(f"Padded vectors to maximum length {max_len}.")
-    return padded_vectors
-
-
-@timer
-def convert_to_matrix(padded_vectors):
-    """
-    Convert list of padded vectors to a NumPy matrix.
-
-    Parameters:
-    - padded_vectors: List of NumPy arrays
-
-    Returns:
-    - NumPy array matrix
-    """
-    dataset_matrix = np.array(padded_vectors, dtype=np.float32)
-    print(f"Converted padded vectors to matrix with shape {dataset_matrix.shape}.")
-    return dataset_matrix
+from utils import (
+    convert_to_matrix,
+    flatten_vector,
+    flatten_vectors,
+    load_cache,
+    load_dataset,
+    pad_vectors,
+    parse_vectors,
+    save_cache,
+    timer,
+)
 
 
 @timer
@@ -254,14 +142,26 @@ def main(ipa_input, top_n=5, vectorizer=panphon_vec, vector_column="vectors"):
     - vectorizer: Function used for vectorizing IPA input
     - vector_column: String, name of the column containing vectors
     """
-    # Load dataset
-    dataset = load_dataset(vectorizer, vector_column)
+    
+    cache_file="cache/parsed_dataset.parquet"
+    
+    # Attempt to load from cache
+    dataset = load_cache(cache_file)
 
-    # Parse vectors
-    dataset = parse_vectors(dataset, vector_column)
+    if dataset is None:
+        # Load dataset
+        dataset = load_dataset(vectorizer, vector_column)
 
-    # Flatten vectors
-    dataset_vectors_flat = flatten_vectors(dataset, vector_column)
+        # Parse vectors
+        dataset = parse_vectors(dataset, vector_column)
+
+        # Flatten vectors
+        dataset = flatten_vectors(dataset, vector_column)
+
+        # Save to cache
+        save_cache(dataset, cache_file)
+
+    dataset_vectors_flat = dataset["flattened_vectors"].tolist()
 
     # Pad vectors
     dataset_vectors_padded = pad_vectors(dataset_vectors_flat)
