@@ -134,7 +134,7 @@ def save_cache(dataset, cache_file="cache/parsed_dataset.parquet"):
     logging.info(f"Saved parsed dataset to '{cache_file}'.")
 
 
-def load_cache(cache_file="cache/parsed_dataset.parquet"):
+def load_cache(method: str = "panphon"):
     """
     Load the processed dataset from a cache file.
 
@@ -144,6 +144,11 @@ def load_cache(cache_file="cache/parsed_dataset.parquet"):
     Returns:
     - DataFrame containing the cached dataset
     """
+    if method == "clts":
+        cache_file = "cache/parsed_dataset_clts.parquet"
+    elif method == "panphon":
+        cache_file = "cache/parsed_dataset_panphon.parquet"
+
     if os.path.exists(cache_file):
         dataset = pd.read_parquet(cache_file)
         logging.info(f"Loaded parsed dataset from '{cache_file}'.")

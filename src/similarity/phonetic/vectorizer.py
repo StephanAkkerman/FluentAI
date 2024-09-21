@@ -2,9 +2,11 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import pandas as pd
 import panphon
+from ipa2vec import panphon_vec, soundvec
 from pyclts import CLTS
 from soundvectors import SoundVectors
 from tqdm import tqdm
+from utils import flatten_vectors, load_dataset, parse_vectors, save_cache
 
 
 def load_data(file_path):
@@ -208,13 +210,34 @@ def main(method="clts"):
     print(f"Word vectors successfully saved to {output_file}")
 
 
+def create_cache(method: str = "panphon", vector_column: str = "vectors"):
+    # Initialize vectorizers
+    if method == "clts":
+        vectorizer = soundvec
+        cache_file = "cache/parsed_dataset_clts.parquet"
+    elif method == "panphon":
+        vectorizer = panphon_vec
+        cache_file = "cache/parsed_dataset_panphon.parquet"
+
+    # Load dataset
+    dataset = load_dataset(vectorizer, vector_column)
+
+    # Parse vectors
+    dataset = parse_vectors(dataset, vector_column)
+
+    # Flatten vectors
+    dataset = flatten_vectors(dataset, vector_column)
+
+    # Save to cache
+    save_cache(dataset, cache_file)
+
+
 if __name__ == "__main__":
     # Configuration: Set the desired method here.
     # Options:
     #   - "clts"    : Generate only CLTS vectors.
     #   - "panphon" : Generate only Panphon vectors.
-    method = "panphon"  # Change this to "clts" or "panphon" as needed.
+    method = "clts"  # Change this to "clts" or "panphon" as needed.
 
-    main(method)
-
-    main("clts")
+    # main(method)
+    create_cache(method)

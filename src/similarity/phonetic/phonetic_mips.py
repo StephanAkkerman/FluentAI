@@ -1,22 +1,7 @@
-import ast
-import functools
-import time
-
 import faiss
 import numpy as np
-import pandas as pd
 from ipa2vec import panphon_vec, soundvec
-from utils import (
-    convert_to_matrix,
-    flatten_vector,
-    flatten_vectors,
-    load_cache,
-    load_dataset,
-    pad_vectors,
-    parse_vectors,
-    save_cache,
-    timer,
-)
+from utils import convert_to_matrix, load_cache, pad_vectors, timer
 
 
 @timer
@@ -132,7 +117,7 @@ def retrieve_closest_words(dataset, indices, top_n=5):
     return closest_words
 
 
-def main(ipa_input, top_n=5, vectorizer=panphon_vec, vector_column="vectors"):
+def main(ipa_input, top_n=5, method: str = "panphon"):
     """
     Main function to find top_n closest phonetically similar words to the input IPA.
 
@@ -142,24 +127,13 @@ def main(ipa_input, top_n=5, vectorizer=panphon_vec, vector_column="vectors"):
     - vectorizer: Function used for vectorizing IPA input
     - vector_column: String, name of the column containing vectors
     """
-
-    cache_file = "cache/parsed_dataset.parquet"
+    if method == "clts":
+        vectorizer = soundvec
+    elif method == "panphon":
+        vectorizer = panphon_vec
 
     # Attempt to load from cache
-    dataset = load_cache(cache_file)
-
-    if dataset is None:
-        # Load dataset
-        dataset = load_dataset(vectorizer, vector_column)
-
-        # Parse vectors
-        dataset = parse_vectors(dataset, vector_column)
-
-        # Flatten vectors
-        dataset = flatten_vectors(dataset, vector_column)
-
-        # Save to cache
-        save_cache(dataset, cache_file)
+    dataset = load_cache(method)
 
     dataset_vectors_flat = dataset["flattened_vectors"].tolist()
 
@@ -198,6 +172,6 @@ if __name__ == "__main__":
     # Example usage
     ipa_input = "kˈut͡ʃiŋ"
     top_n = 15
-    vectorizer = panphon_vec  # or soundvec
+    method = "panphon"  # or soundvec
 
-    main(ipa_input, top_n, vectorizer)
+    main(ipa_input, top_n, method)
