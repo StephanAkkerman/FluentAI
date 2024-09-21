@@ -1,6 +1,4 @@
 import gensim.downloader as api
-import numpy as np
-from scipy import spatial
 
 
 def load_model():
