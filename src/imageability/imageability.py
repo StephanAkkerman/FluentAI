@@ -24,6 +24,7 @@ model = LogisticRegression()
 # Maybe add num of letters, num of phonemes, num of syllables
 
 # Fit on AoA, familiatrity, part of speech feature values
+# Could also use conc (Concreteness)
 model.fit(mrc2[["aoa", "fam", "wtype"]], mrc2["imag"])
 
 # Compute imaginability rating for all English words not covered by Kuperman corpus
