@@ -1,7 +1,10 @@
+import multiprocessing
+
 import gensim.downloader as api
 import joblib
 import numpy as np
 import pandas as pd
+from joblib import Parallel, delayed
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression, LogisticRegression
 from sklearn.metrics import (
@@ -12,6 +15,8 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import cross_val_score, train_test_split
 from sklearn.preprocessing import StandardScaler
+from tqdm import tqdm
+from tqdm_joblib import tqdm_joblib
 
 # ================================
 # 1. Configuration Parameters
@@ -25,23 +30,17 @@ CLASSIFY = False  # Set to True if you want to perform classification
 NUM_CLASSES = 2  # Example: 2 classes for high and low imageability
 
 # Path to save the trained model
-MODEL_SAVE_PATH = "imageability_model.pkl"
+MODEL_SAVE_PATH = "fasttext_imageability_model.pkl"
 
 # ================================
 # 2. Load and Preprocess Data
 # ================================
 
 # Load your dataset
-df = pd.read_csv("data/imageability/mrc2.csv")
-
-# Drop duplicates based on the 'word' column
-df = df.drop_duplicates(subset="word")
-
-# Drop rows with NaN values
-df = df.dropna()
+df = pd.read_csv("data/imageability/final_imageability_dataset.csv")
 
 # Separate features and target
-y = df["imag"]
+y = df["score_scaled"]
 
 # If performing classification, convert continuous scores to categorical labels
 if CLASSIFY:
@@ -53,6 +52,7 @@ if CLASSIFY:
     )
 
 # Load pre-trained FastText embeddings
+print("Loading FastText embeddings...")
 embedding_model = api.load(
     "fasttext-wiki-news-subwords-300"
 )  # 300-dim FastText embeddings
@@ -63,12 +63,27 @@ def get_embedding(word):
         return embedding_model.get_vector(word)
     except KeyError:
         # FastText can handle OOV by default, but include this as a fallback
+        print(word)
         return np.zeros(embedding_model.vector_size)
 
 
-# Create embedding features
-embeddings = df["word"].apply(get_embedding)
+# Get the number of CPU cores
+num_cores = multiprocessing.cpu_count()
+print(f"Number of CPU cores: {num_cores}")
+
+# Initialize tqdm_joblib context manager to integrate tqdm with joblib
+with tqdm_joblib(tqdm(desc="Generating Embeddings", total=len(df))):
+    # Generate embeddings in parallel
+    embeddings = Parallel(n_jobs=num_cores)(
+        delayed(get_embedding)(word) for word in df["word"]
+    )
+
+# Convert list of embeddings to a NumPy array
 embeddings = np.vstack(embeddings)
+
+# Maybe save this for future use
+# Dump words + embeddings to a file
+# joblib.dump((df["word"], embeddings), "data/imageability/word_embeddings.pkl")
 
 # If you have additional features, include them here
 # For this example, we'll assume only embeddings are used

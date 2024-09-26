@@ -27,6 +27,21 @@ df3 = pd.read_csv("data/imageability/corpus_icmr2020.csv")
 # Preprocess df3
 df3.rename(columns={"Word": "word", "All": "score_df3"}, inplace=True)
 
+# Preprocess all dfs by lowercasing the 'word' column
+df1["word"] = df1["word"].str.lower()
+df2["word"] = df2["word"].str.lower()
+df3["word"] = df3["word"].str.lower()
+
+# Remove any leading/trailing whitespaces
+df1["word"] = df1["word"].str.strip()
+df2["word"] = df2["word"].str.strip()
+df3["word"] = df3["word"].str.strip()
+
+# Remove any non-alphabetic characters from the 'word' column
+df1["word"] = df1["word"].str.replace(r"[^a-zA-Z\s]", "")
+df2["word"] = df2["word"].str.replace(r"[^a-zA-Z\s]", "")
+df3["word"] = df3["word"].str.replace(r"[^a-zA-Z\s]", "")
+
 # ================================
 # 2. Inspect and Analyze Overlaps
 # ================================
