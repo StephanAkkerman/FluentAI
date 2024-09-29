@@ -81,7 +81,7 @@ with tqdm_joblib(tqdm(desc="Generating Embeddings", total=len(df))):
 # Convert list of embeddings to a NumPy array
 embeddings = np.vstack(embeddings)
 
-# Maybe save this for future use
+# TODO: save the embeddings to a file
 # Dump words + embeddings to a file
 # joblib.dump((df["word"], embeddings), "data/imageability/word_embeddings.pkl")
 
