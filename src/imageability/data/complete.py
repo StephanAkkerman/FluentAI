@@ -1,14 +1,69 @@
+import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
+
 from datasets import load_dataset
 
-imageability_corpus = load_dataset("StephanAkkerman/imageability-corpus")
+# Load datasets
+imageability_corpus = load_dataset(
+    "StephanAkkerman/imageability-corpus", split="train", cache_dir="datasets"
+)
+mrc = load_dataset(
+    "StephanAkkerman/MRC-psycholinguistic-database", split="train", cache_dir="datasets"
+)
 
-# Convert to a pandas DataFrame
+# Convert to pandas DataFrames
 imageability_corpus_df = imageability_corpus.to_pandas()
-
-# https://websites.psychology.uwa.edu.au/school/mrcdatabase/uwa_mrc.htm
-# https://github.com/samzhang111/mrc-psycholinguistics/blob/master/wordmodel.py
-mrc = load_dataset("StephanAkkerman/MRC-psycholinguistic-database")
 mrc_df = mrc.to_pandas()
 
-# Change word column to lowercase
-mrc_df["word"] = mrc_df["Word"].str.lower()
+# Prepare 'imageability_corpus_df' DataFrame
+imageability_corpus_df["word"] = imageability_corpus_df[
+    "word"
+].str.lower()  # ensure words are in lowercase
+imageability_corpus_df["score"] = imageability_corpus_df[
+    "visual"
+]  # assign visual score to 'score'
+
+# Prepare 'mrc_df' DataFrame
+mrc_df["word"] = mrc_df["Word"].str.lower()  # convert word column to lowercase
+mrc_df["score"] = mrc_df["Imageability"]  # assign imageability score to 'score'
+mrc_df.drop_duplicates(subset="word", inplace=True)
+mrc_df.dropna(subset=["score"], inplace=True)
+mrc_df = mrc_df[mrc_df["score"] != 0]
+
+# Scale the scores in both datasets using MinMaxScaler
+scaler = MinMaxScaler()
+
+# Scaling the scores in the imageability corpus dataset
+imageability_corpus_df["scaled_score"] = scaler.fit_transform(
+    imageability_corpus_df[["score"]]
+)
+
+# Scaling the scores in the MRC dataset
+mrc_df["scaled_score"] = scaler.fit_transform(mrc_df[["score"]])
+
+# Merge the datasets using a full outer join on the 'word' column
+combined_df = pd.merge(
+    imageability_corpus_df[["word", "scaled_score"]],
+    mrc_df[["word", "scaled_score"]],
+    on="word",
+    how="outer",
+    suffixes=("_imageability", "_mrc"),
+)
+
+# Combine the scores: take the mean of both scores, handling missing values
+combined_df["final_score"] = combined_df[
+    ["scaled_score_imageability", "scaled_score_mrc"]
+].mean(axis=1)
+
+# Fill any missing scores with available data (if one dataset has score and the other doesn't)
+combined_df["final_score"].fillna(
+    combined_df["scaled_score_imageability"].combine_first(
+        combined_df["scaled_score_mrc"]
+    ),
+    inplace=True,
+)
+
+# Save the final combined dataset
+combined_df.to_csv("data/imageability/data.csv", index=False)
+
+print("Dataset combined and saved")
