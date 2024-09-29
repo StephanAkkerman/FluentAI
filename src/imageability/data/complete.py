@@ -19,9 +19,11 @@ mrc_df = mrc.to_pandas()
 imageability_corpus_df["word"] = imageability_corpus_df[
     "word"
 ].str.lower()  # ensure words are in lowercase
-imageability_corpus_df["score"] = imageability_corpus_df[
-    "visual"
-]  # assign visual score to 'score'
+
+# Combine the visual and phonetic scores into a single score (e.g., by averaging)
+imageability_corpus_df["score"] = (
+    imageability_corpus_df["visual"] + imageability_corpus_df["phonetic"]
+) / 2
 
 # Prepare 'mrc_df' DataFrame
 mrc_df["word"] = mrc_df["Word"].str.lower()  # convert word column to lowercase
@@ -31,15 +33,16 @@ mrc_df.dropna(subset=["score"], inplace=True)
 mrc_df = mrc_df[mrc_df["score"] != 0]
 
 # Scale the scores in both datasets using MinMaxScaler
-scaler = MinMaxScaler()
+imag_scaler = MinMaxScaler()
+mrc_scaler = MinMaxScaler()
 
 # Scaling the scores in the imageability corpus dataset
-imageability_corpus_df["scaled_score"] = scaler.fit_transform(
+imageability_corpus_df["scaled_score"] = imag_scaler.fit_transform(
     imageability_corpus_df[["score"]]
 )
 
 # Scaling the scores in the MRC dataset
-mrc_df["scaled_score"] = scaler.fit_transform(mrc_df[["score"]])
+mrc_df["scaled_score"] = mrc_scaler.fit_transform(mrc_df[["score"]])
 
 # Merge the datasets using a full outer join on the 'word' column
 combined_df = pd.merge(
@@ -51,17 +54,17 @@ combined_df = pd.merge(
 )
 
 # Combine the scores: take the mean of both scores, handling missing values
-combined_df["final_score"] = combined_df[
+combined_df["score"] = combined_df[
     ["scaled_score_imageability", "scaled_score_mrc"]
 ].mean(axis=1)
 
 # Fill any missing scores with available data (if one dataset has score and the other doesn't)
-combined_df["final_score"].fillna(
+combined_df["score"] = combined_df["score"].fillna(
     combined_df["scaled_score_imageability"].combine_first(
         combined_df["scaled_score_mrc"]
-    ),
-    inplace=True,
+    )
 )
+
 
 # Save the final combined dataset
 combined_df.to_csv("data/imageability/data.csv", index=False)
