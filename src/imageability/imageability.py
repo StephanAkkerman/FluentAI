@@ -1,21 +1,43 @@
 # imageability_predictor.py
 
+import os
 import warnings
 
+import gensim.downloader as api
 import joblib
 import numpy as np
 import pandas as pd
 from gensim.downloader import load as gensim_load
+from gensim.models import FastText, KeyedVectors
 from lightgbm import LGBMRegressor
 
 # Suppress warnings for cleaner output
 warnings.filterwarnings("ignore")
 
 
+def download_and_save_model(
+    model_name="fasttext-wiki-news-subwords-300", save_path="models/fasttext.model"
+):
+    """
+    Download the specified embedding model and save it locally.
+
+    Args:
+        model_name (str): Name of the model to download.
+        save_path (str): Path to save the downloaded model.
+    """
+    print(f"Downloading '{model_name}' model...")
+    embedding_model = api.load(model_name)  # This downloads and loads the model
+    print(f"'{model_name}' model downloaded successfully.")
+
+    # Save the model locally
+    embedding_model.save(save_path)
+    print(f"Model saved locally at '{save_path}'.")
+
+
 class ImageabilityPredictor:
     def __init__(
         self,
-        embedding_model_name="fasttext-wiki-news-subwords-300",
+        embedding_model_path="models/fasttext.model",
         regression_model_path="models/best_model_LGBMRegressor.joblib",
     ):
         """
@@ -29,9 +51,13 @@ class ImageabilityPredictor:
         """
         print("Initializing ImageabilityPredictor...")
 
+        # Check if the embedding model exists
+        if not os.path.exists(embedding_model_path):
+            download_and_save_model()
+
         # Load the embedding model
-        print(f"Loading embedding model '{embedding_model_name}'...")
-        self.embedding_model = gensim_load(embedding_model_name)
+        print(f"Loading embedding model from '{embedding_model_path}'...")
+        self.embedding_model = KeyedVectors.load(embedding_model_path)
         print("Embedding model loaded successfully.")
 
         # Load the regression model
@@ -90,7 +116,7 @@ class ImageabilityPredictor:
 if __name__ == "__main__":
     # Initialize the predictor
     predictor = ImageabilityPredictor(
-        embedding_model_name="fasttext-wiki-news-subwords-300",
+        embedding_model_path="models/fasttext.model",
         regression_model_path="models/best_model_LGBMRegressor.joblib",
     )
 
