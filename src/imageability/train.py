@@ -12,14 +12,7 @@ from sklearn.ensemble import (
     RandomForestRegressor,
 )
 from sklearn.linear_model import LinearRegression, LogisticRegression, Ridge
-from sklearn.metrics import (
-    accuracy_score,
-    classification_report,
-    confusion_matrix,
-    f1_score,
-    mean_squared_error,
-    r2_score,
-)
+from sklearn.metrics import accuracy_score, f1_score, mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC, SVR
 from tqdm import tqdm
@@ -29,23 +22,46 @@ from xgboost import XGBRegressor
 warnings.filterwarnings("ignore")
 
 
-def load_data(npz_path):
+def load_data(path):
     """
     Load words, embeddings, and scores from a single .npz file.
 
     Args:
-        npz_path (str): Path to the .npz file.
+        path (str): Path to the .npz or .parquet file.
 
     Returns:
         tuple: (words, embeddings, scores)
     """
-    print(f"Loading data from '{npz_path}'...")
-    data = np.load(npz_path, allow_pickle=True)
-    words = data["words"]  # Fixed-length Unicode strings
-    embeddings = data["embeddings"]
-    scores = data["scores"]
+    print(f"Loading data from '{path}'...")
+    if path.endswith(".npz"):
+        data = np.load(path, allow_pickle=True)
+        embeddings = data["embeddings"]
+        scores = data["scores"]
+    elif path.endswith(".parquet"):
+        try:
+            df = pd.read_parquet(path)
+        except FileNotFoundError:
+            raise FileNotFoundError(f"The file '{path}' was not found.")
+        except Exception as e:
+            raise Exception(f"An error occurred while loading the parquet file: {e}")
+
+        # Verify required columns exist
+        required_columns = {"word", "score"}
+        embedding_columns = [col for col in df.columns if col.startswith("emb_")]
+        if not required_columns.issubset(df.columns):
+            missing = required_columns - set(df.columns)
+            raise ValueError(f"Missing required columns in parquet file: {missing}")
+        if not embedding_columns:
+            raise ValueError(
+                "No embedding columns found. Ensure embeddings are named starting with 'emb_'."
+            )
+
+        # Extract embeddings and scores
+        embeddings = df[embedding_columns].values
+        scores = df["score"].values
+
     print(
-        f"Loaded {len(words)} words with embeddings shape {embeddings.shape} and scores shape {scores.shape}."
+        f"Loaded {len(scores)} words with embeddings shape {embeddings.shape} and scores shape {scores.shape}."
     )
     return embeddings, scores
 
@@ -172,10 +188,10 @@ def train_and_evaluate_models(X_train, X_test, y_train, y_test, task="classifica
 
 def main():
     # Path to your .npz file containing words, embeddings, and scores
-    npz_path = "data/imageability/fasttext_embeddings2.npz"  # Update if necessary
+    path = "data/imageability/fasttext_embeddings.parquet"  # Update if necessary
 
     # Load data
-    embeddings, scores = load_data(npz_path)
+    embeddings, scores = load_data(path)
 
     # Choose task: 'classification' or 'regression'
     task = "regression"  # Change to 'regression' if needed

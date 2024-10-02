@@ -1,7 +1,7 @@
 # embed_generator.py
 
 import multiprocessing
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import gensim.downloader as api
 import numpy as np
@@ -53,7 +53,7 @@ def get_embedding(word, embedding_model):
 
 def generate_embeddings(
     input_csv,
-    output_npz,
+    output_parquet,
     model="fasttext",
     word_column="word",
     score_column="score",
@@ -61,11 +61,11 @@ def generate_embeddings(
     verbose=True,
 ):
     """
-    Generate word embeddings from a dataset and save them to a compressed .npz file.
+    Generate word embeddings from a dataset and save them to a .parquet file.
 
     Args:
         input_csv (str): Path to the input CSV file containing words and scores.
-        output_npz (str): Path to the output .npz file to save embeddings and words.
+        output_parquet (str): Path to the output .parquet file to save embeddings and words.
         model (str, optional): Embedding model to use ('fasttext' or 'glove'). Defaults to 'fasttext'.
         word_column (str, optional): Name of the column containing words in the CSV. Defaults to 'word'.
         score_column (str, optional): Name of the column containing scores in the CSV. Defaults to 'score'.
@@ -127,52 +127,80 @@ def generate_embeddings(
         num_cores = n_jobs
     print(f"Number of CPU cores to use: {num_cores}")
 
-    # Initialize the progress bar
-    if verbose:
-        progress_bar = tqdm(total=len(words), desc="Generating Embeddings", unit="word")
-    else:
-        progress_bar = None
-
     embeddings = []
 
+    # Define the worker function
     def worker(word):
-        emb = get_embedding(word, embedding_model)
-        if progress_bar:
-            progress_bar.update(1)
-        return emb
+        return get_embedding(word, embedding_model)
 
     # Use ThreadPoolExecutor for parallel processing
     with ThreadPoolExecutor(max_workers=num_cores) as executor:
-        futures = {executor.submit(worker, word): word for word in words}
-        for future in futures:
-            embeddings.append(future.result())
+        # Submit all tasks to the executor
+        futures = [executor.submit(worker, word) for word in words]
 
-    if progress_bar:
+        # Initialize tqdm progress bar
+        if verbose:
+            progress_bar = tqdm(
+                as_completed(futures),
+                total=len(futures),
+                desc="Generating Embeddings",
+                unit="word",
+            )
+        else:
+            progress_bar = None
+
+        # Iterate over futures as they complete
+        for future in as_completed(futures):
+            try:
+                emb = future.result()
+                embeddings.append(emb)
+                if progress_bar:
+                    progress_bar.update(1)
+            except Exception as e:
+                print(f"Error processing word: {e}")
+                embeddings.append(
+                    np.zeros(embedding_model.vector_size, dtype=np.float32)
+                )
+                if progress_bar:
+                    progress_bar.update(1)
+
+    if verbose:
         progress_bar.close()
 
     # Convert list of embeddings to a NumPy array
     embeddings = np.vstack(embeddings)
     print(f"Generated embeddings shape: {embeddings.shape}")
 
-    # Save embeddings and words using NumPy's .npz format
+    # Create a DataFrame for words and scores
+    df_output = pd.DataFrame({"word": words, "score": y})
+
+    # Determine embedding dimensions
+    embedding_dim = embeddings.shape[1]
+    embedding_columns = [f"emb_{i+1}" for i in range(embedding_dim)]
+
+    # Create a DataFrame for embeddings
+    embeddings_df = pd.DataFrame(embeddings, columns=embedding_columns)
+
+    # Concatenate the words, scores, and embeddings into a single DataFrame
+    df_output = pd.concat([df_output, embeddings_df], axis=1)
+
+    print(f"Combined DataFrame shape: {df_output.shape}")
+
+    # Save the DataFrame to a .parquet file
     try:
-        np.savez_compressed(
-            output_npz,
-            words=words,
-            embeddings=embeddings,
-            scores=y,
-        )
-        print(f"Embeddings saved successfully to '{output_npz}'.")
+        df_output.to_parquet(output_parquet, index=False)
+        print(f"Embeddings saved successfully to '{output_parquet}'.")
     except Exception as e:
-        raise Exception(f"An error occurred while saving embeddings: {e}")
+        raise Exception(f"An error occurred while saving to parquet: {e}")
 
 
 # Example usage
 if __name__ == "__main__":
+    model = "glove"  # Change to 'glove' to use GloVe embeddings
     generate_embeddings(
         input_csv="data/imageability/data.csv",
-        output_npz="data/imageability/fasttext_embeddings2.npz",
-        model="fasttext",  # Change to 'glove' to use GloVe embeddings
+        output_parquet=f"data/imageability/{model}_embeddings.parquet",
+        model=model,  # Change to 'glove' to use GloVe embeddings
         word_column="word",
         score_column="score",
         n_jobs=-1,  # Use all available CPU cores
