@@ -1,19 +1,29 @@
 # train_evaluate_models.py
-
 import warnings
 
+import joblib
 import numpy as np
 import pandas as pd
+from lightgbm import LGBMRegressor
 from sklearn.ensemble import (
     GradientBoostingClassifier,
     GradientBoostingRegressor,
     RandomForestClassifier,
     RandomForestRegressor,
 )
-from sklearn.linear_model import LogisticRegression, Ridge
-from sklearn.metrics import accuracy_score, f1_score, mean_squared_error, r2_score
+from sklearn.linear_model import LinearRegression, LogisticRegression, Ridge
+from sklearn.metrics import (
+    accuracy_score,
+    classification_report,
+    confusion_matrix,
+    f1_score,
+    mean_squared_error,
+    r2_score,
+)
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC, SVR
+from tqdm import tqdm
+from xgboost import XGBRegressor
 
 # Suppress warnings for cleaner output
 warnings.filterwarnings("ignore")
@@ -102,16 +112,27 @@ def train_and_evaluate_models(X_train, X_test, y_train, y_test, task="classifica
         ]
     elif task == "regression":
         models = [
+            ("Linear Regression (OLS)", LinearRegression()),
             ("Ridge Regression", Ridge()),
             ("Support Vector Regression", SVR(kernel="linear")),
             ("Random Forest", RandomForestRegressor(n_estimators=100)),
             ("Gradient Boosting", GradientBoostingRegressor(n_estimators=100)),
+            (
+                "XGBoost",
+                XGBRegressor(
+                    n_estimators=100, use_label_encoder=False, eval_metric="rmse"
+                ),
+            ),
+            ("LightGBM", LGBMRegressor(n_estimators=100)),
         ]
     else:
         raise ValueError("Invalid task. Choose 'classification' or 'regression'.")
 
     results = []
-    for name, model in models:
+    best_model = None
+    best_metric = None
+
+    for name, model in tqdm(models, desc="Training Models", unit="model"):
         print(f"\nTraining {name}...")
         model.fit(X_train, y_train)
         predictions = model.predict(X_test)
@@ -121,14 +142,32 @@ def train_and_evaluate_models(X_train, X_test, y_train, y_test, task="classifica
             f1 = f1_score(y_test, predictions)
             results.append({"Model": name, "Accuracy": acc, "F1 Score": f1})
             print(f"{name} - Accuracy: {acc:.4f}, F1 Score: {f1:.4f}")
+
+            # Determine the best model based on F1 Score
+            if best_metric is None or f1 > best_metric:
+                best_metric = f1
+                best_model = model
+
         elif task == "regression":
             mse = mean_squared_error(y_test, predictions)
             r2 = r2_score(y_test, predictions)
             results.append({"Model": name, "MSE": mse, "R2 Score": r2})
             print(f"{name} - MSE: {mse:.4f}, R2 Score: {r2:.4f}")
 
+            # Determine the best model based on lowest MSE
+            if best_metric is None or mse < best_metric:
+                best_metric = mse
+                best_model = model
+
     results_df = pd.DataFrame(results)
-    return results_df
+
+    # Display the best model
+    if best_model:
+        print(
+            f"\nBest Model: {type(best_model).__name__} with {'F1 Score' if task == 'classification' else 'MSE'} of {best_metric:.4f}"
+        )
+
+    return results_df, best_model
 
 
 def main():
@@ -145,11 +184,20 @@ def main():
     X_train, X_test, y_train, y_test = preprocess_data(embeddings, scores, task=task)
 
     # Train and evaluate models
-    results_df = train_and_evaluate_models(X_train, X_test, y_train, y_test, task=task)
+    results_df, best_model = train_and_evaluate_models(
+        X_train, X_test, y_train, y_test, task=task
+    )
 
-    # Display results
-    print("\nModel Performance:")
-    print(results_df.to_string(index=False))
+    # Save the best model
+    if best_model:
+        model_name = type(best_model).__name__
+        filename = f"models/best_model_{model_name}.joblib"
+        # Create the models directory if it doesn't exist
+        import os
+
+        os.makedirs("models", exist_ok=True)
+        joblib.dump(best_model, filename)
+        print(f"\nBest model '{model_name}' saved to '{filename}'.")
 
 
 if __name__ == "__main__":
