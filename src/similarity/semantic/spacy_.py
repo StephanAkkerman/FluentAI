@@ -1,5 +1,7 @@
 import spacy
+from spacy.cli import download
 
+download("en_core_web_md")
 # Download and load the spaCy model with vectors
 nlp = spacy.load("en_core_web_md")  # or "en_core_web_lg"
 

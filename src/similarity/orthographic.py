@@ -155,3 +155,5 @@ def example():
 if __name__ == "__main__":
     # Example words and methods
     example()
+
+# Maybe improve this by only importing the library in a function that uses it
