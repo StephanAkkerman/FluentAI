@@ -172,6 +172,6 @@ if __name__ == "__main__":
     # Example usage
     ipa_input = "kˈut͡ʃiŋ"
     top_n = 15
-    method = "panphon"  # or soundvec
+    method = "panphon"  # or clts
 
-    main(ipa_input, top_n, method)
+    # main(ipa_input, top_n, method)

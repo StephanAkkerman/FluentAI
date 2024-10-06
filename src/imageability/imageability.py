@@ -6,10 +6,7 @@ import warnings
 import gensim.downloader as api
 import joblib
 import numpy as np
-import pandas as pd
-from gensim.downloader import load as gensim_load
-from gensim.models import FastText, KeyedVectors
-from lightgbm import LGBMRegressor
+from gensim.models import KeyedVectors
 
 # Suppress warnings for cleaner output
 warnings.filterwarnings("ignore")

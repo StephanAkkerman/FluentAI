@@ -1,11 +1,6 @@
 # List of supported languages
 # https://docs.google.com/spreadsheets/d/1y7kisk-UZT9LxpQB0xMIF4CkxJt0iYJlWAnyj6azSBE/edit?gid=557940309#gid=557940309
-import sys
-
 from transformers import AutoTokenizer, T5ForConditionalGeneration
-
-sys.path.append(".")
-from src.similarity.phonetic.phonetic_sim import word_similarity
 
 # https://github.com/lingjzhu/CharsiuG2P
 model = T5ForConditionalGeneration.from_pretrained(
@@ -14,7 +9,7 @@ model = T5ForConditionalGeneration.from_pretrained(
 tokenizer = AutoTokenizer.from_pretrained("google/byt5-small", cache_dir="models")
 
 
-def g2p(words):
+def g2p(words: list[str]) -> list[str]:
 
     out = tokenizer(words, padding=True, add_special_tokens=False, return_tensors="pt")
 
@@ -34,9 +29,4 @@ def example():
     english_word = g2p(["<eng-uk>: Hello"])
     dutch_word = g2p(["<dut>: Koekje"])
 
-    print(dutch_word[0], indonesian_word[0])
-    score = word_similarity(dutch_word[0], indonesian_word[0])
-    print(score)
-
-
-example()
+    print(dutch_word[0], indonesian_word[0], english_word[0])
