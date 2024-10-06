@@ -1,12 +1,12 @@
+import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import pandas as pd
 import panphon
-from ipa2vec import panphon_vec, soundvec
 from pyclts import CLTS
 from soundvectors import SoundVectors
 from tqdm import tqdm
-from utils import flatten_vectors, load_dataset, parse_vectors, save_cache
+from utils import flatten_vectors
 
 
 def load_data(file_path):
@@ -20,11 +20,34 @@ def load_data(file_path):
         pd.DataFrame: Cleaned DataFrame with 'token_ort' and 'token_ipa' columns.
     """
     print("Loading dataset...")
-    ds = pd.read_csv(
-        file_path, names=["token_ort", "token_ipa"], sep="\t", encoding="utf-8"
-    )
-    # Remove spaces in token_ipa
-    ds["token_ipa"] = ds["token_ipa"].str.replace(" ", "", regex=False)
+    if "eng_latn_us_broad" in file_path:
+        ds = pd.read_csv(
+            file_path, names=["token_ort", "token_ipa"], sep="\t", encoding="utf-8"
+        )
+        # Remove spaces in token_ipa
+        ds["token_ipa"] = ds["token_ipa"].str.replace(" ", "", regex=False)
+    if "en_US" in file_path:
+        ds = pd.read_csv(
+            file_path, names=["token_ort", "token_ipa"], sep="\t", encoding="utf-8"
+        )
+        # Split 'token_ipa' by commas into lists
+        ds["token_ipa"] = ds["token_ipa"].str.split(",")
+
+        # Remove leading and trailing whitespace from each IPA option
+        ds["token_ipa"] = ds["token_ipa"].apply(
+            lambda ipa_list: [ipa.strip() for ipa in ipa_list]
+        )
+
+        # Explode the DataFrame so that each IPA option gets its own row
+        ds = ds.explode("token_ipa").reset_index(drop=True)
+
+        # Remove leading '/' and 'ˈ' and trailing '/' characters from 'token_ipa'
+        ds["token_ipa"] = (
+            ds["token_ipa"]
+            .str.lstrip("/ˈ")  # Remove leading '/' and 'ˈ'
+            .str.rstrip("/")  # Remove trailing '/'
+            .str.strip()  # Remove any remaining leading/trailing whitespace
+        )
     return ds
 
 
@@ -76,6 +99,9 @@ def vectorize_word_clts(word, sv):
                 word_vector.extend(vec)  # Flatten the vectors
         except ValueError:
             continue  # Skip unknown characters
+        except IndexError:
+            print(f"Error processing letter '{letter}' in '{word}'")
+            continue
     return word_vector
 
 
@@ -156,7 +182,11 @@ def pad_vector(vector, max_length, padding_value=0):
         return vector + padding
 
 
-def main(method="clts"):
+def main(
+    method: str = "clts",
+    data_file: str = "data/phonological/eng_latn_us_broad.tsv",
+    save_loc: str = "data/phonological/embeddings",
+):
     """
     Main function to orchestrate the vectorization process based on the selected method.
 
@@ -164,13 +194,14 @@ def main(method="clts"):
         method (str): Vectorization method to use ('clts' or 'panphon').
     """
     # Configuration
-    data_file = "data/eng_latn_us_broad.tsv"
     clts_path = "data/clts-2.3.0"
 
+    data_file_name = data_file.split("/")[-1].split(".")[0]
+
     if method == "clts":
-        output_file = "data/eng_latn_us_broad_vectors.csv"
+        output_file = f"{save_loc}/{data_file_name}_clts.parquet"
     elif method == "panphon":
-        output_file = "data/eng_latn_us_broad_vectors_panphon.csv"
+        output_file = f"{save_loc}/{data_file_name}_panphon.parquet"
     max_workers = 8  # Adjust based on your system's capabilities
 
     # Validate method
@@ -206,30 +237,13 @@ def main(method="clts"):
             description="Panphon",
         )
 
-    ds.to_csv(output_file, index=False)
-    print(f"Word vectors successfully saved to {output_file}")
-
-
-def create_cache(method: str = "panphon", vector_column: str = "vectors"):
-    # Initialize vectorizers
-    if method == "clts":
-        vectorizer = soundvec
-        cache_file = "cache/parsed_dataset_clts.parquet"
-    elif method == "panphon":
-        vectorizer = panphon_vec
-        cache_file = "cache/parsed_dataset_panphon.parquet"
-
-    # Load dataset
-    dataset = load_dataset(vectorizer, vector_column)
-
-    # Parse vectors
-    dataset = parse_vectors(dataset, vector_column)
-
     # Flatten vectors
-    dataset = flatten_vectors(dataset, vector_column)
+    ds = flatten_vectors(ds, "vectors")
 
-    # Save to cache
-    save_cache(dataset, cache_file)
+    os.makedirs(save_loc, exist_ok=True)
+
+    ds.to_parquet(output_file, index=False)
+    print(f"Word vectors successfully saved to {output_file}")
 
 
 if __name__ == "__main__":
@@ -238,6 +252,7 @@ if __name__ == "__main__":
     #   - "clts"    : Generate only CLTS vectors.
     #   - "panphon" : Generate only Panphon vectors.
     method = "clts"  # Change this to "clts" or "panphon" as needed.
+    data_file1 = "data/phonological/eng_latn_us_broad.tsv"
+    data_file2 = "data/phonological/en_US.txt"
 
-    # main(method)
-    create_cache(method)
+    main(method, data_file=data_file1)

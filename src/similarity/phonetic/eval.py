@@ -7,6 +7,7 @@ from g2p import g2p
 from ipa2vec import panphon_vec, soundvec
 from scipy.stats import pearsonr, spearmanr
 from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.preprocessing import MinMaxScaler
 from tqdm import tqdm
 
 # Configure logging
@@ -15,7 +16,7 @@ logging.basicConfig(
 )
 
 
-def word2ipa(word: str, use_fallback: bool = False) -> str:
+def word2ipa(word: str, use_fallback: bool = True) -> str:
     # First try lookup in the .tsv file
     eng_ipa = pd.read_csv(
         "data/phonological/eng_latn_us_broad.tsv", sep="\t", names=["word", "ipa"]
@@ -136,6 +137,11 @@ def evaluate_phonetic_similarity(dataset_csv: str, methods: list):
         logging.error(f"Dataset must contain columns: {required_columns}")
         return
 
+    # Scale the 'obtained' scores to 0-1
+    scaler = MinMaxScaler()
+    df["obtained_scaled"] = scaler.fit_transform(df[["obtained"]])
+    logging.info("Scaled 'obtained' scores to a 0-1 range.")
+
     # Initialize a list to store results for each method
     results_list = []
 
@@ -175,10 +181,10 @@ def evaluate_phonetic_similarity(dataset_csv: str, methods: list):
 
         # Compute Pearson and Spearman correlations
         pearson_corr, _ = pearsonr(
-            evaluation_df["obtained"], evaluation_df["computed_similarity"]
+            evaluation_df["obtained_scaled"], evaluation_df["computed_similarity"]
         )
         spearman_corr, _ = spearmanr(
-            evaluation_df["obtained"], evaluation_df["computed_similarity"]
+            evaluation_df["obtained_scaled"], evaluation_df["computed_similarity"]
         )
 
         # Append the results to the list

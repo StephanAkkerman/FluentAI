@@ -9,15 +9,18 @@ model = T5ForConditionalGeneration.from_pretrained(
 tokenizer = AutoTokenizer.from_pretrained("google/byt5-small", cache_dir="models")
 
 
-def g2p(words: list[str]) -> list[str]:
+def g2p(words: list[str]) -> str:
 
     out = tokenizer(words, padding=True, add_special_tokens=False, return_tensors="pt")
 
     preds = model.generate(
         **out, num_beams=1, max_length=50
     )  # We do not find beam search helpful. Greedy decoding is enough.
-    phones = tokenizer.batch_decode(preds.tolist(), skip_special_tokens=True)
-    return phones
+    ipa = tokenizer.batch_decode(preds.tolist(), skip_special_tokens=True)
+    ipa = ipa[0]
+    # Remove the leading ˈ
+    ipa = ipa.replace("ˈ", "")
+    return ipa
 
 
 def example():
@@ -26,7 +29,20 @@ def example():
     indonesian_word = g2p(["<ind>: Kucing"])
     # https://en.wiktionary.org/wiki/hello#English (UK)
     # IPA: /həˈləʊ/, /hɛˈləʊ/
-    english_word = g2p(["<eng-uk>: Hello"])
+    # https://raw.githubusercontent.com/open-dict-data/ipa-dict/refs/heads/master/data/en_US.txt
+    # /əˌbɹiviˈeɪʃən/ ->  əˌbɹiviˈeɪʃən
+    # G2P removes / at the beginning but not leading ˈ
+    # /ˈɡɹəmbəɫ/ -> ˈɡɹəmbəɫ
+    # Wiktionary: /ˈɡɹʌmbl̩/
+    english_word = g2p(["<eng-us>: grumble"])
     dutch_word = g2p(["<dut>: Koekje"])
 
-    print(dutch_word[0], indonesian_word[0], english_word[0])
+    print(
+        indonesian_word,
+        english_word,
+        dutch_word,
+    )
+
+
+if __name__ == "__main__":
+    example()

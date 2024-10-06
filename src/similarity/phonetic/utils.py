@@ -6,7 +6,7 @@ import time
 
 import numpy as np
 import pandas as pd
-from ipa2vec import panphon_vec, soundvec
+from ipa2vec import panphon_vec
 
 # Configure logging
 logging.basicConfig(
@@ -116,22 +116,6 @@ def parse_vectors(dataset, vector_column="vectors"):
         logging.error(f"Error parsing '{vector_column}' column: {e}")
         raise
     return dataset
-
-
-def save_cache(dataset, cache_file="cache/parsed_dataset.parquet"):
-    """
-    Save the processed dataset to a cache file.
-
-    Parameters:
-    - dataset: DataFrame to save
-    - cache_file: String, path to the cache file
-
-    Returns:
-    - None
-    """
-    os.makedirs(os.path.dirname(cache_file), exist_ok=True)
-    dataset.to_parquet(cache_file, index=False)
-    logging.info(f"Saved parsed dataset to '{cache_file}'.")
 
 
 def load_cache(method: str = "panphon"):
