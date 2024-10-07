@@ -118,7 +118,7 @@ def parse_vectors(dataset, vector_column="vectors"):
     return dataset
 
 
-def load_cache(method: str = "panphon"):
+def load_cache(method: str = "panphon", dataset: str= "eng_latn_us_broad"):
     """
     Load the processed dataset from a cache file.
 
@@ -129,9 +129,9 @@ def load_cache(method: str = "panphon"):
     - DataFrame containing the cached dataset
     """
     if method == "clts":
-        cache_file = "cache/parsed_dataset_clts.parquet"
+        cache_file = f"data/phonological/embeddings/{dataset}_clts.parquet"
     elif method == "panphon":
-        cache_file = "cache/parsed_dataset_panphon.parquet"
+        cache_file = f"data/phonological/embeddings/{dataset}_panphon.parquet"
 
     if os.path.exists(cache_file):
         dataset = pd.read_parquet(cache_file)

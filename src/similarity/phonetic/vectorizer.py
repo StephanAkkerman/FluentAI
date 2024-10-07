@@ -9,7 +9,7 @@ from tqdm import tqdm
 from utils import flatten_vectors
 
 
-def load_data(file_path):
+def load_data(file_path: str) -> pd.DataFrame:
     """
     Loads the dataset from a TSV file and cleans the IPA tokens by removing spaces.
 
@@ -19,13 +19,14 @@ def load_data(file_path):
     Returns:
         pd.DataFrame: Cleaned DataFrame with 'token_ort' and 'token_ipa' columns.
     """
-    print("Loading dataset...")
+    # print("Loading dataset...")
     if "eng_latn_us_broad" in file_path:
         ds = pd.read_csv(
             file_path, names=["token_ort", "token_ipa"], sep="\t", encoding="utf-8"
         )
         # Remove spaces in token_ipa
         ds["token_ipa"] = ds["token_ipa"].str.replace(" ", "", regex=False)
+
     if "en_US" in file_path:
         ds = pd.read_csv(
             file_path, names=["token_ort", "token_ipa"], sep="\t", encoding="utf-8"
@@ -48,6 +49,9 @@ def load_data(file_path):
             .str.rstrip("/")  # Remove trailing '/'
             .str.strip()  # Remove any remaining leading/trailing whitespace
         )
+    # token_ort in lower case
+    ds["token_ort"] = ds["token_ort"].str.lower()
+
     return ds
 
 

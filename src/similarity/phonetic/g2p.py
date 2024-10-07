@@ -19,7 +19,7 @@ def g2p(words: list[str]) -> str:
     ipa = tokenizer.batch_decode(preds.tolist(), skip_special_tokens=True)
     ipa = ipa[0]
     # Remove the leading ˈ
-    ipa = ipa.replace("ˈ", "")
+    ipa = ipa.removeprefix("ˈ")
     return ipa
 
 

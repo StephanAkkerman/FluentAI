@@ -117,7 +117,9 @@ def retrieve_closest_words(dataset, indices, top_n=5):
     return closest_words
 
 
-def main(ipa_input, top_n=5, method: str = "panphon"):
+def main(
+    ipa_input, top_n=5, method: str = "panphon", dataset: str = "eng_latn_us_broad"
+):
     """
     Main function to find top_n closest phonetically similar words to the input IPA.
 
@@ -133,7 +135,7 @@ def main(ipa_input, top_n=5, method: str = "panphon"):
         vectorizer = panphon_vec
 
     # Attempt to load from cache
-    dataset = load_cache(method)
+    dataset = load_cache(method, dataset)
 
     dataset_vectors_flat = dataset["flattened_vectors"].tolist()
 

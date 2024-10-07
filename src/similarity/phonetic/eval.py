@@ -9,6 +9,7 @@ from scipy.stats import pearsonr, spearmanr
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import MinMaxScaler
 from tqdm import tqdm
+from vectorizer import load_data
 
 # Configure logging
 logging.basicConfig(
@@ -16,16 +17,23 @@ logging.basicConfig(
 )
 
 
-def word2ipa(word: str, use_fallback: bool = True) -> str:
-    # First try lookup in the .tsv file
-    eng_ipa = pd.read_csv(
-        "data/phonological/eng_latn_us_broad.tsv", sep="\t", names=["word", "ipa"]
-    )
+def word2ipa(
+    word: str,
+    ipa_dataset: str = "data/phonological/eng_latn_us_broad.tsv",
+    use_fallback: bool = True,
+) -> str:
 
-    # Look up the word in the dataset
-    ipa = eng_ipa[eng_ipa["word"] == word]["ipa"]
+    if ipa_dataset:
+        # First try lookup in the .tsv file
+        eng_ipa = load_data(ipa_dataset)
+
+        # Check if the word is in the dataset
+        ipa = eng_ipa[eng_ipa["token_ort"] == word]["token_ipa"]
+    else:
+        ipa = pd.DataFrame()
 
     if ipa.empty:
+        print(f"{word} not found in dataset.")
         if use_fallback:
             # Fallback on the g2p model
             return g2p([f"<eng-us>:{word}"])[0]
@@ -36,7 +44,7 @@ def word2ipa(word: str, use_fallback: bool = True) -> str:
 
 
 def compute_phonetic_similarity(
-    word1: str, word2: str, method: str = "panphon"
+    word1: str, word2: str, ipa_dataset: str, method: str = "panphon"
 ) -> float:
     """
     Computes the phonetic similarity between two words using the specified method.
@@ -59,8 +67,8 @@ def compute_phonetic_similarity(
         raise ValueError(f"Unsupported method '{method}'. Choose 'panphon' or 'clts'.")
 
     # Convert word to IPA transcription
-    word1 = word2ipa(word1)
-    word2 = word2ipa(word2)
+    word1 = word2ipa(word1, ipa_dataset=ipa_dataset)
+    word2 = word2ipa(word2, ipa_dataset=ipa_dataset)
 
     # Skip if either is None
     if word1 is None or word2 is None:
@@ -109,7 +117,7 @@ def compute_phonetic_similarity(
     return similarity
 
 
-def evaluate_phonetic_similarity(dataset_csv: str, methods: list):
+def evaluate_phonetic_similarity(dataset_csv: str, ipa_path: str, methods: list):
     """
     Evaluates multiple phonetic similarity models on a given dataset and reports performance metrics.
 
@@ -158,7 +166,7 @@ def evaluate_phonetic_similarity(dataset_csv: str, methods: list):
             word1 = row["word1"]
             word2 = row["word2"]
             try:
-                sim = compute_phonetic_similarity(word1, word2, method)
+                sim = compute_phonetic_similarity(word1, word2, ipa_path, method)
                 if sim is None:
                     continue
                 computed_similarities.append(sim)
@@ -230,10 +238,11 @@ def main():
     """
     # Define the dataset path and methods to evaluate
     dataset_path = "data/phonological/human_similarity.csv"
+    ipa_path = "data/phonological/en_US.txt"
     methods = ["panphon", "clts"]  # Add more methods here if needed
 
     # Call the evaluation function
-    evaluate_phonetic_similarity(dataset_path, methods)
+    evaluate_phonetic_similarity(dataset_path, ipa_path, methods)
 
 
 if __name__ == "__main__":
