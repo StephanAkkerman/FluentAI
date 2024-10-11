@@ -117,9 +117,7 @@ def retrieve_closest_words(dataset, indices, top_n=5):
     return closest_words
 
 
-def main(
-    ipa_input, top_n=5, method: str = "panphon", dataset: str = "eng_latn_us_broad"
-):
+def main(ipa_input, top_n=5, method: str = "panphon", dataset: str = "en_US"):
     """
     Main function to find top_n closest phonetically similar words to the input IPA.
 
@@ -175,5 +173,6 @@ if __name__ == "__main__":
     ipa_input = "kˈut͡ʃiŋ"
     top_n = 15
     method = "panphon"  # or clts
+    dataset = "en_US"  # "en_US"  # or eng_latn_us_broad
 
-    # main(ipa_input, top_n, method)
+    main(ipa_input, top_n, method, dataset)

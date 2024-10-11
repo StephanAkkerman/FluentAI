@@ -33,7 +33,7 @@ def word2ipa(
         ipa = pd.DataFrame()
 
     if ipa.empty:
-        print(f"{word} not found in dataset.")
+        # print(f"{word} not found in dataset.")
         if use_fallback:
             # Fallback on the g2p model
             return g2p([f"<eng-us>:{word}"])[0]
@@ -238,7 +238,9 @@ def main():
     """
     # Define the dataset path and methods to evaluate
     dataset_path = "data/phonological/human_similarity.csv"
-    ipa_path = "data/phonological/en_US.txt"
+    ipa_path = (
+        "data/phonological/en_US.txt"  # "data/phonological/eng_latn_us_broad.tsv" #
+    )
     methods = ["panphon", "clts"]  # Add more methods here if needed
 
     # Call the evaluation function
