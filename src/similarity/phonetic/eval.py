@@ -4,12 +4,13 @@ import faiss
 import numpy as np
 import pandas as pd
 from g2p import g2p
-from ipa2vec import panphon_vec, soundvec
 from scipy.stats import pearsonr, spearmanr
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import MinMaxScaler
 from tqdm import tqdm
-from vectorizer import load_data
+
+from similarity.phonetic.ipa2vec import panphon_vec, soundvec
+from similarity.phonetic.vectorizer import load_data
 
 # Configure logging
 logging.basicConfig(

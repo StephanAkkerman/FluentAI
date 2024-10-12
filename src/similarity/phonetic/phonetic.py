@@ -1,26 +1,32 @@
 import faiss
 import numpy as np
-from ipa2vec import panphon_vec, soundvec
-from utils import convert_to_matrix, load_cache, pad_vectors, timer
+
+from similarity.phonetic.g2p import g2p
+from similarity.phonetic.ipa2vec import panphon_vec, soundvec
+from similarity.phonetic.utils import convert_to_matrix, load_cache, pad_vectors
+from similarity.phonetic.vectorizer import load_data
 
 
-@timer
-def normalize_vectors(matrix):
-    """
-    Normalize vectors to have unit length for cosine similarity.
+def word2ipa(
+    word: str,
+    language_code: str = "eng-us",
+) -> str:
 
-    Parameters:
-    - matrix: NumPy array
+    # Try searching in the dataset
+    if "eng-us" in language_code:
+        # First try lookup in the .tsv file
+        eng_ipa = load_data("data/phonological/en_US.txt")
 
-    Returns:
-    - Normalized NumPy array
-    """
-    faiss.normalize_L2(matrix)
-    print("Normalized dataset vectors for cosine similarity.")
-    return matrix
+        # Check if the word is in the dataset
+        ipa = eng_ipa[eng_ipa["token_ort"] == word]["token_ipa"]
+
+        if not ipa.empty:
+            return ipa.values[0].replace(" ", "")
+
+    # Use the g2p model
+    return g2p([f"<{language_code}>:{word}"])
 
 
-@timer
 def build_faiss_index(matrix):
     """
     Build a FAISS index for Inner Product similarity search.
@@ -34,11 +40,9 @@ def build_faiss_index(matrix):
     dimension = matrix.shape[1]
     index = faiss.IndexFlatIP(dimension)
     index.add(matrix)
-    print(f"Built FAISS index with dimension {dimension} and {index.ntotal} vectors.")
     return index
 
 
-@timer
 def vectorize_input(ipa_input, vectorizer, dimension):
     """
     Vectorize the input IPA string and pad to match dataset vector dimensions.
@@ -55,69 +59,20 @@ def vectorize_input(ipa_input, vectorizer, dimension):
     input_length = len(input_vector)
     if input_length > dimension:
         input_vector_padded = input_vector[:dimension]
-        print(f"Padded input vector by truncating to {dimension} elements.")
     else:
         padding_length = dimension - input_length
         input_vector_padded = np.pad(input_vector, (0, padding_length), "constant")
-        print(f"Padded input vector with {padding_length} zeros.")
     input_vector_padded = input_vector_padded.reshape(1, -1)
     return input_vector_padded
 
 
-@timer
-def normalize_input_vector(input_vector):
-    """
-    Normalize the input vector for cosine similarity.
-
-    Parameters:
-    - input_vector: NumPy array
-
-    Returns:
-    - Normalized input vector
-    """
-    faiss.normalize_L2(input_vector)
-    print("Normalized input vector for cosine similarity.")
-    return input_vector
-
-
-@timer
-def perform_search(index, input_vector, top_n=5):
-    """
-    Perform similarity search using FAISS index.
-
-    Parameters:
-    - index: FAISS index
-    - input_vector: Normalized input vector as NumPy array
-    - top_n: Number of top similar vectors to retrieve
-
-    Returns:
-    - distances: NumPy array of similarity scores
-    - indices: NumPy array of indices of similar vectors
-    """
-    distances, indices = index.search(input_vector, top_n)
-    print(f"Performed search and retrieved top {top_n} closest vectors.")
-    return distances, indices
-
-
-@timer
-def retrieve_closest_words(dataset, indices, top_n=5):
-    """
-    Retrieve the closest words from the dataset based on indices.
-
-    Parameters:
-    - dataset: DataFrame
-    - indices: NumPy array of indices
-    - top_n: Number of top similar words to retrieve
-
-    Returns:
-    - DataFrame of closest words with 'token_ort' and 'token_ipa'
-    """
-    closest_words = dataset.iloc[indices[0]][["token_ort", "token_ipa"]]
-    print(f"Retrieved top {top_n} closest words from the dataset.")
-    return closest_words
-
-
-def main(ipa_input, top_n=5, method: str = "panphon", dataset: str = "en_US"):
+def top_phonetic(
+    input_word: str,
+    language_code: str,
+    top_n=15,
+    method: str = "panphon",
+    dataset: str = "en_US",
+):
     """
     Main function to find top_n closest phonetically similar words to the input IPA.
 
@@ -132,6 +87,9 @@ def main(ipa_input, top_n=5, method: str = "panphon", dataset: str = "en_US"):
     elif method == "panphon":
         vectorizer = panphon_vec
 
+    # Convert the input word to IPA representation
+    ipa = word2ipa(input_word, language_code)
+
     # Attempt to load from cache
     dataset = load_cache(method, dataset)
 
@@ -144,35 +102,40 @@ def main(ipa_input, top_n=5, method: str = "panphon", dataset: str = "en_US"):
     dataset_matrix = convert_to_matrix(dataset_vectors_padded)
 
     # Normalize dataset vectors
-    dataset_matrix = normalize_vectors(dataset_matrix)
+    faiss.normalize_L2(dataset_matrix)
 
     # Build FAISS index
     index = build_faiss_index(dataset_matrix)
 
     # Vectorize input
-    input_vector_padded = vectorize_input(
-        ipa_input, vectorizer, dataset_matrix.shape[1]
-    )
+    input_vector_padded = vectorize_input(ipa, vectorizer, dataset_matrix.shape[1])
 
     # Normalize input vector
-    input_vector_padded = normalize_input_vector(input_vector_padded)
+    faiss.normalize_L2(input_vector_padded)
 
     # Perform search
-    distances, indices = perform_search(index, input_vector_padded, top_n)
+    distances, indices = index.search(input_vector_padded, top_n)
 
     # Retrieve closest words
-    closest_words = retrieve_closest_words(dataset, indices, top_n)
+    closest_words = dataset.iloc[indices[0]][["token_ort", "token_ipa"]]
 
-    # Display the results
-    print(f"Top {top_n} phonetically similar words to '{ipa_input}':")
-    print(closest_words.to_string(index=False))
+    # Add the distance column
+    closest_words["distance"] = distances[0]
+
+    return closest_words
 
 
 if __name__ == "__main__":
     # Example usage
-    ipa_input = "kˈut͡ʃiŋ"
+    word_input = "kucing"
+    language_code = "ind"
     top_n = 15
     method = "panphon"  # or clts
-    dataset = "en_US"  # "en_US"  # or eng_latn_us_broad
+    dataset = "en_US"  # "en_US" or eng_latn_us_broad
 
-    main(ipa_input, top_n, method, dataset)
+    # Temporary fix
+    import os
+
+    os.environ["KMP_DUPLICATE_LIB_OK"] = "True"
+
+    print(top_phonetic(word_input, language_code, top_n, method, dataset))

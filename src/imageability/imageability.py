@@ -108,6 +108,21 @@ class ImageabilityPredictor:
         imageability = self.predict_imageability(embedding)
         return imageability
 
+    def get_column_imageability(self, dataframe, column_name):
+        """
+        Generate the imageability score for a given column in a DataFrame.
+
+        Args:
+            dataframe (pd.DataFrame): The DataFrame containing the column to evaluate.
+            column_name (str): The name of the column to evaluate.
+
+        Returns:
+            pd.Series: Predicted imageability scores for the column.
+        """
+        embeddings = dataframe[column_name].apply(self.get_embedding)
+        imageabilities = embeddings.apply(self.predict_imageability)
+        return imageabilities
+
 
 # Example Usage
 if __name__ == "__main__":

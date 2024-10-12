@@ -1,38 +1,13 @@
 import ast
-import functools
 import logging
 import os
-import time
 
 import numpy as np
 import pandas as pd
-from ipa2vec import panphon_vec
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
+from similarity.phonetic.ipa2vec import panphon_vec
 
 
-def timer(func):
-    """
-    Decorator to measure the execution time of functions.
-    """
-
-    @functools.wraps(func)
-    def wrapper_timer(*args, **kwargs):
-        logging.info(f"--- Starting '{func.__name__}' ---")
-        start_time = time.time()
-        value = func(*args, **kwargs)
-        end_time = time.time()
-        run_time = end_time - start_time
-        logging.info(f"--- Finished '{func.__name__}' in {run_time:.2f} seconds ---\n")
-        return value
-
-    return wrapper_timer
-
-
-@timer
 def pad_vectors(vectors):
     """
     Pad all vectors to the maximum length with zeros.
@@ -47,11 +22,9 @@ def pad_vectors(vectors):
     padded_vectors = [
         np.pad(vec, (0, max_len - len(vec)), "constant") for vec in vectors
     ]
-    print(f"Padded vectors to maximum length {max_len}.")
     return padded_vectors
 
 
-@timer
 def convert_to_matrix(padded_vectors):
     """
     Convert list of padded vectors to a NumPy matrix.
@@ -63,11 +36,9 @@ def convert_to_matrix(padded_vectors):
     - NumPy array matrix
     """
     dataset_matrix = np.array(padded_vectors, dtype=np.float32)
-    print(f"Converted padded vectors to matrix with shape {dataset_matrix.shape}.")
     return dataset_matrix
 
 
-@timer
 def load_dataset(vectorizer, vector_column="vectors", max_rows=None):
     """
     Load the dataset based on the vectorizer.
@@ -97,7 +68,6 @@ def load_dataset(vectorizer, vector_column="vectors", max_rows=None):
     return df
 
 
-@timer
 def parse_vectors(dataset, vector_column="vectors"):
     """
     Parse the 'vectors' column from strings to actual lists using ast.literal_eval.
@@ -118,7 +88,7 @@ def parse_vectors(dataset, vector_column="vectors"):
     return dataset
 
 
-def load_cache(method: str = "panphon", dataset: str= "eng_latn_us_broad"):
+def load_cache(method: str = "panphon", dataset: str = "eng_latn_us_broad"):
     """
     Load the processed dataset from a cache file.
 
@@ -163,7 +133,6 @@ def flatten_vector(vec):
         return np.array([0.0], dtype=np.float32)
 
 
-@timer
 def flatten_vectors(dataset, vector_column="vectors"):
     """
     Flatten each vector in the 'vectors' column using np.hstack, handling empty vectors.

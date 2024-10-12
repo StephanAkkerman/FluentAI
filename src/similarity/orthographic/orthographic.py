@@ -1,13 +1,7 @@
 import difflib
 
 import Levenshtein
-import nltk
-from nltk.corpus import words
 from rapidfuzz import distance, fuzz
-
-# Ensure the 'words' corpus is downloaded
-nltk.download("words", quiet=True)
-WORD_LIST = words.words()
 
 
 def compute_difflib_similarity(word1: str, word2: str) -> float:
@@ -137,11 +131,11 @@ def compute_similarity(word1: str, word2: str, method: str) -> float:
 
 def example():
     examples = [
-        ("train", "brain", "difflib"),
-        ("train", "brain", "rapidfuzz_ratio"),
-        ("train", "brain", "rapidfuzz_partial_ratio"),
-        ("train", "brain", "damerau_levenshtein"),
-        ("train", "brain", "levenshtein"),
+        ("abandon", "abandonar", "difflib"),
+        ("abandon", "abandonar", "rapidfuzz_ratio"),
+        ("abandon", "abandonar", "rapidfuzz_partial_ratio"),
+        ("abandon", "abandonar", "damerau_levenshtein"),
+        ("abandon", "abandonar", "levenshtein"),
     ]
 
     for word1, word2, method in examples:
@@ -155,5 +149,3 @@ def example():
 if __name__ == "__main__":
     # Example words and methods
     example()
-
-# Maybe improve this by only importing the library in a function that uses it

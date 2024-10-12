@@ -6,7 +6,8 @@ import panphon
 from pyclts import CLTS
 from soundvectors import SoundVectors
 from tqdm import tqdm
-from utils import flatten_vectors
+
+from similarity.phonetic.utils import flatten_vectors
 
 
 def load_data(file_path: str) -> pd.DataFrame:

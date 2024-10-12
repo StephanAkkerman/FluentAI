@@ -1,5 +1,9 @@
 torch==2.3.1
-transformers
-transformers[sentencepiece]
+transformers==4.45.2
+transformers[sentencepiece]==4.45.2
 diffusers
 accelerate
+numpy==1.26.4 # gensim requires this
+faiss-cpu==1.9.0 # could also try gpu?
+gensim==4.3.3
+scipy==1.13.1 # gensim requires this
