@@ -46,8 +46,6 @@ class ImageabilityPredictor:
             regression_model_path (str, optional): Path to the trained regression model (.joblib file).
                                                    Defaults to "models/best_model_LGBMRegressor.joblib".
         """
-        print("Initializing ImageabilityPredictor...")
-
         # Check if the embedding model exists
         if not os.path.exists(embedding_model_path):
             download_and_save_model()

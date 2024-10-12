@@ -1,9 +1,3 @@
-import difflib
-
-import Levenshtein
-from rapidfuzz import distance, fuzz
-
-
 def compute_difflib_similarity(word1: str, word2: str) -> float:
     """
     Computes the orthographic similarity between two words using difflib's SequenceMatcher.
@@ -15,6 +9,8 @@ def compute_difflib_similarity(word1: str, word2: str) -> float:
     Returns:
     - float: Similarity ratio between 0 and 1.
     """
+    import difflib
+
     matcher = difflib.SequenceMatcher(None, word1, word2)
     similarity = matcher.ratio()
     return similarity * 100
@@ -31,6 +27,8 @@ def compute_rapidfuzz_ratio(word1: str, word2: str) -> float:
     Returns:
     - float: Similarity score between 0 and 100.
     """
+    from rapidfuzz import fuzz
+
     similarity_score = fuzz.ratio(word1.strip().lower(), word2.strip().lower())
     return similarity_score
 
@@ -46,6 +44,8 @@ def compute_rapidfuzz_partial_ratio(word1: str, word2: str) -> float:
     Returns:
     - float: Similarity score between 0 and 100.
     """
+    from rapidfuzz import fuzz
+
     similarity_score = fuzz.partial_ratio(word1, word2)
     return similarity_score
 
@@ -61,6 +61,8 @@ def compute_damerau_levenshtein_similarity(word1: str, word2: str) -> float:
     Returns:
     - float: Similarity score between 0 and 100.
     """
+    from rapidfuzz import distance
+
     dl_distance = distance.DamerauLevenshtein.distance(word1, word2)
     max_len = max(len(word1), len(word2))
     if max_len == 0:
@@ -80,6 +82,8 @@ def compute_levenshtein_similarity(word1: str, word2: str) -> float:
     Returns:
     - float: Similarity score between 0 and 100.
     """
+    import Levenshtein
+
     lev_distance = Levenshtein.distance(word1, word2)
     max_len = max(len(word1), len(word2))
     if max_len == 0:

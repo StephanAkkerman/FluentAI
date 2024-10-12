@@ -6,13 +6,13 @@ from typing import Tuple
 import gensim
 import gensim.downloader as api
 import nltk
-import pandas as pd
 import spacy
 from gensim.models import KeyedVectors
 from nltk.corpus import words
-from scipy.stats import pearsonr, spearmanr
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
+
+from imageability.imageability import download_and_save_model
 
 # Ensure the 'words' corpus is downloaded
 nltk.download("words", quiet=True)
@@ -20,7 +20,7 @@ WORD_LIST = words.words()
 
 # Initialize global variables for models to ensure they are loaded only once
 GLOVE_MODEL = None
-FASTTEXT_MODEL = KeyedVectors.load("models/fasttext.model")
+FASTTEXT_MODEL = None
 MINILM_MODEL = None
 MINILM_EMBEDDINGS = None
 MINILM_WORDS = None
@@ -30,6 +30,36 @@ SPACY_MODEL = None
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
+
+
+class SemanticSimilarity:
+    def __init__(
+        self,
+        embedding_model_path="models/fasttext.model",
+    ):
+        # Check if the embedding model exists
+        if not os.path.exists(embedding_model_path):
+            download_and_save_model()
+        self.model = KeyedVectors.load(embedding_model_path)
+
+    def compute_similarity(self, word1: str, word2: str) -> float:
+        """
+        Computes the semantic similarity between two words using the FastText model.
+
+        Parameters:
+            word1 (str): The first word.
+            word2 (str): The second word.
+
+        Returns:
+            float: Cosine similarity score between -1 and 1.
+
+        Raises:
+            ValueError: If either word is not in the FastText vocabulary.
+        """
+        if word1 not in self.model.key_to_index or word2 not in self.model.key_to_index:
+            return 0
+        similarity = self.model.similarity(word1, word2)
+        return similarity
 
 
 def load_glove_model() -> gensim.models.keyedvectors.KeyedVectors:
@@ -55,12 +85,12 @@ def load_fasttext_model() -> gensim.models.keyedvectors.KeyedVectors:
         gensim.models.keyedvectors.KeyedVectors: The loaded FastText model.
     """
     global FASTTEXT_MODEL
-    if FASTTEXT_MODEL is None:
+
+    if not os.path.exists("models/fasttext.model"):
         print("Loading FastText model. This may take a while...")
-        FASTTEXT_MODEL = api.load(
-            "fasttext-wiki-news-subwords-300"
-        )  # You can choose other models
-        print("FastText model loaded successfully.")
+        download_and_save_model()
+    FASTTEXT_MODEL = KeyedVectors.load("models/fasttext.model")
+    print("FastText model loaded successfully.")
     return FASTTEXT_MODEL
 
 
