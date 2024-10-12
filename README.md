@@ -16,4 +16,5 @@ The pipeline they propose, as shown below, serves as the blueprint for our proje
 
 ![image](https://github.com/StephanAkkerman/FluentAI/assets/45365128/c9ca3190-b136-453d-91cd-f785eac11fa3)
 
-Join us as we embark on this journey to make language acquisition faster, more efficient, and overall, more enjoyable.
+In the image below you can see a more detailed process of deriving the mnemonic word.
+![image](https://github.com/user-attachments/assets/d6914bb2-308c-4612-ae7d-df04455bfeae)
