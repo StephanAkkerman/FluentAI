@@ -6,4 +6,4 @@ accelerate
 numpy==1.26.4 # gensim requires this
 faiss-cpu==1.9.0 # could also try gpu?
 gensim==4.3.3
-scipy==1.13.1 # gensim requires this
+scipy==1.14.1 # gensim requires this
