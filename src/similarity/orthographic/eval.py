@@ -3,42 +3,23 @@
 import pandas as pd
 from orthographic import compute_similarity
 from scipy.stats import pearsonr, spearmanr
+from sklearn.preprocessing import MinMaxScaler
 
 
-def load_dataset(file_path: str) -> pd.DataFrame:
+def scale_ratings(ratings: pd.Series) -> pd.Series:
     """
-    Loads the dataset from a CSV file.
-
-    Parameters:
-    - file_path (str): Path to the CSV file.
-
-    Returns:
-    - pd.DataFrame: Loaded dataset.
-    """
-    df = pd.read_csv(file_path)
-    return df
-
-
-def scale_ratings(ratings: pd.Series, scale: str = "0-100") -> pd.Series:
-    """
-    Scales the ratings to a specified range.
+    Scales the ratings to a 0-100 range using MinMaxScaler.
 
     Parameters:
     - ratings (pd.Series): Original ratings.
-    - scale (str): Desired scale, '0-1' or '0-100'.
 
     Returns:
     - pd.Series: Scaled ratings.
     """
-    min_rating = ratings.min()
-    max_rating = ratings.max()
-    if scale == "0-100":
-        scaled = (ratings - min_rating) / (max_rating - min_rating) * 100
-    elif scale == "0-1":
-        scaled = (ratings - min_rating) / (max_rating - min_rating)
-    else:
-        raise ValueError("Unsupported scale. Choose '0-1' or '0-100'.")
-    return scaled
+    scaler = MinMaxScaler(feature_range=(0, 100))
+    # Reshape ratings to a 2D array as required by MinMaxScaler
+    scaled = scaler.fit_transform(ratings.values.reshape(-1, 1)).flatten()
+    return pd.Series(scaled, index=ratings.index)
 
 
 def compute_all_similarities(df: pd.DataFrame, methods: list) -> pd.DataFrame:
@@ -121,7 +102,7 @@ def main():
     input_file = "data/orthographic/AWL_Data.csv"
 
     # Load the dataset
-    df = load_dataset(input_file)
+    df = pd.read_csv(input_file)
 
     # Check required columns
     required_columns = ["English Cognate", "Spanish Cognate", "Mean Rating"]
@@ -133,7 +114,7 @@ def main():
     df = df.dropna(subset=required_columns)
 
     # Scale the mean ratings to 0-100
-    scaled_ratings = scale_ratings(df["Mean Rating"], scale="0-100")
+    scaled_ratings = scale_ratings(df["Mean Rating"])
     df["Scaled Mean Rating"] = scaled_ratings
 
     # Define similarity methods to evaluate
