@@ -6,7 +6,7 @@ torch==2.0.1
 editdistance==0.6.2
 requests==2.31.0
 tqdm==4.66.2
-pyyaml==6.0.1
+pyyaml==6.0.2
 phonepiece==1.4.2
 epitran==1.24
 unidecode==1.3.6
