@@ -7,7 +7,12 @@ import gensim.downloader as api
 import numpy as np
 import pandas as pd
 from gensim.models import KeyedVectors
-from gensim.models.fasttext import load_facebook_vectors
+from gensim.models.fasttext import (
+    FastText,
+    FastTextKeyedVectors,
+    load_facebook_model,
+    load_facebook_vectors,
+)
 from tqdm import tqdm
 
 
@@ -23,11 +28,10 @@ def load_embedding_model(model_name):
     """
     if model_name.lower() == "fasttext":
         print("Loading FastText embeddings...")
-        # embedding_model = api.load(
-        #     "fasttext-wiki-news-subwords-300"
-        # )  # 300-dim FastText
-        embedding_model = KeyedVectors.load("models/fasttext.model")
-        # embedding_model = load_facebook_vectors("data/wiki-news-300d-1M-subword.bin")
+        embedding_model = api.load(
+            "fasttext-wiki-news-subwords-300"
+        )  # 300-dim FastText
+        # embedding_model = KeyedVectors.load("models/fasttext.model")
     elif model_name.lower() == "glove":
         print("Loading GloVe embeddings...")
         embedding_model = api.load("glove-wiki-gigaword-300")  # 300-dim GloVe
@@ -202,16 +206,9 @@ def generate_embeddings(
 if __name__ == "__main__":
     model = "fasttext"  # Change to 'glove' to use GloVe embeddings
 
-    embedding_model = KeyedVectors.load("models/fasttext.model")
-    print(embedding_model["a"])
-
-    df = pd.read_parquet(f"data/imageability/{model}_embeddings.parquet")
-    print(df.head())
-
-    quit()
     generate_embeddings(
         input_csv="data/imageability/data.csv",
-        output_parquet=f"data/imageability/{model}_embeddings4.parquet",
+        output_parquet=f"data/imageability/{model}_embeddings_v2.parquet",
         model=model,
         word_column="word",
         score_column="score",

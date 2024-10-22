@@ -5,16 +5,11 @@ import joblib
 import numpy as np
 import pandas as pd
 from lightgbm import LGBMRegressor
-from sklearn.ensemble import (
-    GradientBoostingClassifier,
-    GradientBoostingRegressor,
-    RandomForestClassifier,
-    RandomForestRegressor,
-)
-from sklearn.linear_model import LinearRegression, LogisticRegression, Ridge
-from sklearn.metrics import accuracy_score, f1_score, mean_squared_error, r2_score
+from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor
+from sklearn.linear_model import LinearRegression, Ridge
+from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
-from sklearn.svm import SVC, SVR
+from sklearn.svm import SVR
 from tqdm import tqdm
 from xgboost import XGBRegressor
 
@@ -68,37 +63,20 @@ def load_data(path):
     return embeddings, scores
 
 
-def preprocess_data(embeddings, scores, task="classification"):
+def preprocess_data(embeddings, scores):
     """
     Preprocess the data for training.
 
     Args:
         embeddings (np.ndarray): Array of embeddings.
         scores (np.ndarray): Array of scores.
-        task (str, optional): 'classification' or 'regression'. Defaults to 'classification'.
 
     Returns:
         tuple: (X_train, X_test, y_train, y_test)
     """
-    if task == "classification":
-        # Binarize scores based on median
-        median_score = np.median(scores)
-        y = (scores > median_score).astype(int)
-        print(f"Binarized scores based on median value {median_score}.")
-    elif task == "regression":
-        y = scores
-    else:
-        raise ValueError("Invalid task. Choose 'classification' or 'regression'.")
-
-    # Split the data
-    if task == "classification":
-        X_train, X_test, y_train, y_test = train_test_split(
-            embeddings, y, test_size=0.2, random_state=42, stratify=y
-        )
-    else:
-        X_train, X_test, y_train, y_test = train_test_split(
-            embeddings, y, test_size=0.2, random_state=42
-        )
+    X_train, X_test, y_train, y_test = train_test_split(
+        embeddings, scores, test_size=0.2, random_state=42
+    )
     print("Data split into training and testing sets.")
     print(f"Training set size: {X_train.shape[0]} samples.")
     print(f"Testing set size: {X_test.shape[0]} samples.")
@@ -106,7 +84,7 @@ def preprocess_data(embeddings, scores, task="classification"):
     return X_train, X_test, y_train, y_test
 
 
-def train_and_evaluate_models(X_train, X_test, y_train, y_test, task="classification"):
+def train_and_evaluate_models(X_train, X_test, y_train, y_test):
     """
     Train multiple models and evaluate their performance.
 
@@ -120,31 +98,18 @@ def train_and_evaluate_models(X_train, X_test, y_train, y_test, task="classifica
     Returns:
         pd.DataFrame: DataFrame containing model performances.
     """
-    models = []
-    if task == "classification":
-        models = [
-            ("Logistic Regression", LogisticRegression(max_iter=1000)),
-            ("Support Vector Machine", SVC(kernel="linear", probability=True)),
-            ("Random Forest", RandomForestClassifier(n_estimators=100)),
-            ("Gradient Boosting", GradientBoostingClassifier(n_estimators=100)),
-        ]
-    elif task == "regression":
-        models = [
-            ("Linear Regression (OLS)", LinearRegression()),
-            ("Ridge Regression", Ridge()),
-            ("Support Vector Regression", SVR(kernel="linear")),
-            ("Random Forest", RandomForestRegressor(n_estimators=100)),
-            ("Gradient Boosting", GradientBoostingRegressor(n_estimators=100)),
-            (
-                "XGBoost",
-                XGBRegressor(
-                    n_estimators=100, use_label_encoder=False, eval_metric="rmse"
-                ),
-            ),
-            ("LightGBM", LGBMRegressor(n_estimators=100)),
-        ]
-    else:
-        raise ValueError("Invalid task. Choose 'classification' or 'regression'.")
+    models = [
+        ("Linear Regression (OLS)", LinearRegression()),
+        ("Ridge Regression", Ridge()),
+        ("Support Vector Regression", SVR(kernel="linear")),
+        ("Random Forest", RandomForestRegressor(n_estimators=100)),
+        ("Gradient Boosting", GradientBoostingRegressor(n_estimators=100)),
+        (
+            "XGBoost",
+            XGBRegressor(n_estimators=100, use_label_encoder=False, eval_metric="rmse"),
+        ),
+        ("LightGBM", LGBMRegressor(n_estimators=100)),
+    ]
 
     results = []
     best_model = None
@@ -155,27 +120,15 @@ def train_and_evaluate_models(X_train, X_test, y_train, y_test, task="classifica
         model.fit(X_train, y_train)
         predictions = model.predict(X_test)
 
-        if task == "classification":
-            acc = accuracy_score(y_test, predictions)
-            f1 = f1_score(y_test, predictions)
-            results.append({"Model": name, "Accuracy": acc, "F1 Score": f1})
-            print(f"{name} - Accuracy: {acc:.4f}, F1 Score: {f1:.4f}")
+        mse = mean_squared_error(y_test, predictions)
+        r2 = r2_score(y_test, predictions)
+        results.append({"Model": name, "MSE": mse, "R2 Score": r2})
+        print(f"{name} - MSE: {mse:.4f}, R2 Score: {r2:.4f}")
 
-            # Determine the best model based on F1 Score
-            if best_metric is None or f1 > best_metric:
-                best_metric = f1
-                best_model = model
-
-        elif task == "regression":
-            mse = mean_squared_error(y_test, predictions)
-            r2 = r2_score(y_test, predictions)
-            results.append({"Model": name, "MSE": mse, "R2 Score": r2})
-            print(f"{name} - MSE: {mse:.4f}, R2 Score: {r2:.4f}")
-
-            # Determine the best model based on lowest MSE
-            if best_metric is None or mse < best_metric:
-                best_metric = mse
-                best_model = model
+        # Determine the best model based on lowest MSE
+        if best_metric is None or mse < best_metric:
+            best_metric = mse
+            best_model = model
 
     results_df = pd.DataFrame(results)
 
@@ -186,7 +139,7 @@ def train_and_evaluate_models(X_train, X_test, y_train, y_test, task="classifica
     # Display the best model
     if best_model:
         print(
-            f"\nBest Model: {type(best_model).__name__} with {'F1 Score' if task == 'classification' else 'MSE'} of {best_metric:.4f}"
+            f"\nBest Model: {type(best_model).__name__} with 'MSE' of {best_metric:.4f}"
         )
 
     return results_df, best_model
@@ -197,21 +150,16 @@ def main():
 
     # Path to your .npz file containing words, embeddings, and scores
     # data/imageability/glove_embeddings.parquet
-    path = "data/imageability/fasttext_embeddings4.parquet"  # Update if necessary
+    path = "data/imageability/fasttext_embeddings_v2.parquet"  # Update if necessary
 
     # Load data
     embeddings, scores = load_data(path)
 
-    # Choose task: 'classification' or 'regression'
-    task = "regression"  # Change to 'regression' if needed
-
     # Preprocess data
-    X_train, X_test, y_train, y_test = preprocess_data(embeddings, scores, task=task)
+    X_train, X_test, y_train, y_test = preprocess_data(embeddings, scores)
 
     # Train and evaluate models
-    results_df, best_model = train_and_evaluate_models(
-        X_train, X_test, y_train, y_test, task=task
-    )
+    results_df, best_model = train_and_evaluate_models(X_train, X_test, y_train, y_test)
 
     # Save the best model
     if best_model:
