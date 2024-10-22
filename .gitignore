@@ -2,6 +2,7 @@ models/
 datasets/
 *pkl
 data/clts-*
+*.bin
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

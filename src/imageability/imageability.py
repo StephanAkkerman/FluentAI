@@ -7,6 +7,7 @@ import gensim.downloader as api
 import joblib
 import numpy as np
 from gensim.models import KeyedVectors
+from gensim.models.fasttext import FastText, load_facebook_model, load_facebook_vectors
 
 # Suppress warnings for cleaner output
 warnings.filterwarnings("ignore")
@@ -123,16 +124,20 @@ class ImageabilityPredictor:
 
 
 # Example Usage
-if __name__ == "__main__":
-    # Initialize the predictor
-    predictor = ImageabilityPredictor(
-        embedding_model_path="models/fasttext.model",
-        regression_model_path="models/best_model_LGBMRegressor.joblib",
-    )
+# if __name__ == "__main__":
+# or load
+# Download https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.en.300.bin.gz
 
-    # Example words
-    words_to_predict = ["apple", "banana", "orange", "unknownword"]
+# FastText.load_facebook_vectors("data/cc.en.300.bin")
 
-    for word in words_to_predict:
-        score = predictor.get_imageability(word)
-        print(f"Word: '{word}' | Predicted Imageability: {score:.4f}")
+# predictor = ImageabilityPredictor(
+#     embedding_model_path="models/fasttext.model",
+#     regression_model_path="models/best_model_LGBMRegressor.joblib",
+# )
+
+# # Example words
+# words_to_predict = ["apple", "banana", "orange", "unknownword"]
+
+# for word in words_to_predict:
+#     score = predictor.get_imageability(word)
+#     print(f"Word: '{word}' | Predicted Imageability: {score:.4f}")
