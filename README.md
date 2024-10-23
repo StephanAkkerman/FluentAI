@@ -19,6 +19,7 @@ The pipeline they propose, as shown below, serves as the blueprint for our proje
 ## Mnemonic Word Generation
 
 In the image below you can see a more detailed process of deriving the mnemonic word, which is the core of the project. The mnemonic word is a word that is easy to remember and that is associated with the word you want to learn. This is done by using a pre-trained model to generate a sentence that is then used to generate a mnemonic word. In the image above this is refered to as "TransPhoner", as this is where the image below is derived from.
+
 ![image](https://github.com/user-attachments/assets/d6914bb2-308c-4612-ae7d-df04455bfeae)
 
 ### Imageability
