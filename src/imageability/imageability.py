@@ -1,20 +1,21 @@
-# imageability_predictor.py
-
 import os
+import sys
 import warnings
 
-import gensim.downloader as api
 import joblib
 import numpy as np
-from gensim.models import KeyedVectors
-from gensim.models.fasttext import FastText, load_facebook_model, load_facebook_vectors
+from gensim.models.fasttext import FastTextKeyedVectors, load_facebook_vectors
+
+# append the path of the parent directory
+sys.path.insert(1, os.path.join(sys.path[0], ".."))
+from fasttext_download import download_fasttext
 
 # Suppress warnings for cleaner output
 warnings.filterwarnings("ignore")
 
 
 def download_and_save_model(
-    model_name="fasttext-wiki-news-subwords-300", save_path="models/fasttext.model"
+    model_name="cc.en.300.bin", save_path="models/cc.en.300.model"
 ):
     """
     Download the specified embedding model and save it locally.
@@ -23,11 +24,14 @@ def download_and_save_model(
         model_name (str): Name of the model to download.
         save_path (str): Path to save the downloaded model.
     """
-    print(f"Downloading '{model_name}' model...")
-    embedding_model = api.load(model_name)  # This downloads and loads the model
-    print(f"'{model_name}' model downloaded successfully.")
+    # Check if the .bin file already exists
+    if not os.path.exists(f"data/fasttext_embeddings/{model_name}"):
+        # Download the model .bin file
+        download_fasttext(model_name)
 
-    # Save the model locally
+    # Load the model from the .bin file
+    print("Loading FastText embeddings...")
+    embedding_model = load_facebook_vectors(f"data/fasttext_embeddings/{model_name}")
     embedding_model.save(save_path)
     print(f"Model saved locally at '{save_path}'.")
 
@@ -35,7 +39,7 @@ def download_and_save_model(
 class ImageabilityPredictor:
     def __init__(
         self,
-        embedding_model_path="models/fasttext.model",
+        embedding_model_path="models/cc.en.300.model",
         regression_model_path="models/best_model_LGBMRegressor.joblib",
     ):
         """
@@ -53,7 +57,7 @@ class ImageabilityPredictor:
 
         # Load the embedding model
         print(f"Loading embedding model from '{embedding_model_path}'...")
-        self.embedding_model = KeyedVectors.load(embedding_model_path)
+        self.embedding_model = FastTextKeyedVectors.load(embedding_model_path)
         print("Embedding model loaded successfully.")
 
         # Load the regression model
@@ -124,20 +128,12 @@ class ImageabilityPredictor:
 
 
 # Example Usage
-# if __name__ == "__main__":
-# or load
-# Download https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/cc.en.300.bin.gz
+if __name__ == "__main__":
+    predictor = ImageabilityPredictor()
 
-# FastText.load_facebook_vectors("data/cc.en.300.bin")
+    # Example words
+    words_to_predict = ["apple", "banana", "orange", "unknownword"]
 
-# predictor = ImageabilityPredictor(
-#     embedding_model_path="models/fasttext.model",
-#     regression_model_path="models/best_model_LGBMRegressor.joblib",
-# )
-
-# # Example words
-# words_to_predict = ["apple", "banana", "orange", "unknownword"]
-
-# for word in words_to_predict:
-#     score = predictor.get_imageability(word)
-#     print(f"Word: '{word}' | Predicted Imageability: {score:.4f}")
+    for word in words_to_predict:
+        score = predictor.get_imageability(word)
+        print(f"Word: '{word}' | Predicted Imageability: {score:.4f}")

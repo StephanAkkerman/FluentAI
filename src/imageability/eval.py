@@ -149,7 +149,7 @@ def main():
 
     # Path to your .npz file containing words, embeddings, and scores
     # data/imageability/glove_embeddings.parquet
-    path = "data/imageability/fasttext_embeddings_v2.parquet"  # Update if necessary
+    path = "data/imageability/fasttext_embeddings2.parquet"  # Update if necessary
 
     # Load data
     embeddings, scores = load_data(path)
