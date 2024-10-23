@@ -7,3 +7,15 @@ numpy==1.26.4 # gensim requires this
 faiss-cpu==1.9.0 # could also try gpu?
 gensim==4.3.3
 scipy==1.13.1 # gensim requires this
+pandas==2.2.2
+numpy==1.26.4
+joblib==1.4.2
+xgboost==2.1.1
+lightgbm==4.5.0
+scikit-learn==1.5.1
+rapidfuzz==3.9.4
+Levenshtein==0.25.1
+pyclts==3.2.0
+panphon==0.20.0
+soundvectors==1.0
+datasets==2.20.0
