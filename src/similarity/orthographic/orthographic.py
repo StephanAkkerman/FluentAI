@@ -12,8 +12,7 @@ def compute_difflib_similarity(word1: str, word2: str) -> float:
     import difflib
 
     matcher = difflib.SequenceMatcher(None, word1, word2)
-    similarity = matcher.ratio()
-    return similarity * 100
+    return matcher.ratio()
 
 
 def compute_rapidfuzz_ratio(word1: str, word2: str) -> float:
@@ -25,12 +24,12 @@ def compute_rapidfuzz_ratio(word1: str, word2: str) -> float:
     - word2 (str): The second word.
 
     Returns:
-    - float: Similarity score between 0 and 100.
+    - float: Similarity score between 0 and 1.
     """
     from rapidfuzz import fuzz
 
     similarity_score = fuzz.ratio(word1.strip().lower(), word2.strip().lower())
-    return similarity_score
+    return similarity_score / 100
 
 
 def compute_rapidfuzz_partial_ratio(word1: str, word2: str) -> float:
@@ -42,12 +41,12 @@ def compute_rapidfuzz_partial_ratio(word1: str, word2: str) -> float:
     - word2 (str): The second word.
 
     Returns:
-    - float: Similarity score between 0 and 100.
+    - float: Similarity score between 0 and 1.
     """
     from rapidfuzz import fuzz
 
     similarity_score = fuzz.partial_ratio(word1, word2)
-    return similarity_score
+    return similarity_score / 100
 
 
 def compute_damerau_levenshtein_similarity(word1: str, word2: str) -> float:
@@ -59,15 +58,15 @@ def compute_damerau_levenshtein_similarity(word1: str, word2: str) -> float:
     - word2 (str): The second word.
 
     Returns:
-    - float: Similarity score between 0 and 100.
+    - float: Similarity score between 0 and 1.
     """
     from rapidfuzz import distance
 
     dl_distance = distance.DamerauLevenshtein.distance(word1, word2)
     max_len = max(len(word1), len(word2))
     if max_len == 0:
-        return 100.0  # Both words are empty
-    similarity = (1 - dl_distance / max_len) * 100
+        return 1  # Both words are empty
+    similarity = 1 - dl_distance / max_len
     return similarity
 
 
@@ -80,15 +79,15 @@ def compute_levenshtein_similarity(word1: str, word2: str) -> float:
     - word2 (str): The second word.
 
     Returns:
-    - float: Similarity score between 0 and 100.
+    - float: Similarity score between 0 and 1.
     """
     import Levenshtein
 
     lev_distance = Levenshtein.distance(word1, word2)
     max_len = max(len(word1), len(word2))
     if max_len == 0:
-        return 100.0  # Both words are empty
-    similarity = (1 - lev_distance / max_len) * 100
+        return 1  # Both words are empty
+    similarity = 1 - lev_distance / max_len
     return similarity
 
 

@@ -1,3 +1,4 @@
+import os
 import warnings
 
 import joblib
@@ -21,40 +22,34 @@ def load_data(path):
     Load words, embeddings, and scores from a single file.
 
     Args:
-        path (str): Path to the .npz or .parquet file.
+        path (str): Path to the .parquet file.
 
     Returns:
         tuple: (words, embeddings, scores)
     """
     print(f"Loading data from '{path}'...")
 
-    # Load data from .npz or .parquet file
-    if path.endswith(".npz"):
-        data = np.load(path, allow_pickle=True)
-        embeddings = data["embeddings"]
-        scores = data["scores"]
-    elif path.endswith(".parquet"):
-        try:
-            df = pd.read_parquet(path)
-        except FileNotFoundError:
-            raise FileNotFoundError(f"The file '{path}' was not found.")
-        except Exception as e:
-            raise Exception(f"An error occurred while loading the parquet file: {e}")
+    try:
+        df = pd.read_parquet(path)
+    except FileNotFoundError:
+        raise FileNotFoundError(f"The file '{path}' was not found.")
+    except Exception as e:
+        raise Exception(f"An error occurred while loading the parquet file: {e}")
 
-        # Verify required columns exist
-        required_columns = {"word", "score"}
-        embedding_columns = [col for col in df.columns if col.startswith("emb_")]
-        if not required_columns.issubset(df.columns):
-            missing = required_columns - set(df.columns)
-            raise ValueError(f"Missing required columns in parquet file: {missing}")
-        if not embedding_columns:
-            raise ValueError(
-                "No embedding columns found. Ensure embeddings are named starting with 'emb_'."
-            )
+    # Verify required columns exist
+    required_columns = {"word", "score"}
+    embedding_columns = [col for col in df.columns if col.startswith("emb_")]
+    if not required_columns.issubset(df.columns):
+        missing = required_columns - set(df.columns)
+        raise ValueError(f"Missing required columns in parquet file: {missing}")
+    if not embedding_columns:
+        raise ValueError(
+            "No embedding columns found. Ensure embeddings are named starting with 'emb_'."
+        )
 
-        # Extract embeddings and scores
-        embeddings = df[embedding_columns].values
-        scores = df["score"].values
+    # Extract embeddings and scores
+    embeddings = df[embedding_columns].values
+    scores = df["score"].values
 
     print(
         f"Loaded {len(scores)} words with embeddings shape {embeddings.shape} and scores shape {scores.shape}."
@@ -149,7 +144,7 @@ def main():
 
     # Path to your .npz file containing words, embeddings, and scores
     # data/imageability/glove_embeddings.parquet
-    path = "data/imageability/fasttext_embeddings2.parquet"  # Update if necessary
+    path = "data/imageability/fasttext_embeddings.parquet"  # Update if necessary
 
     # Load data
     embeddings, scores = load_data(path)
@@ -165,7 +160,6 @@ def main():
         model_name = type(best_model).__name__
         filename = f"models/best_model_{model_name}.joblib"
         # Create the models directory if it doesn't exist
-        import os
 
         os.makedirs("models", exist_ok=True)
         joblib.dump(best_model, filename)
