@@ -17,6 +17,8 @@ FluentAI is inspired by the method detailed in the paper [SmartPhone: Exploring 
 The pipeline they propose, as shown below, serves as the blueprint for our project. It illustrates the process of automating language learning, blending cutting-edge AI techniques with proven language learning methodology.
 For the architectural overview view our [Figma board](https://www.figma.com/board/zkIYtrCM3ri0ER62p4WiEt/Architectural-Overview?node-id=0-1&t=6vREjL5A8JitOAeG-1)
 
+You can find the list of supported languages [here](supported-languages.md).
+
 ![image](https://github.com/StephanAkkerman/FluentAI/assets/45365128/c9ca3190-b136-453d-91cd-f785eac11fa3)
 
 ## Table of Contents 🗂
@@ -55,6 +57,7 @@ The semantic similarity of a word is a measure of how similar the meaning of two
 To determine the best mnemonic word, we use the methods described above. The results of each method are given as a score (between 0 and 1) and these scores are combined to determine the best mnemonic word. The user can select the weights of each method to determine how important each method is.
 
 ## Mnemonic Image Generation
+
 TODO
 
 ## Installation ⚙️
@@ -72,6 +75,7 @@ pip install git+https://github.com/StephanAkkerman/FluentAI.git
 ```
 
 ## Usage ⌨️
+
 TODO
 
 ## Citation ✍️

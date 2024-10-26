@@ -13,12 +13,12 @@ logging.basicConfig(
 )
 
 
-def generate_mnemonic(word, language_code):
+def generate_mnemonic(word: str, language_code):
     """
     Generate a mnemonic for the input word using the phonetic representation.
 
     Parameters:
-    - word: String, input word
+    - word: String, foreign word to generate mnemonic for
     - language_code: String, language code of the input word
     """
     # Get the top x phonetically similar words
@@ -50,4 +50,6 @@ def generate_mnemonic(word, language_code):
 
 
 if __name__ == "__main__":
-    generate_mnemonic("kucing", "ind")
+    # generate_mnemonic("kucing", "ind")
+
+    generate_mnemonic("猫", "zho-s")
