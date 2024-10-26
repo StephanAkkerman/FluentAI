@@ -27,6 +27,46 @@ Paste the contents of the following JSON document in there.
 }
 ```
 
+## Issue Reporting Guidelines
+
+To maintain consistency and clarity when reporting issues, please use the following template:
+
+### Issue Template
+
+1. Title: [Clear and concise issue title]
+
+2. Description:
+
+   - Problem:
+     [Briefly describe the issue or gap that needs to be addressed.]
+
+   - Solution:
+     [Outline the proposed action or changes to resolve the problem. If none yet, leave blank]
+
+   - Prerequisites:
+     [List any requirements or dependencies needed before starting.]
+
+3. Tasks:
+
+   - Task 1
+   - Task 2
+   - Task 3
+   - etc.
+
+### Guidelines for Submitting Issues
+
+1. Search Existing Issues:
+   Before creating a new issue, please check if it has already been reported to avoid duplicates.
+
+2. Use the Template:
+   Fill out all sections of the issue template to provide comprehensive information.
+
+3. Be Clear and Concise:
+   Use straightforward language and provide as much relevant detail as possible.
+
+4. Label Appropriately:
+   Assign appropriate labels (e.g., bug, enhancement, documentation) to categorize the issue.
+
 ## Submitting Pull Requests
 
 When submitting a pull request, please follow these guidelines:

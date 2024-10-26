@@ -13,6 +13,7 @@
 
 FluentAI is inspired by the method detailed in the paper [SmartPhone: Exploring Keyword Mnemonic with Auto-generated Verbal and Visual Cues by Jaewook Lee and Andrew Lan](https://arxiv.org/pdf/2305.10436.pdf). The aim is to recreate their approach using accessible, open-source models.
 The pipeline they propose, as shown below, serves as the blueprint for our project. It illustrates the process of automating language learning, blending cutting-edge AI techniques with proven language learning methodology.
+For the architectural overview view: https://www.figma.com/board/zkIYtrCM3ri0ER62p4WiEt/Architectural-Overview?node-id=0-1&t=6vREjL5A8JitOAeG-1
 
 ![image](https://github.com/StephanAkkerman/FluentAI/assets/45365128/c9ca3190-b136-453d-91cd-f785eac11fa3)
 
