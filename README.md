@@ -11,15 +11,26 @@
 > [!CAUTION]
 > This project is currently under development, please see the issues to see everything that still needs to be done before this is ready to use.
 
+## Introduction
+
 FluentAI is inspired by the method detailed in the paper [SmartPhone: Exploring Keyword Mnemonic with Auto-generated Verbal and Visual Cues by Jaewook Lee and Andrew Lan](https://arxiv.org/pdf/2305.10436.pdf). The aim is to recreate their approach using accessible, open-source models.
 The pipeline they propose, as shown below, serves as the blueprint for our project. It illustrates the process of automating language learning, blending cutting-edge AI techniques with proven language learning methodology.
 For the architectural overview view: https://www.figma.com/board/zkIYtrCM3ri0ER62p4WiEt/Architectural-Overview?node-id=0-1&t=6vREjL5A8JitOAeG-1
 
 ![image](https://github.com/StephanAkkerman/FluentAI/assets/45365128/c9ca3190-b136-453d-91cd-f785eac11fa3)
 
-## Mnemonic Word Generation
+## Table of Contents 🗂
 
-In the image below you can see a more detailed process of deriving the mnemonic word, which is the core of the project. The mnemonic word is a word that is easy to remember and that is associated with the word you want to learn. This is done by using a pre-trained model to generate a sentence that is then used to generate a mnemonic word. In the image above this is refered to as "TransPhoner", as this is where the image below is derived from.
+- [Mnemonic Word Generation](#key-features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Citation](#citation)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Mnemonic Word Generation 🏭
+
+In the image below you can see a more detailed process of deriving the mnemonic word, which is the core of the project. The mnemonic word is a word that is easy to remember and that is associated with the word you want to learn. This is done by using a pre-trained model to generate a sentence that is then used to generate a mnemonic word. In the image above this is referred to as "TransPhoner", as this is where the image below is derived from.
 
 ![image](https://github.com/user-attachments/assets/d6914bb2-308c-4612-ae7d-df04455bfeae)
 
@@ -29,7 +40,7 @@ The imageability of a word is a measure of how easily a word can be visualized. 
 
 ### Phonetic Similarity
 
-The phonetic similarity of a word is a measure of how similar the pronunciation of two words is. This is important for the mnemonic word, as it should be easy to remember. Therefore we use this to determine which English words should be considered for the mnemonic word. We use the CLTS and PanPhon models to generate the feature vectors of the IPA representation of the words. These feature vectors are then used to calculate the phonetic similarity between the words. We use faiss to speed up the search for the most similar words.
+The phonetic similarity of a word is a measure of how similar the pronunciation of two words is. This is important for the mnemonic word, as it should be easy to remember. Therefore we use this to determine which English words should be considered for the mnemonic word. We use the CLTS and PanPhon models to generate the feature vectors of the IPA representation of the words. These feature vectors are then used to calculate the phonetic similarity between the words. We use [faiss](https://github.com/facebookresearch/faiss) to speed up the search for the most similar words.
 
 ### Orthographic Similarity
 
@@ -41,8 +52,48 @@ The semantic similarity of a word is a measure of how similar the meaning of two
 
 ### Best Mnemonic Word
 
-To determine the best mnemonic word, we use the methods described above. The results of each methods are given as a score (between 0 and 100) and these scores are combined to determine the best mnemonic word. The user can select the weights of each method to determine how important each method is.
+To determine the best mnemonic word, we use the methods described above. The results of each method are given as a score (between 0 and 1) and these scores are combined to determine the best mnemonic word. The user can select the weights of each method to determine how important each method is.
 
 ## Mnemonic Image Generation
-
 TODO
+
+## Installation ⚙️
+
+The required packages to run this code can be found in the requirements.txt file. To run this file, execute the following code block after cloning the repository:
+
+```bash
+pip install -r requirements.txt
+```
+
+or
+
+```bash
+pip install git+https://github.com/StephanAkkerman/FluentAI.git
+```
+
+## Usage ⌨️
+TODO
+
+## Citation ✍️
+
+If you use this project in your research, please cite as follows:
+
+```bibtex
+@misc{project_name,
+  author  = {Stephan Akkerman, Winston Lam},
+  title   = {FluentAI},
+  year    = {2024},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/StephanAkkerman/FluentAI}}
+}
+```
+
+## Contributing 🛠
+
+Contributions are welcome! If you have a feature request, bug report, or proposal for code refactoring, please feel free to open an issue on GitHub. We appreciate your help in improving this project.\
+![https://github.com/StephanAkkerman/FluentAI/graphs/contributors](https://contributors-img.firebaseapp.com/image?repo=StephanAkkerman/template)
+
+## License 📜
+
+This project is licensed under the MIT License. See the [LICENSE] file for details.
