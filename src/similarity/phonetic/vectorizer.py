@@ -2,11 +2,9 @@ import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import pandas as pd
-import panphon
-from pyclts import CLTS
-from soundvectors import SoundVectors
 from tqdm import tqdm
 
+from similarity.phonetic.ipa2vec import ft, sv
 from similarity.phonetic.utils import flatten_vectors
 
 
@@ -54,34 +52,6 @@ def load_data(file_path: str) -> pd.DataFrame:
     ds["token_ort"] = ds["token_ort"].str.lower()
 
     return ds
-
-
-def initialize_clts(clts_path="data/clts-2.3.0"):
-    """
-    Initializes the CLTS and SoundVectors objects.
-
-    Args:
-        clts_path (str): Path to the CLTS data directory.
-
-    Returns:
-        SoundVectors: Initialized SoundVectors object.
-    """
-    print("Initializing CLTS and SoundVectors...")
-    bipa = CLTS(clts_path).bipa
-    sv = SoundVectors(ts=bipa)
-    return sv
-
-
-def initialize_panphon():
-    """
-    Initializes the Panphon FeatureTable.
-
-    Returns:
-        panphon.FeatureTable: Initialized FeatureTable object.
-    """
-    print("Initializing Panphon FeatureTable...")
-    ft = panphon.FeatureTable()
-    return ft
 
 
 def vectorize_word_clts(word, sv):
@@ -198,9 +168,6 @@ def main(
     Args:
         method (str): Vectorization method to use ('clts' or 'panphon').
     """
-    # Configuration
-    clts_path = "data/clts-2.3.0"
-
     data_file_name = data_file.split("/")[-1].split(".")[0]
 
     if method == "clts":
@@ -215,10 +182,6 @@ def main(
 
     # Load data
     ds = load_data(data_file)
-
-    # Initialize vectorizers
-    sv = initialize_clts(clts_path) if method == "clts" else None
-    ft = initialize_panphon() if method == "panphon" else None
 
     # Perform CLTS vectorization
     if method == "clts":

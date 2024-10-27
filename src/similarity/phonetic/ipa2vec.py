@@ -1,10 +1,21 @@
+import os
+
 import numpy as np
 import panphon
 from pyclts import CLTS
 from soundvectors import SoundVectors
 
+try:
+    from similarity.phonetic.get_clts import get_clts
+except ImportError:
+    from get_clts import get_clts
+
+# Test if data/clts exists
+if not os.path.exists("data/clts"):
+    get_clts()
+
 # Load CLTS data and SoundVectors
-bipa = CLTS("data/clts-2.3.0").bipa
+bipa = CLTS("data/clts").bipa
 sv = SoundVectors(ts=bipa)
 
 

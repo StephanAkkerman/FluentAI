@@ -19,3 +19,4 @@ pyclts==3.2.0
 panphon==0.20.0
 soundvectors==1.0
 datasets==2.20.0
+GitPython==3.1.43
