@@ -4,36 +4,13 @@ import warnings
 
 import joblib
 import numpy as np
-from gensim.models.fasttext import FastTextKeyedVectors, load_facebook_vectors
 
 # append the path of the parent directory
 sys.path.insert(1, os.path.join(sys.path[0], ".."))
-from fasttext_download import download_fasttext
+from fasttext_model import fasttext_model
 
 # Suppress warnings for cleaner output
 warnings.filterwarnings("ignore")
-
-
-def download_and_save_model(
-    model_name="cc.en.300.bin", save_path="models/cc.en.300.model"
-):
-    """
-    Download the specified embedding model and save it locally.
-
-    Args:
-        model_name (str): Name of the model to download.
-        save_path (str): Path to save the downloaded model.
-    """
-    # Check if the .bin file already exists
-    if not os.path.exists(f"data/fasttext_embeddings/{model_name}"):
-        # Download the model .bin file
-        download_fasttext(model_name)
-
-    # Load the model from the .bin file
-    print("Loading FastText embeddings...")
-    embedding_model = load_facebook_vectors(f"data/fasttext_embeddings/{model_name}")
-    embedding_model.save(save_path)
-    print(f"Model saved locally at '{save_path}'.")
 
 
 class ImageabilityPredictor:
@@ -51,14 +28,8 @@ class ImageabilityPredictor:
             regression_model_path (str, optional): Path to the trained regression model (.joblib file).
                                                    Defaults to "models/best_model_LGBMRegressor.joblib".
         """
-        # Check if the embedding model exists
-        if not os.path.exists(embedding_model_path):
-            download_and_save_model()
-
         # Load the embedding model
-        print(f"Loading embedding model from '{embedding_model_path}'...")
-        self.embedding_model = FastTextKeyedVectors.load(embedding_model_path)
-        print("Embedding model loaded successfully.")
+        self.embedding_model = fasttext_model
 
         # Load the regression model
         print(f"Loading regression model from '{regression_model_path}'...")

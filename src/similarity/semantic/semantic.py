@@ -1,18 +1,20 @@
 import logging
 import os
 import pickle
+import sys
 from typing import Tuple
 
 import gensim
 import gensim.downloader as api
 import nltk
 import spacy
-from gensim.models import KeyedVectors
 from nltk.corpus import words
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 
-from imageability.imageability import download_and_save_model
+# Add the parent directory to sys.path to import the fasttext_model module
+sys.path.insert(1, os.path.abspath(os.path.join(sys.path[0], "..", "..")))
+from fasttext_model import fasttext_model
 
 # Ensure the 'words' corpus is downloaded
 nltk.download("words", quiet=True)
@@ -33,14 +35,8 @@ logging.basicConfig(
 
 
 class SemanticSimilarity:
-    def __init__(
-        self,
-        embedding_model_path="models/fasttext.model",
-    ):
-        # Check if the embedding model exists
-        if not os.path.exists(embedding_model_path):
-            download_and_save_model()
-        self.model = KeyedVectors.load(embedding_model_path)
+    def __init__(self):
+        self.model = fasttext_model
 
     def compute_similarity(self, word1: str, word2: str) -> float:
         """
@@ -86,10 +82,7 @@ def load_fasttext_model() -> gensim.models.keyedvectors.KeyedVectors:
     """
     global FASTTEXT_MODEL
 
-    if not os.path.exists("models/fasttext.model"):
-        print("Loading FastText model. This may take a while...")
-        download_and_save_model()
-    FASTTEXT_MODEL = KeyedVectors.load("models/fasttext.model")
+    FASTTEXT_MODEL = fasttext_model
     print("FastText model loaded successfully.")
     return FASTTEXT_MODEL
 

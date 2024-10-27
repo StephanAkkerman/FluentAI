@@ -3,6 +3,7 @@ import os
 import shutil
 
 import requests
+from gensim.models.fasttext import FastTextKeyedVectors, load_facebook_vectors
 from tqdm import tqdm
 
 
@@ -85,5 +86,32 @@ def download_fasttext(file_name: str = "cc.en.300.bin.gz"):
     print("All operations completed successfully.")
 
 
-if __name__ == "__main__":
-    download_fasttext()
+def get_fasttext_model(
+    model_name="cc.en.300.bin", embedding_model_path="models/cc.en.300.model"
+):
+    """
+    Download the specified embedding model and save it locally.
+
+    Args:
+        model_name (str): Name of the model to download.
+        embedding_model_path (str): Path to save the downloaded model.
+    """
+    # Check if the model already exists
+    if os.path.exists(embedding_model_path):
+        print(f"Loading embedding model from '{embedding_model_path}'...")
+        return FastTextKeyedVectors.load(embedding_model_path)
+
+    # Check if the .bin file already exists
+    if not os.path.exists(f"data/fasttext_embeddings/{model_name}"):
+        # Download the model .bin file
+        download_fasttext(model_name)
+
+    # Load the model from the .bin file
+    print("Loading FastText embeddings...")
+    embedding_model = load_facebook_vectors(f"data/fasttext_embeddings/{model_name}")
+    embedding_model.save(embedding_model_path)
+    print(f"Model saved locally at '{embedding_model_path}'.")
+    return embedding_model
+
+
+fasttext_model = get_fasttext_model()
