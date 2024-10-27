@@ -4,6 +4,7 @@ from imageability.imageability import ImageabilityPredictor
 from similarity.orthographic.orthographic import compute_damerau_levenshtein_similarity
 from similarity.phonetic.phonetic import top_phonetic
 from similarity.semantic.semantic import SemanticSimilarity
+from similarity.semantic.translator import translate_word
 
 imageability_predictor = ImageabilityPredictor()
 semantic_sim = SemanticSimilarity()
@@ -38,10 +39,12 @@ def generate_mnemonic(word: str, language_code):
         axis=1,
     )
 
+    translated_word = translate_word(word, language_code)
+
     # Semantic similarity, use fasttext
     logging.info("Generating semantic similarity...")
     top["semantic_similarity"] = top.apply(
-        lambda row: semantic_sim.compute_similarity(word, row["token_ort"]),
+        lambda row: semantic_sim.compute_similarity(translated_word, row["token_ort"]),
         axis=1,
     )
 
