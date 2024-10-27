@@ -4,7 +4,7 @@ This document lists the languages that are currently supported to learn and the 
 
 ## Learnable Languages
 
-This list is dependent on the [charsiu/g2p model](https://huggingface.co/charsiu/g2p_multilingual_byT5_small_100) you can find the origina list [here](https://docs.google.com/spreadsheets/d/1y7kisk-UZT9LxpQB0xMIF4CkxJt0iYJlWAnyj6azSBE).
+This list is dependent on the [charsiu/g2p model](https://huggingface.co/charsiu/g2p_multilingual_byT5_small_100) you can find the original list [here](https://docs.google.com/spreadsheets/d/1y7kisk-UZT9LxpQB0xMIF4CkxJt0iYJlWAnyj6azSBE). The codes are the ISO-639-3 codes with some modifications to distinguish local dialects/variants.
 
 The following languages are currently supported for learning:
 
