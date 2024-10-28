@@ -1,13 +1,13 @@
-torch==2.3.1
+torch==2.4.1
 transformers==4.45.2
 transformers[sentencepiece]==4.45.2
-diffusers
-accelerate
+accelerate==0.32.1
 numpy==1.26.4 # gensim requires this
 faiss-cpu==1.9.0 # could also try gpu?
 gensim==4.3.3
 scipy==1.13.1 # gensim requires this
 pandas==2.2.2
+diffusers==0.31.0
 numpy==1.26.4
 joblib==1.4.2
 xgboost==2.1.1
