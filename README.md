@@ -1,4 +1,4 @@
-# FluentAI: Learn langauges in a flash
+# FluentAI: Learn languages in a flash
 
 ![FluentAI Banner](img/banner.png)
 
