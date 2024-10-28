@@ -85,7 +85,7 @@ TODO
 If you use this project in your research, please cite as follows:
 
 ```bibtex
-@misc{project_name,
+@misc{FluentAI,
   author  = {Stephan Akkerman, Winston Lam},
   title   = {FluentAI},
   year    = {2024},
