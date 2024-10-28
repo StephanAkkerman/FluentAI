@@ -1,7 +1,7 @@
 models/
 datasets/
 *pkl
-data/clts
+data/clts*
 *.bin
 
 # Byte-compiled / optimized / DLL files
