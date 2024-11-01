@@ -32,19 +32,21 @@ def generate_mnemonic(word: str, language_code):
         top, "token_ort"
     )
 
-    # Orthographic similarity, use damerau levenshtein
-    logging.info("Generating orthographic similarity...")
-    top["orthographic_similarity"] = top.apply(
-        lambda row: compute_damerau_levenshtein_similarity(word, row["token_ort"]),
-        axis=1,
-    )
-
-    translated_word = translate_word(word, language_code)
+    translated_word, transliterated_word = translate_word(word, language_code)
 
     # Semantic similarity, use fasttext
     logging.info("Generating semantic similarity...")
     top["semantic_similarity"] = top.apply(
         lambda row: semantic_sim.compute_similarity(translated_word, row["token_ort"]),
+        axis=1,
+    )
+
+    # Orthographic similarity, use damerau levenshtein
+    logging.info("Generating orthographic similarity...")
+    top["orthographic_similarity"] = top.apply(
+        lambda row: compute_damerau_levenshtein_similarity(
+            transliterated_word, row["token_ort"]
+        ),
         axis=1,
     )
 

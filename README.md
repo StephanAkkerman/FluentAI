@@ -76,6 +76,10 @@ or
 pip install git+https://github.com/StephanAkkerman/FluentAI.git
 ```
 
+### GPU Support
+
+If you would like to use a GPU to run the code, you can install the `torch` package with the CUDA support. You can find the installation instructions [here](https://pytorch.org/get-started/locally/).
+
 ## Usage ⌨️
 
 TODO

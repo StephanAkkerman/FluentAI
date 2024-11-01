@@ -1,9 +1,26 @@
+import unicodedata
 from functools import lru_cache
 
 import pycountry
 from googletrans import Translator
 
 translator = Translator()
+
+
+def is_latin_script(word: str):
+    for char in word:
+        # Check if the character's Unicode script is 'Latin'
+        if "LATIN" not in unicodedata.name(char):
+            print(char)
+            return False
+    return True
+
+
+def remove_diacritics(word):
+    # Normalize the word to decomposed form (NFD)
+    decomposed = unicodedata.normalize("NFD", word)
+    # Filter out diacritic characters (those in the 'Mn' category)
+    return "".join(char for char in decomposed if unicodedata.category(char) != "Mn")
 
 
 def map_language_code(input_code):
@@ -70,8 +87,23 @@ def translate_word(word, src_lang_code, target_lang_code: str = "en"):
     else:
         target = target_lang_code
 
+    # Add transliteration
+    transliterated_word = word
+
     try:
-        return translator.translate(word, src=src, dest=target).text
+        if not is_latin_script(word):
+            transliterated_word = translator.translate(
+                word, src=src, dest=src
+            ).pronunciation
+            # Lower case it
+            transliterated_word = transliterated_word.lower()
+            # Remove diacritics
+            transliterated_word = remove_diacritics(transliterated_word)
+
+        return (
+            translator.translate(word, src=src, dest=target).text,
+            transliterated_word,
+        )
     except Exception as e:
         print(f"Error translating {word} from {src} to {target}: {e}")
         return None
