@@ -4,8 +4,10 @@ import pandas as pd
 from scipy.stats import pearsonr, spearmanr
 from semantic import compute_similarity
 
+from datasets import load_dataset
 
-def evaluate_models(dataset_csv: str = "data/semantic/semantic_similarity.csv"):
+
+def evaluate_models():
     """
     Evaluates all semantic similarity models on a given dataset and reports performance metrics.
 
@@ -16,15 +18,10 @@ def evaluate_models(dataset_csv: str = "data/semantic/semantic_similarity.csv"):
         None
     """
     # Load the dataset
-    try:
-        df = pd.read_csv(dataset_csv)
-        logging.info(f"Loaded dataset with {len(df)} entries.")
-    except FileNotFoundError:
-        logging.error(f"Dataset file '{dataset_csv}' not found.")
-        return
-    except Exception as e:
-        logging.error(f"Error loading dataset: {e}")
-        return
+    df = load_dataset(
+        "StephanAkkerman/semantic-similarity", cache_dir="datasets", split="train"
+    ).to_pandas()
+    logging.info(f"Loaded dataset with {len(df)} entries.")
 
     # Ensure necessary columns exist
     required_columns = {"word1", "word2", "similarity", "dataset"}

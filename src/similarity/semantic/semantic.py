@@ -14,7 +14,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 # Add the parent directory to sys.path to import the fasttext_model module
 sys.path.insert(1, os.path.abspath(os.path.join(sys.path[0], "..", "..")))
-from fasttext_model import fasttext_model
 
 # Ensure the 'words' corpus is downloaded
 nltk.download("words", quiet=True)
@@ -36,6 +35,8 @@ logging.basicConfig(
 
 class SemanticSimilarity:
     def __init__(self):
+        from fasttext_model import fasttext_model
+
         self.model = fasttext_model
 
     def compute_similarity(self, word1: str, word2: str) -> float:
@@ -81,9 +82,9 @@ def load_fasttext_model() -> gensim.models.keyedvectors.KeyedVectors:
         gensim.models.keyedvectors.KeyedVectors: The loaded FastText model.
     """
     global FASTTEXT_MODEL
+    from fasttext_model import fasttext_model
 
     FASTTEXT_MODEL = fasttext_model
-    print("FastText model loaded successfully.")
     return FASTTEXT_MODEL
 
 
@@ -101,7 +102,7 @@ def load_minilm_model() -> Tuple[SentenceTransformer, list, list]:
         print("MiniLM model loaded successfully.")
 
     if MINILM_EMBEDDINGS is None or MINILM_WORDS is None:
-        embeddings_path = "minilm_word_embeddings.pkl"
+        embeddings_path = "models/minilm_word_embeddings.pkl"
         if not os.path.exists(embeddings_path):
             print(
                 "Creating MiniLM embeddings for the word list. This may take a while..."
