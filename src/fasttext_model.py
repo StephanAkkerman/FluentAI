@@ -91,6 +91,7 @@ def get_fasttext_model(
 ):
     """
     Download the specified embedding model and save it locally.
+    Another option is: "wiki-news-300d-1M-subword.bin" and "models/wiki-news-300d-1M-subword.model"
 
     Args:
         model_name (str): Name of the model to download.
@@ -103,8 +104,8 @@ def get_fasttext_model(
 
     # Check if the .bin file already exists
     if not os.path.exists(f"data/fasttext_embeddings/{model_name}"):
-        # Download the model .bin file
-        download_fasttext(model_name)
+        # Download the model .bin file with .gz extension
+        download_fasttext(f"{model_name}.gz")
 
     # Load the model from the .bin file
     print("Loading FastText embeddings...")
