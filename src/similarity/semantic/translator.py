@@ -55,6 +55,10 @@ def map_language_code(input_code):
         "vie-n": "vi",  # Vietnamese (Northern)
         "vie-c": "vi",  # Vietnamese (Central)
         "vie-s": "vi",  # Vietnamese (Southern)
+        "wel-nw": "cy",  # Welsh (North)
+        "wel-sw": "cy",  # Welsh (South)
+        "por-br": "pt",  # Portuguese (Brazil)
+        "por-po": "por",  # Portuguese (Portugal)
     }
 
     if input_code in special_mappings:
@@ -92,9 +96,11 @@ def translate_word(word, src_lang_code, target_lang_code: str = "en"):
 
     try:
         if not is_latin_script(word):
+            print(src, word)
             transliterated_word = translator.translate(
                 word, src=src, dest=src
             ).pronunciation
+            print(transliterated_word)
             # Lower case it
             transliterated_word = transliterated_word.lower()
             # Remove diacritics
@@ -106,7 +112,7 @@ def translate_word(word, src_lang_code, target_lang_code: str = "en"):
         )
     except Exception as e:
         print(f"Error translating {word} from {src} to {target}: {e}")
-        return None
+        return word, word
 
 
 def translate_dataframe_column(

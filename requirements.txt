@@ -20,5 +20,6 @@ panphon==0.20.0
 soundvectors==1.0
 datasets==2.20.0
 GitPython==3.1.43
-googletrans==4.0.0-rc1
+#googletrans==4.0.0-rc1
+git+https://github.com/StephanAkkerman/py-googletrans.git@master
 pycountry==24.6.1

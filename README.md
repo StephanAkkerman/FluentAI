@@ -62,6 +62,14 @@ To determine the best mnemonic word, we use the methods described above. The res
 
 TODO
 
+## Prerequisites 📋
+
+Before starting, make sure you have the following requirements:
+
+- [Anki](https://apps.ankiweb.net/) installed on your device.
+- [Anki-Connect](https://foosoft.net/projects/anki-connect/) this add-on allows you to add cards to Anki from the command line.
+- Add the deck in `/deck/FluentAI.apkg` to your Anki application. You can do this by dragging and dropping the file into the Anki application.
+
 ## Installation ⚙️
 
 The required packages to run this code can be found in the requirements.txt file. To run this file, execute the following code block after cloning the repository:

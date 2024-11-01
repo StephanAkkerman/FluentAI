@@ -1,5 +1,6 @@
 import logging
 
+from constants import G2P_LANGCODES
 from imageability.imageability import ImageabilityPredictor
 from similarity.orthographic.orthographic import compute_damerau_levenshtein_similarity
 from similarity.phonetic.phonetic import top_phonetic
@@ -22,6 +23,11 @@ def generate_mnemonic(word: str, language_code):
     - word: String, foreign word to generate mnemonic for
     - language_code: String, language code of the input word
     """
+    # Test if the language code is valid
+    if language_code not in G2P_LANGCODES:
+        logging.error(f"Invalid language code: {language_code}")
+        return
+
     # Get the top x phonetically similar words
     logging.info(f"Generating top phonetic similarity for {word} in {language_code}...")
     top = top_phonetic(word, language_code)
