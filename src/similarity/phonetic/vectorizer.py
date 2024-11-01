@@ -5,6 +5,8 @@ import pandas as pd
 from huggingface_hub import hf_hub_download
 from tqdm import tqdm
 
+from logger import logger
+
 try:
     from similarity.phonetic.ipa2vec import ft, sv
     from similarity.phonetic.utils import flatten_vectors
@@ -34,7 +36,7 @@ def vectorize_word_clts(word, sv):
         except ValueError:
             continue  # Skip unknown characters
         except IndexError:
-            print(f"Error processing letter '{letter}' in '{word}'")
+            logger.info(f"Error processing letter '{letter}' in '{word}'")
             continue
     return word_vector
 
@@ -151,7 +153,7 @@ def main(
 
     # Perform CLTS vectorization
     if method == "clts":
-        print("Starting CLTS vectorization...")
+        logger.info("Starting CLTS vectorization...")
         ds["vectors"] = vectorize_in_parallel(
             token_ipa_list=ds["token_ipa"].tolist(),
             vectorize_func=vectorize_word_clts,
@@ -162,7 +164,7 @@ def main(
 
     # Perform Panphon vectorization
     elif method == "panphon":
-        print("Starting Panphon vectorization...")
+        logger.info("Starting Panphon vectorization...")
         ds["vectors"] = vectorize_in_parallel(
             token_ipa_list=ds["token_ipa"].tolist(),
             vectorize_func=vectorize_word_panphon,
@@ -177,7 +179,7 @@ def main(
     os.makedirs(save_loc, exist_ok=True)
 
     ds.to_parquet(output_file, index=False)
-    print(f"Word vectors successfully saved to {output_file}")
+    logger.info(f"Word vectors successfully saved to {output_file}")
 
 
 if __name__ == "__main__":

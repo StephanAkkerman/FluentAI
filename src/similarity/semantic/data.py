@@ -1,6 +1,8 @@
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
+from logger import logger
+
 
 # Function to scale similarity scores to 0-1 range
 def scale_similarity(df, similarity_col="similarity"):
@@ -75,10 +77,10 @@ duplicate_mask = merged_df.duplicated(
 )
 num_duplicates = duplicate_mask.sum()
 if num_duplicates > 0:
-    print(f"Found {num_duplicates} duplicate entries. Removing duplicates...")
+    logger.info(f"Found {num_duplicates} duplicate entries. Removing duplicates...")
     merged_df = merged_df[~duplicate_mask]
 else:
-    print("No duplicate entries found within the same dataset.")
+    logger.info("No duplicate entries found within the same dataset.")
 
 # Optionally, handle duplicate word pairs across different datasets
 # For example, if you want to keep all instances, do nothing.
@@ -88,8 +90,8 @@ else:
 # 6. Save the Merged Dataset to a CSV File
 output_file = "data/semantic/semantic_similarity.csv"
 merged_df.to_csv(output_file, index=False)
-print(f"Merged dataset saved to '{output_file}'.")
+logger.info(f"Merged dataset saved to '{output_file}'.")
 
 # Optional: Display a preview of the merged DataFrame
-print("\nPreview of the merged dataset:")
-print(merged_df.head())
+logger.info("\nPreview of the merged dataset:")
+logger.info(merged_df.head())

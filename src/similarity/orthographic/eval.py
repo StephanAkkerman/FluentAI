@@ -4,6 +4,7 @@ from scipy.stats import pearsonr, spearmanr
 from sklearn.preprocessing import MinMaxScaler
 
 from datasets import load_dataset
+from logger import logger
 
 
 def scale_ratings(ratings: pd.Series) -> pd.Series:
@@ -128,19 +129,19 @@ def main():
     ]
 
     # Compute similarity scores
-    print("Computing similarity scores...")
+    logger.info("Computing similarity scores...")
     df = compute_all_similarities(df, methods)
-    print("Similarity scores computed.\n")
+    logger.info("Similarity scores computed.\n")
 
     # Evaluate methods
-    print("Evaluating similarity methods against human ratings...")
+    logger.info("Evaluating similarity methods against human ratings...")
     evaluation_results = evaluate_methods(df, scaled_ratings, methods)
-    print("Evaluation completed.\n")
+    logger.info("Evaluation completed.\n")
 
     # Print the evaluation results
-    print("=== Evaluation Results ===")
-    print(evaluation_results.to_string(index=False))
-    print()
+    logger.info("=== Evaluation Results ===")
+    logger.info(evaluation_results.to_string(index=False))
+    logger.info()
 
     # Determine and print the best method
     best_method = determine_best_method(evaluation_results)
@@ -148,12 +149,12 @@ def main():
         0
     ]
 
-    print("=== Conclusion ===")
-    print(f"The best orthographic similarity method is **{best_method}**.")
-    print(
+    logger.info("=== Conclusion ===")
+    logger.info(f"The best orthographic similarity method is **{best_method}**.")
+    logger.info(
         f"Pearson Correlation: {best_metrics['Pearson Correlation']:.4f} (p-value: {best_metrics['Pearson p-value']:.2e})"
     )
-    print(
+    logger.info(
         f"Spearman Correlation: {best_metrics['Spearman Correlation']:.4f} (p-value: {best_metrics['Spearman p-value']:.2e})"
     )
 

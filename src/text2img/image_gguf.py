@@ -41,5 +41,5 @@ output = stable_diffusion.txt_to_img(
     cfg_scale=1.0,  # a cfg_scale of 1 is recommended for FLUX
     sample_method="euler",  # euler is recommended for FLUX
 )
-print(type(output))
+logger.info(type(output))
 output.save("text2img_tests/flux_gguf.jpg")

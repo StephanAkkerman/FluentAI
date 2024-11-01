@@ -13,6 +13,8 @@ from sklearn.svm import SVR
 from tqdm import tqdm
 from xgboost import XGBRegressor
 
+from logger import logger
+
 # Suppress warnings for cleaner output
 warnings.filterwarnings("ignore")
 
@@ -27,7 +29,7 @@ def load_data(path):
     Returns:
         tuple: (words, embeddings, scores)
     """
-    print(f"Loading data from '{path}'...")
+    logger.info(f"Loading data from '{path}'...")
 
     try:
         df = pd.read_parquet(
@@ -58,7 +60,7 @@ def load_data(path):
     embeddings = df[embedding_columns].values
     scores = df["score"].values
 
-    print(
+    logger.info(
         f"Loaded {len(scores)} words with embeddings shape {embeddings.shape} and scores shape {scores.shape}."
     )
     return embeddings, scores
@@ -78,9 +80,9 @@ def preprocess_data(embeddings, scores):
     X_train, X_test, y_train, y_test = train_test_split(
         embeddings, scores, test_size=0.2, random_state=42
     )
-    print("Data split into training and testing sets.")
-    print(f"Training set size: {X_train.shape[0]} samples.")
-    print(f"Testing set size: {X_test.shape[0]} samples.")
+    logger.info("Data split into training and testing sets.")
+    logger.info(f"Training set size: {X_train.shape[0]} samples.")
+    logger.info(f"Testing set size: {X_test.shape[0]} samples.")
 
     return X_train, X_test, y_train, y_test
 
@@ -117,14 +119,14 @@ def train_and_evaluate_models(X_train, X_test, y_train, y_test):
     best_metric = None
 
     for name, model in tqdm(models, desc="Training Models", unit="model"):
-        print(f"\nTraining {name}...")
+        logger.info(f"\nTraining {name}...")
         model.fit(X_train, y_train)
         predictions = model.predict(X_test)
 
         mse = mean_squared_error(y_test, predictions)
         r2 = r2_score(y_test, predictions)
         results.append({"Model": name, "MSE": mse, "R2 Score": r2})
-        print(f"{name} - MSE: {mse:.4f}, R2 Score: {r2:.4f}")
+        logger.info(f"{name} - MSE: {mse:.4f}, R2 Score: {r2:.4f}")
 
         # Determine the best model based on lowest MSE
         if best_metric is None or mse < best_metric:
@@ -134,12 +136,12 @@ def train_and_evaluate_models(X_train, X_test, y_train, y_test):
     results_df = pd.DataFrame(results)
 
     # Display the results
-    print("\nModel Performances:")
-    print(results_df)
+    logger.info("\nModel Performances:")
+    logger.info(results_df)
 
     # Display the best model
     if best_model:
-        print(
+        logger.info(
             f"\nBest Model: {type(best_model).__name__} with 'MSE' of {best_metric:.4f}"
         )
 
@@ -170,7 +172,7 @@ def main():
 
         os.makedirs("models", exist_ok=True)
         joblib.dump(best_model, filename)
-        print(f"\nBest model '{model_name}' saved to '{filename}'.")
+        logger.info(f"\nBest model '{model_name}' saved to '{filename}'.")
 
 
 if __name__ == "__main__":

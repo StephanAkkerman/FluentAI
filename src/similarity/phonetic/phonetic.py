@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 from huggingface_hub import hf_hub_download
 
+from logger import logger
+
 try:
     from similarity.phonetic.g2p import g2p
     from similarity.phonetic.ipa2vec import panphon_vec, soundvec
@@ -151,4 +153,4 @@ if __name__ == "__main__":
 
     os.environ["KMP_DUPLICATE_LIB_OK"] = "True"
 
-    print(top_phonetic(word_input, language_code, top_n, method, dataset))
+    logger.info(top_phonetic(word_input, language_code, top_n, method, dataset))

@@ -1,9 +1,10 @@
 import ast
-import logging
 import os
 
 import numpy as np
 import pandas as pd
+
+from logger import logger
 
 try:
     from similarity.phonetic.ipa2vec import panphon_vec
@@ -61,12 +62,12 @@ def load_dataset(vectorizer, vector_column="vectors", max_rows=None):
     )
     try:
         df = pd.read_csv(vector_file, nrows=max_rows)
-        logging.info(f"Dataset loaded from '{vector_file}' with {len(df)} rows.")
+        logger.info(f"Dataset loaded from '{vector_file}' with {len(df)} rows.")
     except FileNotFoundError:
-        logging.error(f"Vector file '{vector_file}' not found.")
+        logger.error(f"Vector file '{vector_file}' not found.")
         raise
     except Exception as e:
-        logging.error(f"Error loading dataset: {e}")
+        logger.error(f"Error loading dataset: {e}")
         raise
     return df
 
@@ -84,9 +85,9 @@ def parse_vectors(dataset, vector_column="vectors"):
     """
     try:
         dataset[vector_column] = dataset[vector_column].apply(ast.literal_eval)
-        logging.info(f"Parsed '{vector_column}' column from strings to lists.")
+        logger.info(f"Parsed '{vector_column}' column from strings to lists.")
     except Exception as e:
-        logging.error(f"Error parsing '{vector_column}' column: {e}")
+        logger.error(f"Error parsing '{vector_column}' column: {e}")
         raise
     return dataset
 
@@ -108,10 +109,10 @@ def load_cache(method: str = "panphon", dataset: str = "eng_latn_us_broad"):
 
     if os.path.exists(cache_file):
         dataset = pd.read_parquet(cache_file)
-        logging.info(f"Loaded parsed dataset from '{cache_file}'.")
+        logger.info(f"Loaded parsed dataset from '{cache_file}'.")
         return dataset
     else:
-        logging.info(f"No cache found at '{cache_file}'.")
+        logger.info(f"No cache found at '{cache_file}'.")
         return None
 
 
@@ -126,13 +127,13 @@ def flatten_vector(vec):
     - 1D NumPy array
     """
     if not vec:
-        logging.warning("Encountered an empty vector. Assigning a default value of 0.")
+        logger.warning("Encountered an empty vector. Assigning a default value of 0.")
         return np.array([0.0], dtype=np.float32)
     try:
         flattened = np.hstack(vec).astype(np.float32)
         return flattened
     except Exception as e:
-        logging.error(f"Error flattening vector: {e}")
+        logger.error(f"Error flattening vector: {e}")
         return np.array([0.0], dtype=np.float32)
 
 
@@ -148,7 +149,7 @@ def flatten_vectors(dataset, vector_column="vectors"):
     - DataFrame with an additional 'flattened_vectors' column
     """
     dataset["flattened_vectors"] = dataset[vector_column].apply(flatten_vector)
-    logging.info(
+    logger.info(
         f"Flattened all vectors. Total vectors: {len(dataset['flattened_vectors'])}."
     )
     return dataset

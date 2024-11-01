@@ -6,6 +6,8 @@ import requests
 from gensim.models.fasttext import FastTextKeyedVectors, load_facebook_vectors
 from tqdm import tqdm
 
+from logger import logger
+
 
 def download_file(url, dest_path, chunk_size=1024):
     """
@@ -34,7 +36,7 @@ def download_file(url, dest_path, chunk_size=1024):
     progress_bar.close()
 
     if total_size_in_bytes != 0 and progress_bar.n != total_size_in_bytes:
-        print("ERROR: Something went wrong during the download.")
+        logger.info("ERROR: Something went wrong during the download.")
         raise Exception("Download incomplete.")
 
 
@@ -49,7 +51,7 @@ def extract_gz(gz_path, extracted_path):
     with gzip.open(gz_path, "rb") as f_in:
         with open(extracted_path, "wb") as f_out:
             shutil.copyfileobj(f_in, f_out)
-    print(f"Extraction complete: {extracted_path}")
+    logger.info(f"Extraction complete: {extracted_path}")
 
 
 def download_fasttext(file_name: str = "cc.en.300.bin.gz"):
@@ -68,22 +70,22 @@ def download_fasttext(file_name: str = "cc.en.300.bin.gz"):
     bin_path = os.path.join(download_directory, file_name.split(".gz")[0])
 
     # Download the .gz file
-    print(f"Starting download from {url}")
+    logger.info(f"Starting download from {url}")
     download_file(url, gz_path)
-    print(f"Downloaded file saved to {gz_path}")
+    logger.info(f"Downloaded file saved to {gz_path}")
 
     # Extract the .gz file to obtain the .bin file
-    print(f"Starting extraction of {gz_path}")
+    logger.info(f"Starting extraction of {gz_path}")
     extract_gz(gz_path, bin_path)
 
     # Delete the original .gz file to save space
     try:
         os.remove(gz_path)
-        print(f"Deleted the compressed file: {gz_path}")
+        logger.info(f"Deleted the compressed file: {gz_path}")
     except OSError as e:
-        print(f"Error deleting file {gz_path}: {e}")
+        logger.info(f"Error deleting file {gz_path}: {e}")
 
-    print("All operations completed successfully.")
+    logger.info("All operations completed successfully.")
 
 
 def get_fasttext_model(
@@ -99,7 +101,7 @@ def get_fasttext_model(
     """
     # Check if the model already exists
     if os.path.exists(embedding_model_path):
-        print(f"Loading embedding model from '{embedding_model_path}'...")
+        logger.info(f"Loading embedding model from '{embedding_model_path}'...")
         return FastTextKeyedVectors.load(embedding_model_path)
 
     # Check if the .bin file already exists
@@ -108,10 +110,10 @@ def get_fasttext_model(
         download_fasttext(f"{model_name}.gz")
 
     # Load the model from the .bin file
-    print("Loading FastText embeddings...")
+    logger.info("Loading FastText embeddings...")
     embedding_model = load_facebook_vectors(f"data/fasttext_embeddings/{model_name}")
     embedding_model.save(embedding_model_path)
-    print(f"Model saved locally at '{embedding_model_path}'.")
+    logger.info(f"Model saved locally at '{embedding_model_path}'.")
     return embedding_model
 
 

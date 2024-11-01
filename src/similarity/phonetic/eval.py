@@ -1,5 +1,3 @@
-import logging
-
 import faiss
 import numpy as np
 import pandas as pd
@@ -11,15 +9,16 @@ from sklearn.preprocessing import MinMaxScaler
 from tqdm import tqdm
 
 from datasets import load_dataset
+from logger import logger
 
 try:
     from similarity.phonetic.ipa2vec import panphon_vec, soundvec
 except ImportError:
     from ipa2vec import panphon_vec, soundvec
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+# Configure logger
+logger.basicConfig(
+    level=logger.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
 
@@ -34,7 +33,7 @@ def word2ipa(
         ipa = ipa_dataset[ipa_dataset["token_ort"] == word]["token_ipa"]
 
     if ipa.empty:
-        # print(f"{word} not found in dataset.")
+        # logger.info(f"{word} not found in dataset.")
         if use_fallback:
             # Fallback on the g2p model
             return g2p([f"<eng-us>:{word}"])[0]
@@ -133,7 +132,7 @@ def evaluate_phonetic_similarity(
     """
     # Load the dataset
     df = load_dataset(dataset_repo, cache_dir="datasets")["train"].to_pandas()
-    logging.info(f"Loaded dataset with {len(df)} entries.")
+    logger.info(f"Loaded dataset with {len(df)} entries.")
 
     ipa_dataset = pd.read_csv(
         hf_hub_download(
@@ -147,13 +146,13 @@ def evaluate_phonetic_similarity(
     # Ensure necessary columns exist
     required_columns = {"word1", "word2", "obtained"}
     if not required_columns.issubset(df.columns):
-        logging.error(f"Dataset must contain columns: {required_columns}")
+        logger.error(f"Dataset must contain columns: {required_columns}")
         return
 
     # Scale the 'obtained' scores to 0-1
     scaler = MinMaxScaler()
     df["obtained_scaled"] = scaler.fit_transform(df[["obtained"]])
-    logging.info("Scaled 'obtained' scores to a 0-1 range.")
+    logger.info("Scaled 'obtained' scores to a 0-1 range.")
 
     # Initialize a list to store results for each method
     results_list = []
@@ -177,13 +176,13 @@ def evaluate_phonetic_similarity(
                 computed_similarities.append(sim)
                 valid_indices.append(idx)
             except ValueError as e:
-                logging.warning(
+                logger.warning(
                     f"Skipping pair ('{word1}', '{word2}') for method '{method}': {e}"
                 )
                 continue
 
         if not computed_similarities:
-            logging.warning(
+            logger.warning(
                 f"No similarity scores were computed for method '{method}'. Skipping."
             )
             continue
@@ -209,12 +208,12 @@ def evaluate_phonetic_similarity(
             }
         )
 
-        logging.info(
+        logger.info(
             f"Method '{method}': Pearson Correlation = {pearson_corr:.4f}, Spearman Correlation = {spearman_corr:.4f}"
         )
 
     if not results_list:
-        logging.error(
+        logger.error(
             "No similarity scores were computed for any method. Evaluation aborted."
         )
         return
@@ -223,8 +222,8 @@ def evaluate_phonetic_similarity(
     results_df = pd.DataFrame(results_list)
 
     # Display the results
-    print("\nPhonetic Similarity Evaluation Results:")
-    print(results_df.to_string(index=False))
+    logger.info("\nPhonetic Similarity Evaluation Results:")
+    logger.info(results_df.to_string(index=False))
 
     # Determine the best method based on Pearson correlation
     best_method_row = results_df.loc[results_df["pearson_corr"].idxmax()]
@@ -232,7 +231,7 @@ def evaluate_phonetic_similarity(
     best_pearson = best_method_row["pearson_corr"]
     best_spearman = best_method_row["spearman_corr"]
 
-    print(
+    logger.info(
         f"\nConclusion: The best performing method is '{best_method}' with a Pearson correlation of {best_pearson:.4f} and a Spearman correlation of {best_spearman:.4f}."
     )
 
