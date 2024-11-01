@@ -5,7 +5,10 @@ import os
 import numpy as np
 import pandas as pd
 
-from similarity.phonetic.ipa2vec import panphon_vec
+try:
+    from similarity.phonetic.ipa2vec import panphon_vec
+except ImportError:
+    from ipa2vec import panphon_vec
 
 
 def pad_vectors(vectors):

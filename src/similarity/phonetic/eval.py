@@ -4,13 +4,18 @@ import faiss
 import numpy as np
 import pandas as pd
 from g2p import g2p
+from huggingface_hub import hf_hub_download
 from scipy.stats import pearsonr, spearmanr
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import MinMaxScaler
 from tqdm import tqdm
 
-from similarity.phonetic.ipa2vec import panphon_vec, soundvec
-from similarity.phonetic.vectorizer import load_data
+from datasets import load_dataset
+
+try:
+    from similarity.phonetic.ipa2vec import panphon_vec, soundvec
+except ImportError:
+    from ipa2vec import panphon_vec, soundvec
 
 # Configure logging
 logging.basicConfig(
@@ -20,18 +25,13 @@ logging.basicConfig(
 
 def word2ipa(
     word: str,
-    ipa_dataset: str = "data/phonological/eng_latn_us_broad.tsv",
+    ipa_dataset: pd.DataFrame,
     use_fallback: bool = True,
 ) -> str:
 
-    if ipa_dataset:
-        # First try lookup in the .tsv file
-        eng_ipa = load_data(ipa_dataset)
-
+    if not ipa_dataset.empty:
         # Check if the word is in the dataset
-        ipa = eng_ipa[eng_ipa["token_ort"] == word]["token_ipa"]
-    else:
-        ipa = pd.DataFrame()
+        ipa = ipa_dataset[ipa_dataset["token_ort"] == word]["token_ipa"]
 
     if ipa.empty:
         # print(f"{word} not found in dataset.")
@@ -45,7 +45,7 @@ def word2ipa(
 
 
 def compute_phonetic_similarity(
-    word1: str, word2: str, ipa_dataset: str, method: str = "panphon"
+    word1: str, word2: str, ipa_dataset: pd.DataFrame, method: str = "panphon"
 ) -> float:
     """
     Computes the phonetic similarity between two words using the specified method.
@@ -118,7 +118,9 @@ def compute_phonetic_similarity(
     return similarity
 
 
-def evaluate_phonetic_similarity(dataset_csv: str, ipa_path: str, methods: list):
+def evaluate_phonetic_similarity(
+    dataset_repo: str, ipa_repo: str, ipa_file: str, methods: list
+):
     """
     Evaluates multiple phonetic similarity models on a given dataset and reports performance metrics.
 
@@ -130,15 +132,17 @@ def evaluate_phonetic_similarity(dataset_csv: str, ipa_path: str, methods: list)
         None
     """
     # Load the dataset
-    try:
-        df = pd.read_csv(dataset_csv)
-        logging.info(f"Loaded dataset with {len(df)} entries.")
-    except FileNotFoundError:
-        logging.error(f"Dataset file '{dataset_csv}' not found.")
-        return
-    except Exception as e:
-        logging.error(f"Error loading dataset: {e}")
-        return
+    df = load_dataset(dataset_repo, cache_dir="datasets")["train"].to_pandas()
+    logging.info(f"Loaded dataset with {len(df)} entries.")
+
+    ipa_dataset = pd.read_csv(
+        hf_hub_download(
+            repo_id=ipa_repo,
+            filename=ipa_file,
+            cache_dir="datasets",
+            repo_type="dataset",
+        )
+    )
 
     # Ensure necessary columns exist
     required_columns = {"word1", "word2", "obtained"}
@@ -167,7 +171,7 @@ def evaluate_phonetic_similarity(dataset_csv: str, ipa_path: str, methods: list)
             word1 = row["word1"]
             word2 = row["word2"]
             try:
-                sim = compute_phonetic_similarity(word1, word2, ipa_path, method)
+                sim = compute_phonetic_similarity(word1, word2, ipa_dataset, method)
                 if sim is None:
                     continue
                 computed_similarities.append(sim)
@@ -238,14 +242,13 @@ def main():
     Main function to evaluate phonetic similarity methods on a dataset.
     """
     # Define the dataset path and methods to evaluate
-    dataset_path = "data/phonological/human_similarity.csv"
-    ipa_path = (
-        "data/phonological/en_US.txt"  # "data/phonological/eng_latn_us_broad.tsv" #
-    )
+    dataset_repo = "StephanAkkerman/english-words-human-similarity"
+    ipa_repo = "StephanAkkerman/english-words-IPA"
+    ipa_file = "en_US.csv"
     methods = ["panphon", "clts"]  # Add more methods here if needed
 
     # Call the evaluation function
-    evaluate_phonetic_similarity(dataset_path, ipa_path, methods)
+    evaluate_phonetic_similarity(dataset_repo, ipa_repo, ipa_file, methods)
 
 
 if __name__ == "__main__":

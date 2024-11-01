@@ -1,9 +1,9 @@
-# evaluate_similarity.py
-
 import pandas as pd
 from orthographic import compute_similarity
 from scipy.stats import pearsonr, spearmanr
 from sklearn.preprocessing import MinMaxScaler
+
+from datasets import load_dataset
 
 
 def scale_ratings(ratings: pd.Series) -> pd.Series:
@@ -98,11 +98,12 @@ def determine_best_method(evaluation_df: pd.DataFrame) -> str:
 
 
 def main():
-    # Specify the input file path
-    input_file = "data/orthographic/AWL_Data.csv"
-
     # Load the dataset
-    df = pd.read_csv(input_file)
+    df = load_dataset(
+        "StephanAkkerman/orthographic-similarity-ratings",
+        cache_dir="datasets",
+        split="train",
+    ).to_pandas()
 
     # Check required columns
     required_columns = ["English Cognate", "Spanish Cognate", "Mean Rating"]

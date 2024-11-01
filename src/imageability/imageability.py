@@ -4,6 +4,7 @@ import warnings
 
 import joblib
 import numpy as np
+from huggingface_hub import hf_hub_download
 
 # append the path of the parent directory
 sys.path.insert(1, os.path.join(sys.path[0], ".."))
@@ -16,7 +17,6 @@ warnings.filterwarnings("ignore")
 class ImageabilityPredictor:
     def __init__(
         self,
-        embedding_model_path="models/cc.en.300.model",
         regression_model_path="models/best_model_LGBMRegressor.joblib",
     ):
         """
@@ -33,7 +33,13 @@ class ImageabilityPredictor:
 
         # Load the regression model
         print(f"Loading regression model from '{regression_model_path}'...")
-        self.regression_model = joblib.load(regression_model_path)
+        self.regression_model = joblib.load(
+            hf_hub_download(
+                repo_id="StephanAkkerman/imageability-predictor",
+                filename="imageability_predictor.joblib",
+                cache_dir="models",
+            )
+        )
         print("Regression model loaded successfully.")
 
     def get_embedding(self, word):

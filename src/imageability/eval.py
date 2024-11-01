@@ -2,8 +2,8 @@ import os
 import warnings
 
 import joblib
-import numpy as np
 import pandas as pd
+from huggingface_hub import hf_hub_download
 from lightgbm import LGBMRegressor
 from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor
 from sklearn.linear_model import LinearRegression, Ridge
@@ -30,7 +30,14 @@ def load_data(path):
     print(f"Loading data from '{path}'...")
 
     try:
-        df = pd.read_parquet(path)
+        df = pd.read_parquet(
+            hf_hub_download(
+                "StephanAkkerman/imageability",
+                cache_dir="datasets",
+                filename=path,
+                repo_type="dataset",
+            )
+        )
     except FileNotFoundError:
         raise FileNotFoundError(f"The file '{path}' was not found.")
     except Exception as e:
@@ -143,8 +150,8 @@ def main():
     # This code also trains the models and evaluates their performance, but it is more general and can be used with any dataset.
 
     # Path to your .npz file containing words, embeddings, and scores
-    # data/imageability/glove_embeddings.parquet
-    path = "data/imageability/fasttext_embeddings.parquet"  # Update if necessary
+    # glove/glove_embeddings.parquet
+    path = "fasttext/fasttext_embeddings.parquet"
 
     # Load data
     embeddings, scores = load_data(path)
