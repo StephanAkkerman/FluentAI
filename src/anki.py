@@ -4,6 +4,8 @@ import os
 
 import requests
 
+from logger import logger
+
 
 class AnkiConnect:
     # https://foosoft.net/projects/anki-connect/
@@ -29,8 +31,10 @@ class AnkiConnect:
         try:
             return self.invoke("deckNames")
         except Exception:
-            print("Could not establish connection with Anki")
-            print("Please make sure Anki is running and AnkiConnect is installed")
+            logger.error("Could not establish connection with Anki")
+            logger.error(
+                "Please make sure Anki is running and AnkiConnect is installed"
+            )
 
     def store_media_file(self, src_file_path, word):
         action = "storeMediaFile"

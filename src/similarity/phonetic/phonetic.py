@@ -1,10 +1,18 @@
 import faiss
 import numpy as np
+import pandas as pd
+from huggingface_hub import hf_hub_download
 
-from similarity.phonetic.g2p import g2p
-from similarity.phonetic.ipa2vec import panphon_vec, soundvec
-from similarity.phonetic.utils import convert_to_matrix, load_cache, pad_vectors
-from similarity.phonetic.vectorizer import load_data
+from logger import logger
+
+try:
+    from similarity.phonetic.g2p import g2p
+    from similarity.phonetic.ipa2vec import panphon_vec, soundvec
+    from similarity.phonetic.utils import convert_to_matrix, load_cache, pad_vectors
+except ImportError:
+    from g2p import g2p
+    from ipa2vec import panphon_vec, soundvec
+    from utils import convert_to_matrix, load_cache, pad_vectors
 
 
 def word2ipa(
@@ -15,7 +23,14 @@ def word2ipa(
     # Try searching in the dataset
     if "eng-us" in language_code:
         # First try lookup in the .tsv file
-        eng_ipa = load_data("data/phonological/en_US.txt")
+        eng_ipa = pd.read_csv(
+            hf_hub_download(
+                repo_id="StephanAkkerman/english-words-IPA",
+                filename="en_US.csv",
+                cache_dir="datasets",
+                repo_type="dataset",
+            )
+        )
 
         # Check if the word is in the dataset
         ipa = eng_ipa[eng_ipa["token_ort"] == word]["token_ipa"]
@@ -138,4 +153,4 @@ if __name__ == "__main__":
 
     os.environ["KMP_DUPLICATE_LIB_OK"] = "True"
 
-    print(top_phonetic(word_input, language_code, top_n, method, dataset))
+    logger.info(top_phonetic(word_input, language_code, top_n, method, dataset))

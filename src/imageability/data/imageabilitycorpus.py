@@ -22,7 +22,7 @@ df_icmr = df_icmr.drop_duplicates(subset="word").dropna(
     subset=["visual", "phonetic", "textual"]
 )
 
-print(f"ICMR Dataset: {df_icmr.shape[0]} words loaded.")
+logger.info(f"ICMR Dataset: {df_icmr.shape[0]} words loaded.")
 
 # Load Dataset 2: MIPR 2021 (JSON format)
 df_mipr = pd.read_json("data/imageability/raw/corpus_mipr2021.json").T
@@ -43,7 +43,7 @@ df_mipr = df_mipr.drop_duplicates(subset="word").dropna(
     subset=["visual", "phonetic", "textual"]
 )
 
-print(f"MIPR Dataset: {df_mipr.shape[0]} words loaded.")
+logger.info(f"MIPR Dataset: {df_mipr.shape[0]} words loaded.")
 
 # ================================
 # 2. Scale the Score Columns Individually
@@ -59,7 +59,7 @@ df_icmr_scaled[["visual", "phonetic", "textual"]] = scaler_icmr.fit_transform(
     df_icmr[["visual", "phonetic", "textual"]]
 )
 
-print("ICMR scores scaled using MinMaxScaler.")
+logger.info("ICMR scores scaled using MinMaxScaler.")
 
 # Scale MIPR scores
 df_mipr_scaled = df_mipr.copy()
@@ -67,7 +67,7 @@ df_mipr_scaled[["visual", "phonetic", "textual"]] = scaler_mipr.fit_transform(
     df_mipr[["visual", "phonetic", "textual"]]
 )
 
-print("MIPR scores scaled using MinMaxScaler.")
+logger.info("MIPR scores scaled using MinMaxScaler.")
 
 # ================================
 # 3. Merge the Datasets Using a Full Outer Join
@@ -78,7 +78,7 @@ merged_df = pd.merge(
     df_icmr_scaled, df_mipr_scaled, on="word", how="outer", suffixes=("_icmr", "_mipr")
 )
 
-print(f"Total words after full outer join: {merged_df.shape[0]}")
+logger.info(f"Total words after full outer join: {merged_df.shape[0]}")
 
 # ================================
 # 4. Combine the Scaled Scores
@@ -104,7 +104,7 @@ def combine_scores(row, score_type):
 for score in ["visual", "phonetic", "textual"]:
     merged_df[score] = merged_df.apply(lambda row: combine_scores(row, score), axis=1)
 
-print("Scores combined by averaging where applicable.")
+logger.info("Scores combined by averaging where applicable.")
 
 # ================================
 # 5. Finalize and Save the Combined Dataset
@@ -116,9 +116,9 @@ final_df = merged_df[["word", "visual", "phonetic", "textual"]]
 # Optional: Sort the dataset alphabetically by word
 final_df.sort_values(by="word", inplace=True)
 
-print(f"Final combined dataset shape: {final_df.shape}")
-print(final_df.head())
+logger.info(f"Final combined dataset shape: {final_df.shape}")
+logger.info(final_df.head())
 
 # Save the final dataset to a CSV file
 final_df.to_csv("data/imageability/imageability_corpus.csv", index=False)
-print("Combined dataset saved to 'data/imageability/combined_imageability.csv'.")
+logger.info("Combined dataset saved to 'data/imageability/combined_imageability.csv'.")

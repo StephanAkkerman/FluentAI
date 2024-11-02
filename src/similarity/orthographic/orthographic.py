@@ -1,3 +1,6 @@
+from logger import logger
+
+
 def compute_difflib_similarity(word1: str, word2: str) -> float:
     """
     Computes the orthographic similarity between two words using difflib's SequenceMatcher.
@@ -143,7 +146,7 @@ def example():
 
     for word1, word2, method in examples:
         similarity = compute_similarity(word1, word2, method)
-        print(
+        logger.info(
             f"Similarity between '{word1}' and '{word2}' using '{method}': {similarity}"
         )
 

@@ -4,6 +4,8 @@ from pathlib import Path
 from git import GitCommandError, RemoteProgress, Repo
 from tqdm import tqdm
 
+from logger import logger
+
 
 def check_directory_exists(directory_path):
     """
@@ -27,12 +29,12 @@ def clone_repository(repo_url, clone_path):
         clone_path (str or Path): The local path where the repository will be cloned.
     """
     try:
-        print(f"Cloning repository from {repo_url} to {clone_path}...")
+        logger.info(f"Cloning repository from {repo_url} to {clone_path}...")
         # Initialize CloneProgress with descriptive parameters
         Repo.clone_from(repo_url, clone_path, progress=CloneProgress())
-        print("Repository cloned successfully.")
+        logger.info("Repository cloned successfully.")
     except GitCommandError as e:
-        print(f"Error cloning repository: {e}")
+        logger.info(f"Error cloning repository: {e}")
         sys.exit(1)
 
 
@@ -62,15 +64,15 @@ def get_clts():
 
     # Check if the directory already exists
     if check_directory_exists(clone_path):
-        print(f"The directory '{clone_path}' already exists. Skipping clone.")
+        logger.info(f"The directory '{clone_path}' already exists. Skipping clone.")
     else:
         # Ensure the /data directory exists
         if not data_directory.exists():
             try:
                 data_directory.mkdir(parents=True, exist_ok=True)
-                print(f"Created directory: {data_directory}")
+                logger.info(f"Created directory: {data_directory}")
             except Exception as e:
-                print(f"Failed to create directory '{data_directory}': {e}")
+                logger.info(f"Failed to create directory '{data_directory}': {e}")
                 sys.exit(1)
 
         # Clone the repository

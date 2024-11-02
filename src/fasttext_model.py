@@ -1,10 +1,15 @@
 import gzip
 import os
 import shutil
+import threading
+import time
+from functools import wraps
 
 import requests
 from gensim.models.fasttext import FastTextKeyedVectors, load_facebook_vectors
 from tqdm import tqdm
+
+from logger import logger
 
 
 def download_file(url, dest_path, chunk_size=1024):
@@ -34,7 +39,7 @@ def download_file(url, dest_path, chunk_size=1024):
     progress_bar.close()
 
     if total_size_in_bytes != 0 and progress_bar.n != total_size_in_bytes:
-        print("ERROR: Something went wrong during the download.")
+        logger.info("ERROR: Something went wrong during the download.")
         raise Exception("Download incomplete.")
 
 
@@ -49,7 +54,7 @@ def extract_gz(gz_path, extracted_path):
     with gzip.open(gz_path, "rb") as f_in:
         with open(extracted_path, "wb") as f_out:
             shutil.copyfileobj(f_in, f_out)
-    print(f"Extraction complete: {extracted_path}")
+    logger.info(f"Extraction complete: {extracted_path}")
 
 
 def download_fasttext(file_name: str = "cc.en.300.bin.gz"):
@@ -68,22 +73,97 @@ def download_fasttext(file_name: str = "cc.en.300.bin.gz"):
     bin_path = os.path.join(download_directory, file_name.split(".gz")[0])
 
     # Download the .gz file
-    print(f"Starting download from {url}")
+    logger.info(f"Starting download from {url}")
     download_file(url, gz_path)
-    print(f"Downloaded file saved to {gz_path}")
+    logger.info(f"Downloaded file saved to {gz_path}")
 
     # Extract the .gz file to obtain the .bin file
-    print(f"Starting extraction of {gz_path}")
+    logger.info(f"Starting extraction of {gz_path}")
     extract_gz(gz_path, bin_path)
 
     # Delete the original .gz file to save space
     try:
         os.remove(gz_path)
-        print(f"Deleted the compressed file: {gz_path}")
+        logger.info(f"Deleted the compressed file: {gz_path}")
     except OSError as e:
-        print(f"Error deleting file {gz_path}: {e}")
+        logger.info(f"Error deleting file {gz_path}: {e}")
 
-    print("All operations completed successfully.")
+    logger.info("All operations completed successfully.")
+
+
+def loading_indicator_with_estimated_time(desc="Loading...", estimated_time=50):
+    """
+    Decorator to display a loading progress bar with estimated time while a blocking function executes.
+
+    Args:
+        desc (str): Description to display alongside the progress bar.
+        estimated_time (int or float): Estimated time in seconds for the function to execute.
+    """
+
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            # Containers for function result and exceptions
+            result_container = []
+            exception_container = []
+            done_event = threading.Event()
+
+            def target():
+                try:
+                    result = func(*args, **kwargs)
+                    result_container.append(result)
+                except Exception as e:
+                    exception_container.append(e)
+                finally:
+                    done_event.set()
+
+            # Start the target function in a separate thread
+            thread = threading.Thread(target=target)
+            thread.start()
+
+            # Initialize tqdm progress bar
+            with tqdm(
+                total=estimated_time,
+                bar_format="{l_bar}{bar} | {elapsed}/{total} seconds",
+                desc=desc,
+                ncols=70,
+                leave=True,  # Keep the progress bar after completion
+            ) as pbar:
+                start_time = time.time()
+                while not done_event.is_set():
+                    elapsed = time.time() - start_time
+                    pbar.n = min(elapsed, estimated_time)  # Prevent overflow
+                    pbar.refresh()
+
+                    if elapsed >= estimated_time:
+                        # Update description to indicate delay
+                        pbar.set_description(f"{desc} (taking longer than estimated)")
+
+                    time.sleep(0.1)  # Update interval
+
+                # Once the function is done, set progress to 100%
+                pbar.n = pbar.total
+                pbar.refresh()
+                pbar.set_description(f"{desc} - Completed")
+
+            # Wait for the thread to finish
+            thread.join()
+
+            # Raise exception if occurred in the target function
+            if exception_container:
+                raise exception_container[0]
+
+            # Return the function's result
+            return result_container[0]
+
+        return wrapper
+
+    return decorator
+
+
+@loading_indicator_with_estimated_time(desc="Loading FastText Model", estimated_time=50)
+def get_fasttext_from_keyedvectors(embedding_model_path="models/cc.en.300.model"):
+    return FastTextKeyedVectors.load(embedding_model_path)
 
 
 def get_fasttext_model(
@@ -99,8 +179,7 @@ def get_fasttext_model(
     """
     # Check if the model already exists
     if os.path.exists(embedding_model_path):
-        print(f"Loading embedding model from '{embedding_model_path}'...")
-        return FastTextKeyedVectors.load(embedding_model_path)
+        return get_fasttext_from_keyedvectors(embedding_model_path)
 
     # Check if the .bin file already exists
     if not os.path.exists(f"data/fasttext_embeddings/{model_name}"):
@@ -108,10 +187,10 @@ def get_fasttext_model(
         download_fasttext(f"{model_name}.gz")
 
     # Load the model from the .bin file
-    print("Loading FastText embeddings...")
+    logger.info("Loading FastText embeddings...")
     embedding_model = load_facebook_vectors(f"data/fasttext_embeddings/{model_name}")
     embedding_model.save(embedding_model_path)
-    print(f"Model saved locally at '{embedding_model_path}'.")
+    logger.info(f"Model saved locally at '{embedding_model_path}'.")
     return embedding_model
 
 

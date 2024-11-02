@@ -2,6 +2,8 @@
 # https://docs.google.com/spreadsheets/d/1y7kisk-UZT9LxpQB0xMIF4CkxJt0iYJlWAnyj6azSBE/edit?gid=557940309#gid=557940309
 from transformers import AutoTokenizer, T5ForConditionalGeneration
 
+from logger import logger
+
 # https://github.com/lingjzhu/CharsiuG2P
 model = T5ForConditionalGeneration.from_pretrained(
     "charsiu/g2p_multilingual_byT5_small_100", cache_dir="models"
@@ -37,7 +39,7 @@ def example():
     english_word = g2p(["<eng-us>: grumble"])
     dutch_word = g2p(["<dut>: Koekje"])
 
-    print(
+    logger.info(
         indonesian_word,
         english_word,
         dutch_word,

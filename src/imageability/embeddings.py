@@ -1,19 +1,21 @@
-# embed_generator.py
-
 import multiprocessing
 import os
+import sys
 from concurrent.futures import ProcessPoolExecutor
 
 import gensim.downloader as api
 import numpy as np
 import pandas as pd
-from gensim.models.fasttext import FastTextKeyedVectors
 from tqdm import tqdm
 
-from imageability import download_and_save_model
+from datasets import load_dataset
+from logger import logger
 
 # Global variable to hold the embedding model in each worker process
 embedding_model = None
+
+# Add the parent directory to sys.path to import the fasttext_model module
+sys.path.insert(1, os.path.abspath(os.path.join(sys.path[0], "..")))
 
 
 def load_embedding_model(model_name):
@@ -21,14 +23,15 @@ def load_embedding_model(model_name):
     Load the specified embedding model.
     """
     if model_name.lower() == "fasttext":
-        print("Loading FastText embeddings...")
-        embedding_model = FastTextKeyedVectors.load("models/cc.en.300.model")
+        from fasttext_model import fasttext_model
+
+        embedding_model = fasttext_model
     elif model_name.lower() == "glove":
-        print("Loading GloVe embeddings...")
+        logger.info("Loading GloVe embeddings...")
         embedding_model = api.load("glove-wiki-gigaword-300")
     else:
         raise ValueError("Unsupported model. Choose 'fasttext' or 'glove'.")
-    print(f"{model_name.capitalize()} model loaded successfully.")
+    logger.info(f"{model_name.capitalize()} model loaded successfully.")
     return embedding_model
 
 
@@ -54,7 +57,6 @@ def get_embedding(word):
 
 
 def generate_embeddings(
-    input_csv,
     output_parquet,
     model="fasttext",
     word_column="word",
@@ -79,16 +81,9 @@ def generate_embeddings(
         ValueError: If required columns are missing or unsupported model is specified.
     """
     # Load your dataset
-    try:
-        print(f"Loading dataset from '{input_csv}'...")
-        df = pd.read_csv(input_csv)
-        print(f"Dataset loaded successfully with {len(df)} rows.")
-    except FileNotFoundError:
-        raise FileNotFoundError(f"The file '{input_csv}' was not found.")
-    except pd.errors.EmptyDataError:
-        raise ValueError(f"The file '{input_csv}' is empty.")
-    except Exception as e:
-        raise Exception(f"An unexpected error occurred while loading the dataset: {e}")
+    df = load_dataset(
+        "StephanAkkerman/imageability", cache_dir="datasets", split="train"
+    ).to_pandas()
 
     # Validate required columns
     if word_column not in df.columns:
@@ -100,23 +95,18 @@ def generate_embeddings(
             f"The specified score column '{score_column}' does not exist in the dataset."
         )
 
-    if model.lower() == "fasttext":
-        if not os.path.exists("models/cc.en.300.model"):
-            print("Fasttext model not found, downloading / saving it...")
-            download_and_save_model()
-
     # Separate features and target
     y = df[score_column].values
     words = df[word_column].astype(str).values  # Ensure all words are strings
 
-    print(f"Number of unique words to process: {len(words)}")
+    logger.info(f"Number of unique words to process: {len(words)}")
 
     # Determine the number of CPU cores to use
     if n_jobs == -1:
         num_cores = multiprocessing.cpu_count()
     else:
         num_cores = n_jobs
-    print(f"Number of CPU cores to use: {num_cores}")
+    logger.info(f"Number of CPU cores to use: {num_cores}")
 
     embeddings = []
 
@@ -143,7 +133,7 @@ def generate_embeddings(
 
     # Convert list of embeddings to a NumPy array
     embeddings = np.vstack(embeddings)
-    print(f"Generated embeddings shape: {embeddings.shape}")
+    logger.info(f"Generated embeddings shape: {embeddings.shape}")
 
     # Create a DataFrame for words and scores
     df_output = pd.DataFrame({"word": words, "score": y})
@@ -158,12 +148,12 @@ def generate_embeddings(
     # Concatenate the words, scores, and embeddings into a single DataFrame
     df_output = pd.concat([df_output, embeddings_df], axis=1)
 
-    print(f"Combined DataFrame shape: {df_output.shape}")
+    logger.info(f"Combined DataFrame shape: {df_output.shape}")
 
     # Save the DataFrame to a .parquet file
     try:
         df_output.to_parquet(output_parquet, index=False)
-        print(f"Embeddings saved successfully to '{output_parquet}'.")
+        logger.info(f"Embeddings saved successfully to '{output_parquet}'.")
     except Exception as e:
         raise Exception(f"An error occurred while saving to parquet: {e}")
 
@@ -173,7 +163,6 @@ if __name__ == "__main__":
     model = "fasttext"  # Change to 'glove' to use GloVe embeddings
 
     generate_embeddings(
-        input_csv="data/imageability/data.csv",
         output_parquet=f"data/imageability/{model}_embeddings.parquet",
         model=model,
         word_column="word",

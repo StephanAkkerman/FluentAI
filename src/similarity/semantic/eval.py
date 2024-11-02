@@ -1,11 +1,12 @@
-import logging
-
 import pandas as pd
 from scipy.stats import pearsonr, spearmanr
 from semantic import compute_similarity
 
+from datasets import load_dataset
+from logger import logger
 
-def evaluate_models(dataset_csv: str = "data/semantic/semantic_similarity.csv"):
+
+def evaluate_models():
     """
     Evaluates all semantic similarity models on a given dataset and reports performance metrics.
 
@@ -16,20 +17,15 @@ def evaluate_models(dataset_csv: str = "data/semantic/semantic_similarity.csv"):
         None
     """
     # Load the dataset
-    try:
-        df = pd.read_csv(dataset_csv)
-        logging.info(f"Loaded dataset with {len(df)} entries.")
-    except FileNotFoundError:
-        logging.error(f"Dataset file '{dataset_csv}' not found.")
-        return
-    except Exception as e:
-        logging.error(f"Error loading dataset: {e}")
-        return
+    df = load_dataset(
+        "StephanAkkerman/semantic-similarity", cache_dir="datasets", split="train"
+    ).to_pandas()
+    logger.info(f"Loaded dataset with {len(df)} entries.")
 
     # Ensure necessary columns exist
     required_columns = {"word1", "word2", "similarity", "dataset"}
     if not required_columns.issubset(df.columns):
-        logging.error(f"Dataset must contain columns: {required_columns}")
+        logger.error(f"Dataset must contain columns: {required_columns}")
         return
 
     # Initialize a list to store results
@@ -38,7 +34,7 @@ def evaluate_models(dataset_csv: str = "data/semantic/semantic_similarity.csv"):
     methods = ["glove", "fasttext", "minilm", "spacy"]
 
     for method in methods:
-        logging.info(f"Evaluating method: {method}")
+        logger.info(f"Evaluating method: {method}")
         computed_similarities = []
         valid_indices = []
         for idx, row in df.iterrows():
@@ -51,13 +47,13 @@ def evaluate_models(dataset_csv: str = "data/semantic/semantic_similarity.csv"):
                 computed_similarities.append(sim)
                 valid_indices.append(idx)
             except ValueError as e:
-                logging.warning(
+                logger.warning(
                     f"Skipping pair ('{word1}', '{word2}') for method '{method}': {e}"
                 )
                 continue
 
         if not computed_similarities:
-            logging.warning(
+            logger.warning(
                 f"No valid similarity scores computed for method '{method}'. Skipping."
             )
             continue
@@ -83,12 +79,12 @@ def evaluate_models(dataset_csv: str = "data/semantic/semantic_similarity.csv"):
             }
         )
 
-        logging.info(
+        logger.info(
             f"Method '{method}': Pearson Correlation = {pearson_corr:.4f}, Spearman Correlation = {spearman_corr:.4f}"
         )
 
     if not results_list:
-        logging.error(
+        logger.error(
             "No similarity scores were computed for any method. Evaluation aborted."
         )
         return
@@ -97,8 +93,8 @@ def evaluate_models(dataset_csv: str = "data/semantic/semantic_similarity.csv"):
     results_df = pd.DataFrame(results_list)
 
     # Display the results
-    print("\nEvaluation Results:")
-    print(results_df)
+    logger.info("\nEvaluation Results:")
+    logger.info(results_df)
 
     # Determine the best model based on Pearson correlation
     best_row = results_df.loc[results_df["pearson_corr"].idxmax()]
@@ -106,7 +102,7 @@ def evaluate_models(dataset_csv: str = "data/semantic/semantic_similarity.csv"):
     best_pearson = best_row["pearson_corr"]
     best_spearman = best_row["spearman_corr"]
 
-    print(
+    logger.info(
         f"\nConclusion: The best performing model is '{best_method}' with a Pearson correlation of {best_pearson:.4f} and a Spearman correlation of {best_spearman:.4f}."
     )
 

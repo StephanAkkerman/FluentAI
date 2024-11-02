@@ -1,40 +1,39 @@
-import logging
-
 import faiss
 import numpy as np
 import pandas as pd
 from g2p import g2p
+from huggingface_hub import hf_hub_download
 from scipy.stats import pearsonr, spearmanr
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import MinMaxScaler
 from tqdm import tqdm
 
-from similarity.phonetic.ipa2vec import panphon_vec, soundvec
-from similarity.phonetic.vectorizer import load_data
+from datasets import load_dataset
+from logger import logger
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+try:
+    from similarity.phonetic.ipa2vec import panphon_vec, soundvec
+except ImportError:
+    from ipa2vec import panphon_vec, soundvec
+
+# Configure logger
+logger.basicConfig(
+    level=logger.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
 
 def word2ipa(
     word: str,
-    ipa_dataset: str = "data/phonological/eng_latn_us_broad.tsv",
+    ipa_dataset: pd.DataFrame,
     use_fallback: bool = True,
 ) -> str:
 
-    if ipa_dataset:
-        # First try lookup in the .tsv file
-        eng_ipa = load_data(ipa_dataset)
-
+    if not ipa_dataset.empty:
         # Check if the word is in the dataset
-        ipa = eng_ipa[eng_ipa["token_ort"] == word]["token_ipa"]
-    else:
-        ipa = pd.DataFrame()
+        ipa = ipa_dataset[ipa_dataset["token_ort"] == word]["token_ipa"]
 
     if ipa.empty:
-        # print(f"{word} not found in dataset.")
+        # logger.info(f"{word} not found in dataset.")
         if use_fallback:
             # Fallback on the g2p model
             return g2p([f"<eng-us>:{word}"])[0]
@@ -45,7 +44,7 @@ def word2ipa(
 
 
 def compute_phonetic_similarity(
-    word1: str, word2: str, ipa_dataset: str, method: str = "panphon"
+    word1: str, word2: str, ipa_dataset: pd.DataFrame, method: str = "panphon"
 ) -> float:
     """
     Computes the phonetic similarity between two words using the specified method.
@@ -118,7 +117,9 @@ def compute_phonetic_similarity(
     return similarity
 
 
-def evaluate_phonetic_similarity(dataset_csv: str, ipa_path: str, methods: list):
+def evaluate_phonetic_similarity(
+    dataset_repo: str, ipa_repo: str, ipa_file: str, methods: list
+):
     """
     Evaluates multiple phonetic similarity models on a given dataset and reports performance metrics.
 
@@ -130,26 +131,28 @@ def evaluate_phonetic_similarity(dataset_csv: str, ipa_path: str, methods: list)
         None
     """
     # Load the dataset
-    try:
-        df = pd.read_csv(dataset_csv)
-        logging.info(f"Loaded dataset with {len(df)} entries.")
-    except FileNotFoundError:
-        logging.error(f"Dataset file '{dataset_csv}' not found.")
-        return
-    except Exception as e:
-        logging.error(f"Error loading dataset: {e}")
-        return
+    df = load_dataset(dataset_repo, cache_dir="datasets")["train"].to_pandas()
+    logger.info(f"Loaded dataset with {len(df)} entries.")
+
+    ipa_dataset = pd.read_csv(
+        hf_hub_download(
+            repo_id=ipa_repo,
+            filename=ipa_file,
+            cache_dir="datasets",
+            repo_type="dataset",
+        )
+    )
 
     # Ensure necessary columns exist
     required_columns = {"word1", "word2", "obtained"}
     if not required_columns.issubset(df.columns):
-        logging.error(f"Dataset must contain columns: {required_columns}")
+        logger.error(f"Dataset must contain columns: {required_columns}")
         return
 
     # Scale the 'obtained' scores to 0-1
     scaler = MinMaxScaler()
     df["obtained_scaled"] = scaler.fit_transform(df[["obtained"]])
-    logging.info("Scaled 'obtained' scores to a 0-1 range.")
+    logger.info("Scaled 'obtained' scores to a 0-1 range.")
 
     # Initialize a list to store results for each method
     results_list = []
@@ -167,19 +170,19 @@ def evaluate_phonetic_similarity(dataset_csv: str, ipa_path: str, methods: list)
             word1 = row["word1"]
             word2 = row["word2"]
             try:
-                sim = compute_phonetic_similarity(word1, word2, ipa_path, method)
+                sim = compute_phonetic_similarity(word1, word2, ipa_dataset, method)
                 if sim is None:
                     continue
                 computed_similarities.append(sim)
                 valid_indices.append(idx)
             except ValueError as e:
-                logging.warning(
+                logger.warning(
                     f"Skipping pair ('{word1}', '{word2}') for method '{method}': {e}"
                 )
                 continue
 
         if not computed_similarities:
-            logging.warning(
+            logger.warning(
                 f"No similarity scores were computed for method '{method}'. Skipping."
             )
             continue
@@ -205,12 +208,12 @@ def evaluate_phonetic_similarity(dataset_csv: str, ipa_path: str, methods: list)
             }
         )
 
-        logging.info(
+        logger.info(
             f"Method '{method}': Pearson Correlation = {pearson_corr:.4f}, Spearman Correlation = {spearman_corr:.4f}"
         )
 
     if not results_list:
-        logging.error(
+        logger.error(
             "No similarity scores were computed for any method. Evaluation aborted."
         )
         return
@@ -219,8 +222,8 @@ def evaluate_phonetic_similarity(dataset_csv: str, ipa_path: str, methods: list)
     results_df = pd.DataFrame(results_list)
 
     # Display the results
-    print("\nPhonetic Similarity Evaluation Results:")
-    print(results_df.to_string(index=False))
+    logger.info("\nPhonetic Similarity Evaluation Results:")
+    logger.info(results_df.to_string(index=False))
 
     # Determine the best method based on Pearson correlation
     best_method_row = results_df.loc[results_df["pearson_corr"].idxmax()]
@@ -228,7 +231,7 @@ def evaluate_phonetic_similarity(dataset_csv: str, ipa_path: str, methods: list)
     best_pearson = best_method_row["pearson_corr"]
     best_spearman = best_method_row["spearman_corr"]
 
-    print(
+    logger.info(
         f"\nConclusion: The best performing method is '{best_method}' with a Pearson correlation of {best_pearson:.4f} and a Spearman correlation of {best_spearman:.4f}."
     )
 
@@ -238,14 +241,13 @@ def main():
     Main function to evaluate phonetic similarity methods on a dataset.
     """
     # Define the dataset path and methods to evaluate
-    dataset_path = "data/phonological/human_similarity.csv"
-    ipa_path = (
-        "data/phonological/en_US.txt"  # "data/phonological/eng_latn_us_broad.tsv" #
-    )
+    dataset_repo = "StephanAkkerman/english-words-human-similarity"
+    ipa_repo = "StephanAkkerman/english-words-IPA"
+    ipa_file = "en_US.csv"
     methods = ["panphon", "clts"]  # Add more methods here if needed
 
     # Call the evaluation function
-    evaluate_phonetic_similarity(dataset_path, ipa_path, methods)
+    evaluate_phonetic_similarity(dataset_repo, ipa_repo, ipa_file, methods)
 
 
 if __name__ == "__main__":

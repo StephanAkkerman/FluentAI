@@ -4,6 +4,9 @@ import warnings
 
 import joblib
 import numpy as np
+from huggingface_hub import hf_hub_download
+
+from logger import logger
 
 # append the path of the parent directory
 sys.path.insert(1, os.path.join(sys.path[0], ".."))
@@ -16,7 +19,6 @@ warnings.filterwarnings("ignore")
 class ImageabilityPredictor:
     def __init__(
         self,
-        embedding_model_path="models/cc.en.300.model",
         regression_model_path="models/best_model_LGBMRegressor.joblib",
     ):
         """
@@ -32,9 +34,15 @@ class ImageabilityPredictor:
         self.embedding_model = fasttext_model
 
         # Load the regression model
-        print(f"Loading regression model from '{regression_model_path}'...")
-        self.regression_model = joblib.load(regression_model_path)
-        print("Regression model loaded successfully.")
+        logger.info(f"Loading regression model from '{regression_model_path}'...")
+        self.regression_model = joblib.load(
+            hf_hub_download(
+                repo_id="StephanAkkerman/imageability-predictor",
+                filename="imageability_predictor.joblib",
+                cache_dir="models",
+            )
+        )
+        logger.info("Regression model loaded successfully.")
 
     def get_embedding(self, word):
         """
@@ -107,4 +115,4 @@ if __name__ == "__main__":
 
     for word in words_to_predict:
         score = predictor.get_imageability(word)
-        print(f"Word: '{word}' | Predicted Imageability: {score:.4f}")
+        logger.info(f"Word: '{word}' | Predicted Imageability: {score:.4f}")

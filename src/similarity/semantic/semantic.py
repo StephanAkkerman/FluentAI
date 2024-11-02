@@ -1,4 +1,3 @@
-import logging
 import os
 import pickle
 import sys
@@ -12,9 +11,10 @@ from nltk.corpus import words
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 
+from logger import logger
+
 # Add the parent directory to sys.path to import the fasttext_model module
 sys.path.insert(1, os.path.abspath(os.path.join(sys.path[0], "..", "..")))
-from fasttext_model import fasttext_model
 
 # Ensure the 'words' corpus is downloaded
 nltk.download("words", quiet=True)
@@ -28,14 +28,11 @@ MINILM_EMBEDDINGS = None
 MINILM_WORDS = None
 SPACY_MODEL = None
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
-
 
 class SemanticSimilarity:
     def __init__(self):
+        from fasttext_model import fasttext_model
+
         self.model = fasttext_model
 
     def compute_similarity(self, word1: str, word2: str) -> float:
@@ -67,9 +64,9 @@ def load_glove_model() -> gensim.models.keyedvectors.KeyedVectors:
     """
     global GLOVE_MODEL
     if GLOVE_MODEL is None:
-        print("Loading GloVe model. This may take a while...")
+        logger.info("Loading GloVe model. This may take a while...")
         GLOVE_MODEL = api.load("glove-wiki-gigaword-100")  # You can choose other models
-        print("GloVe model loaded successfully.")
+        logger.info("GloVe model loaded successfully.")
     return GLOVE_MODEL
 
 
@@ -81,9 +78,9 @@ def load_fasttext_model() -> gensim.models.keyedvectors.KeyedVectors:
         gensim.models.keyedvectors.KeyedVectors: The loaded FastText model.
     """
     global FASTTEXT_MODEL
+    from fasttext_model import fasttext_model
 
     FASTTEXT_MODEL = fasttext_model
-    print("FastText model loaded successfully.")
     return FASTTEXT_MODEL
 
 
@@ -96,14 +93,14 @@ def load_minilm_model() -> Tuple[SentenceTransformer, list, list]:
     """
     global MINILM_MODEL, MINILM_EMBEDDINGS, MINILM_WORDS
     if MINILM_MODEL is None:
-        print("Loading MiniLM model. This may take a while...")
+        logger.info("Loading MiniLM model. This may take a while...")
         MINILM_MODEL = SentenceTransformer("all-MiniLM-L6-v2", cache_folder="models")
-        print("MiniLM model loaded successfully.")
+        logger.info("MiniLM model loaded successfully.")
 
     if MINILM_EMBEDDINGS is None or MINILM_WORDS is None:
-        embeddings_path = "minilm_word_embeddings.pkl"
+        embeddings_path = "models/minilm_word_embeddings.pkl"
         if not os.path.exists(embeddings_path):
-            print(
+            logger.info(
                 "Creating MiniLM embeddings for the word list. This may take a while..."
             )
             MINILM_WORDS = list(set([word.lower() for word in WORD_LIST]))
@@ -112,14 +109,14 @@ def load_minilm_model() -> Tuple[SentenceTransformer, list, list]:
             )
             with open(embeddings_path, "wb") as f:
                 pickle.dump({"words": MINILM_WORDS, "embeddings": MINILM_EMBEDDINGS}, f)
-            print("MiniLM embeddings created and saved.")
+            logger.info("MiniLM embeddings created and saved.")
         else:
-            print("Loading precomputed MiniLM embeddings...")
+            logger.info("Loading precomputed MiniLM embeddings...")
             with open(embeddings_path, "rb") as f:
                 data = pickle.load(f)
                 MINILM_WORDS = data["words"]
                 MINILM_EMBEDDINGS = data["embeddings"]
-            print("MiniLM embeddings loaded.")
+            logger.info("MiniLM embeddings loaded.")
 
     return MINILM_MODEL, MINILM_WORDS, MINILM_EMBEDDINGS
 
@@ -133,16 +130,16 @@ def load_spacy_model():
     """
     global SPACY_MODEL
     if SPACY_MODEL is None:
-        print("Loading spaCy model. This may take a while...")
+        logger.info("Loading spaCy model. This may take a while...")
         try:
             SPACY_MODEL = spacy.load("en_core_web_md")  # or "en_core_web_lg"
         except OSError:
-            print("spaCy model not found. Downloading 'en_core_web_md'...")
+            logger.info("spaCy model not found. Downloading 'en_core_web_md'...")
             from spacy.cli import download
 
             download("en_core_web_md")
             SPACY_MODEL = spacy.load("en_core_web_md")
-        print("spaCy model loaded successfully.")
+        logger.info("spaCy model loaded successfully.")
     return SPACY_MODEL
 
 
@@ -310,11 +307,11 @@ def example():
     for word1, word2, method in examples:
         try:
             similarity = compute_similarity(word1, word2, method)
-            print(
+            logger.info(
                 f"Similarity between '{word1}' and '{word2}' using '{method}': {similarity:.4f}"
             )
         except ValueError as e:
-            print(
+            logger.info(
                 f"Error computing similarity between '{word1}' and '{word2}' using '{method}': {e}"
             )
 

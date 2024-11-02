@@ -2,56 +2,17 @@ import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import pandas as pd
+from huggingface_hub import hf_hub_download
 from tqdm import tqdm
 
-from similarity.phonetic.ipa2vec import ft, sv
-from similarity.phonetic.utils import flatten_vectors
+from logger import logger
 
-
-def load_data(file_path: str) -> pd.DataFrame:
-    """
-    Loads the dataset from a TSV file and cleans the IPA tokens by removing spaces.
-
-    Args:
-        file_path (str): Path to the TSV file.
-
-    Returns:
-        pd.DataFrame: Cleaned DataFrame with 'token_ort' and 'token_ipa' columns.
-    """
-    # print("Loading dataset...")
-    if "eng_latn_us_broad" in file_path:
-        ds = pd.read_csv(
-            file_path, names=["token_ort", "token_ipa"], sep="\t", encoding="utf-8"
-        )
-        # Remove spaces in token_ipa
-        ds["token_ipa"] = ds["token_ipa"].str.replace(" ", "", regex=False)
-
-    if "en_US" in file_path:
-        ds = pd.read_csv(
-            file_path, names=["token_ort", "token_ipa"], sep="\t", encoding="utf-8"
-        )
-        # Split 'token_ipa' by commas into lists
-        ds["token_ipa"] = ds["token_ipa"].str.split(",")
-
-        # Remove leading and trailing whitespace from each IPA option
-        ds["token_ipa"] = ds["token_ipa"].apply(
-            lambda ipa_list: [ipa.strip() for ipa in ipa_list]
-        )
-
-        # Explode the DataFrame so that each IPA option gets its own row
-        ds = ds.explode("token_ipa").reset_index(drop=True)
-
-        # Remove leading '/' and 'ˈ' and trailing '/' characters from 'token_ipa'
-        ds["token_ipa"] = (
-            ds["token_ipa"]
-            .str.lstrip("/ˈ")  # Remove leading '/' and 'ˈ'
-            .str.rstrip("/")  # Remove trailing '/'
-            .str.strip()  # Remove any remaining leading/trailing whitespace
-        )
-    # token_ort in lower case
-    ds["token_ort"] = ds["token_ort"].str.lower()
-
-    return ds
+try:
+    from similarity.phonetic.ipa2vec import ft, sv
+    from similarity.phonetic.utils import flatten_vectors
+except ImportError:
+    from ipa2vec import ft, sv
+    from utils import flatten_vectors
 
 
 def vectorize_word_clts(word, sv):
@@ -75,7 +36,7 @@ def vectorize_word_clts(word, sv):
         except ValueError:
             continue  # Skip unknown characters
         except IndexError:
-            print(f"Error processing letter '{letter}' in '{word}'")
+            logger.info(f"Error processing letter '{letter}' in '{word}'")
             continue
     return word_vector
 
@@ -159,7 +120,7 @@ def pad_vector(vector, max_length, padding_value=0):
 
 def main(
     method: str = "clts",
-    data_file: str = "data/phonological/eng_latn_us_broad.tsv",
+    data_file: str = "eng_latn_us_broad.csv",
     save_loc: str = "data/phonological/embeddings",
 ):
     """
@@ -181,11 +142,18 @@ def main(
         raise ValueError("Invalid method selected. Choose either 'clts' or 'panphon'.")
 
     # Load data
-    ds = load_data(data_file)
+    ds = pd.read_csv(
+        hf_hub_download(
+            repo_id="StephanAkkerman/english-words-IPA",
+            filename=data_file,
+            cache_dir="datasets",
+            repo_type="dataset",
+        )
+    )
 
     # Perform CLTS vectorization
     if method == "clts":
-        print("Starting CLTS vectorization...")
+        logger.info("Starting CLTS vectorization...")
         ds["vectors"] = vectorize_in_parallel(
             token_ipa_list=ds["token_ipa"].tolist(),
             vectorize_func=vectorize_word_clts,
@@ -196,7 +164,7 @@ def main(
 
     # Perform Panphon vectorization
     elif method == "panphon":
-        print("Starting Panphon vectorization...")
+        logger.info("Starting Panphon vectorization...")
         ds["vectors"] = vectorize_in_parallel(
             token_ipa_list=ds["token_ipa"].tolist(),
             vectorize_func=vectorize_word_panphon,
@@ -211,7 +179,7 @@ def main(
     os.makedirs(save_loc, exist_ok=True)
 
     ds.to_parquet(output_file, index=False)
-    print(f"Word vectors successfully saved to {output_file}")
+    logger.info(f"Word vectors successfully saved to {output_file}")
 
 
 if __name__ == "__main__":
