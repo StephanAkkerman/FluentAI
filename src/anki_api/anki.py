@@ -12,7 +12,7 @@ class AnkiConnect:
 
     def invoke(self, action, params=None):
         payload = {"action": action, "version": self.VERSION}
-        if params:
+        if params:  
             payload["params"] = params
         response = requests.request("POST", self.URL, json=payload).json()
         if len(response) != 2:
@@ -56,6 +56,7 @@ class AnkiConnect:
         self,
         deck_name,
         word,
+        answer,
         image_paths,
         word_usage,
         notes,
@@ -91,6 +92,7 @@ class AnkiConnect:
                 "modelName": "2. Picture Words",  # Could add this to config.py
                 "fields": {
                     "Word": word,
+                    "Answer": answer,
                     "Picture": picture_field,
                     "Gender, Personal Connection, Extra Info (Back side)": gender_notes_field,
                     "Pronunciation (Recording and/or IPA)": pronunciation_field,
@@ -102,3 +104,38 @@ class AnkiConnect:
 
         note_id = self.invoke("addNote", params)
         return note_id
+
+def main():
+    # Create an instance of AnkiConnect
+    anki = AnkiConnect()
+
+    # Test data
+    deck_name = "Test Deck"
+    word = "Example"
+    answer = "Answer: Example"
+    image_paths = []  # Update with actual paths if you have images
+    word_usage = "This is an example of how the word 'example' is used in a sentence."
+    notes = "These are sample notes for testing purposes."
+    recording_file_path = None  # Update with actual path if you have an audio file
+    ipa_text = "" # Update with how the word is pronounced according to IPA 
+    test_spelling = True
+
+    # Add the note
+    try:
+        note_id = anki.add_note(
+            deck_name,
+            word,
+            answer,
+            image_paths,
+            word_usage,
+            notes,
+            recording_file_path,
+            ipa_text,
+            test_spelling,
+        )
+        print(f"Note added successfully with ID: {note_id}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        
+if __name__ == "__main__":
+    main()
