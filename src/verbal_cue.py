@@ -1,5 +1,7 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
+from logger import logger
+
 
 class VerbalCue:
     def __init__(self):

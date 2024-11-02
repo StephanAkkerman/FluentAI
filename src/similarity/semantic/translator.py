@@ -4,14 +4,14 @@ from functools import lru_cache
 import pycountry
 from googletrans import Translator
 
+from logger import logger
+
 translator = Translator()
 
 
 def is_latin_script(word: str):
     for char in word:
-        # Check if the character's Unicode script is 'Latin'
         if "LATIN" not in unicodedata.name(char):
-            print(char)
             return False
     return True
 
@@ -96,11 +96,9 @@ def translate_word(word, src_lang_code, target_lang_code: str = "en"):
 
     try:
         if not is_latin_script(word):
-            print(src, word)
             transliterated_word = translator.translate(
                 word, src=src, dest=src
             ).pronunciation
-            print(transliterated_word)
             # Lower case it
             transliterated_word = transliterated_word.lower()
             # Remove diacritics
@@ -111,7 +109,7 @@ def translate_word(word, src_lang_code, target_lang_code: str = "en"):
             transliterated_word,
         )
     except Exception as e:
-        print(f"Error translating {word} from {src} to {target}: {e}")
+        logger.info(f"Error translating {word} from {src} to {target}: {e}")
         return word, word
 
 

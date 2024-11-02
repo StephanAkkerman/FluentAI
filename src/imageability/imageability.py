@@ -6,6 +6,8 @@ import joblib
 import numpy as np
 from huggingface_hub import hf_hub_download
 
+from logger import logger
+
 # append the path of the parent directory
 sys.path.insert(1, os.path.join(sys.path[0], ".."))
 from fasttext_model import fasttext_model
@@ -32,7 +34,7 @@ class ImageabilityPredictor:
         self.embedding_model = fasttext_model
 
         # Load the regression model
-        print(f"Loading regression model from '{regression_model_path}'...")
+        logger.info(f"Loading regression model from '{regression_model_path}'...")
         self.regression_model = joblib.load(
             hf_hub_download(
                 repo_id="StephanAkkerman/imageability-predictor",
@@ -40,7 +42,7 @@ class ImageabilityPredictor:
                 cache_dir="models",
             )
         )
-        print("Regression model loaded successfully.")
+        logger.info("Regression model loaded successfully.")
 
     def get_embedding(self, word):
         """
@@ -113,4 +115,4 @@ if __name__ == "__main__":
 
     for word in words_to_predict:
         score = predictor.get_imageability(word)
-        print(f"Word: '{word}' | Predicted Imageability: {score:.4f}")
+        logger.info(f"Word: '{word}' | Predicted Imageability: {score:.4f}")

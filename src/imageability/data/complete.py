@@ -69,4 +69,4 @@ combined_df["score"] = combined_df["score"].fillna(
 # Save the final combined dataset
 combined_df.to_csv("data/imageability/data.csv", index=False)
 
-print("Dataset combined and saved")
+logger.info("Dataset combined and saved")

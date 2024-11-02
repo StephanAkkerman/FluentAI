@@ -5,6 +5,8 @@ import panphon
 from pyclts import CLTS
 from soundvectors import SoundVectors
 
+from logger import logger
+
 try:
     from similarity.phonetic.get_clts import get_clts
 except ImportError:
@@ -41,5 +43,5 @@ if __name__ == "__main__":
     ipa_input = "ˈɡɹəmbəɫ"  # G2P
     ipa_input2 = "ɡɹʌmbl̩"  # wiktionary
     for input in [ipa_input, ipa_input2]:
-        print("Panphon", panphon_vec(input))
-        print("Soundvec", soundvec(input))
+        logger.info("Panphon", panphon_vec(input))
+        logger.info("Soundvec", soundvec(input))

@@ -9,6 +9,7 @@ import pandas as pd
 from tqdm import tqdm
 
 from datasets import load_dataset
+from logger import logger
 
 # Global variable to hold the embedding model in each worker process
 embedding_model = None
@@ -26,11 +27,11 @@ def load_embedding_model(model_name):
 
         embedding_model = fasttext_model
     elif model_name.lower() == "glove":
-        print("Loading GloVe embeddings...")
+        logger.info("Loading GloVe embeddings...")
         embedding_model = api.load("glove-wiki-gigaword-300")
     else:
         raise ValueError("Unsupported model. Choose 'fasttext' or 'glove'.")
-    print(f"{model_name.capitalize()} model loaded successfully.")
+    logger.info(f"{model_name.capitalize()} model loaded successfully.")
     return embedding_model
 
 
@@ -98,14 +99,14 @@ def generate_embeddings(
     y = df[score_column].values
     words = df[word_column].astype(str).values  # Ensure all words are strings
 
-    print(f"Number of unique words to process: {len(words)}")
+    logger.info(f"Number of unique words to process: {len(words)}")
 
     # Determine the number of CPU cores to use
     if n_jobs == -1:
         num_cores = multiprocessing.cpu_count()
     else:
         num_cores = n_jobs
-    print(f"Number of CPU cores to use: {num_cores}")
+    logger.info(f"Number of CPU cores to use: {num_cores}")
 
     embeddings = []
 
@@ -132,7 +133,7 @@ def generate_embeddings(
 
     # Convert list of embeddings to a NumPy array
     embeddings = np.vstack(embeddings)
-    print(f"Generated embeddings shape: {embeddings.shape}")
+    logger.info(f"Generated embeddings shape: {embeddings.shape}")
 
     # Create a DataFrame for words and scores
     df_output = pd.DataFrame({"word": words, "score": y})
@@ -147,12 +148,12 @@ def generate_embeddings(
     # Concatenate the words, scores, and embeddings into a single DataFrame
     df_output = pd.concat([df_output, embeddings_df], axis=1)
 
-    print(f"Combined DataFrame shape: {df_output.shape}")
+    logger.info(f"Combined DataFrame shape: {df_output.shape}")
 
     # Save the DataFrame to a .parquet file
     try:
         df_output.to_parquet(output_parquet, index=False)
-        print(f"Embeddings saved successfully to '{output_parquet}'.")
+        logger.info(f"Embeddings saved successfully to '{output_parquet}'.")
     except Exception as e:
         raise Exception(f"An error occurred while saving to parquet: {e}")
 
