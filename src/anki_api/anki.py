@@ -76,7 +76,8 @@ class AnkiConnect:
 
         escaped_gender_text = html.escape(word_usage.replace("&", "&amp;"))
         formatted_notes = self.format_notes(notes)
-        gender_notes_field = escaped_gender_text + formatted_notes
+
+        gender_notes_field = escaped_gender_text + formatted_notes + answer
 
         pronunciation_field = ipa_text
 
