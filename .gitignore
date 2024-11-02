@@ -1,5 +1,6 @@
 models/
-datasets/
+datasets/+
+node_modules/
 *pkl
 data/clts*
 *.bin
