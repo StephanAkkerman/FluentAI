@@ -24,7 +24,7 @@ logging.basicConfig(
     ],
 )
 
-logging_lvl = "INFO"  # config.get("LOGGING_LEVEL", "INFO")
+logging_lvl = "DEBUG"  # config.get("LOGGING_LEVEL", "INFO")
 if "-debug" in sys.argv:
     logging_lvl = "DEBUG"
 logger = logging.getLogger("fluentAI-logger")
