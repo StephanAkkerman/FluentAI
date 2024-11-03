@@ -277,7 +277,7 @@ def compute_similarity(word1: str, word2: str, method: str) -> float:
     else:
         raise ValueError(
             f"Unsupported similarity method: '{method}'. "
-            f"Choose from 'glove', 'fasttext', 'minilm', 'spacy'."
+            "Choose from 'glove', 'fasttext', 'minilm', 'spacy'."
         )
 
 
