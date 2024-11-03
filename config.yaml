@@ -8,7 +8,7 @@ LLM:
   MODEL: "microsoft/Phi-3-mini-4k-instruct"
   TOKENIZER: "microsoft/Phi-3-mini-4k-instruct"
 IMAGE_GEN:
-  MODEL: "black-forest-labs/FLUX.1-schnell"
+  MODEL: stabilityai/stable-diffusion-3.5-medium
 
 # Datasets
 SEMANTIC_SIM:

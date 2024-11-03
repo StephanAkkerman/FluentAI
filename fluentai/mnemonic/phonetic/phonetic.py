@@ -6,7 +6,8 @@ from huggingface_hub import hf_hub_download
 from fluentai.constants.config import config
 from fluentai.mnemonic.phonetic.g2p import g2p
 from fluentai.mnemonic.phonetic.ipa2vec import panphon_vec, soundvec
-from fluentai.mnemonic.phonetic.utils import convert_to_matrix, load_cache, pad_vectors
+from fluentai.mnemonic.phonetic.utils import (convert_to_matrix, load_cache,
+                                              pad_vectors)
 from fluentai.utils.logger import logger
 
 
@@ -14,7 +15,6 @@ def word2ipa(
     word: str,
     language_code: str = "eng-us",
 ) -> str:
-
     # Try searching in the dataset
     if "eng-us" in language_code:
         # First try lookup in the .tsv file

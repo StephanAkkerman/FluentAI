@@ -19,7 +19,6 @@ def word2ipa(
     ipa_dataset: pd.DataFrame,
     use_fallback: bool = True,
 ) -> str:
-
     if not ipa_dataset.empty:
         # Check if the word is in the dataset
         ipa = ipa_dataset[ipa_dataset["token_ort"] == word]["token_ipa"]

@@ -13,7 +13,6 @@ tokenizer = AutoTokenizer.from_pretrained(
 
 
 def g2p(words: list[str]) -> str:
-
     out = tokenizer(words, padding=True, add_special_tokens=False, return_tensors="pt")
 
     preds = model.generate(

@@ -1,0 +1,12 @@
+name: Run isort
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.2
+      - uses: isort/isort-action@v1.1.1
+        with:
+          requirements-files: "requirements/requirements.txt requirements/dev-requirements.txt"

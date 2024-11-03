@@ -1,8 +1,7 @@
 from fluentai.constants.languages import G2P_LANGCODES
 from fluentai.mnemonic.imageability.imageability import ImageabilityPredictor
-from fluentai.mnemonic.orthographic.orthographic import (
-    compute_damerau_levenshtein_similarity,
-)
+from fluentai.mnemonic.orthographic.orthographic import \
+    compute_damerau_levenshtein_similarity
 from fluentai.mnemonic.phonetic.phonetic import top_phonetic
 from fluentai.mnemonic.semantic.semantic import SemanticSimilarity
 from fluentai.mnemonic.semantic.translator import translate_word
@@ -53,11 +52,10 @@ def generate_mnemonic(word: str, language_code):
         axis=1,
     )
 
-    # Calculate the mnemonic score
-    logger.info(top)
+    return top
 
 
 if __name__ == "__main__":
     # generate_mnemonic("kucing", "ind")
 
-    generate_mnemonic("猫", "zho-s")
+    print(generate_mnemonic("猫", "zho-s"))
