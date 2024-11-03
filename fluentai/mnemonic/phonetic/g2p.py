@@ -1,12 +1,15 @@
 from transformers import AutoTokenizer, T5ForConditionalGeneration
 
+from fluentai.constants.config import config
 from fluentai.utils.logger import logger
 
 # https://github.com/lingjzhu/CharsiuG2P
 model = T5ForConditionalGeneration.from_pretrained(
-    "charsiu/g2p_multilingual_byT5_small_100", cache_dir="models"
+    config.get("G2P").get("MODEL"), cache_dir="models"
 )
-tokenizer = AutoTokenizer.from_pretrained("google/byt5-small", cache_dir="models")
+tokenizer = AutoTokenizer.from_pretrained(
+    config.get("G2P").get("TOKENIZER"), cache_dir="models"
+)
 
 
 def g2p(words: list[str]) -> str:
@@ -37,7 +40,7 @@ def example():
     english_word = g2p(["<eng-us>: grumble"])
     dutch_word = g2p(["<dut>: Koekje"])
 
-    logger.info(
+    print(
         indonesian_word,
         english_word,
         dutch_word,

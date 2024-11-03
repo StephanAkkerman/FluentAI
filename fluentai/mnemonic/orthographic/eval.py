@@ -1,12 +1,10 @@
-import os
-import sys
-
 import pandas as pd
 from orthographic import compute_similarity
 from scipy.stats import pearsonr, spearmanr
 from sklearn.preprocessing import MinMaxScaler
 
 from datasets import load_dataset
+from fluentai.constants.config import config
 from fluentai.utils.logger import logger
 
 
@@ -102,8 +100,6 @@ def determine_best_method(evaluation_df: pd.DataFrame) -> str:
 
 
 def main():
-    from fluentai.utils.constants import config
-
     # Load the dataset
     df = load_dataset(
         config.get("ORTHOGRAPHIC_SIM").get("EVAL"),
@@ -146,7 +142,6 @@ def main():
     # Print the evaluation results
     logger.info("=== Evaluation Results ===")
     logger.info(evaluation_results.to_string(index=False))
-    logger.info()
 
     # Determine and print the best method
     best_method = determine_best_method(evaluation_results)
@@ -165,5 +160,4 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.path.insert(1, os.path.abspath(os.path.join(sys.path[0], "..", "..")))
     main()

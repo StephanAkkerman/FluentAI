@@ -5,6 +5,7 @@ import pandas as pd
 from huggingface_hub import hf_hub_download
 from tqdm import tqdm
 
+from fluentai.constants.config import config
 from fluentai.mnemonic.phonetic.ipa2vec import ft, sv
 from fluentai.mnemonic.phonetic.utils import flatten_vectors
 from fluentai.utils.logger import logger
@@ -115,7 +116,6 @@ def pad_vector(vector, max_length, padding_value=0):
 
 def main(
     method: str = "clts",
-    data_file: str = "eng_latn_us_broad.csv",
     save_loc: str = "data/phonological/embeddings",
 ):
     """
@@ -124,7 +124,7 @@ def main(
     Args:
         method (str): Vectorization method to use ('clts' or 'panphon').
     """
-    data_file_name = data_file.split("/")[-1].split(".")[0]
+    data_file_name = config.get("PHONETIC_SIM").get("IPA_FILE")
 
     if method == "clts":
         output_file = f"{save_loc}/{data_file_name}_clts.parquet"
@@ -139,8 +139,8 @@ def main(
     # Load data
     ds = pd.read_csv(
         hf_hub_download(
-            repo_id="StephanAkkerman/english-words-IPA",
-            filename=data_file,
+            repo_id=config.get("PHONETIC_SIM").get("IPA_REPO"),
+            filename=config.get("PHONETIC_SIM").get("IPA_FILE"),
             cache_dir="datasets",
             repo_type="dataset",
         )

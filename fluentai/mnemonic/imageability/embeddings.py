@@ -7,7 +7,7 @@ import pandas as pd
 from tqdm import tqdm
 
 from datasets import load_dataset
-from fluentai.constants import config
+from fluentai.constants.config import config
 from fluentai.utils.logger import logger
 
 # Global variable to hold the embedding model in each worker process
@@ -161,7 +161,7 @@ if __name__ == "__main__":
     model = "fasttext"  # Change to 'glove' to use GloVe embeddings
 
     generate_embeddings(
-        output_parquet=f"data/imageability/{model}_embeddings.parquet",
+        output_parquet=f"data/imageability/{model}_embeddings2.parquet",
         model=model,
         word_column="word",
         score_column="score",

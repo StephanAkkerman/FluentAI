@@ -1,5 +1,19 @@
 # Project Guidelines
 
+## Cloning the Repository
+
+Start by cloning the repository to your local machine. You can do this by running the following command in your terminal:
+
+```bash
+git clone https://github.com/StephanAkkerman/FluentAI
+```
+
+Install the required dev dependencies by running the following command:
+
+```bash
+pip install -e .[dev]
+```
+
 ## Code Formatting and Linting
 
 This project uses [Black](https://black.readthedocs.io/en/stable/index.html) with default values for automatic code formatting, along with [ruff](https://docs.astral.sh/ruff/). We also use [NumPy-style docstrings](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html) for documenting the code. As part of the checks on pull requests, it is checked whether the code still adheres to the code style. To ensure you don't need to worry about formatting and linting when contributing, it is recommended to set up the following:

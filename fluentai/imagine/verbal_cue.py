@@ -1,10 +1,12 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
+from fluentai.constants.config import config
+
 
 class VerbalCue:
     def __init__(self):
         model = AutoModelForCausalLM.from_pretrained(
-            "microsoft/Phi-3-mini-4k-instruct",
+            config.get("LLM").get("MODEL"),
             device_map="cuda",
             torch_dtype="auto",
             trust_remote_code=True,
@@ -12,7 +14,7 @@ class VerbalCue:
         )
 
         tokenizer = AutoTokenizer.from_pretrained(
-            "microsoft/Phi-3-mini-4k-instruct",
+            config.get("LLM").get("TOKENIZER"),
             cache_dir="models",
         )
         self.pipe = pipeline(

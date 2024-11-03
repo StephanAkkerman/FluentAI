@@ -5,7 +5,7 @@ import panphon
 from pyclts import CLTS
 from soundvectors import SoundVectors
 
-from fluentai.mnemonic.phonetic.get_clts import get_clts
+from fluentai.mnemonic.phonetic.utils import get_clts
 from fluentai.utils.logger import logger
 
 # Test if data/clts exists

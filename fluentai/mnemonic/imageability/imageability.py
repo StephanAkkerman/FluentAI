@@ -1,10 +1,8 @@
-import os
-import sys
-
 import joblib
 import numpy as np
 from huggingface_hub import hf_hub_download
 
+from fluentai.constants.config import config
 from fluentai.utils.fasttext import fasttext_model
 from fluentai.utils.logger import logger
 
@@ -22,7 +20,6 @@ class ImageabilityPredictor:
             regression_model_path (str, optional): Path to the trained regression model (.joblib file).
                                                    Defaults to "models/best_model_LGBMRegressor.joblib".
         """
-        from fluentai.utils.constants import config
 
         # Load the embedding model
         self.embedding_model = fasttext_model
@@ -100,8 +97,6 @@ class ImageabilityPredictor:
 
 # Example Usage
 if __name__ == "__main__":
-    sys.path.insert(1, os.path.join(sys.path[0], ".."))
-
     predictor = ImageabilityPredictor()
 
     # Example words

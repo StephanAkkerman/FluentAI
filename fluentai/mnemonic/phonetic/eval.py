@@ -9,6 +9,7 @@ from sklearn.preprocessing import MinMaxScaler
 from tqdm import tqdm
 
 from datasets import load_dataset
+from fluentai.constants.config import config
 from fluentai.mnemonic.phonetic.ipa2vec import panphon_vec, soundvec
 from fluentai.utils.logger import logger
 
@@ -108,9 +109,7 @@ def compute_phonetic_similarity(
     return similarity
 
 
-def evaluate_phonetic_similarity(
-    dataset_repo: str, ipa_repo: str, ipa_file: str, methods: list
-):
+def evaluate_phonetic_similarity(methods: list):
     """
     Evaluates multiple phonetic similarity models on a given dataset and reports performance metrics.
 
@@ -122,13 +121,15 @@ def evaluate_phonetic_similarity(
         None
     """
     # Load the dataset
-    df = load_dataset(dataset_repo, cache_dir="datasets")["train"].to_pandas()
+    df = load_dataset(config.get("PHONETIC_SIM").get("EVAL"), cache_dir="datasets")[
+        "train"
+    ].to_pandas()
     logger.info(f"Loaded dataset with {len(df)} entries.")
 
     ipa_dataset = pd.read_csv(
         hf_hub_download(
-            repo_id=ipa_repo,
-            filename=ipa_file,
+            repo_id=config.get("PHONETIC_SIM").get("IPA_REPO"),
+            filename=config.get("PHONETIC_SIM").get("IPA_FILE"),
             cache_dir="datasets",
             repo_type="dataset",
         )
@@ -231,14 +232,10 @@ def main():
     """
     Main function to evaluate phonetic similarity methods on a dataset.
     """
-    # Define the dataset path and methods to evaluate
-    dataset_repo = "StephanAkkerman/english-words-human-similarity"
-    ipa_repo = "StephanAkkerman/english-words-IPA"
-    ipa_file = "en_US.csv"
-    methods = ["panphon", "clts"]  # Add more methods here if needed
+    methods = ["panphon", "clts"]
 
     # Call the evaluation function
-    evaluate_phonetic_similarity(dataset_repo, ipa_repo, ipa_file, methods)
+    evaluate_phonetic_similarity(methods)
 
 
 if __name__ == "__main__":

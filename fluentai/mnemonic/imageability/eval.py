@@ -1,5 +1,4 @@
 import os
-import sys
 
 import joblib
 import pandas as pd
@@ -13,6 +12,7 @@ from sklearn.svm import SVR
 from tqdm import tqdm
 from xgboost import XGBRegressor
 
+from fluentai.constants.config import config
 from fluentai.utils.logger import logger
 
 
@@ -23,7 +23,6 @@ def load_data():
     Returns:
         tuple: (words, embeddings, scores)
     """
-    from fluentai.utils.constants import config
 
     df = pd.read_parquet(
         hf_hub_download(
@@ -160,6 +159,4 @@ def main():
 
 
 if __name__ == "__main__":
-    # To find constants
-    sys.path.insert(1, os.path.join(sys.path[0], ".."))
     main()

@@ -3,6 +3,7 @@ from scipy.stats import pearsonr, spearmanr
 from semantic import compute_similarity
 
 from datasets import load_dataset
+from fluentai.constants.config import config
 from fluentai.utils.logger import logger
 
 
@@ -18,7 +19,7 @@ def evaluate_models():
     """
     # Load the dataset
     df = load_dataset(
-        "StephanAkkerman/semantic-similarity", cache_dir="datasets", split="train"
+        config.get("SEMANTIC_SIM").get("EVAL"), cache_dir="datasets", split="train"
     ).to_pandas()
     logger.info(f"Loaded dataset with {len(df)} entries.")
 
