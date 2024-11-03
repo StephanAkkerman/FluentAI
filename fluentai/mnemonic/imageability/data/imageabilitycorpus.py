@@ -86,7 +86,22 @@ print(f"Total words after full outer join: {merged_df.shape[0]}")
 
 
 # Function to combine scores by averaging available scores
-def combine_scores(row, score_type):
+def combine_scores(row, score_type) -> float:
+    """
+    Combine scores by averaging available scores.
+
+    Parameters
+    ----------
+    row : _type_
+        The row containing the scores.
+    score_type : _type_
+        The type of score to combine.
+
+    Returns
+    -------
+    float
+        The combined score.
+    """
     score_icmr = row.get(f"{score_type}_icmr", pd.NA)
     score_mipr = row.get(f"{score_type}_mipr", pd.NA)
 

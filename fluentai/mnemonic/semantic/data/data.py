@@ -9,11 +9,13 @@ def scale_similarity(df, similarity_col="similarity"):
     """
     Scales the similarity scores in the specified column of the DataFrame to a 0-1 range.
 
-    Parameters:
+    Parameters
+    ----------
         df (pd.DataFrame): The DataFrame containing similarity scores.
         similarity_col (str): The name of the column to scale.
 
-    Returns:
+    Returns
+    -------
         pd.DataFrame: The DataFrame with scaled similarity scores.
     """
     # Check if the similarity column exists

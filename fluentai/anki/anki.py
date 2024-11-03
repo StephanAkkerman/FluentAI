@@ -1,5 +1,6 @@
 """
-This script interfaces with Anki through AnkiConnect to add notes to Anki decks programmatically.
+Interfaces with Anki through AnkiConnect to add notes to Anki decks programmatically.
+
 It demonstrates how to use AnkiConnect to add flashcards with images and audio.
 
 Usage:
@@ -24,6 +25,7 @@ class AnkiConnect:
     def invoke(self, action, params=None):
         """
         Invoke an AnkiConnect action with optional parameters.
+
         Returns the result or raises an exception if there's an error.
         """
         payload = {"action": action, "version": self.VERSION}
@@ -53,6 +55,7 @@ class AnkiConnect:
     def store_media_file(self, src_file_path, word):
         """
         Stores a media file in Anki's collection.
+
         Returns the filename used in Anki.
         """
         action = "storeMediaFile"
@@ -91,6 +94,7 @@ class AnkiConnect:
     ):
         """
         Adds a new note to the specified Anki deck with provided fields.
+
         Returns the note ID.
         """
         stored_images = [

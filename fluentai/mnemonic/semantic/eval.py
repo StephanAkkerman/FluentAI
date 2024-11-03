@@ -11,10 +11,12 @@ def evaluate_models():
     """
     Evaluates all semantic similarity models on a given dataset and reports performance metrics.
 
-    Parameters:
+    Parameters
+    ----------
         dataset_csv (str): Path to the merged semantic similarity dataset CSV file.
 
-    Returns:
+    Returns
+    -------
         None
     """
     # Load the dataset

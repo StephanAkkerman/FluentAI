@@ -42,6 +42,7 @@ def initializer(model_name):
 def get_embedding(word):
     """
     Retrieve the embedding vector for a given word.
+
     Note: This function runs in separate worker processes.
     """
     global EMBEDDING_MODEL
@@ -72,7 +73,8 @@ def generate_embeddings(
         n_jobs (int, optional): Number of CPU cores to use. -1 means all available cores. Defaults to -1.
         verbose (bool, optional): Enable verbose output for progress bars. Defaults to True.
 
-    Raises:
+    Raises
+    ------
         FileNotFoundError: If the input CSV file is not found.
         ValueError: If required columns are missing or unsupported model is specified.
     """

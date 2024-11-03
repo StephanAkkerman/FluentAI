@@ -13,7 +13,7 @@ text_2_img_models = [
 ]
 
 
-def get_flux_pipe():
+def _get_flux_pipe():
     pipe = FluxPipeline.from_pretrained(
         "black-forest-labs/FLUX.1-schnell",
         torch_dtype=torch.bfloat16,  # torch.float16,
@@ -29,7 +29,7 @@ def get_flux_pipe():
     return pipe
 
 
-def get_small_sd_pipe():
+def _get_small_sd_pipe():
     pipe = StableDiffusionPipeline.from_pretrained(
         "OFA-Sys/small-stable-diffusion-v0",
         torch_dtype=torch.float16,
@@ -38,7 +38,7 @@ def get_small_sd_pipe():
     return pipe
 
 
-def get_mini_sd_pipe():
+def _get_mini_sd_pipe():
     pipe = StableDiffusionPipeline.from_pretrained(
         "lambdalabs/miniSD-diffusers", cache_dir="models"
     )
@@ -47,7 +47,7 @@ def get_mini_sd_pipe():
     return pipe
 
 
-def get_sd_turbo_pipe():
+def _get_sd_turbo_pipe():
     pipe = AutoPipelineForText2Image.from_pretrained(
         "stabilityai/sdxl-turbo",
         torch_dtype=torch.float16,
@@ -58,7 +58,7 @@ def get_sd_turbo_pipe():
     return pipe
 
 
-def get_sd_medium_pipe():
+def _get_sd_medium_pipe():
     import torch
     from diffusers import StableDiffusion3Pipeline
 
@@ -87,7 +87,8 @@ def generate_short_code_sha256(prompt: str, length: int = 8) -> str:
         prompt (str): The input sentence or prompt.
         length (int): Desired length of the short code. Default is 8.
 
-    Returns:
+    Returns
+    -------
         str: A short hexadecimal code representing the prompt.
     """
     # Create a SHA256 hash object
@@ -106,7 +107,17 @@ def generate_img(
     model_name: str = "sdxl-turbo",
     prompt: str = "A flashy bottle that stands out from the rest.",
 ):
-    pipe = get_sd_medium_pipe()
+    """
+    Generate an image from a given prompt using a text-to-image model.
+
+    Parameters
+    ----------
+    model_name : str, optional
+        _description_, by default "sdxl-turbo"
+    prompt : str, optional
+        _description_, by default "A flashy bottle that stands out from the rest."
+    """
+    pipe = _get_sd_medium_pipe()
 
     # pipe.enable_model_cpu_offload()  # save some VRAM by offloading the model to CPU. Remove this if you have enough GPU power
     # pipe.to("cuda")

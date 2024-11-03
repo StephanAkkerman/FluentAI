@@ -11,7 +11,7 @@ def parse_requirements(filename):
     Returns:
         list: A list of dependency strings.
     """
-    with open(filename, "r", encoding="utf-8") as file:
+    with open(filename, encoding="utf-8") as file:
         lines = file.readlines()
 
     requirements = []
@@ -28,7 +28,7 @@ def parse_requirements(filename):
 requirements = parse_requirements("requirements/requirements.txt")
 
 # Read the long description from README.md
-with open("README.md", "r", encoding="utf-8") as fh:
+with open("README.md", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(

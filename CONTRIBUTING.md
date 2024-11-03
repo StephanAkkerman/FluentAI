@@ -23,6 +23,7 @@ This project uses [Black](https://black.readthedocs.io/en/stable/index.html) wit
   - For [ruff](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff)
   - For automated [NumPy-style docstrings](https://marketplace.visualstudio.com/items?itemName=njpwerner.autodocstring)
     - You need to change the `docstringFormat` setting to NumPy (see below)
+  - Optional: I suggest to install [Mogami](https://marketplace.visualstudio.com/items?itemName=ninoseki.vscode-mogami) to keep your dependencies up to date
 
 ### VS Code Settings
 

@@ -10,6 +10,16 @@ vc = VerbalCue()
 
 
 def generate_mnemonic_img(word: str, lang_code: str):
+    """
+    Generate an image for a given word using the mnemonic pipeline.
+
+    Parameters
+    ----------
+    word : str
+        The word to generate an image for.
+    lang_code : str
+        The language code for the word.
+    """
     best_matches = generate_mnemonic(word, lang_code)
 
     # Get the top phonetic match

@@ -1,7 +1,8 @@
 from fluentai.constants.languages import G2P_LANGCODES
 from fluentai.mnemonic.imageability.imageability import ImageabilityPredictor
-from fluentai.mnemonic.orthographic.orthographic import \
-    compute_damerau_levenshtein_similarity
+from fluentai.mnemonic.orthographic.orthographic import (
+    compute_damerau_levenshtein_similarity,
+)
 from fluentai.mnemonic.phonetic.phonetic import top_phonetic
 from fluentai.mnemonic.semantic.semantic import SemanticSimilarity
 from fluentai.mnemonic.semantic.translator import translate_word
@@ -15,7 +16,8 @@ def generate_mnemonic(word: str, language_code):
     """
     Generate a mnemonic for the input word using the phonetic representation.
 
-    Parameters:
+    Parameters
+    ----------
     - word: String, foreign word to generate mnemonic for
     - language_code: String, language code of the input word
     """

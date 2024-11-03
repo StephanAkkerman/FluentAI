@@ -39,14 +39,17 @@ class SemanticSimilarity:
         """
         Computes the semantic similarity between two words using the FastText model.
 
-        Parameters:
+        Parameters
+        ----------
             word1 (str): The first word.
             word2 (str): The second word.
 
-        Returns:
+        Returns
+        -------
             float: Cosine similarity score between -1 and 1.
 
-        Raises:
+        Raises
+        ------
             ValueError: If either word is not in the FastText vocabulary.
         """
         if word1 not in self.model.key_to_index or word2 not in self.model.key_to_index:
@@ -59,7 +62,8 @@ def load_glove_model() -> gensim.models.keyedvectors.KeyedVectors:
     """
     Loads the GloVe model using gensim's downloader.
 
-    Returns:
+    Returns
+    -------
         gensim.models.keyedvectors.KeyedVectors: The loaded GloVe model.
     """
     global GLOVE_MODEL
@@ -74,7 +78,8 @@ def load_fasttext_model() -> gensim.models.keyedvectors.KeyedVectors:
     """
     Loads the FastText model using gensim's downloader.
 
-    Returns:
+    Returns
+    -------
         gensim.models.keyedvectors.KeyedVectors: The loaded FastText model.
     """
     global FASTTEXT_MODEL
@@ -88,7 +93,8 @@ def load_minilm_model() -> Tuple[SentenceTransformer, list, list]:
     """
     Loads the MiniLM SentenceTransformer model and precomputes embeddings for the word list.
 
-    Returns:
+    Returns
+    -------
         Tuple containing the SentenceTransformer model, list of words, and their embeddings.
     """
     global MINILM_MODEL, MINILM_EMBEDDINGS, MINILM_WORDS
@@ -125,7 +131,8 @@ def load_spacy_model():
     """
     Loads the spaCy model with vectors.
 
-    Returns:
+    Returns
+    -------
         spacy.lang.en.English: The loaded spaCy model.
     """
     global SPACY_MODEL
@@ -147,14 +154,17 @@ def compute_glove_similarity(word1: str, word2: str) -> float:
     """
     Computes the semantic similarity between two words using the GloVe model.
 
-    Parameters:
+    Parameters
+    ----------
         word1 (str): The first word.
         word2 (str): The second word.
 
-    Returns:
+    Returns
+    -------
         float: Cosine similarity score between -1 and 1.
 
-    Raises:
+    Raises
+    ------
         ValueError: If either word is not in the GloVe vocabulary.
     """
     model = load_glove_model()
@@ -170,14 +180,17 @@ def compute_fasttext_similarity(word1: str, word2: str) -> float:
     """
     Computes the semantic similarity between two words using the FastText model.
 
-    Parameters:
+    Parameters
+    ----------
         word1 (str): The first word.
         word2 (str): The second word.
 
-    Returns:
+    Returns
+    -------
         float: Cosine similarity score between -1 and 1.
 
-    Raises:
+    Raises
+    ------
         ValueError: If either word is not in the FastText vocabulary.
     """
     model = load_fasttext_model()
@@ -193,14 +206,17 @@ def compute_minilm_similarity(word1: str, word2: str) -> float:
     """
     Computes the semantic similarity between two words using the MiniLM model.
 
-    Parameters:
+    Parameters
+    ----------
         word1 (str): The first word.
         word2 (str): The second word.
 
-    Returns:
+    Returns
+    -------
         float: Cosine similarity score between 0 and 1.
 
-    Raises:
+    Raises
+    ------
         ValueError: If either word is not in the MiniLM word list.
     """
     model, word_list, embeddings = load_minilm_model()
@@ -223,14 +239,17 @@ def compute_spacy_similarity(word1: str, word2: str) -> float:
     """
     Computes the semantic similarity between two words using the spaCy model.
 
-    Parameters:
+    Parameters
+    ----------
         word1 (str): The first word.
         word2 (str): The second word.
 
-    Returns:
+    Returns
+    -------
         float: Similarity score between 0 and 1.
 
-    Raises:
+    Raises
+    ------
         ValueError: If either word does not have a vector representation in spaCy.
     """
     nlp = load_spacy_model()
@@ -252,7 +271,8 @@ def compute_similarity(word1: str, word2: str, method: str) -> float:
     """
     Computes the semantic similarity between two words using the specified method.
 
-    Parameters:
+    Parameters
+    ----------
         word1 (str): The first word.
         word2 (str): The second word.
         method (str): The similarity method to use. Options:
@@ -261,12 +281,14 @@ def compute_similarity(word1: str, word2: str, method: str) -> float:
             - 'minilm'
             - 'spacy'
 
-    Returns:
+    Returns
+    -------
         float: Similarity score. The scale depends on the method:
             - 'glove', 'fasttext', 'spacy': -1 to 1
             - 'minilm': 0 to 1
 
-    Raises:
+    Raises
+    ------
         ValueError: If an unsupported method is provided or words are not in the vocabulary.
     """
     method = method.lower()

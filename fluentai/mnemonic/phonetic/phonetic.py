@@ -6,8 +6,7 @@ from huggingface_hub import hf_hub_download
 from fluentai.constants.config import config
 from fluentai.mnemonic.phonetic.g2p import g2p
 from fluentai.mnemonic.phonetic.ipa2vec import panphon_vec, soundvec
-from fluentai.mnemonic.phonetic.utils import (convert_to_matrix, load_cache,
-                                              pad_vectors)
+from fluentai.mnemonic.phonetic.utils import convert_to_matrix, load_cache, pad_vectors
 from fluentai.utils.logger import logger
 
 
@@ -15,6 +14,21 @@ def word2ipa(
     word: str,
     language_code: str = "eng-us",
 ) -> str:
+    """
+    Get the IPA representation of a word.
+
+    Parameters
+    ----------
+    word : str
+        The word to convert to IPA
+    language_code : str, optional
+        The language code of the word, by default "eng-us"
+
+    Returns
+    -------
+    str
+        The IPA representation of the word
+    """
     # Try searching in the dataset
     if "eng-us" in language_code:
         # First try lookup in the .tsv file
@@ -41,10 +55,12 @@ def build_faiss_index(matrix):
     """
     Build a FAISS index for Inner Product similarity search.
 
-    Parameters:
+    Parameters
+    ----------
     - matrix: Normalized NumPy array
 
-    Returns:
+    Returns
+    -------
     - FAISS index
     """
     dimension = matrix.shape[1]
@@ -57,12 +73,14 @@ def vectorize_input(ipa_input, vectorizer, dimension):
     """
     Vectorize the input IPA string and pad to match dataset vector dimensions.
 
-    Parameters:
+    Parameters
+    ----------
     - ipa_input: String, IPA representation of the input word
     - vectorizer: Function to vectorize the IPA string
     - dimension: Integer, dimension of the dataset vectors
 
-    Returns:
+    Returns
+    -------
     - Padded and reshaped input vector as NumPy array
     """
     input_vector = np.hstack(vectorizer(ipa_input)).astype(np.float32)
@@ -86,7 +104,8 @@ def top_phonetic(
     """
     Main function to find top_n closest phonetically similar words to the input IPA.
 
-    Parameters:
+    Parameters
+    ----------
     - ipa_input: String, IPA representation of the input word
     - top_n: Integer, number of top similar words to retrieve
     - vectorizer: Function used for vectorizing IPA input

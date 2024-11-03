@@ -42,7 +42,22 @@ class VerbalCue:
             },
         ]
 
-    def generate_cue(self, word1: str, word2: str):
+    def generate_cue(self, word1: str, word2: str) -> str:
+        """
+        Generate a verbal cue that connects two words.
+
+        Parameters
+        ----------
+        word1 : str
+            The first word.
+        word2 : str
+            The second word.
+
+        Returns
+        -------
+        str
+            The generated verbal cue.
+        """
         final_message = {
             "role": "user",
             "content": f"Write a short, catchy sentence that connects {word1} and {word2}. Also, the sentence must start with 'Imagine'. ",

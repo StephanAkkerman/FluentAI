@@ -1,7 +1,6 @@
 from transformers import AutoTokenizer, T5ForConditionalGeneration
 
 from fluentai.constants.config import config
-from fluentai.utils.logger import logger
 
 # https://github.com/lingjzhu/CharsiuG2P
 model = T5ForConditionalGeneration.from_pretrained(
@@ -13,6 +12,19 @@ tokenizer = AutoTokenizer.from_pretrained(
 
 
 def g2p(words: list[str]) -> str:
+    """
+    Use the G2P model to convert a list of words to their phonetic transcription.
+
+    Parameters
+    ----------
+    words : list[str]
+        The list of words to convert to phonetic transcription.
+
+    Returns
+    -------
+    str
+        The phonetic transcription of the words.
+    """
     out = tokenizer(words, padding=True, add_special_tokens=False, return_tensors="pt")
 
     preds = model.generate(
@@ -26,6 +38,9 @@ def g2p(words: list[str]) -> str:
 
 
 def example():
+    """
+    Example usage of the G2P module. It prints the phonetic transcription of the words in Indonesian, English, and Dutch.
+    """
     # https://en.wiktionary.org/wiki/kucing#Indonesian
     # IPA(key): /ˈkut͡ʃɪŋ/
     indonesian_word = g2p(["<ind>: Kucing"])
