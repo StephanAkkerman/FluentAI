@@ -10,7 +10,10 @@ Usage:
 import base64
 import html
 import os
+
 import requests
+
+from fluentai.utils.logger import logger
 
 
 class AnkiConnect:
@@ -42,8 +45,10 @@ class AnkiConnect:
         try:
             return self.invoke("deckNames")
         except Exception:
-            print("Could not establish connection with Anki")
-            print("Please make sure Anki is running and AnkiConnect is installed")
+            logger.error("Could not establish connection with Anki")
+            logger.error(
+                "Please make sure Anki is running and AnkiConnect is installed"
+            )
 
     def store_media_file(self, src_file_path, word):
         """
@@ -159,9 +164,9 @@ def main():
             ipa_text,
             test_spelling,
         )
-        print(f"Note added successfully with ID: {note_id}")
+        logger.info(f"Note added successfully with ID: {note_id}")
     except Exception as e:
-        print(f"An error occurred: {e}")
+        logger.error(f"An error occurred: {e}")
 
 
 if __name__ == "__main__":
