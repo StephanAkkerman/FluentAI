@@ -25,7 +25,7 @@ def parse_requirements(filename):
 
 
 # Read dependencies from requirements.txt
-requirements = parse_requirements("requirements.txt")
+requirements = parse_requirements("requirements/requirements.txt")
 
 # Read the long description from README.md
 with open("README.md", "r", encoding="utf-8") as fh:
@@ -52,6 +52,6 @@ setup(
     },
     python_requires=">=3.10",
     extras_require={
-        "dev": parse_requirements("dev-requirements.txt"),
+        "dev": parse_requirements("requirements/dev-requirements.txt"),
     },
 )
