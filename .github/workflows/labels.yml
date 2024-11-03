@@ -1,0 +1,78 @@
+name: Copy GitHub Labels And Delete Old
+
+on:
+  workflow_dispatch:
+
+jobs:
+  copy-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Copy labels from another repository
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const sourceRepo = 'StephanAkkerman/fintwit-bot';
+            // Example: const sourceRepo = 'StephanAkkerman/fintwit-bot';
+            const targetOwner = context.repo.owner;
+            const targetRepo = context.repo.repo;
+
+            // Fetch labels from the source repository
+            const response = await github.rest.issues.listLabelsForRepo({
+              owner: sourceRepo.split('/')[0],
+              repo: sourceRepo.split('/')[1],
+            });
+            console.log("Labels fetched: ", response.data);  // Debug output
+
+            const labels = response.data;
+
+            if (labels.length === 0) {
+              console.log("No labels found in the source repository.");  // Debug output
+            }
+
+            // Fetch all labels from the target repository and delete them
+            const existingLabels = await github.rest.issues.listLabelsForRepo({
+              owner: targetOwner,
+              repo: targetRepo,
+            });
+
+            // Delete old labels
+            for (const label of existingLabels.data) {
+              await github.rest.issues.deleteLabel({
+                owner: targetOwner,
+                repo: targetRepo,
+                name: label.name,
+              });
+            }
+
+            // Loop through labels and create/update them in the target repository
+            for (const label of labels) {
+              try {
+                // Try to create the label
+                const createResponse = await github.rest.issues.createLabel({
+                  owner: targetOwner,
+                  repo: targetRepo,
+                  name: label.name,
+                  color: label.color,
+                  description: label.description || '',
+                });
+                console.log("Label created: ", createResponse.data);  // Debug output
+              } catch (error) {
+                console.log("Error creating label: ", error.message);  // Debug output
+                // If label exists (error 422), update it
+                if (error.status === 422) {
+                  const updateResponse = await github.rest.issues.updateLabel({
+                    owner: targetOwner,
+                    repo: targetRepo,
+                    current_name: label.name,
+                    name: label.name,
+                    color: label.color,
+                    description: label.description || '',
+                  });
+                  console.log("Label updated: ", updateResponse.data);  // Debug output
+                }
+              }
+            }
