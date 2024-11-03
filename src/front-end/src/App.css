@@ -1,0 +1,30 @@
+:root {
+  /* Colors */
+  --prime-color: 222, 93, 74; /* Pastel Orange */
+  --second-color:39 111 125; /* Cyan */
+  --third-color: 36, 64, 85; /* Dark Blue */
+  --text-color: 255, 255, 242; /* Off White */
+
+  /* Font variables */
+  --font-family: 'Roboto', sans-serif;
+  --font-size-base: 16px;
+  --font-size-large: 24px;
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
+  --line-height-base: 1.5;
+}
+
+.App {
+  text-align: center;
+}
+
+body {
+  font-family: var(--font-family);
+  color: var(--text-color);
+}
+
+*{
+  padding: 0;
+  margin: 0;
+}
+
