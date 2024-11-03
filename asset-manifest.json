@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/FluentAI/static/css/main.521a8463.css",
-    "main.js": "/FluentAI/static/js/main.996713d2.js",
-    "static/media/logo.png": "/FluentAI/static/media/logo.46f8e60b0dcd24003bba.png",
+    "main.js": "/FluentAI/static/js/main.95a86b26.js",
+    "static/media/logo.png": "/FluentAI/static/media/logo.ba053b28716bd8be0af7.png",
     "index.html": "/FluentAI/index.html",
     "main.521a8463.css.map": "/FluentAI/static/css/main.521a8463.css.map",
-    "main.996713d2.js.map": "/FluentAI/static/js/main.996713d2.js.map"
+    "main.95a86b26.js.map": "/FluentAI/static/js/main.95a86b26.js.map"
   },
   "entrypoints": [
     "static/css/main.521a8463.css",
-    "static/js/main.996713d2.js"
+    "static/js/main.95a86b26.js"
   ]
 }
