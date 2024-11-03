@@ -4,7 +4,7 @@ import { CSSProperties } from "react";
 const styles: { [key: string]: CSSProperties } = {
   appHeader: {
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
     alignItems: "center",
     borderRadius: "0 0 1rem 1rem",
     // background: "rgb(var(--text-color))", // Adjust the background color as needed
@@ -14,10 +14,12 @@ const styles: { [key: string]: CSSProperties } = {
     height: "80px",
   },
   wrapper: {
+    display: "flex",
+    justifyContent: "space-between",
+    flexDirection: "row",
     maxWidth: "1250px",
     minWidth: "450px",
-
-    margin: "20px",
+    width: "95%",
   },
   logoContainer: {
     display: "flex",
@@ -33,6 +35,13 @@ const styles: { [key: string]: CSSProperties } = {
     fontSize: "24px",
     fontWeight: "bold",
     color: "#333333", // Adjust the text color as needed
+  },
+  gearIconWrapper: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    width: "10%",
   },
   gearIcon: {
     fontSize: "24px",

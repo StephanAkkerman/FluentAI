@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-import './App.css';
+import "./App.css";
 
 // pages
-import Header from './pages/Header';
-import LoadingPage from './pages/LoadingPage';
-
-
+import Header from "./pages/Header";
+import LoadingPage from "./pages/LoadingPage";
 
 function App() {
-  const [openSettings, setOpenSettings] = useState(true)
-  const [initLoad, setInitLoad] = useState(true)
+  const [openSettings, setOpenSettings] = useState(true);
+  const [initLoad, setInitLoad] = useState(true);
 
   useEffect(() => {
     // Simulate loading (e.g., fetching data)
@@ -21,7 +19,6 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
-
   // Create a function to handle the gear click
   const handleGearClick = () => {
     setOpenSettings((prev) => !prev);
@@ -31,8 +28,6 @@ function App() {
     <div className="App">
       <Header onGearClick={handleGearClick} />
       {initLoad && <LoadingPage isLoading={initLoad} />}
-
-
     </div>
   );
 }
