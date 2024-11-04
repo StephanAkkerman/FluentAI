@@ -1,15 +1,19 @@
 from setuptools import find_packages, setup
 
 
-def parse_requirements(filename):
+def parse_requirements(filename: str) -> list[str]:
     """
     Parse a requirements file into a list of dependencies.
 
-    Args:
-        filename (str): Path to the requirements file.
+    Parameters
+    ----------
+    filename : str
+        The path to the requirements file.
 
-    Returns:
-        list: A list of dependency strings.
+    Returns
+    -------
+    list[str]
+        A list of dependencies.
     """
     with open(filename, encoding="utf-8") as file:
         lines = file.readlines()
