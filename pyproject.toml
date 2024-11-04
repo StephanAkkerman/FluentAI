@@ -9,6 +9,8 @@ profile = "black"
 src = ["."]
 line-length = 88
 # https://docs.astral.sh/ruff/rules/
+
+[tool.ruff.lint]
 select = [
     # "E",  # pycodestyle (E1xx)
     # "W",  # pycodestyle (W1xx)
