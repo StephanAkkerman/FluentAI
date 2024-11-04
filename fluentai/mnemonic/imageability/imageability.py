@@ -20,7 +20,6 @@ class ImageabilityPredictor:
             regression_model_path (str, optional): Path to the trained regression model (.joblib file).
                                                    Defaults to "models/best_model_LGBMRegressor.joblib".
         """
-
         # Load the embedding model
         self.embedding_model = fasttext_model
 
@@ -40,7 +39,8 @@ class ImageabilityPredictor:
         Args:
             word (str): The word to retrieve the embedding for.
 
-        Returns:
+        Returns
+        -------
             np.ndarray: Embedding vector for the word.
         """
         try:
@@ -57,7 +57,8 @@ class ImageabilityPredictor:
         Args:
             embedding (np.ndarray): Embedding vector of the word.
 
-        Returns:
+        Returns
+        -------
             float: Predicted imageability score.
         """
         # Reshape embedding for prediction (1 sample)
@@ -72,7 +73,8 @@ class ImageabilityPredictor:
         Args:
             word (str): The word to evaluate.
 
-        Returns:
+        Returns
+        -------
             float: Predicted imageability score.
         """
         embedding = self.get_embedding(word)
@@ -87,7 +89,8 @@ class ImageabilityPredictor:
             dataframe (pd.DataFrame): The DataFrame containing the column to evaluate.
             column_name (str): The name of the column to evaluate.
 
-        Returns:
+        Returns
+        -------
             pd.Series: Predicted imageability scores for the column.
         """
         embeddings = dataframe[column_name].apply(self.get_embedding)

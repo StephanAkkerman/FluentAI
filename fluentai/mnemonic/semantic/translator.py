@@ -9,14 +9,40 @@ from fluentai.utils.logger import logger
 translator = Translator()
 
 
-def is_latin_script(word: str):
+def is_latin_script(word: str) -> bool:
+    """
+    Checks if the given word is written in the Latin script.
+
+    Parameters
+    ----------
+    word : str
+        The word to check.
+
+    Returns
+    -------
+    bool
+        True if the word is written in the Latin script, False otherwise.
+    """
     for char in word:
         if "LATIN" not in unicodedata.name(char):
             return False
     return True
 
 
-def remove_diacritics(word):
+def remove_diacritics(word: str) -> str:
+    """
+    Removes diacritics from a word.
+
+    Parameters
+    ----------
+    word : str
+        The word to remove diacritics from.
+
+    Returns
+    -------
+    str
+        The word without diacritics.
+    """
     # Normalize the word to decomposed form (NFD)
     decomposed = unicodedata.normalize("NFD", word)
     # Filter out diacritic characters (those in the 'Mn' category)
@@ -30,10 +56,12 @@ def map_language_code(input_code):
     Args:
         input_code (str): The input language code (e.g., 'ind', 'zho-s').
 
-    Returns:
+    Returns
+    -------
         str: The mapped ISO 639-1 language code (e.g., 'id', 'zh-cn').
 
-    Raises:
+    Raises
+    ------
         ValueError: If the language code cannot be mapped.
     """
     # Handle special cases
@@ -80,7 +108,8 @@ def translate_word(word, src_lang_code, target_lang_code: str = "en"):
         src_lang_code (str): The source language code (ISO 639-1 or custom).
         target_lang_code (str): A target language codes (ISO 639-1 or custom).
 
-    Returns:
+    Returns
+    -------
         dict: A dictionary with target language codes as keys and translated words as values.
     """
     src = map_language_code(src_lang_code)
@@ -130,7 +159,8 @@ def translate_dataframe_column(
         translated_col (str, optional): The name of the new column for translations. Defaults to 'translated_word'.
         target_lang_code (str, optional): The target language code. Defaults to 'en'.
 
-    Returns:
+    Returns
+    -------
         pd.DataFrame: The DataFrame with an added translated column.
     """
     # Apply translation with progress bar

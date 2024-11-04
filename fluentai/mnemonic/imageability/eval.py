@@ -20,10 +20,10 @@ def load_data():
     """
     Load words, embeddings, and scores from a single file.
 
-    Returns:
+    Returns
+    -------
         tuple: (words, embeddings, scores)
     """
-
     df = pd.read_parquet(
         hf_hub_download(
             config.get("IMAGEABILITY").get("EMBEDDINGS_REPO"),
@@ -62,7 +62,8 @@ def preprocess_data(embeddings, scores):
         embeddings (np.ndarray): Array of embeddings.
         scores (np.ndarray): Array of scores.
 
-    Returns:
+    Returns
+    -------
         tuple: (X_train, X_test, y_train, y_test)
     """
     X_train, X_test, y_train, y_test = train_test_split(
@@ -86,7 +87,8 @@ def train_and_evaluate_models(X_train, X_test, y_train, y_test):
         y_test (np.ndarray): Testing labels.
         task (str, optional): 'classification' or 'regression'. Defaults to 'classification'.
 
-    Returns:
+    Returns
+    -------
         pd.DataFrame: DataFrame containing model performances.
     """
     models = [
@@ -136,8 +138,7 @@ def train_and_evaluate_models(X_train, X_test, y_train, y_test):
     return results_df, best_model
 
 
-def main():
-
+if __name__ == "__main__":
     # Load data
     embeddings, scores = load_data()
 
@@ -156,7 +157,3 @@ def main():
         os.makedirs("models", exist_ok=True)
         joblib.dump(best_model, filename)
         logger.info(f"\nBest model '{model_name}' saved to '{filename}'.")
-
-
-if __name__ == "__main__":
-    main()

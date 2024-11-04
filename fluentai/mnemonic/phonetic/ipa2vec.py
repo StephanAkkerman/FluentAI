@@ -21,10 +21,36 @@ ft = panphon.FeatureTable()
 
 
 def panphon_vec(ipa: str) -> list:
+    """
+    Use the panphon library to convert an IPA string to a list of feature vectors.
+
+    Parameters
+    ----------
+    ipa : str
+        The IPA string to convert to feature vectors.
+
+    Returns
+    -------
+    list
+        The list of feature vectors.
+    """
     return ft.word_to_vector_list(ipa, numeric=True)
 
 
 def soundvec(ipa: str) -> list:
+    """
+    Transform an IPA string to a list of sound vectors using the SoundVectors library.
+
+    Parameters
+    ----------
+    ipa : str
+        The IPA string to convert to sound vectors.
+
+    Returns
+    -------
+    list
+        The list of sound vectors.
+    """
     word_vector = []
     for letter in ipa:
         try:

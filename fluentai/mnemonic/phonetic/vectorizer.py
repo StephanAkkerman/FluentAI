@@ -19,7 +19,8 @@ def vectorize_word_clts(word, sv):
         word (str): The IPA transcription of the word.
         sv (SoundVectors): Initialized SoundVectors object.
 
-    Returns:
+    Returns
+    -------
         list: Concatenated list of vectors for the word.
     """
     word_vector = []
@@ -45,7 +46,8 @@ def vectorize_word_panphon(word, ft):
         word (str): The IPA transcription of the word.
         ft (panphon.FeatureTable): Initialized FeatureTable object.
 
-    Returns:
+    Returns
+    -------
         list: List of Panphon feature vectors for the word.
     """
     return ft.word_to_vector_list(word, numeric=True)
@@ -68,7 +70,8 @@ def vectorize_in_parallel(
         max_workers (int): Number of worker threads.
         description (str): Description for the progress bar.
 
-    Returns:
+    Returns
+    -------
         list: List of vectorized representations.
     """
     vectors = [None] * len(token_ipa_list)
@@ -102,7 +105,8 @@ def pad_vector(vector, max_length, padding_value=0):
         max_length (int): The desired maximum length.
         padding_value (int or float): The value to use for padding.
 
-    Returns:
+    Returns
+    -------
         list: Padded vector.
     """
     if not vector:

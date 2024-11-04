@@ -19,7 +19,23 @@ def word2ipa(
     ipa_dataset: pd.DataFrame,
     use_fallback: bool = True,
 ) -> str:
+    """
+    Convert a word to its IPA transcription using the dataset and fallback to the g2p model if necessary.
 
+    Parameters
+    ----------
+    word : str
+        The word to convert to IPA.
+    ipa_dataset : pd.DataFrame
+        The dataset to use for the conversion.
+    use_fallback : bool, optional
+        If the G2P model should be used, by default True
+
+    Returns
+    -------
+    str
+        The IPA transcription of the word.
+    """
     if not ipa_dataset.empty:
         # Check if the word is in the dataset
         ipa = ipa_dataset[ipa_dataset["token_ort"] == word]["token_ipa"]
@@ -39,19 +55,22 @@ def compute_phonetic_similarity(
     word1: str, word2: str, ipa_dataset: pd.DataFrame, method: str = "panphon"
 ) -> float:
     """
-    Computes the phonetic similarity between two words using the specified method.
+    Compute the phonetic similarity between two words using the specified method.
 
-    Parameters:
+    Parameters
+    ----------
         word1 (str): The first word.
         word2 (str): The second word.
         method (str): The similarity method to use. Options:
             - 'panphon'
             - 'clts' (if implemented)
 
-    Returns:
+    Returns
+    -------
         float: Phonetic similarity score between 0 and 1.
 
-    Raises:
+    Raises
+    ------
         ValueError: If an unsupported method is provided or words cannot be vectorized.
     """
     method = method.lower()
@@ -111,13 +130,15 @@ def compute_phonetic_similarity(
 
 def evaluate_phonetic_similarity(methods: list):
     """
-    Evaluates multiple phonetic similarity models on a given dataset and reports performance metrics.
+    Evaluate multiple phonetic similarity models on a given dataset and reports performance metrics.
 
-    Parameters:
+    Parameters
+    ----------
         dataset_csv (str): Path to the phonetic similarity dataset CSV file.
         methods (list): List of phonetic similarity methods to evaluate (e.g., ['panphon', 'clts']).
 
-    Returns:
+    Returns
+    -------
         None
     """
     # Load the dataset
@@ -228,15 +249,8 @@ def evaluate_phonetic_similarity(methods: list):
     )
 
 
-def main():
-    """
-    Main function to evaluate phonetic similarity methods on a dataset.
-    """
+if __name__ == "__main__":
     methods = ["panphon", "clts"]
 
     # Call the evaluation function
     evaluate_phonetic_similarity(methods)
-
-
-if __name__ == "__main__":
-    main()

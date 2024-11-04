@@ -8,7 +8,6 @@ import pandas as pd
 from git import GitCommandError, RemoteProgress, Repo
 from tqdm import tqdm
 
-from fluentai.mnemonic.phonetic.ipa2vec import panphon_vec
 from fluentai.utils.logger import logger
 
 
@@ -19,7 +18,8 @@ def check_directory_exists(directory_path):
     Args:
         directory_path (str or Path): The path to the directory.
 
-    Returns:
+    Returns
+    -------
         bool: True if the directory exists, False otherwise.
     """
     return Path(directory_path).is_dir()
@@ -49,12 +49,18 @@ class CloneProgress(RemoteProgress):
         self.pbar = tqdm()
 
     def update(self, op_code, cur_count, max_count=None, message=""):
+        """
+        Update the progress bar with the current operation and counts.
+        """
         self.pbar.total = max_count
         self.pbar.n = cur_count
         self.pbar.refresh()
 
 
 def get_clts():
+    """
+    Downloads the Concepticon and CLTS repositories to the /data directory.
+    """
     # Configuration
     data_directory = Path("data")  # Change this to your desired data directory
     repo_url = (
@@ -88,10 +94,12 @@ def pad_vectors(vectors):
     """
     Pad all vectors to the maximum length with zeros.
 
-    Parameters:
+    Parameters
+    ----------
     - vectors: List of NumPy arrays
 
-    Returns:
+    Returns
+    -------
     - List of padded NumPy arrays
     """
     max_len = max(vec.shape[0] for vec in vectors)
@@ -105,54 +113,29 @@ def convert_to_matrix(padded_vectors):
     """
     Convert list of padded vectors to a NumPy matrix.
 
-    Parameters:
+    Parameters
+    ----------
     - padded_vectors: List of NumPy arrays
 
-    Returns:
+    Returns
+    -------
     - NumPy array matrix
     """
     dataset_matrix = np.array(padded_vectors, dtype=np.float32)
     return dataset_matrix
 
 
-def load_dataset(vectorizer, vector_column="vectors", max_rows=None):
-    """
-    Load the dataset based on the vectorizer.
-
-    Parameters:
-    - vectorizer: Function used for vectorizing (panphon_vec or soundvec)
-    - vector_column: String, name of the column containing vectors
-    - max_rows: Integer or None, number of top rows to load
-
-    Returns:
-    - DataFrame containing the dataset
-    """
-    vector_file = (
-        "data/eng_latn_us_broad_vectors_panphon.csv"
-        if vectorizer == panphon_vec
-        else "data/eng_latn_us_broad_vectors.csv"
-    )
-    try:
-        df = pd.read_csv(vector_file, nrows=max_rows)
-        logger.info(f"Dataset loaded from '{vector_file}' with {len(df)} rows.")
-    except FileNotFoundError:
-        logger.error(f"Vector file '{vector_file}' not found.")
-        raise
-    except Exception as e:
-        logger.error(f"Error loading dataset: {e}")
-        raise
-    return df
-
-
 def parse_vectors(dataset, vector_column="vectors"):
     """
     Parse the 'vectors' column from strings to actual lists using ast.literal_eval.
 
-    Parameters:
+    Parameters
+    ----------
     - dataset: DataFrame with 'vectors' column as strings
     - vector_column: String, name of the column containing vectors
 
-    Returns:
+    Returns
+    -------
     - DataFrame with 'vectors' column as lists
     """
     try:
@@ -168,10 +151,12 @@ def load_cache(method: str = "panphon", dataset: str = "eng_latn_us_broad"):
     """
     Load the processed dataset from a cache file.
 
-    Parameters:
+    Parameters
+    ----------
     - cache_file: String, path to the cache file
 
-    Returns:
+    Returns
+    -------
     - DataFrame containing the cached dataset
     """
     if method == "clts":
@@ -192,10 +177,12 @@ def flatten_vector(vec):
     """
     Flatten a nested list of vectors into a single 1D NumPy array.
 
-    Parameters:
+    Parameters
+    ----------
     - vec: List of lists or NumPy arrays
 
-    Returns:
+    Returns
+    -------
     - 1D NumPy array
     """
     if not vec:
@@ -213,11 +200,13 @@ def flatten_vectors(dataset, vector_column="vectors"):
     """
     Flatten each vector in the 'vectors' column using np.hstack, handling empty vectors.
 
-    Parameters:
+    Parameters
+    ----------
     - dataset: DataFrame with 'vectors' column as lists of lists
     - vector_column: String, name of the column containing vectors
 
-    Returns:
+    Returns
+    -------
     - DataFrame with an additional 'flattened_vectors' column
     """
     dataset["flattened_vectors"] = dataset[vector_column].apply(flatten_vector)

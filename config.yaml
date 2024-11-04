@@ -8,7 +8,11 @@ LLM:
   MODEL: "microsoft/Phi-3-mini-4k-instruct"
   TOKENIZER: "microsoft/Phi-3-mini-4k-instruct"
 IMAGE_GEN:
-  MODEL: "black-forest-labs/FLUX.1-schnell"
+  MODEL: stabilityai/sdxl-turbo
+  PARAMS:
+    num_inference_steps: 40
+    height: 512
+    width: 512
 
 # Datasets
 SEMANTIC_SIM:

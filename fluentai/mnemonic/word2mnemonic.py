@@ -16,7 +16,8 @@ def generate_mnemonic(word: str, language_code):
     """
     Generate a mnemonic for the input word using the phonetic representation.
 
-    Parameters:
+    Parameters
+    ----------
     - word: String, foreign word to generate mnemonic for
     - language_code: String, language code of the input word
     """
@@ -53,11 +54,10 @@ def generate_mnemonic(word: str, language_code):
         axis=1,
     )
 
-    # Calculate the mnemonic score
-    logger.info(top)
+    return top
 
 
 if __name__ == "__main__":
     # generate_mnemonic("kucing", "ind")
 
-    generate_mnemonic("猫", "zho-s")
+    print(generate_mnemonic("猫", "zho-s"))

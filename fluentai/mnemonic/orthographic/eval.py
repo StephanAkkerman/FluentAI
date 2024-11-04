@@ -12,10 +12,12 @@ def scale_ratings(ratings: pd.Series) -> pd.Series:
     """
     Scales the ratings to a 0-100 range using MinMaxScaler.
 
-    Parameters:
+    Parameters
+    ----------
     - ratings (pd.Series): Original ratings.
 
-    Returns:
+    Returns
+    -------
     - pd.Series: Scaled ratings.
     """
     scaler = MinMaxScaler(feature_range=(0, 100))
@@ -28,11 +30,13 @@ def compute_all_similarities(df: pd.DataFrame, methods: list) -> pd.DataFrame:
     """
     Computes similarity scores for all methods and adds them as new columns.
 
-    Parameters:
+    Parameters
+    ----------
     - df (pd.DataFrame): DataFrame containing word pairs.
     - methods (list): List of similarity methods to compute.
 
-    Returns:
+    Returns
+    -------
     - pd.DataFrame: DataFrame with new similarity score columns.
     """
     for method in methods:
@@ -52,12 +56,14 @@ def evaluate_methods(
     """
     Evaluates each similarity method by computing Pearson and Spearman correlations.
 
-    Parameters:
+    Parameters
+    ----------
     - df (pd.DataFrame): DataFrame containing similarity scores.
     - scaled_ratings (pd.Series): Scaled human ratings.
     - methods (list): List of similarity methods evaluated.
 
-    Returns:
+    Returns
+    -------
     - pd.DataFrame: DataFrame containing correlation results.
     """
     results = []
@@ -81,12 +87,15 @@ def evaluate_methods(
 def determine_best_method(evaluation_df: pd.DataFrame) -> str:
     """
     Determines the best similarity method based on the highest Pearson correlation.
+
     In case of a tie, uses Spearman correlation as a secondary criterion.
 
-    Parameters:
+    Parameters
+    ----------
     - evaluation_df (pd.DataFrame): DataFrame containing correlation results.
 
-    Returns:
+    Returns
+    -------
     - str: The name of the best similarity method.
     """
     # Sort methods by Pearson Correlation descending
@@ -99,7 +108,7 @@ def determine_best_method(evaluation_df: pd.DataFrame) -> str:
     return best_method
 
 
-def main():
+if __name__ == "__main__":
     # Load the dataset
     df = load_dataset(
         config.get("ORTHOGRAPHIC_SIM").get("EVAL"),
@@ -157,7 +166,3 @@ def main():
     logger.info(
         f"Spearman Correlation: {best_metrics['Spearman Correlation']:.4f} (p-value: {best_metrics['Spearman p-value']:.2e})"
     )
-
-
-if __name__ == "__main__":
-    main()

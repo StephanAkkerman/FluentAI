@@ -58,6 +58,14 @@ def extract_gz(gz_path, extracted_path):
 
 
 def download_fasttext(file_name: str = "cc.en.300.bin.gz"):
+    """
+    Download the specified FastText embedding model from the official website.
+
+    Parameters
+    ----------
+    file_name : str, optional
+        The name of the file to download, by default "cc.en.300.bin.gz"
+    """
     # URL of the .gz file
     url = f"https://dl.fbaipublicfiles.com/fasttext/vectors-crawl/{file_name}"
 
@@ -162,7 +170,7 @@ def loading_indicator_with_estimated_time(desc="Loading...", estimated_time=50):
 
 
 @loading_indicator_with_estimated_time(desc="Loading FastText Model", estimated_time=50)
-def get_fasttext_from_keyedvectors(embedding_model_path="models/cc.en.300.model"):
+def _get_fasttext_from_keyedvectors(embedding_model_path="models/cc.en.300.model"):
     return FastTextKeyedVectors.load(embedding_model_path)
 
 
@@ -171,6 +179,7 @@ def get_fasttext_model(
 ):
     """
     Download the specified embedding model and save it locally.
+
     Another option is: "wiki-news-300d-1M-subword.bin" and "models/wiki-news-300d-1M-subword.model"
 
     Args:
@@ -179,7 +188,7 @@ def get_fasttext_model(
     """
     # Check if the model already exists
     if os.path.exists(embedding_model_path):
-        return get_fasttext_from_keyedvectors(embedding_model_path)
+        return _get_fasttext_from_keyedvectors(embedding_model_path)
 
     # Check if the .bin file already exists
     if not os.path.exists(f"data/fasttext_embeddings/{model_name}"):

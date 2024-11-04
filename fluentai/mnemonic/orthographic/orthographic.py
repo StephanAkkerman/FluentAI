@@ -1,12 +1,14 @@
 def compute_difflib_similarity(word1: str, word2: str) -> float:
     """
-    Computes the orthographic similarity between two words using difflib's SequenceMatcher.
+    Compute the orthographic similarity between two words using difflib's SequenceMatcher.
 
-    Parameters:
+    Parameters
+    ----------
     - word1 (str): The first word.
     - word2 (str): The second word.
 
-    Returns:
+    Returns
+    -------
     - float: Similarity ratio between 0 and 1.
     """
     import difflib
@@ -17,13 +19,15 @@ def compute_difflib_similarity(word1: str, word2: str) -> float:
 
 def compute_rapidfuzz_ratio(word1: str, word2: str) -> float:
     """
-    Computes the orthographic similarity between two words using rapidfuzz's fuzz.ratio.
+    Compute the orthographic similarity between two words using rapidfuzz's fuzz.ratio.
 
-    Parameters:
+    Parameters
+    ----------
     - word1 (str): The first word.
     - word2 (str): The second word.
 
-    Returns:
+    Returns
+    -------
     - float: Similarity score between 0 and 1.
     """
     from rapidfuzz import fuzz
@@ -34,13 +38,15 @@ def compute_rapidfuzz_ratio(word1: str, word2: str) -> float:
 
 def compute_rapidfuzz_partial_ratio(word1: str, word2: str) -> float:
     """
-    Computes the orthographic similarity between two words using rapidfuzz's fuzz.partial_ratio.
+    Compute the orthographic similarity between two words using rapidfuzz's fuzz.partial_ratio.
 
-    Parameters:
+    Parameters
+    ----------
     - word1 (str): The first word.
     - word2 (str): The second word.
 
-    Returns:
+    Returns
+    -------
     - float: Similarity score between 0 and 1.
     """
     from rapidfuzz import fuzz
@@ -51,13 +57,15 @@ def compute_rapidfuzz_partial_ratio(word1: str, word2: str) -> float:
 
 def compute_damerau_levenshtein_similarity(word1: str, word2: str) -> float:
     """
-    Computes the Damerau-Levenshtein similarity between two words.
+    Compute the Damerau-Levenshtein similarity between two words.
 
-    Parameters:
+    Parameters
+    ----------
     - word1 (str): The first word.
     - word2 (str): The second word.
 
-    Returns:
+    Returns
+    -------
     - float: Similarity score between 0 and 1.
     """
     from rapidfuzz import distance
@@ -72,13 +80,15 @@ def compute_damerau_levenshtein_similarity(word1: str, word2: str) -> float:
 
 def compute_levenshtein_similarity(word1: str, word2: str) -> float:
     """
-    Computes the Levenshtein similarity between two words.
+    Compute the Levenshtein similarity between two words.
 
-    Parameters:
+    Parameters
+    ----------
     - word1 (str): The first word.
     - word2 (str): The second word.
 
-    Returns:
+    Returns
+    -------
     - float: Similarity score between 0 and 1.
     """
     import Levenshtein
@@ -93,9 +103,10 @@ def compute_levenshtein_similarity(word1: str, word2: str) -> float:
 
 def compute_similarity(word1: str, word2: str, method: str) -> float:
     """
-    Computes the orthographic similarity between two words using the specified method.
+    Compute the orthographic similarity between two words using the specified method.
 
-    Parameters:
+    Parameters
+    ----------
     - word1 (str): The first word.
     - word2 (str): The second word.
     - method (str): The similarity method to use. Options:
@@ -105,12 +116,14 @@ def compute_similarity(word1: str, word2: str, method: str) -> float:
         - 'damerau_levenshtein'
         - 'levenshtein'
 
-    Returns:
+    Returns
+    -------
     - float: Similarity score. The scale depends on the method:
         - 'difflib': 0 to 1
         - Others: 0 to 100
 
-    Raises:
+    Raises
+    ------
     - ValueError: If an unsupported method is provided.
     """
     method = method.lower()
@@ -133,6 +146,9 @@ def compute_similarity(word1: str, word2: str, method: str) -> float:
 
 
 def example():
+    """
+    Example usage of the orthographic similarity module. It prints the similarity between two words using different methods.
+    """
     examples = [
         ("abandon", "abandonar", "difflib"),
         ("abandon", "abandonar", "rapidfuzz_ratio"),
