@@ -2,7 +2,7 @@ import React from "react";
 import styles from "../styles/LoadingPageStyles";
 
 // Import the logo image
-import logo from "../icons/logo.png";
+import logo from "../icons/Logo (with stroke).png";
 
 const LoadingPage: React.FC<{ isLoading: boolean }> = ({ isLoading }) => {
   const wrapperClass = isLoading

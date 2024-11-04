@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 
 import "./App.css";
 
 // pages
 import Header from "./pages/Header";
 import LoadingPage from "./pages/LoadingPage";
+import CardCreation from "./pages/CardCreation";
 
 function App() {
   const [openSettings, setOpenSettings] = useState(true);
@@ -25,10 +28,17 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <Header onGearClick={handleGearClick} />
-      {initLoad && <LoadingPage isLoading={initLoad} />}
-    </div>
+    <Router>
+      <div className="App">
+        <Header onGearClick={handleGearClick} />
+        {initLoad && <LoadingPage isLoading={initLoad} />}
+        <Routes>
+          <Route path="/" element={<CardCreation />} />
+          {/* Add more routes as needed */}
+        </Routes>
+      </div>
+    </Router>
+
   );
 }
 
