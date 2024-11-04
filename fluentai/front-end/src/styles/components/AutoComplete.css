@@ -1,0 +1,77 @@
+.autocomplete-input .selector {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.autocomplete-input {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.autocomplete-input .title {
+  margin-left: 5px;
+  color: rgb(var(--text-color));
+}
+
+input {
+  width: 200px;
+  padding: 5px;
+}
+
+.autocomplete-input button {
+  position: absolute;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  right: 0;
+  border-radius: 3rem;
+}
+
+.autocomplete-input button:hover {
+  background-color: transparent;
+}
+
+.suggestions {
+  border: 1px solid #ccc;
+  border-top-width: 0;
+  position: absolute;
+  list-style-type: none;
+  margin: 0;
+  z-index: 2;
+  max-height: 200px;
+  overflow-y: scroll; /* Keep scrolling enabled */
+  overflow-x: hidden;
+  padding: 0;
+  width: calc(100% - 2px);
+  top: 80%;
+  left: 0;
+  border-radius: 0 0 2rem 2rem;
+  transition: all 0.3s ease-in-out;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.suggestions::-webkit-scrollbar {
+  display: none;
+}
+
+.suggestions li {
+  background-color: #fff;
+  padding: 10px;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: rgb(var(--second-color));
+}
+
+.suggestions li:hover {
+  background-color: #ddd;
+}
+
+.no-suggestions {
+  color: #999;
+  padding: 10px;
+}

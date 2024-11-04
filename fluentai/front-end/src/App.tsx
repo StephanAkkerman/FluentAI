@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-
 import "./App.css";
 
 // pages
@@ -28,7 +27,8 @@ function App() {
   };
 
   return (
-    <Router>
+    <Router basename="/FluentAI">
+      {/* basename should be changed to / when we have own domain */}
       <div className="App">
         <Header onGearClick={handleGearClick} />
         {initLoad && <LoadingPage isLoading={initLoad} />}
@@ -38,7 +38,6 @@ function App() {
         </Routes>
       </div>
     </Router>
-
   );
 }
 

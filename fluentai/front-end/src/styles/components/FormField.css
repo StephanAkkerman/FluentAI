@@ -1,0 +1,100 @@
+.form-field,
+.form-field-optional {
+  position: relative;
+  height: 70px;
+  width: 285px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.form-field-optional {
+  height: 38px;
+}
+
+.form-field input,
+.form-field-optional input {
+  padding: 10px;
+  width: 100%;
+  border: 1px solid rgba(var(--second-color));
+  border-radius: 1rem;
+  background-color: white;
+  color: rgb(var(--second-color));
+}
+.form-field label,
+.form-field-optional label {
+  position: absolute;
+  top: 13%;
+  text-align: left;
+  transition: 0.3s;
+  pointer-events: none;
+  width: 100%;
+  color: rgb(var(--second-color));
+}
+.form-field-optional label {
+  left: -25%;
+  top: 23%;
+}
+
+.form-field input:focus + label,
+.form-field input.has-value + label,
+.form-field-optional input:focus + label,
+.form-field-optional input.has-value + label {
+  transform: translateY(-28px);
+  font-size: 0.8em;
+  color: rgba(var(--text-color));
+}
+.form-field input:focus,
+.form-field-optional input:focus {
+  outline: none !important;
+  border: 1px solid rgba(var(--third-color));
+  box-shadow: inset 0 0 2px rgba(var(--third-color)),
+    0 0 2px rgba(var(--second-color));
+}
+.form-field .form-error {
+  color: red;
+  opacity: 0;
+  height: 50px;
+  width: 100%;
+  pointer-events: none;
+  font-weight: bold;
+  font-size: 16px;
+  margin: 0 0 0 15px;
+  transition: all 0.3s ease-in-out;
+  text-align: left;
+}
+
+.form-field .form-error-show {
+  color: red;
+  opacity: 1;
+  height: 50px;
+  width: 100%;
+  pointer-events: none;
+  font-weight: bold;
+  font-size: 16px;
+  margin: 5px 0 0 15px;
+  transition: all 0.3s ease-in-out;
+  text-align: left;
+}
+
+.form-field .eye-show,
+.form-field .eye-hide {
+  stroke: rgb(var(--second-color));
+  fill: transparent;
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 0;
+  right: 5%;
+  cursor: pointer;
+  transition: fill 0.3s ease-in-out;
+}
+
+.form-field .eye-hide {
+  fill: rgb(var(--primary-color));
+}
+
+.user-settings .email {
+  margin-top: 20px;
+}
