@@ -6,6 +6,7 @@ line_length = 88
 profile = "black"
 
 [tool.ruff]
+src = ["."]
 line-length = 88
 # https://docs.astral.sh/ruff/rules/
 select = [
