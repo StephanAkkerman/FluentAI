@@ -33,4 +33,4 @@ def generate_mnemonic_img(word: str, lang_code: str):
 
 
 if __name__ == "__main__":
-    pass
+    generate_mnemonic_img("猫", "zho-s")

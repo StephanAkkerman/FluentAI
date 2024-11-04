@@ -8,7 +8,6 @@ import pandas as pd
 from git import GitCommandError, RemoteProgress, Repo
 from tqdm import tqdm
 
-from fluentai.mnemonic.phonetic.ipa2vec import panphon_vec
 from fluentai.utils.logger import logger
 
 
@@ -124,37 +123,6 @@ def convert_to_matrix(padded_vectors):
     """
     dataset_matrix = np.array(padded_vectors, dtype=np.float32)
     return dataset_matrix
-
-
-def load_dataset(vectorizer, vector_column="vectors", max_rows=None):
-    """
-    Load the dataset based on the vectorizer.
-
-    Parameters
-    ----------
-    - vectorizer: Function used for vectorizing (panphon_vec or soundvec)
-    - vector_column: String, name of the column containing vectors
-    - max_rows: Integer or None, number of top rows to load
-
-    Returns
-    -------
-    - DataFrame containing the dataset
-    """
-    vector_file = (
-        "data/eng_latn_us_broad_vectors_panphon.csv"
-        if vectorizer == panphon_vec
-        else "data/eng_latn_us_broad_vectors.csv"
-    )
-    try:
-        df = pd.read_csv(vector_file, nrows=max_rows)
-        logger.info(f"Dataset loaded from '{vector_file}' with {len(df)} rows.")
-    except FileNotFoundError:
-        logger.error(f"Vector file '{vector_file}' not found.")
-        raise
-    except Exception as e:
-        logger.error(f"Error loading dataset: {e}")
-        raise
-    return df
 
 
 def parse_vectors(dataset, vector_column="vectors"):

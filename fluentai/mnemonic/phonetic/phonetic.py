@@ -32,6 +32,7 @@ def word2ipa(
     # Try searching in the dataset
     if "eng-us" in language_code:
         # First try lookup in the .tsv file
+        logger.debug("Loading the IPA dataset")
         eng_ipa = pd.read_csv(
             hf_hub_download(
                 repo_id=config.get("PHONETIC_SIM").get("IPA_REPO"),

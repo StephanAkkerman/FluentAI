@@ -1,6 +1,7 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
 from fluentai.constants.config import config
+from fluentai.utils.logger import logger
 
 
 class VerbalCue:
@@ -63,7 +64,9 @@ class VerbalCue:
             "content": f"Write a short, catchy sentence that connects {word1} and {word2}. Also, the sentence must start with 'Imagine'. ",
         }
         output = self.pipe(self.messages + [final_message], **self.generation_args)
-        return output[0]["generated_text"]
+        response = output[0]["generated_text"]
+        logger.debug(f"Generated cue: {response}")
+        return response
 
 
 if __name__ == "__main__":
