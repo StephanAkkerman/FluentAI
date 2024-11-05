@@ -19,7 +19,7 @@ const styles: { [key: string]: CSSProperties } = {
     flexDirection: "row",
     maxWidth: "1250px",
     minWidth: "450px",
-    width: "95%",
+    width: "90%",
   },
   logoContainer: {
     display: "flex",

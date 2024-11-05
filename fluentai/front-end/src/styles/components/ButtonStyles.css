@@ -1,0 +1,35 @@
+.button, .button-cancel{
+    background-color: rgb(var(--primary-color));
+    border: none;
+    color: rgb(var(--text-color));
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 10px;
+    border-radius: 1rem;
+    border: 1px solid rgb(0, 0, 0);
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out,
+                transform 0.1s ease-in-out,
+                box-shadow 0.1s ease-in-out;
+    transform: translate(0px, 0px);
+    box-shadow: -3.5px 3.5px 1px rgba(0,0,0,0.75);
+    max-width: 150px;
+}
+
+.button:hover, .button-cancel:hover{
+    background-color: rgb(var(--third-color));
+    cursor: pointer;
+}
+
+.button:active, .button-cancel:active{
+    transform: translate(-2px, 2px);
+    background-color: rgba(var(--third-color),0.3);
+    box-shadow: none;
+}
+
+.button-cancel{
+    background-color: rgb(99, 28, 28);
+}

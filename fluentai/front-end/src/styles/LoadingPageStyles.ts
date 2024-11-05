@@ -6,7 +6,7 @@ const styles: { [key: string]: CSSProperties } = {
     zIndex: 1000,
     display: "flex",
     flexDirection: "column",
-    backgroundColor: "rgb(var(--second-color))",
+    backgroundColor: "rgb(var(--third-color))",
     top: 0,
     left: 0,
     width: "100%",
@@ -22,7 +22,7 @@ const styles: { [key: string]: CSSProperties } = {
     animation: "pulse 1.5s infinite",
   },
   loadingText: {
-    marginTop: "10px",
+    marginTop: "10%",
     background:
       "50% 100% / 50% 50% no-repeat radial-gradient(ellipse at bottom, rgb(var(--primary-color)), transparent, transparent)",
     WebkitBackgroundClip: "text",
