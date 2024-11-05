@@ -8,48 +8,65 @@ import AutocompleteInput from "../components/autocomplete";
 import FormField from "../components/formfield";
 import Card from "../components/card";
 
+import logo from "../icons/Logo (with stroke).png";
+
+
 type CardCreationProps = {};
 
 const CardCreation: React.FC<CardCreationProps> = () => {
-  const handleSubmit = () => {};
-  const handleLanguageSelect = () => {};
-  const languages = ["Dutch", "English", "French", "Spanish"];
-  const [inputWord, setinputWord] = useState("");
-  return (
-    <>
-      <div className={styles.cardCreation}>
-        <div className={styles.wrapper}>
-          <div className={styles.formWrapper}>
-            <h1 className={styles.title}>Card Creation</h1>
-            <div className={styles.form}>
-              <AutocompleteInput
-                onSelect={handleLanguageSelect}
-                suggestions={languages}
-                title={"Select the language you want to learn!"}
-              />
-              <FormField
-                value={inputWord}
-                label={"Type word here"}
-                id={"inputWord"}
-                required={true}
-                onChange={setinputWord}
-                limit={50}
-              />
-            </div>
-            <div className={styles.actions}>
-              <Button
-                text="Cancel"
-                onClick={handleSubmit}
-                style={{ cancel: true }}
-              />
-              <Button text="Submit" onClick={handleSubmit} />
-            </div>
-          </div>
-          <Card />
+    const handleSubmit = () => { };
+    const handleLanguageSelect = () => { };
+    const languages = ["Dutch", "English", "French", "Spanish"];
+    const [inputWord, setinputWord] = useState("");
+
+    const FrontCardContent: React.FC = () => (
+        <div>
+            <h1>FluentAI</h1>
         </div>
-      </div>
-    </>
-  );
+    );
+
+    const BackCardContent: React.FC = () => (
+        <div>
+            <img src={logo} alt="FluentAI Logo" />
+        </div>
+    )
+
+
+    return (
+        <>
+            <div className={styles.cardCreation}>
+                <div className={styles.wrapper}>
+                    <div className={styles.formWrapper}>
+                        <h1 className={styles.title}>Card Creation</h1>
+                        <div className={styles.form}>
+                            <AutocompleteInput
+                                onSelect={handleLanguageSelect}
+                                suggestions={languages}
+                                title={"Select the language you want to learn!"}
+                            />
+                            <FormField
+                                value={inputWord}
+                                label={"Type word here"}
+                                id={"inputWord"}
+                                required={true}
+                                onChange={setinputWord}
+                                limit={50}
+                            />
+                        </div>
+                        <div className={styles.actions}>
+                            <Button
+                                text="Cancel"
+                                onClick={handleSubmit}
+                                style={{ cancel: true }}
+                            />
+                            <Button text="Submit" onClick={handleSubmit} />
+                        </div>
+                    </div>
+                    <Card front={<FrontCardContent />} back={<BackCardContent />} />
+                </div>
+            </div>
+        </>
+    );
 };
 
 export default CardCreation;
