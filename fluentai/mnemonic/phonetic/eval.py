@@ -8,10 +8,11 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import MinMaxScaler
 from tqdm import tqdm
 
-from datasets import load_dataset
 from fluentai.constants.config import config
 from fluentai.mnemonic.phonetic.ipa2vec import panphon_vec, soundvec
 from fluentai.utils.logger import logger
+
+from datasets import load_dataset
 
 
 def word2ipa(

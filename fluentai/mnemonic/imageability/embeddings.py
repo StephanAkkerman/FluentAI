@@ -6,9 +6,10 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-from datasets import load_dataset
 from fluentai.constants.config import config
 from fluentai.utils.logger import logger
+
+from datasets import load_dataset
 
 # Global variable to hold the embedding model in each worker process
 EMBEDDING_MODEL = None

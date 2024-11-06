@@ -2,9 +2,10 @@ import pandas as pd
 from scipy.stats import pearsonr, spearmanr
 from semantic import compute_similarity
 
-from datasets import load_dataset
 from fluentai.constants.config import config
 from fluentai.utils.logger import logger
+
+from datasets import load_dataset
 
 
 def evaluate_models():

@@ -3,9 +3,10 @@ from orthographic import compute_similarity
 from scipy.stats import pearsonr, spearmanr
 from sklearn.preprocessing import MinMaxScaler
 
-from datasets import load_dataset
 from fluentai.constants.config import config
 from fluentai.utils.logger import logger
+
+from datasets import load_dataset
 
 
 def scale_ratings(ratings: pd.Series) -> pd.Series:
