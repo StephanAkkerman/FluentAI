@@ -2,10 +2,9 @@ import pandas as pd
 from scipy.stats import pearsonr, spearmanr
 from semantic import compute_similarity
 
+from datasets import load_dataset
 from fluentai.constants.config import config
 from fluentai.utils.logger import logger
-
-from datasets import load_dataset
 
 
 def evaluate_models():
@@ -41,6 +40,7 @@ def evaluate_models():
         logger.info(f"Evaluating method: {method}")
         computed_similarities = []
         valid_indices = []
+        # TODO: add tqdm here
         for idx, row in df.iterrows():
             word1 = row["word1"]
             word2 = row["word2"]

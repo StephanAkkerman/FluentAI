@@ -1,5 +1,13 @@
 LOGGING_LEVEL: "DEBUG"
 
+# The weights for the best mnemonic match
+# 1 = 100%
+WEIGHTS:
+  PHONETIC: 1
+  ORTHOGRAPHIC: 0.33
+  SEMANTIC: 1
+  IMAGEABILITY: 1
+
 # Models
 G2P:
   MODEL: "charsiu/g2p_multilingual_byT5_small_100"

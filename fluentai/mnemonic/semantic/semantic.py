@@ -96,7 +96,9 @@ def load_minilm_model() -> Tuple[SentenceTransformer, list, list]:
     global MINILM_MODEL, MINILM_EMBEDDINGS, MINILM_WORDS
     if MINILM_MODEL is None:
         logger.info("Loading MiniLM model. This may take a while...")
-        MINILM_MODEL = SentenceTransformer("all-MiniLM-L6-v2", cache_folder="models")
+        MINILM_MODEL = SentenceTransformer(
+            "intfloat/multilingual-e5-small", cache_folder="models"
+        )
         logger.info("MiniLM model loaded successfully.")
 
     if MINILM_EMBEDDINGS is None or MINILM_WORDS is None:
@@ -218,15 +220,8 @@ def compute_minilm_similarity(word1: str, word2: str) -> float:
     model, word_list, embeddings = load_minilm_model()
     word1 = word1.lower()
     word2 = word2.lower()
-    if word1 not in word_list:
-        raise ValueError(f"The word '{word1}' is not in the MiniLM word list.")
-    if word2 not in word_list:
-        raise ValueError(f"The word '{word2}' is not in the MiniLM word list.")
-
-    idx1 = word_list.index(word1)
-    idx2 = word_list.index(word2)
-    emb1 = embeddings[idx1].reshape(1, -1)
-    emb2 = embeddings[idx2].reshape(1, -1)
+    emb1 = model.encode([word1])
+    emb2 = model.encode([word2])
     similarity = cosine_similarity(emb1, emb2)[0][0]
     return similarity
 
@@ -336,4 +331,4 @@ def example():
 
 # Example usage (for testing purposes only; remove or comment out in production)
 if __name__ == "__main__":
-    example()
+    print(compute_minilm_similarity("train", "brain"))

@@ -1,3 +1,4 @@
+from fluentai.constants.config import weights_percentages
 from fluentai.constants.languages import G2P_LANGCODES
 from fluentai.mnemonic.imageability.imageability import ImageabilityPredictor
 from fluentai.mnemonic.orthographic.orthographic import (
@@ -53,6 +54,17 @@ def generate_mnemonic(word: str, language_code):
         ),
         axis=1,
     )
+
+    # Calculate weighted score using dynamic weights from config
+    top["score"] = (
+        top["distance"] * weights_percentages["PHONETIC"]
+        + top["imageability"] * weights_percentages["IMAGEABILITY"]
+        + top["semantic_similarity"] * weights_percentages["SEMANTIC"]
+        + top["orthographic_similarity"] * weights_percentages["ORTHOGRAPHIC"]
+    )
+
+    # Sort by score
+    top = top.sort_values(by="score", ascending=False)
 
     return top
 
