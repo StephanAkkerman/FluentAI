@@ -8,13 +8,14 @@ WEIGHTS:
   SEMANTIC: 1
   IMAGEABILITY: 1
 
-# Models
 G2P:
   MODEL: "charsiu/g2p_multilingual_byT5_small_100"
   TOKENIZER: "google/byt5-small"
+
 LLM:
   MODEL: "microsoft/Phi-3-mini-4k-instruct"
   TOKENIZER: "microsoft/Phi-3-mini-4k-instruct"
+
 IMAGE_GEN:
   MODEL: stabilityai/sdxl-turbo
   PARAMS:
@@ -22,15 +23,22 @@ IMAGE_GEN:
     height: 512
     width: 512
 
-# Datasets
 SEMANTIC_SIM:
-  EVAL: "StephanAkkerman/semantic-similarity"
+  MODEL: "fasttext"
+  EVAL:
+    DATASET: "StephanAkkerman/semantic-similarity"
+    MODELS:
+      - "fasttext"
+      - "intfloat/multilingual-e5-small"
+
 PHONETIC_SIM:
   EVAL: "StephanAkkerman/english-words-human-similarity"
   IPA_REPO: "StephanAkkerman/english-words-IPA"
   IPA_FILE: "en_US.csv"
+
 ORTHOGRAPHIC_SIM:
   EVAL: "StephanAkkerman/orthographic-similarity-ratings"
+
 IMAGEABILITY:
   EVAL: "StephanAkkerman/imageability"
   EMBEDDINGS_REPO: "StephanAkkerman/imageability"

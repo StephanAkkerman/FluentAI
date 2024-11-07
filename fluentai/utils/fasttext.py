@@ -176,7 +176,7 @@ def _get_fasttext_from_keyedvectors(embedding_model_path="models/cc.en.300.model
 
 def get_fasttext_model(
     model_name="cc.en.300.bin", embedding_model_path="models/cc.en.300.model"
-):
+) -> FastTextKeyedVectors:
     """
     Download the specified embedding model and save it locally.
 
