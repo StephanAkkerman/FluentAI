@@ -29,9 +29,9 @@ SEMANTIC_SIM:
     DATASET: "StephanAkkerman/semantic-similarity"
     MODELS:
       - jinaai/jina-embeddings-v3
-      #- fasttext
-      #- intfloat/multilingual-e5-small
-      #- paraphrase-multilingual-MiniLM-L12-v2
+      - fasttext
+      - intfloat/multilingual-e5-small
+      - paraphrase-multilingual-MiniLM-L12-v2
 
 PHONETIC_SIM:
   EVAL: "StephanAkkerman/english-words-human-similarity"
