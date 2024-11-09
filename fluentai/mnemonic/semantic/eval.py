@@ -108,7 +108,7 @@ def evaluate_models():
     """
     # Configuration and paths
     logs_dir = "logs"
-    log_file_path = os.path.join(logs_dir, "evaluation_results.csv")
+    log_file_path = os.path.join(logs_dir, "semantic_evaluation_results.csv")
     ensure_logs_directory(logs_dir)
 
     # Load the dataset
