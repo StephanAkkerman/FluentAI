@@ -1,4 +1,5 @@
-.c {
+.c,
+.cShowcase {
   position: absolute;
   max-width: 400px;
   max-height: 500px;
@@ -6,11 +7,15 @@
   min-width: 300px;
   width: 40%;
   height: 50%;
-
   cursor: pointer;
   will-change: transform, opacity;
   border-radius: 2rem;
   box-shadow: 0px 4px 4px 2px rgba(13, 13, 13, 0.29);
+  transition: width 0.5s ease-in-out, height 0.5s ease-in-out;
+}
+.cShowcase {
+  width: 25%;
+  height: 30%;
 }
 
 .front,
@@ -25,9 +30,19 @@
 .front {
   background-color: rgb(var(--second-color));
 }
-.front h1 {
-  font-size: 50px;
+.frontContent {
+  font-size: 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+.frontContent h1 {
+  width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .back {
   background-color: rgb(var(--prime-color));
 }

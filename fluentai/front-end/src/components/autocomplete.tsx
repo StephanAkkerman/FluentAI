@@ -5,6 +5,7 @@ import FormField from "./formfield";
 interface AutocompleteInputProps {
   suggestions: string[];
   onSelect: (name: string) => void;
+  formSubmitted?: boolean;
   title?: string;
 }
 
@@ -12,6 +13,7 @@ const AutocompleteInput: FC<AutocompleteInputProps> = ({
   suggestions,
   onSelect,
   title,
+  formSubmitted,
 }) => {
   const [inputValue, setInputValue] = useState<string>("");
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
@@ -75,11 +77,12 @@ const AutocompleteInput: FC<AutocompleteInputProps> = ({
       {title !== "" && <div className="title">{title}</div>}
       <div className="selector">
         <FormField
-          required={false}
+          required={true}
           value={inputValue}
           id="name"
           label=""
           onChange={handleChange}
+          formSubmitted={formSubmitted}
         />
         <button onClick={handleDropdownClick}>▼</button>
         {suggestionsListComponent}
