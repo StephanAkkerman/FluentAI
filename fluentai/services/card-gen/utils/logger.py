@@ -1,7 +1,7 @@
 import logging
 import sys
 
-from fluentai.constants.config import config
+from constants.config import config
 
 
 class UTF8StreamHandler(logging.StreamHandler):

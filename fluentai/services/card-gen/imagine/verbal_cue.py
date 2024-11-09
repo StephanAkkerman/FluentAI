@@ -1,7 +1,7 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
-from fluentai.constants.config import config
-from fluentai.utils.logger import logger
+from constants.config import config
+from utils.logger import logger
 
 
 class VerbalCue:

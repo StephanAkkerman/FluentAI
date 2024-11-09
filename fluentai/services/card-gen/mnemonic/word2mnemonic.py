@@ -1,13 +1,13 @@
-from fluentai.constants.config import weights_percentages
-from fluentai.constants.languages import G2P_LANGCODES
-from fluentai.mnemonic.imageability.imageability import ImageabilityPredictor
-from fluentai.mnemonic.orthographic.orthographic import (
+from constants.config import weights_percentages
+from constants.languages import G2P_LANGCODES
+from mnemonic.imageability.imageability import ImageabilityPredictor
+from mnemonic.orthographic.orthographic import (
     compute_damerau_levenshtein_similarity,
 )
-from fluentai.mnemonic.phonetic.phonetic import top_phonetic
-from fluentai.mnemonic.semantic.semantic import SemanticSimilarity
-from fluentai.mnemonic.semantic.translator import translate_word
-from fluentai.utils.logger import logger
+from mnemonic.phonetic.phonetic import top_phonetic
+from mnemonic.semantic.semantic import SemanticSimilarity
+from mnemonic.semantic.translator import translate_word
+from utils.logger import logger
 
 imageability_predictor = ImageabilityPredictor()
 semantic_sim = SemanticSimilarity()

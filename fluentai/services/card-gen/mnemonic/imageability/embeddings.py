@@ -6,8 +6,8 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm
 
-from fluentai.constants.config import config
-from fluentai.utils.logger import logger
+from constants.config import config
+from utils.logger import logger
 
 from datasets import load_dataset
 
@@ -20,7 +20,7 @@ def load_embedding_model(model_name):
     Load the specified embedding model.
     """
     if model_name.lower() == "fasttext":
-        from fluentai.utils.fasttext import fasttext_model
+        from utils.fasttext import fasttext_model
 
         embedding_model = fasttext_model
     elif model_name.lower() == "glove":

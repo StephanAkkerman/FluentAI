@@ -8,7 +8,7 @@ import pandas as pd
 from git import GitCommandError, RemoteProgress, Repo
 from tqdm import tqdm
 
-from fluentai.utils.logger import logger
+from utils.logger import logger
 
 
 def check_directory_exists(directory_path):

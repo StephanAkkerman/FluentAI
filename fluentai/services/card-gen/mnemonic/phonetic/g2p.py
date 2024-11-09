@@ -1,7 +1,7 @@
 from transformers import AutoTokenizer, T5ForConditionalGeneration
 
-from fluentai.constants.config import config
-from fluentai.utils.logger import logger
+from constants.config import config
+from utils.logger import logger
 
 # https://github.com/lingjzhu/CharsiuG2P
 logger.debug("Loading G2P model")

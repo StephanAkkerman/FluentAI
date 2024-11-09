@@ -3,11 +3,11 @@ import numpy as np
 import pandas as pd
 from huggingface_hub import hf_hub_download
 
-from fluentai.constants.config import config
-from fluentai.mnemonic.phonetic.g2p import g2p
-from fluentai.mnemonic.phonetic.ipa2vec import panphon_vec, soundvec
-from fluentai.mnemonic.phonetic.utils import convert_to_matrix, load_cache, pad_vectors
-from fluentai.utils.logger import logger
+from constants.config import config
+from mnemonic.phonetic.g2p import g2p
+from mnemonic.phonetic.ipa2vec import panphon_vec, soundvec
+from mnemonic.phonetic.utils import convert_to_matrix, load_cache, pad_vectors
+from utils.logger import logger
 
 
 def word2ipa(

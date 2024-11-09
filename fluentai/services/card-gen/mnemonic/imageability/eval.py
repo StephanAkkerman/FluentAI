@@ -12,8 +12,8 @@ from sklearn.svm import SVR
 from tqdm import tqdm
 from xgboost import XGBRegressor
 
-from fluentai.constants.config import config
-from fluentai.utils.logger import logger
+from constants.config import config
+from utils.logger import logger
 
 
 def load_data():
