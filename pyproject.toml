@@ -20,4 +20,5 @@ ignore = ["D100", "D101", "D104", "D200", "D401"]
 convention = "numpy"
 
 [tool.ruff.lint.isort]
-known-local-folder = ["datasets"]
+# https://docs.astral.sh/ruff/settings/#lintisort
+known-third-party = ["datasets"]

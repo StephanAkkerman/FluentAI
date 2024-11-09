@@ -1,6 +1,7 @@
 import faiss
 import numpy as np
 import pandas as pd
+from datasets import load_dataset
 from g2p import g2p
 from huggingface_hub import hf_hub_download
 from scipy.stats import pearsonr, spearmanr
@@ -11,8 +12,6 @@ from tqdm import tqdm
 from fluentai.constants.config import config
 from fluentai.mnemonic.phonetic.ipa2vec import panphon_vec, soundvec
 from fluentai.utils.logger import logger
-
-from datasets import load_dataset
 
 
 def word2ipa(

@@ -28,8 +28,10 @@ SEMANTIC_SIM:
   EVAL:
     DATASET: "StephanAkkerman/semantic-similarity"
     MODELS:
-      - "fasttext"
-      - "intfloat/multilingual-e5-small"
+      - jinaai/jina-embeddings-v3
+      #- fasttext
+      #- intfloat/multilingual-e5-small
+      #- paraphrase-multilingual-MiniLM-L12-v2
 
 PHONETIC_SIM:
   EVAL: "StephanAkkerman/english-words-human-similarity"

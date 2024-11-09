@@ -4,12 +4,11 @@ from concurrent.futures import ProcessPoolExecutor
 import gensim.downloader as api
 import numpy as np
 import pandas as pd
+from datasets import load_dataset
 from tqdm import tqdm
 
 from fluentai.constants.config import config
 from fluentai.utils.logger import logger
-
-from datasets import load_dataset
 
 # Global variable to hold the embedding model in each worker process
 EMBEDDING_MODEL = None

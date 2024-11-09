@@ -1,9 +1,9 @@
 import pandas as pd
-from scipy.stats import pearsonr, spearmanr
-from semantic import compute_similarity
-
 from datasets import load_dataset
+from scipy.stats import pearsonr, spearmanr
+
 from fluentai.constants.config import config
+from fluentai.mnemonic.semantic.semantic import SemanticSimilarity
 from fluentai.utils.logger import logger
 
 
@@ -34,10 +34,13 @@ def evaluate_models():
     # Initialize a list to store results
     results_list = []
 
-    methods = ["glove", "fasttext", "minilm", "spacy"]
+    models = config.get("SEMANTIC_SIM").get("EVAL").get("MODELS")
 
-    for method in methods:
-        logger.info(f"Evaluating method: {method}")
+    # Create the model objects
+    semantic_models = [SemanticSimilarity(model) for model in models]
+
+    for model in semantic_models:
+        logger.info(f"Evaluating method: {model.model_name}")
         computed_similarities = []
         valid_indices = []
         # TODO: add tqdm here
@@ -45,22 +48,12 @@ def evaluate_models():
             word1 = row["word1"]
             word2 = row["word2"]
             # human_score = row["similarity"]
-            try:
-                sim = compute_similarity(word1, word2, method)
-                # Assuming all methods are scaled to 0-1
-                computed_similarities.append(sim)
-                valid_indices.append(idx)
-            except ValueError as e:
-                logger.warning(
-                    f"Skipping pair ('{word1}', '{word2}') for method '{method}': {e}"
-                )
-                continue
 
-        if not computed_similarities:
-            logger.warning(
-                f"No valid similarity scores computed for method '{method}'. Skipping."
-            )
-            continue
+            sim = model.compute_similarity(word1, word2)
+
+            # Assuming all methods are scaled to 0-1
+            computed_similarities.append(sim)
+            valid_indices.append(idx)
 
         # Create a DataFrame with valid entries
         evaluation_df = df.loc[valid_indices].copy()
@@ -77,21 +70,15 @@ def evaluate_models():
         # Append the results to the list
         results_list.append(
             {
-                "method": method,
+                "model": model.model_name,
                 "pearson_corr": pearson_corr,
                 "spearman_corr": spearman_corr,
             }
         )
 
         logger.info(
-            f"Method '{method}': Pearson Correlation = {pearson_corr:.4f}, Spearman Correlation = {spearman_corr:.4f}"
+            f"Model '{model.model_name}': Pearson Correlation = {pearson_corr:.4f}, Spearman Correlation = {spearman_corr:.4f}"
         )
-
-    if not results_list:
-        logger.error(
-            "No similarity scores were computed for any method. Evaluation aborted."
-        )
-        return
 
     # Convert the results list to a DataFrame
     results_df = pd.DataFrame(results_list)
