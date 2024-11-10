@@ -68,7 +68,7 @@ class SemanticSimilarity:
             _description_
         """
         if self.model_name == "fasttext":
-            from fluentai.utils.fasttext import fasttext_model
+            from fluentai.services.card_gen.utils.fasttext import fasttext_model
 
             return fasttext_model
 
