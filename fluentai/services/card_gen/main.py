@@ -27,7 +27,7 @@ def generate_mnemonic_img(word: str, lang_code: str):
     vc = VerbalCue()
 
     # Generate a verbal cue
-    logger.debug(f"Generating verbal cue for '{best_match}'-'{word}'...")
+    logger.debug(f"Generating verbal cue for '{best_match['token_ort']}'-'{word}'...")
     prompt = vc.generate_cue(word, best_match["token_ort"])
 
     del vc

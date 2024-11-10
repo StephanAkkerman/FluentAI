@@ -1,7 +1,7 @@
 import logging
 import sys
 
-from constants.config import config
+from fluentai.services.card_gen.constants.config import config
 
 
 class UTF8StreamHandler(logging.StreamHandler):

@@ -14,7 +14,7 @@ import os
 
 import requests
 
-from fluentai.utils.logger import logger
+from fluentai.services.card_gen.utils.logger import logger
 
 
 class AnkiConnect:
