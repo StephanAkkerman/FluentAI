@@ -1,63 +1,82 @@
 import multiprocessing
 from concurrent.futures import ProcessPoolExecutor
 
-import gensim.downloader as api
 import numpy as np
 import pandas as pd
 from datasets import load_dataset
+from huggingface_hub import HfApi
+from sentence_transformers import SentenceTransformer
 from tqdm import tqdm
 
 from fluentai.constants.config import config
 from fluentai.utils.logger import logger
 
-# Global variable to hold the embedding model in each worker process
 EMBEDDING_MODEL = None
 
 
-def load_embedding_model(model_name):
-    """
-    Load the specified embedding model.
-    """
-    if model_name.lower() == "fasttext":
-        from fluentai.utils.fasttext import fasttext_model
+class ImageabilityEmbeddings:
+    def __init__(
+        self, model_name=config.get("IMAGEABILITY").get("EMBEDDINGS").get("MODEL")
+    ):
+        self.model_name = model_name
+        self.model = self.load_embedding_model()
 
-        embedding_model = fasttext_model
-    elif model_name.lower() == "glove":
-        logger.info("Loading GloVe embeddings...")
-        embedding_model = api.load("glove-wiki-gigaword-300")
-    else:
-        raise ValueError("Unsupported model. Choose 'fasttext' or 'glove'.")
-    logger.info(f"{model_name.capitalize()} model loaded successfully.")
-    return embedding_model
+    def load_embedding_model(self):
+        """
+        Load the specified embedding model.
+        """
+        if self.model_name == "fasttext":
+            from fluentai.utils.fasttext import fasttext_model
+
+            return fasttext_model
+
+        return SentenceTransformer(
+            self.model_name, trust_remote_code=True, cache_folder="models"
+        )
+
+    def get_embedding(self, word):
+        """
+        Retrieve the embedding vector for a given word.
+
+        Args:
+            word (str): The word to retrieve the embedding for.
+
+        Returns
+        -------
+            np.ndarray: Embedding vector for the word.
+        """
+        if self.model_name == "fasttext":
+            return self.model.get_vector(word)
+        # Ensure the output is a NumPy array
+        return self.model.encode(
+            word, convert_to_tensor=False, normalize_embeddings=True
+        )
 
 
-def initializer(model_name):
+def initializer(model_name: str):
     """
     Initializer function for each worker process to load the embedding model.
     """
     global EMBEDDING_MODEL
-    EMBEDDING_MODEL = load_embedding_model(model_name)
+    EMBEDDING_MODEL = ImageabilityEmbeddings(model_name)
 
 
 def get_embedding(word):
     """
-    Retrieve the embedding vector for a given word.
+    Global function to retrieve the embedding for a given word using the global EMBEDDING_MODEL.
 
-    Note: This function runs in separate worker processes.
+    Args:
+        word (str): The word to retrieve the embedding for.
+
+    Returns
+    -------
+        np.ndarray: Embedding vector for the word.
     """
     global EMBEDDING_MODEL
-    try:
-        return EMBEDDING_MODEL.get_vector(word)
-    except KeyError:
-        # For FastText, this might not be necessary, but kept as a fallback
-        return np.zeros(EMBEDDING_MODEL.vector_size, dtype=np.float32)
+    return EMBEDDING_MODEL.get_embedding(word)
 
 
 def generate_embeddings(
-    output_parquet,
-    model="fasttext",
-    word_column="word",
-    score_column="score",
     n_jobs=-1,
     verbose=True,
 ):
@@ -65,37 +84,26 @@ def generate_embeddings(
     Generate word embeddings from a dataset and save them to a .parquet file.
 
     Args:
-        input_csv (str): Path to the input CSV file containing words and scores.
-        output_parquet (str): Path to the output .parquet file to save embeddings and words.
-        model (str, optional): Embedding model to use ('fasttext' or 'glove'). Defaults to 'fasttext'.
-        word_column (str, optional): Name of the column containing words in the CSV. Defaults to 'word'.
-        score_column (str, optional): Name of the column containing scores in the CSV. Defaults to 'score'.
         n_jobs (int, optional): Number of CPU cores to use. -1 means all available cores. Defaults to -1.
         verbose (bool, optional): Enable verbose output for progress bars. Defaults to True.
 
     Raises
     ------
-        FileNotFoundError: If the input CSV file is not found.
         ValueError: If required columns are missing or unsupported model is specified.
     """
+    model = config.get("IMAGEABILITY").get("EMBEDDINGS").get("MODEL")
+    output_parquet = f"data/imageability/{model}_embeddings.parquet"
+
     # Load your dataset
     df = load_dataset(
-        config.get("IMAGEABILITY").get("EVAL"), cache_dir="datasets", split="train"
+        config.get("IMAGEABILITY").get("EMBEDDINGS").get("EVAL").get("DATASET"),
+        cache_dir="datasets",
+        split="train",
     ).to_pandas()
 
-    # Validate required columns
-    if word_column not in df.columns:
-        raise ValueError(
-            f"The specified word column '{word_column}' does not exist in the dataset."
-        )
-    if score_column not in df.columns:
-        raise ValueError(
-            f"The specified score column '{score_column}' does not exist in the dataset."
-        )
-
     # Separate features and target
-    y = df[score_column].values
-    words = df[word_column].astype(str).values  # Ensure all words are strings
+    y = df["score"].values
+    words = df["word"].astype(str).values  # Ensure all words are strings
 
     logger.info(f"Number of unique words to process: {len(words)}")
 
@@ -130,7 +138,12 @@ def generate_embeddings(
             progress_bar.close()
 
     # Convert list of embeddings to a NumPy array
-    embeddings = np.vstack(embeddings)
+    try:
+        embeddings = np.vstack(embeddings)
+    except ValueError as ve:
+        logger.error(f"Error stacking embeddings: {ve}")
+        raise
+
     logger.info(f"Generated embeddings shape: {embeddings.shape}")
 
     # Create a DataFrame for words and scores
@@ -149,24 +162,31 @@ def generate_embeddings(
     logger.info(f"Combined DataFrame shape: {df_output.shape}")
 
     # Save the DataFrame to a .parquet file
-    try:
-        df_output.to_parquet(output_parquet, index=False)
-        logger.info(f"Embeddings saved successfully to '{output_parquet}'.")
-    except Exception as e:
-        raise Exception(f"An error occurred while saving to parquet: {e}")
+    df_output.to_parquet(output_parquet, index=False)
+    logger.info(f"Embeddings saved successfully to '{output_parquet}'.")
+
+    # Upload the embeddings to Hugging Face Hub
+    upload_embeddings(output_parquet)
+
+
+def upload_embeddings(output_parquet: str):
+    """
+    Upload embeddings to Hugging Face Hub.
+    """
+    file_name = output_parquet.split("/")[-1]
+    api = HfApi()
+    api.upload_file(
+        path_or_fileobj=output_parquet,
+        path_in_repo=file_name,
+        repo_id=config.get("IMAGEABILITY").get("EMBEDDINGS").get("REPO"),
+        repo_type="dataset",
+    )
+    logger.info("Embeddings uploaded to Hugging Face Hub")
 
 
 # Example usage
 if __name__ == "__main__":
-    # Add the parent directory to sys.path to import the fasttext_model module
-
-    model = "fasttext"  # Change to 'glove' to use GloVe embeddings
-
     generate_embeddings(
-        output_parquet=f"data/imageability/{model}_embeddings2.parquet",
-        model=model,
-        word_column="word",
-        score_column="score",
-        n_jobs=2,  # Use all available CPU cores = -1
+        n_jobs=2,  # Use desired number of CPU cores; -1 for all available
         verbose=True,  # Enable progress bar
     )

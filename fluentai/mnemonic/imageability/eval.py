@@ -1,4 +1,7 @@
+import hashlib
+import io
 import os
+from datetime import datetime
 
 import joblib
 import pandas as pd
@@ -16,22 +19,112 @@ from fluentai.constants.config import config
 from fluentai.utils.logger import logger
 
 
-def load_data():
+def compute_dataset_hash(df: pd.DataFrame) -> str:
+    """
+    Computes a unique hash for the given DataFrame based on its content.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        The DataFrame to hash.
+
+    Returns
+    -------
+    str
+        The MD5 hash of the DataFrame.
+    """
+    buffer = io.StringIO()
+    df.to_csv(buffer, index=False)
+    return hashlib.md5(buffer.getvalue().encode("utf-8")).hexdigest()
+
+
+def ensure_logs_directory(logs_dir: str):
+    """
+    Ensures that the logs directory exists.
+
+    Parameters
+    ----------
+    logs_dir : str
+        The path to the logs directory.
+    """
+    os.makedirs(logs_dir, exist_ok=True)
+    logger.debug(f"Ensured that the logs directory '{logs_dir}' exists.")
+
+
+def load_existing_logs(log_file_path: str) -> pd.DataFrame:
+    """
+    Loads existing evaluation logs if the log file exists.
+
+    Parameters
+    ----------
+    log_file_path : str
+        The path to the log file.
+
+    Returns
+    -------
+    pd.DataFrame
+        The DataFrame containing existing logs.
+    """
+    if os.path.exists(log_file_path):
+        try:
+            existing_logs = pd.read_csv(log_file_path)
+            logger.info(f"Loaded existing logs from '{log_file_path}'.")
+            return existing_logs
+        except Exception as e:
+            logger.error(f"Failed to read log file '{log_file_path}': {e}")
+            return pd.DataFrame()
+    else:
+        logger.info(f"No existing log file found at '{log_file_path}'. Starting fresh.")
+        return pd.DataFrame()
+
+
+def append_to_log(log_file_path: str, new_entry: dict):
+    """
+    Appends a new evaluation entry to the log file.
+
+    Parameters
+    ----------
+    log_file_path : str
+        The path to the log file.
+    new_entry : dict
+        The evaluation results to append.
+    """
+    try:
+        df_new = pd.DataFrame([new_entry])
+        if os.path.exists(log_file_path):
+            df_new.to_csv(log_file_path, mode="a", header=False, index=False)
+        else:
+            df_new.to_csv(log_file_path, mode="w", header=True, index=False)
+        logger.debug(f"Appended new entry to log file '{log_file_path}'.")
+    except Exception as e:
+        logger.error(f"Failed to append to log file '{log_file_path}': {e}")
+
+
+def load_data(local_file: bool = False, filename: str = None):
     """
     Load words, embeddings, and scores from a single file.
 
     Returns
     -------
-        tuple: (words, embeddings, scores)
+        tuple: (embeddings, scores, dataset_hash)
     """
-    df = pd.read_parquet(
-        hf_hub_download(
-            config.get("IMAGEABILITY").get("EMBEDDINGS_REPO"),
-            filename=config.get("IMAGEABILITY").get("EMBEDDINGS_FILE"),
-            cache_dir="datasets",
-            repo_type="dataset",
+    if local_file:
+        if filename is None:
+            raise ValueError("Filename must be provided when local_file is True.")
+        df = pd.read_parquet(filename)
+    else:
+        if filename is None:
+            model = config.get("IMAGEABILITY").get("EMBEDDINGS").get("MODEL")
+            filename = f"{model}_embeddings.parquet"
+        logger.info(f"Loading embeddings from {filename}...")
+        df = pd.read_parquet(
+            hf_hub_download(
+                config.get("IMAGEABILITY").get("EMBEDDINGS").get("REPO"),
+                filename=filename,
+                cache_dir="datasets",
+                repo_type="dataset",
+            )
         )
-    )
 
     # Verify required columns exist
     required_columns = {"word", "score"}
@@ -51,10 +144,15 @@ def load_data():
     logger.info(
         f"Loaded {len(scores)} words with embeddings shape {embeddings.shape} and scores shape {scores.shape}."
     )
-    return embeddings, scores
+
+    # Compute dataset hash
+    dataset_hash = compute_dataset_hash(df)
+    logger.debug(f"Computed dataset hash: {dataset_hash}")
+
+    return embeddings, scores, dataset_hash
 
 
-def preprocess_data(embeddings, scores):
+def split_dataset(embeddings, scores):
     """
     Preprocess the data for training.
 
@@ -76,21 +174,25 @@ def preprocess_data(embeddings, scores):
     return X_train, X_test, y_train, y_test
 
 
-def train_and_evaluate_models(X_train, X_test, y_train, y_test):
+def train_and_evaluate_models(X_train, X_test, y_train, y_test, dataset_hash):
     """
-    Train multiple models and evaluate their performance.
+    Train multiple models and evaluate their performance, utilizing logging to avoid redundant evaluations.
 
     Args:
         X_train (np.ndarray): Training features.
         X_test (np.ndarray): Testing features.
         y_train (np.ndarray): Training labels.
         y_test (np.ndarray): Testing labels.
-        task (str, optional): 'classification' or 'regression'. Defaults to 'classification'.
+        dataset_hash (str): Unique identifier for the dataset.
 
     Returns
     -------
         pd.DataFrame: DataFrame containing model performances.
     """
+    # Define logs directory and log file
+    log_file_path = os.path.join("logs", "imageability_evaluation_results.csv")
+
+    # Define the models to evaluate
     models = [
         ("Linear Regression (OLS)", LinearRegression()),
         ("Ridge Regression", Ridge()),
@@ -104,56 +206,119 @@ def train_and_evaluate_models(X_train, X_test, y_train, y_test):
         ("LightGBM", LGBMRegressor(n_estimators=100)),
     ]
 
+    # Load existing logs
+    existing_logs = load_existing_logs(log_file_path)
+
     results = []
+    new_evaluations = []
     best_model = None
     best_metric = None
 
-    for name, model in tqdm(models, desc="Training Models", unit="model"):
-        logger.info(f"\nTraining {name}...")
-        model.fit(X_train, y_train)
-        predictions = model.predict(X_test)
+    # Iterate over each model
+    for name, model in tqdm(models, desc="Processing Models", unit="model"):
+        # Check if this model and dataset_hash combination exists in logs
+        if not existing_logs.empty:
+            mask = (existing_logs["dataset_hash"] == dataset_hash) & (
+                existing_logs["model_name"] == name
+            )
+            existing_entry = existing_logs[mask]
 
-        mse = mean_squared_error(y_test, predictions)
-        r2 = r2_score(y_test, predictions)
-        results.append({"Model": name, "MSE": mse, "R2 Score": r2})
-        logger.info(f"{name} - MSE: {mse:.4f}, R2 Score: {r2:.4f}")
+        if not existing_logs.empty and not existing_entry.empty:
+            # Retrieve existing results
+            mse = existing_entry.iloc[0]["MSE"]
+            r2 = existing_entry.iloc[0]["R2 Score"]
+            source = "log"
+            logger.info(f"Skipped training for '{name}'. Loaded results from logs.")
+        else:
+            # Train and evaluate the model
+            logger.info(f"\nTraining {name}...")
+            model.fit(X_train, y_train)
+            predictions = model.predict(X_test)
+
+            mse = mean_squared_error(y_test, predictions)
+            r2 = r2_score(y_test, predictions)
+            logger.info(f"{name} - MSE: {mse:.4f}, R2 Score: {r2:.4f}")
+
+            # Append the results to the new evaluations list
+            new_evaluations.append(
+                {
+                    "dataset_hash": dataset_hash,
+                    "dataset_name": config.get("IMAGEABILITY")
+                    .get("PREDICTOR")
+                    .get("EVAL")
+                    .get("DATASET"),
+                    "model_name": name,
+                    "MSE": mse,
+                    "R2 Score": r2,
+                    "timestamp": datetime.now().isoformat(),
+                }
+            )
+            source = "evaluated"
+
+            # Optionally, save individual models if desired
+            # For consistency, you might choose to save all evaluated models or only the best one
+
+        # Append to the results list
+        results.append({"Model": name, "MSE": mse, "R2 Score": r2, "Source": source})
 
         # Determine the best model based on lowest MSE
         if best_metric is None or mse < best_metric:
             best_metric = mse
-            best_model = model
+            best_model = (
+                (name, model) if source == "evaluated" else (name, None)
+            )  # Handle if model is from log
 
+    # Append new evaluations to the log file
+    if new_evaluations:
+        for entry in new_evaluations:
+            append_to_log(log_file_path, entry)
+
+    # Convert the results list to a DataFrame
     results_df = pd.DataFrame(results)
 
     # Display the results
     logger.info("\nModel Performances:")
-    logger.info(results_df)
+    logger.info(results_df.to_string(index=False))
 
-    # Display the best model
-    if best_model:
+    # Determine the best model considering both logged and newly evaluated models
+    if not results_df.empty:
+        best_row = results_df.loc[results_df["MSE"].idxmin()]
+        best_method = best_row["Model"]
+        best_mse = best_row["MSE"]
+        best_r2 = best_row["R2 Score"]
+
         logger.info(
-            f"\nBest Model: {type(best_model).__name__} with 'MSE' of {best_metric:.4f}"
+            f"\nConclusion: The best performing model is '{best_method}' with an MSE of {best_mse:.4f} and an R2 Score of {best_r2:.4f}."
         )
 
-    return results_df, best_model
+        # Optionally, load the best model from logs or save the newly trained best model
+        if best_row["Source"] == "evaluated":
+            # Save the best model
+            best_model_instance = best_model[1]
+            model_name_clean = best_method.replace(" ", "_").lower()
+            filename = f"models/best_model_{model_name_clean}.joblib"
+            os.makedirs("models", exist_ok=True)
+            joblib.dump(best_model_instance, filename)
+            logger.info(f"Best model '{best_method}' saved to '{filename}'.")
+        else:
+            logger.info(
+                f"The best model '{best_method}' was retrieved from existing logs."
+            )
+
+    else:
+        logger.warning("No model performances to display.")
+
+    return results_df
 
 
 if __name__ == "__main__":
     # Load data
-    embeddings, scores = load_data()
+    embeddings, scores, dataset_hash = load_data()
 
     # Preprocess data
-    X_train, X_test, y_train, y_test = preprocess_data(embeddings, scores)
+    X_train, X_test, y_train, y_test = split_dataset(embeddings, scores)
 
     # Train and evaluate models
-    results_df, best_model = train_and_evaluate_models(X_train, X_test, y_train, y_test)
-
-    # Save the best model
-    if best_model:
-        model_name = type(best_model).__name__
-        filename = f"models/best_model_{model_name}.joblib"
-        # Create the models directory if it doesn't exist
-
-        os.makedirs("models", exist_ok=True)
-        joblib.dump(best_model, filename)
-        logger.info(f"\nBest model '{model_name}' saved to '{filename}'.")
+    results_df = train_and_evaluate_models(
+        X_train, X_test, y_train, y_test, dataset_hash
+    )

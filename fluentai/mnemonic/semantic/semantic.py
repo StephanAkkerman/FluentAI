@@ -6,7 +6,7 @@ from fluentai.utils.logger import logger
 
 
 class SemanticSimilarity:
-    def __init__(self, model: str = "fasttext"):
+    def __init__(self, model: str = config.get("SEMANTIC_SIM").get("MODEL")):
         self.model_name = model.lower()
         self.model = self.load_semantic_model()
 
