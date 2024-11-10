@@ -10,7 +10,7 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ front, back, showcase = false }) => {
   const [flipped, setFlipped] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+
   const rotationValueRef = useRef(0);
 
   const [rotation, api] = useSpring(() => ({
@@ -24,40 +24,22 @@ const Card: React.FC<CardProps> = ({ front, back, showcase = false }) => {
   // Handle flipping animation based on props
   useEffect(() => {
     if (showcase) {
-      if (isHovered) {
-        // Stop animation and snap to nearest face
-        api.stop();
-        const currentRotation = rotationValueRef.current % 360;
-
-        // Normalize rotation between -360 and 0
-        const normalizedRotation =
-          currentRotation < -360
-            ? currentRotation + 360
-            : currentRotation > 0
-              ? currentRotation - 360
-              : currentRotation;
-
-        const targetRotation =
-          normalizedRotation <= -90 && normalizedRotation >= -270
-            ? -180
-            : 0;
-
-        api.start({ rotateY: targetRotation });
-      } else {
-        // Start infinite slow flipping
-        api.start({
-          loop: true,
-          from: { rotateY: rotationValueRef.current },
-          to: { rotateY: rotationValueRef.current - 360 },
-          config: { duration: 1300 },
-        });
-      }
+      // Start infinite slow flipping
+      api.start({
+        loop: true,
+        from: { rotateY: rotationValueRef.current },
+        to: { rotateY: rotationValueRef.current - 360 },
+        config: { duration: 1300 },
+      });
     } else {
       // Interactive mode: flip on click
       const targetRotation = flipped ? -180 : 0;
-      api.start({ rotateY: targetRotation });
+      api.start({
+        rotateY: targetRotation,
+        config: { mass: 5, tension: 500, friction: 80 },
+      });
     }
-  }, [showcase, isHovered, flipped, api]);
+  }, [showcase, flipped, api]);
 
   const handleClick = () => {
     if (!showcase) {
@@ -65,27 +47,10 @@ const Card: React.FC<CardProps> = ({ front, back, showcase = false }) => {
     }
   };
 
-  const handleMouseEnter = () => {
-    if (showcase) {
-      setIsHovered(true);
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (showcase) {
-      setIsHovered(false);
-    }
-  };
-
   return (
-    <div
-      className={styles.container}
-      onClick={handleClick}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
+    <div className={styles.container} onClick={handleClick}>
       <a.div
-        className={`${styles.c} ${styles.front}`}
+        className={`${showcase ? styles.cShowcase : styles.c} ${styles.front}`}
         style={{
           opacity: rotation.rotateY.to((val) =>
             Math.max(0, Math.cos((val * Math.PI) / 180))
@@ -95,10 +60,10 @@ const Card: React.FC<CardProps> = ({ front, back, showcase = false }) => {
           ),
         }}
       >
-        {front}
+        <div className={styles.frontContent}>{front}</div>
       </a.div>
       <a.div
-        className={`${styles.c} ${styles.back}`}
+        className={`${showcase ? styles.cShowcase : styles.c} ${styles.back}`}
         style={{
           opacity: rotation.rotateY.to((val) =>
             Math.max(0, Math.cos((val * Math.PI) / 180 + Math.PI))
@@ -108,7 +73,7 @@ const Card: React.FC<CardProps> = ({ front, back, showcase = false }) => {
           ),
         }}
       >
-        {back}
+        <div className={styles.backContent}>{back}</div>
       </a.div>
     </div>
   );
