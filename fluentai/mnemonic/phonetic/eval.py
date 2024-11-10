@@ -2,7 +2,7 @@ import faiss
 import numpy as np
 import pandas as pd
 from datasets import load_dataset
-from g2p import g2p
+from g2p import G2P
 from huggingface_hub import hf_hub_download
 from scipy.stats import pearsonr, spearmanr
 from sklearn.metrics.pairwise import cosine_similarity
@@ -18,6 +18,7 @@ def word2ipa(
     word: str,
     ipa_dataset: pd.DataFrame,
     use_fallback: bool = True,
+    g2p_model: G2P = G2P(),
 ) -> str:
     """
     Convert a word to its IPA transcription using the dataset and fallback to the g2p model if necessary.
@@ -44,7 +45,7 @@ def word2ipa(
         # logger.info(f"{word} not found in dataset.")
         if use_fallback:
             # Fallback on the g2p model
-            return g2p([f"<eng-us>:{word}"])[0]
+            return g2p_model.g2p([f"<eng-us>:{word}"])[0]
         else:
             return
     # Remove whitespace and return the IPA transcription

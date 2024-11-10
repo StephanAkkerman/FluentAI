@@ -1,12 +1,11 @@
-# This will serve as the main functionality
-# It will call the word to mnemonic pipeline
-# Generate a prompt
-# Generate the image
+import gc
+
+import torch
+
 from fluentai.imagine.image_gen import generate_img
 from fluentai.imagine.verbal_cue import VerbalCue
 from fluentai.mnemonic.word2mnemonic import generate_mnemonic
-
-vc = VerbalCue()
+from fluentai.utils.logger import logger
 
 
 def generate_mnemonic_img(word: str, lang_code: str):
@@ -25,11 +24,21 @@ def generate_mnemonic_img(word: str, lang_code: str):
     # Get the top phonetic match
     best_match = best_matches.iloc[0]
 
+    vc = VerbalCue()
+
     # Generate a verbal cue
+    logger.debug(f"Generating verbal cue for '{best_match}'-'{word}'...")
     prompt = vc.generate_cue(word, best_match["token_ort"])
+
+    del vc
+
+    gc.collect()
+
+    torch.cuda.empty_cache()
 
     # Generate the image
     generate_img(prompt=prompt)
+    logger.info("Image generated successfully!")
 
 
 if __name__ == "__main__":

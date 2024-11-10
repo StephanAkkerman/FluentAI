@@ -4,7 +4,7 @@ import pandas as pd
 from huggingface_hub import hf_hub_download
 
 from fluentai.constants.config import config
-from fluentai.mnemonic.phonetic.g2p import g2p
+from fluentai.mnemonic.phonetic.g2p import G2P
 from fluentai.mnemonic.phonetic.ipa2vec import panphon_vec, soundvec
 from fluentai.mnemonic.phonetic.utils import convert_to_matrix, load_cache, pad_vectors
 from fluentai.utils.logger import logger
@@ -12,7 +12,8 @@ from fluentai.utils.logger import logger
 
 def word2ipa(
     word: str,
-    language_code: str = "eng-us",
+    language_code: str,
+    g2p_model,
 ) -> str:
     """
     Get the IPA representation of a word.
@@ -49,7 +50,7 @@ def word2ipa(
             return ipa.values[0].replace(" ", "")
 
     # Use the g2p model
-    return g2p([f"<{language_code}>:{word}"])
+    return g2p_model.g2p([f"<{language_code}>:{word}"])
 
 
 def build_faiss_index(matrix):
@@ -95,11 +96,7 @@ def vectorize_input(ipa_input, vectorizer, dimension):
     return input_vector_padded
 
 
-def top_phonetic(
-    input_word: str,
-    language_code: str,
-    top_n=15,
-):
+def top_phonetic(input_word: str, language_code: str, top_n: int, g2p_model):
     """
     Main function to find top_n closest phonetically similar words to the input IPA.
 
@@ -118,7 +115,7 @@ def top_phonetic(
         vectorizer = panphon_vec
 
     # Convert the input word to IPA representation
-    ipa = word2ipa(input_word, language_code)
+    ipa = word2ipa(input_word, language_code, g2p_model)
 
     # Attempt to load from cache
     dataset = load_cache(method)
