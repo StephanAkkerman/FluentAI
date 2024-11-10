@@ -3,8 +3,8 @@ from orthographic import compute_similarity
 from scipy.stats import pearsonr, spearmanr
 from sklearn.preprocessing import MinMaxScaler
 
-from fluentai.constants.config import config
-from fluentai.utils.logger import logger
+from constants.config import config
+from utils.logger import logger
 
 from datasets import load_dataset
 

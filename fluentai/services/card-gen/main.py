@@ -2,9 +2,9 @@
 # It will call the word to mnemonic pipeline
 # Generate a prompt
 # Generate the image
-from fluentai.imagine.image_gen import generate_img
-from fluentai.imagine.verbal_cue import VerbalCue
-from fluentai.mnemonic.word2mnemonic import generate_mnemonic
+from .imagine.image_gen import generate_img
+from .imagine.verbal_cue import VerbalCue
+from .mnemonic.word2mnemonic import generate_mnemonic
 
 vc = VerbalCue()
 

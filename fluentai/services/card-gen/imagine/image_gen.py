@@ -1,8 +1,8 @@
 import torch
 from diffusers import AutoPipelineForText2Image
 
-from fluentai.constants.config import config
-from fluentai.utils.logger import logger
+from constants.config import config
+from utils.logger import logger
 
 
 def generate_img(
