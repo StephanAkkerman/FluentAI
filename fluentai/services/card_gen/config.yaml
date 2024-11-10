@@ -1,0 +1,74 @@
+LOGGING_LEVEL: "DEBUG"
+
+# The weights for the best mnemonic match
+# 1 = 100%
+WEIGHTS:
+  PHONETIC: 1
+  ORTHOGRAPHIC: 0.33
+  SEMANTIC: 1
+  IMAGEABILITY: 1
+
+G2P:
+  MODEL: "charsiu/g2p_multilingual_byT5_small_100"
+  TOKENIZER: "google/byt5-small"
+
+LLM:
+  MODEL: "microsoft/Phi-3-mini-4k-instruct"
+  TOKENIZER: "microsoft/Phi-3-mini-4k-instruct"
+
+IMAGE_GEN:
+  MODEL: stabilityai/sdxl-turbo
+  PARAMS:
+    num_inference_steps: 40
+    height: 512
+    width: 512
+
+# Semantic similarity
+SEMANTIC_SIM:
+  MODEL: paraphrase-multilingual-MiniLM-L12-v2
+  EVAL:
+    DATASET: "StephanAkkerman/semantic-similarity"
+    MODELS:
+      - jinaai/jina-embeddings-v3
+      - fasttext
+      - intfloat/multilingual-e5-small
+      - paraphrase-multilingual-MiniLM-L12-v2
+
+IMAGEABILITY:
+  EMBEDDINGS:
+    # Model is also used to get the right embeddings dataset in the evaluation
+    MODEL: paraphrase-multilingual-MiniLM-L12-v2
+    REPO: StephanAkkerman/imageability-embeddings
+    EVAL:
+      DATASET: StephanAkkerman/imageability
+      MODELS:
+        - fasttext
+        - paraphrase-multilingual-MiniLM-L12-v2
+  PREDICTOR:
+    REPO: StephanAkkerman/imageability-predictor
+    FILE: lightgbm-fasttext.joblib
+    EVAL:
+      DATASET: StephanAkkerman/imageability
+      MODELS: # TODO
+        - OLS
+  PREDICTIONS:
+    REPO: StephanAkkerman/imageability-predictions
+    FILE: predictions.csv
+
+PHONETIC_SIM:
+  EVAL: "StephanAkkerman/english-words-human-similarity"
+  IPA:
+    REPO: "StephanAkkerman/english-words-IPA"
+    FILE: "en_US.csv"
+  EMBEDDINGS:
+    METHOD: panphon
+    REPO: StephanAkkerman/english-words-IPA-embeddings
+
+ORTHOGRAPHIC_SIM:
+  EVAL: "StephanAkkerman/orthographic-similarity-ratings"
+# IMAGEABILITY:
+#   EVAL: "StephanAkkerman/imageability"
+#   EMBEDDINGS_REPO: "StephanAkkerman/imageability"
+#   EMBEDDINGS_FILE: "fasttext/fasttext_embeddings.parquet"
+#   MODEL: "StephanAkkerman/imageability-predictor"
+#   MODEL_FILE: "imageability_predictor.joblib"
