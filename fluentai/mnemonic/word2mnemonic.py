@@ -73,7 +73,15 @@ def generate_mnemonic(word: str, language_code):
     # Sort by score
     top = top.sort_values(by="score", ascending=False)
 
-    # Clean up all the models
+    clean_models(g2p_model, imageability_predictor, semantic_sim)
+
+    return top
+
+
+def clean_models(g2p_model, imageability_predictor, semantic_sim):
+    """
+    Clean up all the models.
+    """
     del g2p_model
     del imageability_predictor
     del semantic_sim
@@ -81,8 +89,6 @@ def generate_mnemonic(word: str, language_code):
     gc.collect()
 
     torch.cuda.empty_cache()
-
-    return top
 
 
 if __name__ == "__main__":

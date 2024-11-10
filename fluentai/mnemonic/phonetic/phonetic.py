@@ -4,7 +4,6 @@ import pandas as pd
 from huggingface_hub import hf_hub_download
 
 from fluentai.constants.config import config
-from fluentai.mnemonic.phonetic.g2p import G2P
 from fluentai.mnemonic.phonetic.ipa2vec import panphon_vec, soundvec
 from fluentai.mnemonic.phonetic.utils import convert_to_matrix, load_cache, pad_vectors
 from fluentai.utils.logger import logger
