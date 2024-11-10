@@ -1,6 +1,6 @@
 from fluentai.constants.config import weights_percentages
 from fluentai.constants.languages import G2P_LANGCODES
-from fluentai.mnemonic.imageability.imageability import ImageabilityPredictor
+from fluentai.mnemonic.imageability.predictions import ImageabilityPredictor
 from fluentai.mnemonic.orthographic.orthographic import (
     compute_damerau_levenshtein_similarity,
 )

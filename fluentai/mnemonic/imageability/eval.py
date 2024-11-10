@@ -5,7 +5,7 @@ from datetime import datetime
 
 import joblib
 import pandas as pd
-from huggingface_hub import hf_hub_download
+from huggingface_hub import HfApi, hf_hub_download
 from lightgbm import LGBMRegressor
 from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor
 from sklearn.linear_model import LinearRegression, Ridge
@@ -149,6 +149,8 @@ def load_data(local_file: bool = False, filename: str = None):
     dataset_hash = compute_dataset_hash(df)
     logger.debug(f"Computed dataset hash: {dataset_hash}")
 
+    # TODO: add data validation to check if the embeddings shape == imageabillity dataset shape (6090 rows)
+
     return embeddings, scores, dataset_hash
 
 
@@ -191,6 +193,8 @@ def train_and_evaluate_models(X_train, X_test, y_train, y_test, dataset_hash):
     """
     # Define logs directory and log file
     log_file_path = os.path.join("logs", "imageability_evaluation_results.csv")
+    embedding_model = config.get("IMAGEABILITY").get("EMBEDDINGS").get("MODEL")
+    upload_to_hf = False
 
     # Define the models to evaluate
     models = [
@@ -201,7 +205,12 @@ def train_and_evaluate_models(X_train, X_test, y_train, y_test, dataset_hash):
         ("Gradient Boosting", GradientBoostingRegressor(n_estimators=100)),
         (
             "XGBoost",
-            XGBRegressor(n_estimators=100, use_label_encoder=False, eval_metric="rmse"),
+            XGBRegressor(
+                n_estimators=100,
+                use_label_encoder=False,
+                eval_metric="rmse",
+                device="gpu",
+            ),
         ),
         ("LightGBM", LGBMRegressor(n_estimators=100)),
     ]
@@ -247,6 +256,7 @@ def train_and_evaluate_models(X_train, X_test, y_train, y_test, dataset_hash):
                     .get("PREDICTOR")
                     .get("EVAL")
                     .get("DATASET"),
+                    "embedding_model": embedding_model,
                     "model_name": name,
                     "MSE": mse,
                     "R2 Score": r2,
@@ -296,10 +306,11 @@ def train_and_evaluate_models(X_train, X_test, y_train, y_test, dataset_hash):
             # Save the best model
             best_model_instance = best_model[1]
             model_name_clean = best_method.replace(" ", "_").lower()
-            filename = f"models/best_model_{model_name_clean}.joblib"
+            filename = f"models/{model_name_clean}-{embedding_model}.joblib"
             os.makedirs("models", exist_ok=True)
             joblib.dump(best_model_instance, filename)
             logger.info(f"Best model '{best_method}' saved to '{filename}'.")
+            upload_to_hf = True
         else:
             logger.info(
                 f"The best model '{best_method}' was retrieved from existing logs."
@@ -308,7 +319,24 @@ def train_and_evaluate_models(X_train, X_test, y_train, y_test, dataset_hash):
     else:
         logger.warning("No model performances to display.")
 
-    return results_df
+    if upload_to_hf:
+        # Upload the best model to Hugging Face Hub
+        upload_model(filename)
+
+
+def upload_model(model_path: str):
+    """
+    Upload model to Hugging Face Hub.
+    """
+    file_name = model_path.split("/")[-1]
+    api = HfApi()
+    api.upload_file(
+        path_or_fileobj=model_path,
+        path_in_repo=file_name,
+        repo_id=config.get("IMAGEABILITY").get("PREDICTOR").get("REPO"),
+        repo_type="model",
+    )
+    logger.info("Model uploaded to Hugging Face Hub")
 
 
 if __name__ == "__main__":
@@ -319,6 +347,4 @@ if __name__ == "__main__":
     X_train, X_test, y_train, y_test = split_dataset(embeddings, scores)
 
     # Train and evaluate models
-    results_df = train_and_evaluate_models(
-        X_train, X_test, y_train, y_test, dataset_hash
-    )
+    train_and_evaluate_models(X_train, X_test, y_train, y_test, dataset_hash)

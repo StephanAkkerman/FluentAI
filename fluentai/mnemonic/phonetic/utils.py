@@ -1,13 +1,14 @@
 import ast
-import os
 import sys
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 from git import GitCommandError, RemoteProgress, Repo
+from huggingface_hub import hf_hub_download
 from tqdm import tqdm
 
+from fluentai.constants.config import config
 from fluentai.utils.logger import logger
 
 
@@ -147,7 +148,7 @@ def parse_vectors(dataset, vector_column="vectors"):
     return dataset
 
 
-def load_cache(method: str = "panphon", dataset: str = "eng_latn_us_broad"):
+def load_cache(method: str = "panphon"):
     """
     Load the processed dataset from a cache file.
 
@@ -159,18 +160,21 @@ def load_cache(method: str = "panphon", dataset: str = "eng_latn_us_broad"):
     -------
     - DataFrame containing the cached dataset
     """
-    if method == "clts":
-        cache_file = f"data/phonological/embeddings/{dataset}_clts.parquet"
-    elif method == "panphon":
-        cache_file = f"data/phonological/embeddings/{dataset}_panphon.parquet"
+    repo = config.get("PHONETIC_SIM").get("EMBEDDINGS").get("REPO")
+    # Remove the file extension to get the dataset name
+    dataset = config.get("PHONETIC_SIM").get("IPA").get("FILE").split(".")[0]
+    file = f"{dataset}_{method}.parquet"
 
-    if os.path.exists(cache_file):
-        dataset = pd.read_parquet(cache_file)
-        logger.info(f"Loaded parsed dataset from '{cache_file}'.")
-        return dataset
-    else:
-        logger.info(f"No cache found at '{cache_file}'.")
-        return None
+    dataset = pd.read_parquet(
+        hf_hub_download(
+            repo_id=repo,
+            filename=file,
+            cache_dir="datasets",
+            repo_type="dataset",
+        )
+    )
+    logger.info(f"Loaded parsed dataset from '{repo}' and file {file}.")
+    return dataset
 
 
 def flatten_vector(vec):

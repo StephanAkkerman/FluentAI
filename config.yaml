@@ -36,6 +36,7 @@ SEMANTIC_SIM:
 
 IMAGEABILITY:
   EMBEDDINGS:
+    # Model is also used to get the right embeddings dataset in the evaluation
     MODEL: paraphrase-multilingual-MiniLM-L12-v2
     REPO: StephanAkkerman/imageability-embeddings
     EVAL:
@@ -45,15 +46,23 @@ IMAGEABILITY:
         - paraphrase-multilingual-MiniLM-L12-v2
   PREDICTOR:
     REPO: StephanAkkerman/imageability-predictor
+    FILE: lightgbm-fasttext.joblib
     EVAL:
       DATASET: StephanAkkerman/imageability
       MODELS: # TODO
         - OLS
+  PREDICTIONS:
+    REPO: StephanAkkerman/imageability-predictions
+    FILE: predictions.csv
 
 PHONETIC_SIM:
   EVAL: "StephanAkkerman/english-words-human-similarity"
-  IPA_REPO: "StephanAkkerman/english-words-IPA"
-  IPA_FILE: "en_US.csv"
+  IPA:
+    REPO: "StephanAkkerman/english-words-IPA"
+    FILE: "en_US.csv"
+  EMBEDDINGS:
+    METHOD: panphon
+    REPO: StephanAkkerman/english-words-IPA-embeddings
 
 ORTHOGRAPHIC_SIM:
   EVAL: "StephanAkkerman/orthographic-similarity-ratings"

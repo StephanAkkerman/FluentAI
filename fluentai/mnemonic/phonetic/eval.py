@@ -149,8 +149,8 @@ def evaluate_phonetic_similarity(methods: list):
 
     ipa_dataset = pd.read_csv(
         hf_hub_download(
-            repo_id=config.get("PHONETIC_SIM").get("IPA_REPO"),
-            filename=config.get("PHONETIC_SIM").get("IPA_FILE"),
+            repo_id=config.get("PHONETIC_SIM").get("IPA").get("REPO"),
+            filename=config.get("PHONETIC_SIM").get("IPA").get("FILE"),
             cache_dir="datasets",
             repo_type="dataset",
         )

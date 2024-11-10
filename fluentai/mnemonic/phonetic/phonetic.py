@@ -99,8 +99,6 @@ def top_phonetic(
     input_word: str,
     language_code: str,
     top_n=15,
-    method: str = "panphon",
-    dataset: str = "en_US",
 ):
     """
     Main function to find top_n closest phonetically similar words to the input IPA.
@@ -112,6 +110,8 @@ def top_phonetic(
     - vectorizer: Function used for vectorizing IPA input
     - vector_column: String, name of the column containing vectors
     """
+    method = config.get("PHONETIC_SIM").get("EMBEDDINGS").get("METHOD")
+
     if method == "clts":
         vectorizer = soundvec
     elif method == "panphon":
@@ -121,7 +121,7 @@ def top_phonetic(
     ipa = word2ipa(input_word, language_code)
 
     # Attempt to load from cache
-    dataset = load_cache(method, dataset)
+    dataset = load_cache(method)
 
     dataset_vectors_flat = dataset["flattened_vectors"].tolist()
 
@@ -160,12 +160,10 @@ if __name__ == "__main__":
     word_input = "kucing"
     language_code = "ind"
     top_n = 15
-    method = "panphon"  # or clts
-    dataset = "en_US"  # "en_US" or eng_latn_us_broad
 
     # Temporary fix
     import os
 
     os.environ["KMP_DUPLICATE_LIB_OK"] = "True"
 
-    logger.info(top_phonetic(word_input, language_code, top_n, method, dataset))
+    logger.info(top_phonetic(word_input, language_code, top_n))
