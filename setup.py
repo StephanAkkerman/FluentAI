@@ -55,7 +55,4 @@ setup(
         ],
     },
     python_requires=">=3.10",
-    extras_require={
-        "dev": parse_requirements("requirements/dev-requirements.txt"),
-    },
 )
