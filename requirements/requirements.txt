@@ -17,7 +17,7 @@ scikit-learn==1.5.1
 rapidfuzz==3.9.4
 Levenshtein==0.25.1
 pyclts==3.2.0
-panphon==0.20.0
+panphon==0.21.2
 soundvectors==1.0
 datasets==3.1.0
 GitPython==3.1.43
