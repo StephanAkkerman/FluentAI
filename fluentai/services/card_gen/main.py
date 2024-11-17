@@ -37,9 +37,10 @@ def generate_mnemonic_img(word: str, lang_code: str):
     torch.cuda.empty_cache()
 
     # Generate the image
-    generate_img(prompt=prompt)
+    image_path = generate_img(prompt=prompt)
     logger.info("Image generated successfully!")
+    return image_path 
 
 
 if __name__ == "__main__":
-    generate_mnemonic_img("猫", "zho-s")
+    generate_mnemonic_img("cat", "dut")

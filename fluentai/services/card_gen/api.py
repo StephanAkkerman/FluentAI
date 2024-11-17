@@ -1,14 +1,14 @@
 # To run: uvicorn api:app --reload
 # if that doesn't work try: python -m uvicorn api:app --reload
 
-from typing import List
-
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
+from typing import Generator
+import os
 
-# from mnemonic.word2mnemonic import generate_mnemonic
-
+from main import generate_mnemonic_img
 
 app = FastAPI()
 
@@ -16,7 +16,8 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000"
+        "http://localhost:3000",
+        "https://akkerman.ai/FluentAI/"
     ],  # Replace "*" with your front-end URL in production
     allow_credentials=True,
     allow_methods=["*"],
@@ -25,85 +26,51 @@ app.add_middleware(
 
 
 # Define Pydantic models for request and responses
-class MnemonicRequest(BaseModel):
+class CreateCardRequest(BaseModel):
     word: str
     language_code: str
 
 
-class MnemonicItem(BaseModel):
-    token_ort: str
-    distance: float
-    imageability: float
-    semantic_similarity: float
-    orthographic_similarity: float
-    score: float
+class CreateCardResponse(BaseModel):
+    IPA: str = None  # Placeholder for future implementation
+    recording: str = None  # Placeholder for future implementation
 
 
-class MnemonicResponse(BaseModel):
-    items: List[MnemonicItem]
+@app.post("/create_card", response_model=CreateCardResponse)
+async def api_generate_mnemonic(request: CreateCardRequest):
+    # Validate language code if necessary
+    from constants.languages import G2P_LANGCODES
+    if request.language_code not in G2P_LANGCODES:
+        raise HTTPException(status_code=400, detail="Invalid language code")
 
+    try:
+        # Generate image and get its file path
+        image_path = generate_mnemonic_img(request.word, request.language_code)
 
-# Test version of generate_mnemonic
-# Mock endpoint
-@app.post("/create-card", response_model=MnemonicResponse)
-def mock_generate_mnemonic():
-    """
-    Generate a mnemonic card for a given word.
+        # Ensure the file exists
+        if not os.path.exists(image_path):
+            raise HTTPException(status_code=500, detail="Generated image not found")
 
-    Returns
-    -------
-    MnemonicResponse
-        _description_
-    """
-    # Mock data to simulate the response
-    mock_data = [
-        {
-            "token_ort": "example1",
-            "distance": 0.1,
-            "imageability": 0.8,
-            "semantic_similarity": 0.7,
-            "orthographic_similarity": 0.9,
-            "score": 0.85,
-        },
-        {
-            "token_ort": "example2",
-            "distance": 0.2,
-            "imageability": 0.7,
-            "semantic_similarity": 0.6,
-            "orthographic_similarity": 0.8,
-            "score": 0.75,
-        },
-    ]
+        # Define a generator for streaming the image
+        def image_stream() -> Generator[bytes, None, None]:
+            with open(image_path, "rb") as image_file:
+                while chunk := image_file.read(1024):  # Stream in chunks of 1 KB
+                    yield chunk
 
-    mnemonic_items = [MnemonicItem(**item) for item in mock_data]
-    return MnemonicResponse(items=mnemonic_items)
+        # Metadata placeholders
+        metadata = {
+            "IPA": "TODO",  # Replace with actual IPA generation logic
+            "recording": "TODO"  # Replace with actual recording logic
+        }
 
+        # Return the StreamingResponse and metadata
+        return {
+            "image": StreamingResponse(image_stream(), media_type="image/jpeg"),
+            "IPA": metadata["IPA"],
+            "recording": metadata["recording"],
+        }
 
-# @app.post("/generate_mnemonic", response_model=MnemonicResponse)
-# def api_generate_mnemonic(request: MnemonicRequest):
-#     # Validate language code if necessary
-#     # (Assuming you have access to G2P_LANGCODES in your api.py)
-#     from constants.languages import G2P_LANGCODES
-#     if request.language_code not in G2P_LANGCODES:
-#         raise HTTPException(status_code=400, detail="Invalid language code")
-
-#     try:
-#         # Call your existing function
-#         top = generate_mnemonic(request.word, request.language_code)
-
-#         if top is None or top.empty:
-#             raise HTTPException(status_code=404, detail="No mnemonics found")
-
-#         # Convert DataFrame to list of dictionaries
-#         top_dict = top.to_dict(orient='records')
-
-#         # Convert dictionaries to MnemonicItem instances
-#         mnemonic_items = [MnemonicItem(**item) for item in top_dict]
-
-#         return MnemonicResponse(items=mnemonic_items)
-
-#     except Exception as e:
-#         # Log the exception if necessary
-#         import logging
-#         logging.error(f"Error generating mnemonic: {e}")
-#         raise HTTPException(status_code=500, detail="Internal Server Error")
+    except Exception as e:
+        import logging
+        logging.error(f"Error generating mnemonic: {e}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")

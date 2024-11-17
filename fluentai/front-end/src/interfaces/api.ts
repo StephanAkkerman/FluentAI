@@ -1,4 +1,4 @@
 export interface CreateCardInterface {
   word: string;
-  language: string;
+  language_code: string;
 }

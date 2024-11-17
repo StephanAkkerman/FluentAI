@@ -17,7 +17,8 @@ import { createCard } from "../api";
 type CardCreationProps = {};
 
 const CardCreation: React.FC<CardCreationProps> = () => {
-  const languagesArray = Object.keys(languages);
+  const languagesMap: Record<string, string> = languages;
+  const languagesArray = Object.keys(languagesMap); // User-friendly names
   const [input, setInput] = useState({
     language: "",
     word: "",
@@ -55,7 +56,7 @@ const CardCreation: React.FC<CardCreationProps> = () => {
     try {
       // Call the API to create the card
       const response = await createCard({
-        language: input.language,
+        language_code: input.language,
         word: input.word,
       });
 
@@ -85,10 +86,11 @@ const CardCreation: React.FC<CardCreationProps> = () => {
     }));
   };
 
-  const handleLanguage = (value: string) => {
+  const handleLanguage = (selectedLanguage: string) => {
+    const languageCode = languagesMap[selectedLanguage]; // Get the language code
     setInput((prevInput) => ({
       ...prevInput,
-      language: value,
+      language: languageCode || "", // Set the code or an empty string if not found
     }));
     setSubmitted(false);
   };
