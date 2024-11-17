@@ -23,6 +23,76 @@ class VocabularyManager:
         cache_dir : str, optional
             Directory to cache downloaded datasets, by default "datasets".
         """
+        self.supported_languages = [
+            "af",
+            "ar",
+            "bg",
+            "bn",
+            "br",
+            "bs",
+            "ca",
+            "cs",
+            "da",
+            "de",
+            "el",
+            "en",
+            "eo",
+            "es",
+            "et",
+            "eu",
+            "fa",
+            "fi",
+            "fr",
+            "gl",
+            "he",
+            "hi",
+            "hr",
+            "hu",
+            "hy",
+            "id",
+            "is",
+            "it",
+            "ja",
+            "ka",
+            "kk",
+            "ko",
+            "lt",
+            "lv",
+            "mk",
+            "ml",
+            "ms",
+            "nl",
+            "no",
+            "pl",
+            "pt",
+            "pt_br",
+            "ro",
+            "ru",
+            "si",
+            "sk",
+            "sl",
+            "sq",
+            "sr",
+            "sv",
+            "ta",
+            "te",
+            "th",
+            "tl",
+            "tr",
+            "uk",
+            "ur",
+            "vi",
+            "ze_en",
+            "ze_zh",
+            "zh_cn",
+            "zh_tw",
+        ]
+
+        if lang_code not in self.supported_languages:
+            raise ValueError(
+                f"Language code '{lang_code}' is not supported. Supported languages: {self.supported_languages}"
+            )
+
         self.lang_code = lang_code
         self.last_word_file = f"data/{lang_code}_last_word.txt"
 
