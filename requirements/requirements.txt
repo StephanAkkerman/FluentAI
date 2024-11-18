@@ -1,4 +1,4 @@
-torch==2.5.1
+torch==2.5.1+cu124
 transformers==4.46.2
 transformers[sentencepiece]==4.46.2
 sentence-transformers==3.3.0
