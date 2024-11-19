@@ -1,6 +1,3 @@
-# Load the imageability prediction model
-# Generate predictions for the IPA dataset
-# Upload it to StephanAkkerman/imageability-predictions
 import joblib
 import pandas as pd
 from huggingface_hub import hf_hub_download
