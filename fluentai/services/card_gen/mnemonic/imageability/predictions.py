@@ -50,7 +50,7 @@ def make_predictions():
     predictions_df = pd.DataFrame(predictions, columns=["word", "imageability_score"])
 
     # Save the predictions
-    predictions_df.to_csv("data/imageability/predictions.csv", index=False)
+    predictions_df.to_csv("local_data/imageability/predictions.csv", index=False)
 
 
 class ImageabilityPredictor:
