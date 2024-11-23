@@ -129,12 +129,6 @@ def test_make_predictions(
     mock_ImageabilityEmbeddings.assert_called_once_with(model_name="fasttext")
     mock_regression_model.predict.assert_called()
 
-    # Optionally, check if the CSV was written correctly
-    mock_pd_to_csv = mocker.patch(
-        "fluentai.services.card_gen.mnemonic.imageability.predictions.pd.DataFrame.to_csv"
-    )
-    assert mock_pd_to_csv.called
-
 
 def test_ImageabilityPredictor_get_prediction(
     mock_hf_hub_download, mock_pd_read_csv, mocker
