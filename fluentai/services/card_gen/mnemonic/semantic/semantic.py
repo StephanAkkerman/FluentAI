@@ -107,5 +107,3 @@ def example():
 
 if __name__ == "__main__":
     example()
-    # semantic = SemanticSimilarity("intfloat/multilingual-e5-small")
-    # print(semantic.compute_similarity("train", "brain"))
