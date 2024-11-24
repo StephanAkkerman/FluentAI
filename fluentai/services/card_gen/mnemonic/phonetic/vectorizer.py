@@ -120,7 +120,7 @@ def pad_vector(vector, max_length, padding_value=0):
 
 def main(
     method: str = "clts",
-    save_loc: str = "data/phonological/embeddings",
+    save_loc: str = "local_data/phonological/embeddings",
 ):
     """
     Main function to orchestrate the vectorization process based on the selected method.
@@ -187,7 +187,7 @@ if __name__ == "__main__":
     #   - "clts"    : Generate only CLTS vectors.
     #   - "panphon" : Generate only Panphon vectors.
     method = "clts"  # Change this to "clts" or "panphon" as needed.
-    data_file1 = "data/phonological/eng_latn_us_broad.tsv"
-    data_file2 = "data/phonological/en_US.txt"
+    data_file1 = "local_data/phonological/eng_latn_us_broad.tsv"
+    data_file2 = "local_data/phonological/en_US.txt"
 
     main(method, data_file=data_file1)

@@ -70,7 +70,7 @@ def download_fasttext(file_name: str = "cc.en.300.bin.gz"):
 
     # Define the directory where you want to save the files
     # You can change this to your desired directory
-    download_directory = "data/fasttext_embeddings"
+    download_directory = "local_data/fasttext_embeddings"
     os.makedirs(
         download_directory, exist_ok=True
     )  # Create directory if it doesn't exist
@@ -190,13 +190,15 @@ def get_fasttext_model(
         return _get_fasttext_from_keyedvectors(embedding_model_path)
 
     # Check if the .bin file already exists
-    if not os.path.exists(f"data/fasttext_embeddings/{model_name}"):
+    if not os.path.exists(f"dalocal_datata/fasttext_embeddings/{model_name}"):
         # Download the model .bin file with .gz extension
         download_fasttext(f"{model_name}.gz")
 
     # Load the model from the .bin file
     logger.info("Loading FastText embeddings...")
-    embedding_model = load_facebook_vectors(f"data/fasttext_embeddings/{model_name}")
+    embedding_model = load_facebook_vectors(
+        f"local_data/fasttext_embeddings/{model_name}"
+    )
     embedding_model.save(embedding_model_path)
     logger.info(f"Model saved locally at '{embedding_model_path}'.")
 

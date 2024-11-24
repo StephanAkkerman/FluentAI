@@ -39,7 +39,7 @@ def scale_similarity(df, similarity_col="similarity"):
 
 
 # 1. Load and Prepare SimLex-999 Dataset
-simlex999 = pd.read_csv("data/semantic/SimLex-999.txt", sep="\t")
+simlex999 = pd.read_csv("local_data/semantic/SimLex-999.txt", sep="\t")
 simlex999 = simlex999[["word1", "word2", "SimLex999"]]
 simlex999 = simlex999.rename(columns={"SimLex999": "similarity"})
 simlex999["dataset"] = "SimLex-999"
@@ -49,7 +49,7 @@ simlex999 = scale_similarity(simlex999, similarity_col="similarity")
 
 # 2. Load and Prepare SimVerb-3500 Dataset
 simverb3500 = pd.read_csv(
-    "data/semantic/SimVerb-3500.txt",
+    "local_data/semantic/SimVerb-3500.txt",
     sep="\t",
     names=["word1", "word2", "POS", "similarity", "relatedness"],
 )
@@ -60,7 +60,7 @@ simverb3500["dataset"] = "SimVerb-3500"
 simverb3500 = scale_similarity(simverb3500, similarity_col="similarity")
 
 # 3. Load and Prepare WordSim-353 Dataset
-wordsim353 = pd.read_csv("data/semantic/wordsim-353.csv")
+wordsim353 = pd.read_csv("local_data/semantic/wordsim-353.csv")
 wordsim353 = wordsim353.rename(
     columns={"Word 1": "word1", "Word 2": "word2", "Human (mean)": "similarity"}
 )
@@ -90,7 +90,7 @@ else:
 # Here, we'll keep all instances as separate entries since they belong to different datasets.
 
 # 6. Save the Merged Dataset to a CSV File
-output_file = "data/semantic/semantic_similarity.csv"
+output_file = "local_data/semantic/semantic_similarity.csv"
 merged_df.to_csv(output_file, index=False)
 logger.info(f"Merged dataset saved to '{output_file}'.")
 

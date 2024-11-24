@@ -60,10 +60,10 @@ class CloneProgress(RemoteProgress):
 
 def get_clts():
     """
-    Downloads the Concepticon and CLTS repositories to the /data directory.
+    Downloads the Concepticon and CLTS repositories to the /local_data directory.
     """
     # Configuration
-    data_directory = Path("data")  # Change this to your desired data directory
+    data_directory = Path("local_data")  # Change this to your desired data directory
     repo_url = (
         "https://github.com/cldf-clts/clts.git"  # Replace with your repository URL
     )
@@ -78,7 +78,7 @@ def get_clts():
     if check_directory_exists(clone_path):
         logger.info(f"The directory '{clone_path}' already exists. Skipping clone.")
     else:
-        # Ensure the /data directory exists
+        # Ensure the /local_data directory exists
         if not data_directory.exists():
             try:
                 data_directory.mkdir(parents=True, exist_ok=True)
