@@ -1,8 +1,6 @@
 # To run: uvicorn api:app --reload
 # if that doesn't work try: python -m uvicorn api:app --reload
 
-from typing import List
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -40,7 +38,7 @@ class MnemonicItem(BaseModel):
 
 
 class MnemonicResponse(BaseModel):
-    items: List[MnemonicItem]
+    items: list[MnemonicItem]
 
 
 # Test version of generate_mnemonic
