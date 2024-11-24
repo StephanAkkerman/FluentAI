@@ -1,3 +1,5 @@
+import os
+
 import joblib
 import pandas as pd
 from huggingface_hub import hf_hub_download
@@ -45,6 +47,9 @@ def make_predictions():
 
     # Convert the predictions to a DataFrame
     predictions_df = pd.DataFrame(predictions, columns=["word", "imageability_score"])
+
+    # Create a directory to save the predictions
+    os.makedirs("local_data/imageability", exist_ok=True)
 
     # Save the predictions
     predictions_df.to_csv("local_data/imageability/predictions.csv", index=False)
