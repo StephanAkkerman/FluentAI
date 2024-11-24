@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  card_gen_service:
+    build:
+      context: .
+      dockerfile: fluentai/services/card_gen/Dockerfile
+    image: card_gen_service:latest
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+    # user: "${UID}:${GID}" optional user specification via env files
+    volumes:
+      - ./logs:/FluentAI/logs
+      - ./models:/FluentAI/models
+      - ./img:/FluentAI/img
+    ports:
+      - "8000:8000"
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    working_dir: /FluentAI
+    tty: true
