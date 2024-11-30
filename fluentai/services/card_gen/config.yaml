@@ -16,20 +16,20 @@ LLM:
   MODEL: "microsoft/Phi-3-mini-4k-instruct"
   TOKENIZER: "microsoft/Phi-3-mini-4k-instruct"
 
-# IMAGE_GEN:
-#   MODEL: stabilityai/sdxl-turbo
-#   PARAMS:
-#     num_inference_steps: 40
-#     height: 512
-#     width: 512
-
-# Comment out for use of smaller sd model
 IMAGE_GEN:
-  MODEL: stabilityai/stable-diffusion-2
+  MODEL: stabilityai/sdxl-turbo
   PARAMS:
     num_inference_steps: 40
     height: 512
     width: 512
+
+# # Comment out for use of smaller sd model
+# IMAGE_GEN:
+#   MODEL: stabilityai/stable-diffusion-2
+#   PARAMS:
+#     num_inference_steps: 40
+#     height: 512
+#     width: 512
 
 # Semantic similarity
 SEMANTIC_SIM:
