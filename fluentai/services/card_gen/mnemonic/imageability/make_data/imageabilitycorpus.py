@@ -6,7 +6,7 @@ from sklearn.preprocessing import MinMaxScaler
 # ================================
 
 # Load Dataset 1: ICMR 2020
-df_icmr = pd.read_csv("data/imageability/raw/corpus_icmr2020.csv")
+df_icmr = pd.read_csv("local_data/imageability/raw/corpus_icmr2020.csv")
 df_icmr.columns = df_icmr.columns.str.lower()
 
 # Select relevant columns
@@ -25,7 +25,7 @@ df_icmr = df_icmr.drop_duplicates(subset="word").dropna(
 print(f"ICMR Dataset: {df_icmr.shape[0]} words loaded.")
 
 # Load Dataset 2: MIPR 2021 (JSON format)
-df_mipr = pd.read_json("data/imageability/raw/corpus_mipr2021.json").T
+df_mipr = pd.read_json("local_data/imageability/raw/corpus_mipr2021.json").T
 df_mipr.reset_index(inplace=True)
 df_mipr.rename(columns={"index": "word"}, inplace=True)
 df_mipr.columns = df_mipr.columns.str.lower()
@@ -135,5 +135,5 @@ print(f"Final combined dataset shape: {final_df.shape}")
 print(final_df.head())
 
 # Save the final dataset to a CSV file
-final_df.to_csv("data/imageability/imageability_corpus.csv", index=False)
-print("Combined dataset saved to 'data/imageability/combined_imageability.csv'.")
+final_df.to_csv("local_data/imageability/imageability_corpus.csv", index=False)
+print("Combined dataset saved to 'local_data/imageability/combined_imageability.csv'.")

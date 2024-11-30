@@ -44,7 +44,7 @@ class VocabularyManager:
             )
 
         self.lang_code = lang_code
-        self.last_word_file = f"data/{lang_code}_last_word.txt"
+        self.last_word_file = f"local_data/{lang_code}_last_word.txt"
 
         # Download and load the vocabulary
         self.vocab_df = self._download_vocab()

@@ -92,7 +92,7 @@ def generate_embeddings(
         ValueError: If required columns are missing or unsupported model is specified.
     """
     model = config.get("IMAGEABILITY").get("EMBEDDINGS").get("MODEL")
-    output_parquet = f"data/imageability/{model}_embeddings.parquet"
+    output_parquet = f"local_data/imageability/{model}_embeddings.parquet"
 
     # Load your dataset
     df = load_dataset(

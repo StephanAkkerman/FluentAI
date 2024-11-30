@@ -1,7 +1,9 @@
 # To run: uvicorn api:app --reload
 # if that doesn't work try: python -m uvicorn api:app --reload
 
+
 from fastapi import FastAPI, HTTPException, Query
+
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse, FileResponse
 from pydantic import BaseModel
@@ -84,3 +86,4 @@ async def get_image(word: str = Query(...), language_code: str = Query(...)):
         logging.error(f"Error generating mnemonic: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
     
+

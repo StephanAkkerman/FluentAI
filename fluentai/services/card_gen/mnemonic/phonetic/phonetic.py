@@ -99,7 +99,9 @@ def vectorize_input(ipa_input, vectorizer, dimension):
     return input_vector_padded
 
 
-def top_phonetic(input_word: str, language_code: str, top_n: int, g2p_model):
+def top_phonetic(
+    input_word: str, language_code: str, top_n: int, g2p_model
+) -> pd.DataFrame:
     """
     Main function to find top_n closest phonetically similar words to the input IPA.
 
@@ -112,10 +114,11 @@ def top_phonetic(input_word: str, language_code: str, top_n: int, g2p_model):
     """
     method = config.get("PHONETIC_SIM").get("EMBEDDINGS").get("METHOD")
 
+    # Default to panphon if method is not specified
+    vectorizer = panphon_vec
+
     if method == "clts":
         vectorizer = soundvec
-    elif method == "panphon":
-        vectorizer = panphon_vec
 
     # Convert the input word to IPA representation
     ipa = word2ipa(input_word, language_code, g2p_model)
@@ -146,6 +149,11 @@ def top_phonetic(input_word: str, language_code: str, top_n: int, g2p_model):
     # Perform search
     distances, indices = index.search(input_vector_padded, top_n)
 
+    # Check if no similar words found
+    if len(indices) == 0:
+        logger.error("No similar words found.")
+        return pd.DataFrame({"token_ort": [], "token_ipa": [], "distance": []})
+
     # Retrieve closest words
     closest_words = dataset.iloc[indices[0]][["token_ort", "token_ipa"]]
 
@@ -166,4 +174,9 @@ if __name__ == "__main__":
 
     os.environ["KMP_DUPLICATE_LIB_OK"] = "True"
 
-    logger.info(top_phonetic(word_input, language_code, top_n))
+    # Load the G2P model
+    from fluentai.services.card_gen.mnemonic.phonetic.g2p import G2P
+
+    result = top_phonetic(word_input, language_code, top_n, G2P())
+    print(type(result))
+    print(result)
