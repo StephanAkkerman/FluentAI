@@ -2,16 +2,16 @@
 # if that doesn't work try: python -m uvicorn api:app --reload
 
 
-from fastapi import FastAPI, HTTPException, Query
-
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse, FileResponse
-from pydantic import BaseModel
-from typing import Generator
 import os
+
 from constants.languages import G2P_LANGCODES
+from fastapi import FastAPI, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from pydantic import BaseModel
 
 from fluentai.services.card_gen.main import generate_mnemonic_img
+from fluentai.services.card_gen.utils.logger import logger
 
 app = FastAPI()
 
@@ -20,7 +20,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "https://akkerman.ai/FluentAI/"
+        "https://akkerman.ai/FluentAI/",
     ],  # Replace "*" with your front-end URL in production
     allow_credentials=True,
     allow_methods=["*"],
@@ -40,7 +40,27 @@ class CreateCardResponse(BaseModel):
 
 
 @app.post("/create_card/word_data", response_model=CreateCardResponse)
-async def api_generate_mnemonic(request: CreateCardRequest):
+async def api_generate_mnemonic(request: CreateCardRequest) -> dict:
+    """
+    Calls the main function to generate a mnemonic for a given word and language code.
+
+    Parameters
+    ----------
+    request : CreateCardRequest
+        The request object containing the word and language code.
+
+    Returns
+    -------
+    dict
+        The response object containing the IPA and recording of the generated mnemonic.
+
+    Raises
+    ------
+    HTTPException
+        If the language code is invalid.
+    HTTPException
+        If an error occurs during the generation process.
+    """
     # Validate language code if necessary
     if request.language_code not in G2P_LANGCODES:
         raise HTTPException(status_code=400, detail="Invalid language code")
@@ -49,7 +69,7 @@ async def api_generate_mnemonic(request: CreateCardRequest):
         # Data placeholders
         data = {
             "IPA": "TODO",  # Replace with actual IPA generation logic
-            "recording": "TODO"  # Replace with actual recording logic
+            "recording": "TODO",  # Replace with actual recording logic
         }
 
         # Return the StreamingResponse and metadata
@@ -59,13 +79,39 @@ async def api_generate_mnemonic(request: CreateCardRequest):
         }
 
     except Exception as e:
-        import logging
-        logging.error(f"Error generating mnemonic: {e}")
+        logger.error(f"Error generating mnemonic: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
-    
+
+
 @app.get("/create_card/img")
-async def get_image(word: str = Query(...), language_code: str = Query(...)):
-     # Validate language code if necessary
+async def get_image(
+    word: str = Query(...), language_code: str = Query(...)
+) -> FileResponse:
+    """
+    Generates a mnemonic image for a given word and language code.
+
+    Parameters
+    ----------
+    word : str, optional
+        The word to generate a mnemonic image for, by default Query(...)
+    language_code : str, optional
+        The language code of the word, by default Query(...)
+
+    Returns
+    -------
+    FileResponse
+        The image file response.
+
+    Raises
+    ------
+    HTTPException
+        If the language code is invalid.
+    HTTPException
+        If the generated image is not found.
+    HTTPException
+        If an error occurs during the generation process.
+    """
+    # Validate language code if necessary
     if language_code not in G2P_LANGCODES:
         raise HTTPException(status_code=400, detail="Invalid language code")
 
@@ -82,8 +128,5 @@ async def get_image(word: str = Query(...), language_code: str = Query(...)):
         return FileResponse(image_path, media_type="image/jpeg")
 
     except Exception as e:
-        import logging
-        logging.error(f"Error generating mnemonic: {e}")
+        logger.error(f"Error generating mnemonic: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
-    
-
