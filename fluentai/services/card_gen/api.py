@@ -20,7 +20,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "https://akkerman.ai/FluentAI/",
+        "https://akkerman.ai",
     ],  # Replace "*" with your front-end URL in production
     allow_credentials=True,
     allow_methods=["*"],
