@@ -1,4 +1,5 @@
 # The language that you want to learn the words in
+# Options are: Dutch, English, French, German, and Spanish
 NATIVE_LANGUAGE: "English"
 
 LOGGING_LEVEL: "DEBUG"
