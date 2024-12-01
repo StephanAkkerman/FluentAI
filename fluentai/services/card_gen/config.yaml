@@ -71,4 +71,5 @@ PHONETIC_SIM:
     REPO: StephanAkkerman/english-words-IPA-embeddings
 
 ORTHOGRAPHIC_SIM:
+  METHOD: unused # TODO specify method here
   EVAL: "StephanAkkerman/orthographic-similarity-ratings"
