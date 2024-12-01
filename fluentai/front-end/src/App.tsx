@@ -31,12 +31,16 @@ function App() {
     <Router basename="/FluentAI">
       {/* basename should be changed to / when we have own domain */}
       <div className="App">
-        {sideNav && <SideNav onCloseClick={handleGearClick} />}
+
+        <SideNav show={sideNav} onCloseClick={handleGearClick} />
+
         <Header onGearClick={handleGearClick} />
         {initLoad && <LoadingPage isLoading={initLoad} />}
         <Routes>
           <Route path="/" element={<CardCreation />} />
-          {/* Add more routes as needed */}
+          <Route path="/CardCreation" element={<CardCreation />} />
+          <Route path="/CardLibrary" element={<></>} />
+          <Route path="/Settings" element={<></>} />
         </Routes>
       </div>
     </Router>
