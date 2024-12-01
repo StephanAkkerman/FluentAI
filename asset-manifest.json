@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/FluentAI/static/css/main.69e9c112.css",
-    "main.js": "/FluentAI/static/js/main.01224967.js",
+    "main.css": "/FluentAI/static/css/main.4fcfd37a.css",
+    "main.js": "/FluentAI/static/js/main.5b55cc65.js",
     "static/media/Logo (with stroke).png": "/FluentAI/static/media/Logo (with stroke).0f4140cc86538af90d99.png",
     "static/media/logo.png": "/FluentAI/static/media/logo.ba053b28716bd8be0af7.png",
     "index.html": "/FluentAI/index.html",
-    "main.69e9c112.css.map": "/FluentAI/static/css/main.69e9c112.css.map",
-    "main.01224967.js.map": "/FluentAI/static/js/main.01224967.js.map"
+    "main.4fcfd37a.css.map": "/FluentAI/static/css/main.4fcfd37a.css.map",
+    "main.5b55cc65.js.map": "/FluentAI/static/js/main.5b55cc65.js.map"
   },
   "entrypoints": [
-    "static/css/main.69e9c112.css",
-    "static/js/main.01224967.js"
+    "static/css/main.4fcfd37a.css",
+    "static/js/main.5b55cc65.js"
   ]
 }
