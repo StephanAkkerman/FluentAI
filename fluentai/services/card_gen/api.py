@@ -1,12 +1,17 @@
 # To run: uvicorn api:app --reload
 # if that doesn't work try: python -m uvicorn api:app --reload
 
-from fastapi import FastAPI
+
+import os
+
+from constants.languages import G2P_LANGCODES
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
-# from mnemonic.word2mnemonic import generate_mnemonic
-
+from fluentai.services.card_gen.main import generate_mnemonic_img
+from fluentai.services.card_gen.utils.logger import logger
 
 app = FastAPI()
 
@@ -14,7 +19,8 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000"
+        "http://localhost:3000",
+        "https://akkerman.ai/FluentAI/",
     ],  # Replace "*" with your front-end URL in production
     allow_credentials=True,
     allow_methods=["*"],
@@ -23,85 +29,104 @@ app.add_middleware(
 
 
 # Define Pydantic models for request and responses
-class MnemonicRequest(BaseModel):
+class CreateCardRequest(BaseModel):
     word: str
     language_code: str
 
 
-class MnemonicItem(BaseModel):
-    token_ort: str
-    distance: float
-    imageability: float
-    semantic_similarity: float
-    orthographic_similarity: float
-    score: float
+class CreateCardResponse(BaseModel):
+    IPA: str = None  # Placeholder for future implementation
+    recording: str = None  # Placeholder for future implementation
 
 
-class MnemonicResponse(BaseModel):
-    items: list[MnemonicItem]
-
-
-# Test version of generate_mnemonic
-# Mock endpoint
-@app.post("/create-card", response_model=MnemonicResponse)
-def mock_generate_mnemonic():
+@app.post("/create_card/word_data", response_model=CreateCardResponse)
+async def api_generate_mnemonic(request: CreateCardRequest) -> dict:
     """
-    Generate a mnemonic card for a given word.
+    Calls the main function to generate a mnemonic for a given word and language code.
+
+    Parameters
+    ----------
+    request : CreateCardRequest
+        The request object containing the word and language code.
 
     Returns
     -------
-    MnemonicResponse
-        _description_
+    dict
+        The response object containing the IPA and recording of the generated mnemonic.
+
+    Raises
+    ------
+    HTTPException
+        If the language code is invalid.
+    HTTPException
+        If an error occurs during the generation process.
     """
-    # Mock data to simulate the response
-    mock_data = [
-        {
-            "token_ort": "example1",
-            "distance": 0.1,
-            "imageability": 0.8,
-            "semantic_similarity": 0.7,
-            "orthographic_similarity": 0.9,
-            "score": 0.85,
-        },
-        {
-            "token_ort": "example2",
-            "distance": 0.2,
-            "imageability": 0.7,
-            "semantic_similarity": 0.6,
-            "orthographic_similarity": 0.8,
-            "score": 0.75,
-        },
-    ]
+    # Validate language code if necessary
+    if request.language_code not in G2P_LANGCODES:
+        raise HTTPException(status_code=400, detail="Invalid language code")
 
-    mnemonic_items = [MnemonicItem(**item) for item in mock_data]
-    return MnemonicResponse(items=mnemonic_items)
+    try:
+        # Data placeholders
+        data = {
+            "IPA": "TODO",  # Replace with actual IPA generation logic
+            "recording": "TODO",  # Replace with actual recording logic
+        }
+
+        # Return the StreamingResponse and metadata
+        return {
+            "IPA": data["IPA"],
+            "recording": data["recording"],
+        }
+
+    except Exception as e:
+        logger.error(f"Error generating mnemonic: {e}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
-# @app.post("/generate_mnemonic", response_model=MnemonicResponse)
-# def api_generate_mnemonic(request: MnemonicRequest):
-#     # Validate language code if necessary
-#     # (Assuming you have access to G2P_LANGCODES in your api.py)
-#     from constants.languages import G2P_LANGCODES
-#     if request.language_code not in G2P_LANGCODES:
-#         raise HTTPException(status_code=400, detail="Invalid language code")
+@app.get("/create_card/img")
+async def get_image(
+    word: str = Query(...), language_code: str = Query(...)
+) -> FileResponse:
+    """
+    Generates a mnemonic image for a given word and language code.
 
-#     try:
-#         # Call your existing function
-#         top = generate_mnemonic(request.word, request.language_code)
+    Parameters
+    ----------
+    word : str, optional
+        The word to generate a mnemonic image for, by default Query(...)
+    language_code : str, optional
+        The language code of the word, by default Query(...)
 
-#         if top is None or top.empty:
-#             raise HTTPException(status_code=404, detail="No mnemonics found")
+    Returns
+    -------
+    FileResponse
+        The image file response.
 
-#         # Convert DataFrame to list of dictionaries
-#         top_dict = top.to_dict(orient='records')
+    Raises
+    ------
+    HTTPException
+        If the language code is invalid.
+    HTTPException
+        If the generated image is not found.
+    HTTPException
+        If an error occurs during the generation process.
+    """
+    # Validate language code if necessary
+    if language_code not in G2P_LANGCODES:
+        raise HTTPException(status_code=400, detail="Invalid language code")
 
-#         # Convert dictionaries to MnemonicItem instances
-#         mnemonic_items = [MnemonicItem(**item) for item in top_dict]
+    try:
+        # Generate image and get its file path
+        image_path = generate_mnemonic_img(word, language_code)
+        print(image_path)
 
-#         return MnemonicResponse(items=mnemonic_items)
+        # Ensure the file exists
+        if not os.path.exists(image_path):
+            raise HTTPException(status_code=500, detail="Generated image not found")
 
-#     except Exception as e:
-#         # Log the exception if necessary
-#         import logging
-#         logging.error(f"Error generating mnemonic: {e}")
-#         raise HTTPException(status_code=500, detail="Internal Server Error")
+        # Return the image as a file response
+        return FileResponse(image_path, media_type="image/jpeg")
+
+    except Exception as e:
+        logger.error(f"Error generating mnemonic: {e}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")

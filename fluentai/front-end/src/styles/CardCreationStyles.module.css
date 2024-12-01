@@ -46,21 +46,33 @@
   box-shadow: 0px 4px 4px 2px rgba(13, 13, 13, 0.29);
 }
 
-.form {
+.form, .formHidden {
+  opacity: 	1;
+  pointer-events: all;
   height: 85%;
   min-height: 250px;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
   flex-direction: column;
+  transition: all ease-in-out 0.5s;
 }
 
-.actions {
-  width: 50%;
+.actions{
+  opacity: 	1;
+  pointer-events: all;
+  width: 70%;
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  transition: all ease-in-out 0.5s;
 }
+
+.formHidden{
+  opacity: 0;
+  pointer-events: none;
+}
+
 
 .card {
   display: flex;
@@ -71,14 +83,15 @@
 
 .loading,
 .loadingHidden {
-  position: relative;
-  transform: translateY(256px);
-  opacity: 0;
+  position: absolute;
+  pointer-events: all;
+  opacity: 1;
+  color: rgb(var(--text-color));
   transition: all ease-in-out 0.5s;
 }
 .loadingHidden {
-  transform: translateY(260px);
-  opacity: 1;
+  pointer-events: none;
+  opacity: 0;
 }
 
 @media (max-width: 975px) {

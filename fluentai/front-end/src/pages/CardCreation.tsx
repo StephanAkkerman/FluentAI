@@ -17,7 +17,8 @@ import { createCard } from "../api";
 type CardCreationProps = {};
 
 const CardCreation: React.FC<CardCreationProps> = () => {
-  const languagesArray = Object.keys(languages);
+  const languagesMap: Record<string, string> = languages;
+  const languagesArray = Object.keys(languagesMap); // User-friendly names
   const [input, setInput] = useState({
     language: "",
     word: "",
@@ -27,17 +28,32 @@ const CardCreation: React.FC<CardCreationProps> = () => {
     form: false,
     card: false,
   });
+  const [card, setCard] = useState({
+    img: "",
+    word: "",
+  });
 
   const FrontCardContent: React.FC = () => (
     <>
-      {succes.card ? null : (input.word ? <h1>{input.word}</h1> : <h1>FluentAI</h1>)}
-
+      {succes.card ? (
+        <h1>{input.word}</h1>
+      ) : succes.form ? (
+        <h1>Loading</h1>
+      ) : input.word ? (
+        <h1>{input.word}</h1>
+      ) : (
+        <h1>FluentAI</h1>
+      )}
     </>
   );
 
   const BackCardContent: React.FC = () => (
     <>
-      <img src={logo} alt="FluentAI Logo" />
+      {card.img ? (
+        <img src={card.img} alt="Card Image" />
+      ) : (
+        <img src={logo} alt="FluentAI Logo" />
+      )}
     </>
   );
 
@@ -55,11 +71,18 @@ const CardCreation: React.FC<CardCreationProps> = () => {
     try {
       // Call the API to create the card
       const response = await createCard({
-        language: input.language,
+        language_code: input.language,
         word: input.word,
       });
 
       console.log("Card created successfully:", response);
+
+      // Update the card state with imageUrl and word
+      setCard({
+        img: response.imageUrl,
+        word: input.word,
+      });
+
 
       // Update the success state to show the card
       setSucces((prevSucces) => ({
@@ -85,10 +108,11 @@ const CardCreation: React.FC<CardCreationProps> = () => {
     }));
   };
 
-  const handleLanguage = (value: string) => {
+  const handleLanguage = (selectedLanguage: string) => {
+    const languageCode = languagesMap[selectedLanguage]; // Get the language code
     setInput((prevInput) => ({
       ...prevInput,
-      language: value,
+      language: languageCode || "", // Set the code or an empty string if not found
     }));
     setSubmitted(false);
   };
@@ -104,58 +128,64 @@ const CardCreation: React.FC<CardCreationProps> = () => {
 
     <div className={styles.cardCreation}>
       <div className={styles.wrapper}>
-        {succes.card ? (<>
-          <Card
-            front={<FrontCardContent />}
-            back={<BackCardContent />}
-          />
-        </>
-        ) : (
-          <>
-            <div className={styles.formWrapper}>
-              <h1 className={styles.title}>Card Creation</h1>
 
-              <div className={styles.form} onFocus={() => setSubmitted(false)}>
-                <AutocompleteInput
-                  onSelect={handleLanguage}
-                  suggestions={languagesArray}
-                  title={"Select the language you want to learn!"}
-                  formSubmitted={submit}
-                />
-                <FormField
-                  value={input.word}
-                  label={"Type word here"}
-                  id={"inputWord"}
-                  required={true}
-                  onChange={handleWord}
-                  limit={50}
-                  formSubmitted={submit}
-                />
-              </div>
-              <div className={styles.actions}>
-                <Button
-                  text="Cancel"
-                  onClick={handleCancel}
-                  style={{ cancel: true }}
-                />
-                <Button text="Submit" onClick={handleSubmit} />
-              </div>
 
-            </div>
-            <div className={styles.card}>
-              <Card
-                front={<FrontCardContent />}
-                back={<BackCardContent />}
-                showcase={succes.form ? true : false}
+
+        <>
+          <div className={styles.formWrapper}>
+            <h1 className={styles.title}>Card Creation</h1>
+
+            <div className={succes.form ? styles.formHidden : styles.form} onFocus={() => setSubmitted(false)}>
+              <AutocompleteInput
+                onSelect={handleLanguage}
+                suggestions={languagesArray}
+                title={"Select the language you want to learn!"}
+                formSubmitted={submit}
               />
-              <div
-                className={succes.form ? styles.loadingHidden : styles.loading}
-              >
-                <h2>Creating your card in a Flash...</h2>
-              </div>
+              <FormField
+                value={input.word}
+                label={"Type word here"}
+                id={"inputWord"}
+                required={true}
+                onChange={handleWord}
+                limit={50}
+                formSubmitted={submit}
+              />
+
             </div>
-          </>
-        )};
+            <div
+              className={succes.form && !succes.card ? styles.loading : styles.loadingHidden}
+            >
+              <h2>Creating your card in a Flash...</h2>
+            </div>
+
+            <div
+              className={succes.card ? styles.loading : styles.loadingHidden}
+            >
+              <h2>Card Created Succesfully!</h2>
+            </div>
+
+            <div className={styles.actions}>
+              <Button
+                text={succes.card ? "View" : "Cancel"}
+                onClick={handleCancel}
+                style={{ cancel: true }}
+              />
+              {succes.form && !succes.card ? null : <Button text={succes.card ? "Create Another" : "Submit"} onClick={handleSubmit} />}
+
+            </div>
+
+          </div>
+          <div className={styles.card}>
+            <Card
+              front={<FrontCardContent />}
+              back={<BackCardContent />}
+              showcase={succes.form && !succes.card ? true : false}
+            />
+
+          </div>
+        </>
+
       </div>
     </div>
   )

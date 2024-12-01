@@ -37,9 +37,14 @@ def generate_img(
     # Get the parameters for image generation from config
     image_gen_params = config.get("IMAGE_GEN", {}).get("PARAMS", {})
     image = pipe(prompt=prompt, **image_gen_params).images[0]
+    
+    file_path = f"imagine/generated-img/{model_name}_{word1}-{word2}.jpg"
+    print(f"Saving image to: {file_path}")
 
-    image.save(f"img/text2img_tests/{model_name}_{word1}-{word2}.jpg")
+
+    image.save(file_path)
     logger.info("Generated image!")
+    return file_path
 
 
 if __name__ == "__main__":
