@@ -1,0 +1,64 @@
+.appHeader {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 0 0 1rem 1rem;
+  box-shadow: 0px 4px 4px 2px rgba(13, 13, 13, 0.29);
+  min-width: 450px;
+  position: sticky;
+  height: 80px;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  max-width: 1250px;
+  min-width: 450px;
+  width: 90%;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 20%;
+}
+
+.appLogo {
+  height: 40px;
+  margin-right: 12px;
+}
+
+.appName {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333333;
+}
+
+.gearIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 10%;
+}
+
+.gearIcon svg{
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  fill: rgb(var(--prime-color));
+  cursor: pointer;
+  transition: all ease-in-out 0.3s;  
+  filter: drop-shadow(-1px 1px 1px rgba(0, 0, 0, 0.5));
+}
+
+.gearIcon svg:hover{
+  fill: rgb(var(--second-color));
+}
+
+.gearIcon svg:active{
+  transform: translate(-3px, 3px);
+  filter: none;
+}

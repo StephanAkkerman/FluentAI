@@ -1,0 +1,57 @@
+
+  .wrapper {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    z-index: 100;
+    background-color: red;
+  }
+  
+  .logoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 20%;
+  }
+  
+  .appLogo {
+    height: 40px;
+    margin-right: 12px;
+  }
+  
+  .appName {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333333;
+  }
+  
+  .gearIconWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 10%;
+  }
+  
+  .gearIcon svg{
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    fill: rgb(var(--prime-color));
+    cursor: pointer;
+    transition: all ease-in-out 0.3s;  
+    filter: drop-shadow(-1px 1px 1px rgba(0, 0, 0, 0.5));
+  }
+  
+  .gearIcon svg:hover{
+    fill: rgb(var(--second-color));
+  }
+  
+  .gearIcon svg:active{
+    transform: translate(-3px, 3px);
+    filter: none;
+  }
+  

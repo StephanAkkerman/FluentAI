@@ -3,7 +3,7 @@ import React from "react";
 type GearSvgProps = {
   className: string;
   onClick?: () => void;
-  style: React.CSSProperties; // Change the type here
+  style?: React.CSSProperties; // Change the type here
 };
 
 const GearSvg: React.FC<GearSvgProps> = ({ className, onClick, style }) => {

@@ -92,14 +92,17 @@ const CardCreation: React.FC<CardCreationProps> = () => {
       }));
     } catch (error) {
       console.error("Failed to create card:", error);
+      handleCancel()
 
       // Optional: Display an error message to the user
       alert("Error creating card. Please try again.");
+
     }
 
   };
 
   const handleCancel = () => {
+    console.log("Cancel clicked"); // Debugging
     setSubmitted(false);
     setSucces((prevSucces) => ({
       ...prevSucces,

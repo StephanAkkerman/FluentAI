@@ -1,6 +1,6 @@
 // src/pages/Header.tsx
 import React from "react";
-import styles from "../styles/HeaderStyles";
+import styles from "../styles/HeaderStyles.module.css";
 
 // Import the logo image
 import logo from "../icons/logo.png";
@@ -12,18 +12,18 @@ type HeaderProps = {
 
 const Header: React.FC<HeaderProps> = ({ onGearClick }) => {
   return (
-    <header style={styles.appHeader}>
-      <div className="wrapper" style={styles.wrapper}>
-        <div className="logoContainer" style={styles.logoContainer}>
-          <img src={logo} alt="FluentAI Logo" style={styles.appLogo} />
-          <h1 style={styles.appName}>FluentAI</h1>
+    <header className={styles.appHeader}>
+      <div className={styles.wrapper}>
+        <div className={styles.logoContainer}>
+          <img src={logo} alt="FluentAI Logo" className={styles.appLogo} />
+          <h1 className={styles.appName}>FluentAI</h1>
         </div>
         <div
-          style={styles.gearIconWrapper}
+          className={styles.gearIconWrapper}
           onClick={onGearClick}
-          // Add event handlers for hover effect if needed
+        // Add event handlers for hover effect if needed
         >
-          <GearSvg className="gear-icon" style={styles.gearIcon} />
+          <GearSvg className={styles.gearIcon} />
         </div>
       </div>
     </header>

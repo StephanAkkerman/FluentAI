@@ -5,11 +5,12 @@ import "./App.css";
 
 // pages
 import Header from "./pages/Header";
+import SideNav from "./pages/SideNav";
 import LoadingPage from "./pages/LoadingPage";
 import CardCreation from "./pages/CardCreation";
 
 function App() {
-  const [openSettings, setOpenSettings] = useState(true);
+  const [sideNav, setSideNav] = useState(true);
   const [initLoad, setInitLoad] = useState(true);
 
   useEffect(() => {
@@ -23,13 +24,14 @@ function App() {
 
   // Create a function to handle the gear click
   const handleGearClick = () => {
-    setOpenSettings((prev) => !prev);
+    setSideNav((prev) => !prev);
   };
 
   return (
     <Router basename="/FluentAI">
       {/* basename should be changed to / when we have own domain */}
       <div className="App">
+        {sideNav && <SideNav onCloseClick={handleGearClick} />}
         <Header onGearClick={handleGearClick} />
         {initLoad && <LoadingPage isLoading={initLoad} />}
         <Routes>
