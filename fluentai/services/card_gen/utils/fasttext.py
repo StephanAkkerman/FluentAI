@@ -6,9 +6,13 @@ import time
 from functools import wraps
 
 import requests
-from gensim.models.fasttext import FastTextKeyedVectors, load_facebook_vectors
-from tqdm import tqdm
 from utils.logger import logger
+
+try:
+    from gensim.models.fasttext import FastTextKeyedVectors, load_facebook_vectors
+except ImportError:
+    logger.info("Please install the 'gensim' library to use the FastText model.")
+from tqdm import tqdm
 
 
 def download_file(url, dest_path, chunk_size=1024):

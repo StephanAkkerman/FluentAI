@@ -1,4 +1,3 @@
-from gensim.models.fasttext import FastTextKeyedVectors
 from sentence_transformers import SentenceTransformer
 
 from fluentai.services.card_gen.constants.config import config
@@ -58,7 +57,7 @@ class SemanticSimilarity:
         )
         return self.model.similarity(embedding_1, embedding_2).item()
 
-    def load_semantic_model(self) -> SentenceTransformer | FastTextKeyedVectors:
+    def load_semantic_model(self) -> SentenceTransformer:
         """
         Load the specified semantic model.
 
