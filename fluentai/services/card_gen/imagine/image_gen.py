@@ -42,8 +42,7 @@ def generate_img(
     image = pipe(prompt=prompt, **image_gen_params).images[0]
 
     # Get the output directory from config
-    output_dir = Path(config.get("IMAGE_GEN", {}).get(
-        "OUTPUT_DIR", "output")).resolve()
+    output_dir = Path(config.get("IMAGE_GEN", {}).get("OUTPUT_DIR", "output")).resolve()
     os.makedirs(output_dir, exist_ok=True)
 
     file_path = output_dir / f"{word1}_{word2}_{model_name}.png"

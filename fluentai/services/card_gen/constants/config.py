@@ -30,12 +30,8 @@ def load_config_path() -> str:
         return os.environ["FLUENTAI_CONFIG_PATH"]
 
     # Command-line argument
-    parser = argparse.ArgumentParser(
-        description="Load configuration for FluentAI.")
-    parser.add_argument(
-        "--config",
-        help="Path to the config.yaml file"
-    )
+    parser = argparse.ArgumentParser(description="Load configuration for FluentAI.")
+    parser.add_argument("--config", help="Path to the config.yaml file")
     args = parser.parse_args()
     if args.config:
         return args.config

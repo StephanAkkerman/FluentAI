@@ -39,7 +39,7 @@ def generate_mnemonic_img(word: str, lang_code: str):
     # Generate the image
     image_path = generate_img(prompt=prompt, word1=word)
     logger.info("Image generated successfully!")
-    return image_path 
+    return image_path
 
 
 if __name__ == "__main__":

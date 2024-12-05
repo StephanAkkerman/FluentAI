@@ -167,8 +167,7 @@ def test_top_phonetic_success(
 
         # Assertions
         # Ensure word2ipa was called correctly
-        mock_word2ipa.assert_called_once_with(
-            "kucing", "eng-us", mock_g2p_model)
+        mock_word2ipa.assert_called_once_with("kucing", "eng-us", mock_g2p_model)
 
         # Ensure load_cache was called with the correct method
         mock_load_cache.assert_called_once_with("panphon")
@@ -214,8 +213,7 @@ def test_top_phonetic_success(
         )
 
         pd.testing.assert_frame_equal(
-            result.reset_index(
-                drop=True), expected_result.reset_index(drop=True)
+            result.reset_index(drop=True), expected_result.reset_index(drop=True)
         )
 
 
@@ -323,8 +321,7 @@ def test_top_phonetic_no_results(
         )
 
         pd.testing.assert_frame_equal(
-            result.reset_index(
-                drop=True), expected_result.reset_index(drop=True)
+            result.reset_index(drop=True), expected_result.reset_index(drop=True)
         )
 
 
@@ -410,8 +407,7 @@ def test_top_phonetic_invalid_language_code(
 
         # Assertions
         # Ensure word2ipa was called correctly
-        mock_word2ipa.assert_called_once_with(
-            "nyangang", "mal", mock_g2p_model)
+        mock_word2ipa.assert_called_once_with("nyangang", "mal", mock_g2p_model)
 
         # Ensure load_cache was called with the correct method
         mock_load_cache.assert_called_once_with("soundvec")
@@ -456,6 +452,5 @@ def test_top_phonetic_invalid_language_code(
         )
 
         pd.testing.assert_frame_equal(
-            result.reset_index(
-                drop=True), expected_result.reset_index(drop=True)
+            result.reset_index(drop=True), expected_result.reset_index(drop=True)
         )

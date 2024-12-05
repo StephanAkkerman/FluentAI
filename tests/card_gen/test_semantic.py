@@ -8,8 +8,7 @@ import pytest
 os.environ["FLUENTAI_CONFIG_PATH"] = "config.yaml"  # noqa
 
 # Replace with the actual import path to SemanticSimilarity
-from fluentai.services.card_gen.mnemonic.semantic.semantic import \
-    SemanticSimilarity
+from fluentai.services.card_gen.mnemonic.semantic.semantic import SemanticSimilarity
 
 
 @pytest.fixture
