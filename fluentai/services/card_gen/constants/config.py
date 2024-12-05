@@ -47,8 +47,7 @@ def load_config_path() -> str:
 
     raise FileNotFoundError(
         "Configuration file not found. Provide it via the FLUENTAI_CONFIG_PATH "
-        "environment variable, the --config argument, or place it at the default path: "
-        f"{default_path}"
+        "environment variable, or use the --config argument"
     )
 
 
