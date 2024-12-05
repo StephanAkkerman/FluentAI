@@ -1,3 +1,6 @@
+import os
+from pathlib import Path
+
 import torch
 from diffusers import AutoPipelineForText2Image
 
@@ -37,10 +40,14 @@ def generate_img(
     # Get the parameters for image generation from config
     image_gen_params = config.get("IMAGE_GEN", {}).get("PARAMS", {})
     image = pipe(prompt=prompt, **image_gen_params).images[0]
-    
-    file_path = f"imagine/generated-img/{model_name}_{word1}-{word2}.jpg"
-    print(f"Saving image to: {file_path}")
 
+    # Get the output directory from config
+    output_dir = Path(config.get("IMAGE_GEN", {}).get(
+        "OUTPUT_DIR", "output")).resolve()
+    os.makedirs(output_dir, exist_ok=True)
+
+    file_path = output_dir / f"{word1}_{word2}_{model_name}.png"
+    print(f"Saving image to: {file_path}")
 
     image.save(file_path)
     logger.info("Generated image!")
