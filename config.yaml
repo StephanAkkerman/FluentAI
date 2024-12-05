@@ -20,6 +20,7 @@ LLM:
 # stabilityai/stable-diffusion-2
 IMAGE_GEN:
   MODEL: stabilityai/sdxl-turbo
+  OUTPUT_DIR: "imagine/generated-img"
   PARAMS:
     num_inference_steps: 40
     height: 512

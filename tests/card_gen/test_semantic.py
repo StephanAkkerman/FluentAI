@@ -1,8 +1,11 @@
 # tests/card_gen/test_semantic.py
 
+import os
 from unittest.mock import MagicMock, patch
 
 import pytest
+
+os.environ["FLUENTAI_CONFIG_PATH"] = "config.yaml"  # noqa
 
 # Replace with the actual import path to SemanticSimilarity
 from fluentai.services.card_gen.mnemonic.semantic.semantic import SemanticSimilarity
@@ -114,7 +117,8 @@ def test_load_semantic_model_transformer(mock_config, mock_sentence_transformer)
         semantic_sim = SemanticSimilarity()
 
         # Assertions
-        mock_sentence_transformer.encode.assert_not_called()  # Encoding happens during compute_similarity
+        # Encoding happens during compute_similarity
+        mock_sentence_transformer.encode.assert_not_called()
         mock_sentence_transformer.similarity.assert_not_called()
         assert semantic_sim.model_name == "paraphrase-multilingual-minilm-l12-v2"
         assert semantic_sim.model == mock_sentence_transformer

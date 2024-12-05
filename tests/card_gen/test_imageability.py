@@ -1,10 +1,13 @@
 # tests/test_card_gen.py
 
+import os
 from unittest.mock import MagicMock
 
 import numpy as np
 import pandas as pd
 import pytest
+
+os.environ["FLUENTAI_CONFIG_PATH"] = "config.yaml"  # noqa
 
 # Import the functions and classes to be tested
 from fluentai.services.card_gen.mnemonic.imageability.predictions import (
@@ -99,7 +102,8 @@ def test_make_predictions(
 
     # Mock pandas.read_csv to return a dummy IPA dataset
     dummy_ipa_data = pd.DataFrame(
-        {"token_ort": ["apple", "banana", "cherry", "apple"]}  # 'apple' is duplicated
+        # 'apple' is duplicated
+        {"token_ort": ["apple", "banana", "cherry", "apple"]}
     )
     mock_pd_read_csv.return_value = dummy_ipa_data
 
@@ -249,7 +253,8 @@ def test_ImageabilityPredictor_get_column_imageability(
 
     # Create a dummy dataframe
     df = pd.DataFrame(
-        {"tokens": ["apple", "banana", "durian"]}  # 'durian' not in predictions
+        # 'durian' not in predictions
+        {"tokens": ["apple", "banana", "durian"]}
     )
 
     # Test get_column_imageability

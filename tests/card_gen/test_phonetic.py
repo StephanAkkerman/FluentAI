@@ -1,10 +1,13 @@
 # tests/card_gen/test_phonetic.py
 
+import os
 from unittest.mock import MagicMock, patch
 
 import numpy as np
 import pandas as pd
 import pytest
+
+os.environ["FLUENTAI_CONFIG_PATH"] = "config.yaml"  # noqa
 
 # Import the top_phonetic function
 from fluentai.services.card_gen.mnemonic.phonetic.phonetic import top_phonetic
@@ -100,7 +103,8 @@ def test_top_phonetic_success(
 
     # Setup mock config.get to return necessary configuration
     mock_config.get.return_value = {
-        "EMBEDDINGS": {"METHOD": "panphon"},  # or "soundvec" depending on your test
+        # or "soundvec" depending on your test
+        "EMBEDDINGS": {"METHOD": "panphon"},
         "PHONETIC_SIM": {"IPA_REPO": "mock_repo", "IPA_FILE": "mock_file.tsv"},
     }
 
@@ -230,7 +234,8 @@ def test_top_phonetic_no_results(
 
     # Setup mock config.get to return necessary configuration
     mock_config.get.return_value = {
-        "EMBEDDINGS": {"METHOD": "panphon"},  # or "soundvec" depending on your test
+        # or "soundvec" depending on your test
+        "EMBEDDINGS": {"METHOD": "panphon"},
         "PHONETIC_SIM": {"IPA_REPO": "mock_repo", "IPA_FILE": "mock_file.tsv"},
     }
 
@@ -327,7 +332,8 @@ def test_top_phonetic_invalid_language_code(
     mock_pad_vectors,
     mock_convert_to_matrix,
     mock_faiss_normalize_L2,
-    mock_faiss_IndexFlatIP,  # This is now a tuple (constructor_mock, instance_mock)
+    # This is now a tuple (constructor_mock, instance_mock)
+    mock_faiss_IndexFlatIP,
 ):
     """
     Test the top_phonetic function with an unsupported language code.
@@ -337,7 +343,8 @@ def test_top_phonetic_invalid_language_code(
 
     # Setup mock config.get to return necessary configuration
     mock_config.get.return_value = {
-        "EMBEDDINGS": {"METHOD": "soundvec"},  # Testing with a different vectorizer
+        # Testing with a different vectorizer
+        "EMBEDDINGS": {"METHOD": "soundvec"},
         "PHONETIC_SIM": {"IPA_REPO": "mock_repo", "IPA_FILE": "mock_file.tsv"},
     }
 
