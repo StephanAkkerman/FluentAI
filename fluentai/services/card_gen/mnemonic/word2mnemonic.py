@@ -24,7 +24,7 @@ def generate_mnemonic(word: str, language_code):
     Parameters
     ----------
     - word: String, foreign word to generate mnemonic for
-    - language_code: String, language code of the input word
+    - language_code: string language code of the input word
     """
     # Initialize the models
     g2p_model = G2P()
@@ -77,7 +77,7 @@ def generate_mnemonic(word: str, language_code):
 
     clean_models(g2p_model, imageability_predictor, semantic_sim)
 
-    return top
+    return top, translated_word, transliterated_word
 
 
 def clean_models(g2p_model, imageability_predictor, semantic_sim):

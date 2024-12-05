@@ -1,4 +1,5 @@
 import logging
+import os
 import sys
 
 from fluentai.services.card_gen.constants.config import config
@@ -12,6 +13,7 @@ class UTF8StreamHandler(logging.StreamHandler):
 
 
 # Configure the root logger
+os.makedirs("logs", exist_ok=True)
 logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s",
     datefmt="%d/%m/%Y %H:%M:%S",
