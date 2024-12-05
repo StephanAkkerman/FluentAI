@@ -4,7 +4,6 @@ from pathlib import Path
 
 import yaml
 
-
 def load_config_path() -> str:
     """
     Determine the path to the configuration file.

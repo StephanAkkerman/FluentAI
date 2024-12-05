@@ -25,12 +25,22 @@ You can find the list of supported languages [here](supported-languages.md).
 
 ## Table of Contents 🗂
 
-- [Mnemonic Word Generation](#key-features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Citation](#citation)
-- [Contributing](#contributing)
-- [License](#license)
+- [Mnemonic Word Generation](#mnemonic-word-generation-)
+  - [Imageability](#imageability)
+  - [Phonetic Similarity](#phonetic-similarity)
+  - [Orthographic Similarity](#orthographic-similarity)
+  - [Semantic Similarity](#semantic-similarity)
+  - [Best Mnemonic Word](#best-mnemonic-word)
+- [Prerequisites](#prerequisites-)
+- [Installation](#installation-)
+    - [Using `pip`](#using-pip)
+    - [Building from Source](#building-from-source)
+    - [Setting up the Frontend (Optional)](#setting-up-the-frontend-optional)
+    - [GPU Support](#gpu-support)
+- [Usage](#usage-)
+- [Citation](#citation-)
+- [Contributing](#contributing-)
+- [License](#license-)
 
 ## Mnemonic Word Generation 🏭
 
@@ -69,20 +79,70 @@ Before starting, make sure you have the following requirements:
 - [Anki](https://apps.ankiweb.net/) installed on your device.
 - [Anki-Connect](https://foosoft.net/projects/anki-connect/) this add-on allows you to add cards to Anki from the command line.
 - Add the deck in `/deck/FluentAI.apkg` to your Anki application. You can do this by dragging and dropping the file into the Anki application.
+- [Python](https://www.python.org/downloads/) 3.10 installed on your device.
+- [React](https://react.dev) installed on your device (optional).
 
 ## Installation ⚙️
 
-The required packages to run this code can be found in the requirements.txt file. To run this file, execute the following code block after cloning the repository:
+### Using `pip`
+
+We have bundled all required dependencies into a package for easy installation. To get started, simply run one of the following commands:
 
 ```bash
-pip install -r requirements.txt
+pip install .
 ```
 
-or
+or install directly from the repository:
 
 ```bash
 pip install git+https://github.com/StephanAkkerman/FluentAI.git
 ```
+
+### Building from Source
+
+If you prefer to build from source, follow these steps:
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/StephanAkkerman/FluentAI.git
+   ```
+
+2. Navigate to the project directory:
+
+   ```bash
+   cd FluentAI
+   ```
+
+3. Install the dependencies:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+### Setting up the Frontend (Optional)
+
+If you plan to use the API, you can set up the frontend by following these steps:
+
+1. Navigate to the `frontend` directory:
+
+   ```bash
+   cd fluentai/frontend
+   ```
+
+2. Install the necessary frontend dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+
+   ```bash
+   npm start
+   ```
+
+This will launch the frontend and connect it to the API for a seamless user experience.
 
 ### GPU Support
 
