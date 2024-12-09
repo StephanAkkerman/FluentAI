@@ -2,7 +2,7 @@ import gc
 
 import torch
 
-from fluentai.services.card_gen.constants.config import weights_percentages
+from fluentai.services.card_gen.constants.config import config, weights_percentages
 from fluentai.services.card_gen.constants.languages import G2P_LANGCODES
 from fluentai.services.card_gen.mnemonic.imageability.predictions import (
     ImageabilityPredictor,
@@ -75,7 +75,8 @@ def generate_mnemonic(word: str, language_code):
     # Sort by score
     top = top.sort_values(by="score", ascending=False)
 
-    clean_models(g2p_model, imageability_predictor, semantic_sim)
+    if config.get("G2P", {}).get("DELETE_AFTER_USE", True):
+        clean_models(g2p_model, imageability_predictor, semantic_sim)
 
     return top, translated_word, transliterated_word
 

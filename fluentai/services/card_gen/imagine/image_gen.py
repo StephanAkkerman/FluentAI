@@ -33,7 +33,14 @@ def generate_img(
         torch_dtype=torch.float16,
         variant="fp16",
         cache_dir="models",
-    ).to("cuda")
+    )
+
+    # Check if cuda is enabled
+    if torch.cuda.is_available():
+        logger.debug("CUDA is available. Moving the t2i pipeline to CUDA.")
+        pipe.to("cuda")
+    else:
+        logger.info("CUDA is not available. Running the image gen pipeline on CPU.")
 
     logger.info(f"Generating image for prompt: {prompt}")
 
@@ -46,10 +53,9 @@ def generate_img(
     os.makedirs(output_dir, exist_ok=True)
 
     file_path = output_dir / f"{word1}_{word2}_{model_name}.png"
-    print(f"Saving image to: {file_path}")
+    logger.info(f"Saving image to: {file_path}")
 
     image.save(file_path)
-    logger.info("Generated image!")
     return file_path
 
 
