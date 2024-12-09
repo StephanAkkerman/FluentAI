@@ -71,9 +71,3 @@ PHONETIC_SIM:
 
 ORTHOGRAPHIC_SIM:
   EVAL: "StephanAkkerman/orthographic-similarity-ratings"
-# IMAGEABILITY:
-#   EVAL: "StephanAkkerman/imageability"
-#   EMBEDDINGS_REPO: "StephanAkkerman/imageability"
-#   EMBEDDINGS_FILE: "fasttext/fasttext_embeddings.parquet"
-#   MODEL: "StephanAkkerman/imageability-predictor"
-#   MODEL_FILE: "imageability_predictor.joblib"
