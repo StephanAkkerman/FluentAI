@@ -76,7 +76,7 @@ def get_clts():
 
     # Check if the directory already exists
     if check_directory_exists(clone_path):
-        logger.info(f"The directory '{clone_path}' already exists. Skipping clone.")
+        logger.debug(f"The directory '{clone_path}' already exists. Skipping clone.")
     else:
         # Ensure the /local_data directory exists
         if not data_directory.exists():

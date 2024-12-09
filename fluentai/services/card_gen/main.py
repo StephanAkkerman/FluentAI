@@ -16,7 +16,7 @@ def generate_mnemonic_img(word: str, lang_code: str):
     Parameters
     ----------
     word : str
-        The word to generate an image for.
+        The word to generate an image for in the language of lang_code.
     lang_code : str
         The language code for the word.
     """
@@ -41,9 +41,9 @@ def generate_mnemonic_img(word: str, lang_code: str):
         torch.cuda.empty_cache()
 
     # Generate the image
-    image_path = generate_img(prompt=prompt, word1=word)
+    image_path = generate_img(prompt=prompt, word1=word, word2=best_match["token_ort"])
     return image_path
 
 
 if __name__ == "__main__":
-    generate_mnemonic_img("cat", "dut")
+    generate_mnemonic_img("kat", "dut")
