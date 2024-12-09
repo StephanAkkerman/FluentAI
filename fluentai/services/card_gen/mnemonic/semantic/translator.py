@@ -49,8 +49,77 @@ def remove_diacritics(word: str) -> str:
     return "".join(char for char in decomposed if unicodedata.category(char) != "Mn")
 
 
+def get_transliteration(word: str, src: str) -> str:
+    """
+    Given a word, returns its transliteration in the same language.
+
+    Parameters
+    ----------
+    word : str
+        The word to transliterate.
+    src : str
+        The language code of the word.
+
+    Returns
+    -------
+    str
+        The transliterated word.
+    """
+    if is_latin_script(word):
+        return word
+
+    try:
+        transliterated_word = translator.translate(
+            word, src=src, dest=src
+        ).pronunciation
+    except Exception as e:
+        logger.error(f"Error transliterating {word} from {src} to {src}: {e}")
+        detected_lang = translator.detect(word)
+        logger.info(
+            f"Could not comprehend original language code ({src}), detected {detected_lang.lang} with {detected_lang.confidence} confidence."
+        )
+        src = detected_lang.lang
+
+    # Lower case it
+    transliterated_word = transliterated_word.lower()
+    # Remove diacritics
+    return remove_diacritics(transliterated_word)
+
+
+def get_translation(word: str, src: str, target: str) -> str:
+    """
+    Translates a word from the source language to the target language.
+
+    Parameters
+    ----------
+    word : str
+        The word in the source (src) language.
+    src : str
+        The language code of the source language.
+    target : str
+        The language code of the target language.
+
+    Returns
+    -------
+    str
+        The translated word.
+    """
+    try:
+        return translator.translate(word, src=src, dest=target).text
+    except Exception as e:
+        logger.error(f"Error translating {word} from {src} to {target}: {e}")
+
+    # Detect the language of the word
+    detected_lang = translator.detect(word)
+    logger.info(
+        f"Could not comprehend original language code ({src}), detected {detected_lang.lang} with {detected_lang.confidence} confidence."
+    )
+
+    return translator.translate(word, src=detected_lang.lang, dest=target).text
+
+
 @lru_cache(maxsize=10000)
-def translate_word(word, src_lang_code, target_lang_code: str = "en"):
+def translate_word(word, src_lang_code, target_lang_code: str = "en") -> tuple:
     """
     Translates a word from the source language to target languages.
 
@@ -63,34 +132,19 @@ def translate_word(word, src_lang_code, target_lang_code: str = "en"):
     -------
         dict: A dictionary with target language codes as keys and translated words as values.
     """
+    logger.debug(f"Translating {word} from {src_lang_code} to {target_lang_code}...")
+
     src = map_language_code(src_lang_code)
+    logger.debug(f"Mapped translation source language code: {src}")
 
     # Map target language codes.
     if len(target_lang_code) > 2:
         target = map_language_code(target_lang_code)
+        logger.debug(f"Mapped translation target language code: {target}")
     else:
         target = target_lang_code
 
-    # Add transliteration
-    transliterated_word = word
-
-    try:
-        if not is_latin_script(word):
-            transliterated_word = translator.translate(
-                word, src=src, dest=src
-            ).pronunciation
-            # Lower case it
-            transliterated_word = transliterated_word.lower()
-            # Remove diacritics
-            transliterated_word = remove_diacritics(transliterated_word)
-
-        return (
-            translator.translate(word, src=src, dest=target).text,
-            transliterated_word,
-        )
-    except Exception as e:
-        logger.info(f"Error translating {word} from {src} to {target}: {e}")
-        return word, word
+    return get_translation(word, src, target), get_transliteration(word, src)
 
 
 def translate_dataframe_column(
@@ -124,5 +178,6 @@ def translate_dataframe_column(
 
 
 if __name__ == "__main__":
+    print(translate_word("kat", "dut"))
     print(translate_word("amigo", "spa-latin"))
     print(translate_word("猫", "zho-s"))

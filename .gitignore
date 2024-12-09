@@ -6,7 +6,7 @@ data/clts*
 data
 *.bin
 local_data/
-generated-img/*
+imagine/generated-img/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

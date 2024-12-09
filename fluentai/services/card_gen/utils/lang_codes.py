@@ -39,6 +39,7 @@ def map_language_code(input_code: str) -> str:
         "wel-sw": "cy",  # Welsh (South)
         "por-br": "pt",  # Portuguese (Brazil)
         "por-po": "por",  # Portuguese (Portugal)
+        "dut": "nl",  # Dutch
     }
 
     if input_code in special_mappings:

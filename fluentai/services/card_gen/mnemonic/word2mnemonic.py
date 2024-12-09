@@ -17,7 +17,7 @@ from fluentai.services.card_gen.mnemonic.semantic.translator import translate_wo
 from fluentai.services.card_gen.utils.logger import logger
 
 
-def generate_mnemonic(word: str, language_code):
+def generate_mnemonic(word: str, language_code: str):
     """
     Generate a mnemonic for the input word using the phonetic representation.
 
@@ -26,6 +26,8 @@ def generate_mnemonic(word: str, language_code):
     - word: String, foreign word to generate mnemonic for
     - language_code: string language code of the input word
     """
+    logger.debug(f"Generating mnemonic for {word} and lanuage: {language_code}...")
+
     # Initialize the models
     g2p_model = G2P()
     imageability_predictor = ImageabilityPredictor()
@@ -39,6 +41,7 @@ def generate_mnemonic(word: str, language_code):
     # Get the top x phonetically similar words
     logger.info(f"Generating top phonetic similarity for {word} in {language_code}...")
     top = top_phonetic(word, language_code, 15, g2p_model)
+    logger.debug(f"Top phonetic similarity: {top}")
 
     # Generate their word imageability for all token_ort in top
     logger.info("Generating imageability...")
