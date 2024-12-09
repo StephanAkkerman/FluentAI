@@ -20,7 +20,7 @@ The pipeline they propose, as shown below, serves as the blueprint for our proje
 
 ![image](https://github.com/StephanAkkerman/FluentAI/assets/45365128/c9ca3190-b136-453d-91cd-f785eac11fa3)
 
-You can find our docs [here](https://github.com/StephanAkkerman/FluentAI/wiki) and the list of supported languages [here](supported-languages.md).
+You can find our docs [here](https://github.com/StephanAkkerman/FluentAI/wiki) and the list of supported languages [here](https://github.com/StephanAkkerman/FluentAI/wiki/Supported-languages).
 
 ## Table of Contents 🗂
 
