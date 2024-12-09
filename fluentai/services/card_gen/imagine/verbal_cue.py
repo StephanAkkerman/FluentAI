@@ -8,7 +8,7 @@ class VerbalCue:
     def __init__(self):
         model = AutoModelForCausalLM.from_pretrained(
             config.get("LLM").get("MODEL"),
-            device_map="cuda",
+            device_map="auto",
             torch_dtype="auto",
             trust_remote_code=True,
             cache_dir="models",

@@ -2,6 +2,7 @@ import gc
 
 import torch
 
+from fluentai.services.card_gen.constants.config import config
 from fluentai.services.card_gen.imagine.image_gen import generate_img
 from fluentai.services.card_gen.imagine.verbal_cue import VerbalCue
 from fluentai.services.card_gen.mnemonic.word2mnemonic import generate_mnemonic
@@ -32,15 +33,15 @@ def generate_mnemonic_img(word: str, lang_code: str):
     )
     prompt = vc.generate_cue(translated_word, best_match["token_ort"])
 
-    del vc
+    if config.get("LLM", {}).get("DELETE_AFTER_USE", True):
+        del vc
 
-    gc.collect()
+        gc.collect()
 
-    torch.cuda.empty_cache()
+        torch.cuda.empty_cache()
 
     # Generate the image
     image_path = generate_img(prompt=prompt, word1=word)
-    logger.info("Image generated successfully!")
     return image_path
 
 

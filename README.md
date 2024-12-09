@@ -144,9 +144,14 @@ If you plan to use the API, you can set up the frontend by following these steps
 
 This will launch the frontend and connect it to the API for a seamless user experience.
 
-### GPU Support
+### Install with GPU Support (Recommended)
 
-If you would like to use a GPU to run the code, you can install the `torch` package with the CUDA support. You can find the installation instructions [here](https://pytorch.org/get-started/locally/).
+If you would like to use a GPU to run the code, you can install the `torch` package with the CUDA support.
+After installing the required dependencies, run the following command:
+
+```bash
+pip install -r requirements/gpu-requirements.txt
+```
 
 ## Usage ⌨️
 

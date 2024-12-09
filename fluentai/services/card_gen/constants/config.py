@@ -41,6 +41,11 @@ def load_config_path() -> str:
     if default_path.exists():
         return str(default_path)
 
+    # Second option
+    default_path = Path(os.getcwd()) / "config.yaml"
+    if default_path.exists():
+        return str(default_path)
+
     raise FileNotFoundError(
         "Configuration file not found. Provide it via the FLUENTAI_CONFIG_PATH "
         "environment variable, or use the --config argument"

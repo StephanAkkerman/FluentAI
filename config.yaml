@@ -11,10 +11,12 @@ WEIGHTS:
 G2P:
   MODEL: "charsiu/g2p_multilingual_byT5_small_100"
   TOKENIZER: "google/byt5-small"
+  DELETE_AFTER_USE: True
 
 LLM:
   MODEL: "microsoft/Phi-3-mini-4k-instruct"
   TOKENIZER: "microsoft/Phi-3-mini-4k-instruct"
+  DELETE_AFTER_USE: True
 
 # You can also use the following smaller model:
 # stabilityai/stable-diffusion-2
