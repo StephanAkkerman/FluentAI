@@ -17,7 +17,7 @@ export default function FormField({
 }: FormFieldProps) {
   return (
     <div className="flex flex-col space-y-2">
-      <label className="font-medium">
+      <label className="font-medium text-gray-800 dark:text-gray-200">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
@@ -26,7 +26,7 @@ export default function FormField({
         children
       ) : (
         <input
-          className={`border rounded p-2 ${error ? "border-red-500" : "border-gray-300"
+          className={`border rounded p-2 bg-white text-gray-800 dark:border-gray-600 ${error ? "border-red-500" : "border-gray-300 dark:border-gray-600"
             }`}
           value={value}
           onChange={(e) => onChange?.(e.target.value)}
@@ -34,7 +34,9 @@ export default function FormField({
         />
       )}
 
-      {error && <p className="text-red-500 text-sm">{error}</p>}
+      {error && (
+        <p className="text-red-500 text-sm dark:text-red-400">{error}</p>
+      )}
     </div>
   );
 }

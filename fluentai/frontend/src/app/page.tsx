@@ -10,25 +10,21 @@ export default function Home() {
   const [error, setError] = useState("");
 
   return (
-    <div className="flex flex-row items-center justify-center h-screen gap-3">
-      <div className="flex flex-col">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start min-h-screen">
+      <div>
         <CardGenerator
           onCardCreated={setCard}
           onLoading={setLoading}
           onError={setError}
         />
-
         {loading && (
-          <p className="text-blue-600 font-semibold mt-4">Creating your card...</p>
+          <p className="text-blue-600 font-medium mt-4">Creating your card...</p>
         )}
-
-        {error && (
-          <p className="text-red-500 font-semibold mt-4">{error}</p>
-        )}
+        {error && <p className="text-red-500 font-medium mt-4">{error}</p>}
       </div>
-      <div className="flex flex-col items-center justify-center h-screen">
+      <div className="flex items-center justify-center">
         {card && (
-          <div className="mt-6">
+          <div>
             <Flashcard
               word="This is the English word."
               imageUrl={card.img}
@@ -41,3 +37,4 @@ export default function Home() {
     </div>
   );
 }
+

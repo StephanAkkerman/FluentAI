@@ -28,8 +28,10 @@ export default function Flashcard({
         style={{ transformStyle: "preserve-3d" }}
       >
         {/* Front Side */}
-        <div className="absolute inset-0 bg-white rounded-lg shadow-lg backface-hidden flex flex-col justify-center items-center p-4">
-          <h2 className="text-2xl font-bold mb-2">{word}</h2>
+        <div className="absolute inset-0 bg-white dark:bg-gray-800 rounded-2xl shadow-lg backface-hidden flex flex-col justify-center items-center p-4">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-2">
+            {word}
+          </h2>
           <img
             src={imageUrl}
             alt={word}
@@ -38,9 +40,9 @@ export default function Flashcard({
         </div>
 
         {/* Back Side */}
-        <div className="absolute inset-0 bg-gray-800 text-white rounded-lg shadow-lg backface-hidden transform rotate-y-180 flex flex-col justify-center items-center p-4">
+        <div className="absolute inset-0 bg-white dark:bg-gray-800 rounded-2xl shadow-lg backface-hidden transform rotate-y-180 flex flex-col justify-center items-center p-4">
           <h2 className="text-2xl font-bold mb-2">{correctWord}</h2>
-          <p className="text-lg italic text-gray-300 text-center">{phrase}</p>
+          <p className="text-lg italic text-gray-800 dark:text-gray-200 text-center">{phrase}</p>
         </div>
       </div>
     </div>

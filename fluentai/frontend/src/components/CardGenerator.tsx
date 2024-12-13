@@ -51,9 +51,9 @@ export default function CardGenerator({
   };
 
   return (
-    <div className="w-full max-w-lg p-8 bg-white rounded shadow-md">
-      <h2 className="text-2xl font-semibold mb-6">Create Your Flashcard</h2>
-      <form onSubmit={handleSubmit} className="grid gap-6">
+    <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+      <h2 className="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-6">Create Your Flashcard</h2>
+      <form onSubmit={handleSubmit} className="space-y-6">
         <FormField
           label="Language"
           value={input.language_code}
@@ -68,7 +68,6 @@ export default function CardGenerator({
             }}
           />
         </FormField>
-
         <FormField
           label="Word"
           value={input.word}
@@ -76,7 +75,6 @@ export default function CardGenerator({
           required
           onChange={(word) => setInput((prev) => ({ ...prev, word }))}
         />
-
         <Button text="Create Card" variant="primary" type="submit" />
       </form>
     </div>

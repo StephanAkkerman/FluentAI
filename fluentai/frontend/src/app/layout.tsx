@@ -25,9 +25,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-white text-black">
+      <body className="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans">
         <Header />
-        <main className="p-4">{children}</main>
+        <main className="max-w-7xl mx-auto px-6 py-12">{children}</main>
       </body>
     </html>
   );
