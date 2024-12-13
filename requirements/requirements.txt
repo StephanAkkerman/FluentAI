@@ -20,7 +20,7 @@ panphon==0.21.2
 soundvectors==1.0
 datasets==3.1.0
 GitPython==3.1.43
-googletrans @ git+https://github.com/ssut/py-googletrans@main
+googletrans @ git+https://github.com/StephanAkkerman/py-googletrans
 pycountry==24.6.1
 huggingface-hub==0.26.2
 fastapi==0.115.4
