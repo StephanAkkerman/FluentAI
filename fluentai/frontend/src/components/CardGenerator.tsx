@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import AutoCompleteInput from "./ui/AutoCompleteInput";
 import FormField from "./ui/FormField";
@@ -65,7 +63,7 @@ export default function CardGenerator({
           <AutoCompleteInput
             suggestions={languagesArray}
             onSelect={(languageName) => {
-              const languageCode: string = languages[languageName];
+              const languageCode = languages[languageName as keyof typeof languages];
               setInput((prev) => ({ ...prev, language_code: languageCode || "" }));
             }}
           />
@@ -79,7 +77,7 @@ export default function CardGenerator({
           onChange={(word) => setInput((prev) => ({ ...prev, word }))}
         />
 
-        <Button text="Create Card" variant="primary" onClick={handleSubmit} />
+        <Button text="Create Card" variant="primary" type="submit" />
       </form>
     </div>
   );
