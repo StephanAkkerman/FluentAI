@@ -1,13 +1,3 @@
-"""
-Interfaces with Anki through AnkiConnect to add notes to Anki decks programmatically.
-
-It demonstrates how to use AnkiConnect to add flashcards with images and audio.
-
-Usage:
-- Ensure Anki is running and AnkiConnect is installed.
-- Run the script to add a sample note to your Anki collection.
-"""
-
 import base64
 import html
 import os
@@ -22,7 +12,7 @@ class AnkiConnect:
     URL = "http://localhost:8765/"
     VERSION = 6
 
-    def invoke(self, action, params=None):
+    def invoke(self, action: str, params: dict = None):
         """
         Invoke an AnkiConnect action with optional parameters.
 
@@ -40,7 +30,7 @@ class AnkiConnect:
             raise Exception(response["error"])
         return response["result"]
 
-    def get_deck_names(self):
+    def get_deck_names(self) -> list[str]:
         """
         Retrieves a list of deck names from Anki.
         """
@@ -52,28 +42,31 @@ class AnkiConnect:
                 "Please make sure Anki is running and AnkiConnect is installed"
             )
 
-    def store_media_file(self, src_file_path, word):
+    def store_media_file(self, src_file_path: str, word: str) -> str:
         """
         Stores a media file in Anki's collection.
 
         Returns the filename used in Anki.
         """
-        action = "storeMediaFile"
+        # Sanitize the word to remove special characters
         sanitized_word = "".join(
             [c for c in word if c.isalnum() or c in (" ", "-")]
         ).rstrip()
+
+        # Get the file extension
         ext = os.path.splitext(src_file_path)[1]
         dst = f"{sanitized_word}{ext}"
 
+        # Encode the file as base64
         with open(src_file_path, "rb") as f:
             b64_output = base64.b64encode(f.read()).decode("utf-8")
-        params = {"filename": dst, "data": b64_output}
 
-        self.invoke(action, params)
+        self.invoke("storeMediaFile", {"filename": dst, "data": b64_output})
+
         return dst
 
     @staticmethod
-    def format_notes(notes):
+    def format_notes(notes: str) -> str:
         """
         Formats notes by escaping HTML and converting line breaks.
         """
@@ -82,15 +75,15 @@ class AnkiConnect:
 
     def add_note(
         self,
-        deck_name,
-        word,
-        answer,
-        image_paths,
-        word_usage,
-        notes,
-        recording_file_path,
-        ipa_text,
-        test_spelling,
+        deck_name: str,
+        word: str,
+        answer: str,
+        image_paths: list[str],
+        word_usage: str,
+        notes: str,
+        recording_file_path: str,
+        ipa_text: str,
+        test_spelling: bool,
     ):
         """
         Adds a new note to the specified Anki deck with provided fields.
