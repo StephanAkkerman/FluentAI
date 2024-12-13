@@ -255,7 +255,7 @@ def get_models():
     print(response)
 
 
-def create_model(lang_code: str = "en_US"):
+def create_model(lang_code: str = "id_ID"):
     anki = AnkiConnect()
     action = "createModel"
     params = {

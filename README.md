@@ -42,7 +42,6 @@ Before starting, make sure you have the following requirements:
 
 - [Anki](https://apps.ankiweb.net/) installed on your device.
 - [Anki-Connect](https://foosoft.net/projects/anki-connect/) This add-on allows you to add cards to Anki from the command line.
-Add the deck in `/deck/FluentAI.apkg` to your Anki application by dragging and dropping the file into the application.
 - [Python](https://www.python.org/downloads/) 3.10 installed on your device.
 - [React](https://react.dev) installed on your device (optional).
 
