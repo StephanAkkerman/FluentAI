@@ -67,7 +67,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./fluentai/frontend/out
+          path: ./fluentai/frontend/.next
 
   deploy:
     environment:
