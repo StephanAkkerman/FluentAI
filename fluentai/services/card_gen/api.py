@@ -1,13 +1,13 @@
 # To run: uvicorn api:app --reload
 # if that doesn't work try: python -m uvicorn api:app --reload
 
-
+import base64
 import os
 
 from constants.languages import G2P_LANGCODES
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from fluentai.services.card_gen.main import generate_mnemonic_img
@@ -86,7 +86,7 @@ async def api_generate_mnemonic(request: CreateCardRequest) -> dict:
 @app.get("/create_card/img")
 async def get_image(
     word: str = Query(...), language_code: str = Query(...)
-) -> FileResponse:
+) -> JSONResponse:
     """
     Generates a mnemonic image for a given word and language code.
 
@@ -116,17 +116,25 @@ async def get_image(
         raise HTTPException(status_code=400, detail="Invalid language code")
 
     try:
-        # Generate image and get its file path
-        image_path = generate_mnemonic_img(word, language_code)
-        print(image_path)
+        # Generate image and get its file path along with verbal cue and translation
+        image_path, verbal_cue, translation = generate_mnemonic_img(word, language_code)
 
         # Ensure the file exists
         if not os.path.exists(image_path):
             raise HTTPException(status_code=500, detail="Generated image not found")
 
-        # Return the image as a file response
-        return FileResponse(image_path, media_type="image/jpeg")
+        # Read the image file as bytes
+        with open(image_path, "rb") as image_file:
+            image_bytes = image_file.read()
 
+        # Return a JSON response with image and metadata
+        return JSONResponse(
+            content={
+                "image": base64.b64encode(image_bytes).decode("utf-8"),
+                "verbal_cue": verbal_cue,
+                "translation": translation.title(),
+            }
+        )
     except Exception as e:
         logger.error(f"Error generating mnemonic: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
