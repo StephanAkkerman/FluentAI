@@ -18,7 +18,7 @@ Levenshtein==0.26.1
 pyclts==3.2.0
 panphon==0.21.2
 soundvectors==1.0
-datasets==3.1.0
+datasets==3.2.0
 GitPython==3.1.43
 googletrans @ git+https://github.com/StephanAkkerman/py-googletrans
 pycountry==24.6.1
