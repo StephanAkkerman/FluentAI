@@ -23,5 +23,5 @@ GitPython==3.1.43
 googletrans @ git+https://github.com/StephanAkkerman/py-googletrans
 pycountry==24.6.1
 huggingface-hub==0.26.2
-fastapi==0.115.4
+fastapi==0.115.6
 uvicorn[standard]==0.32.0  # ASGI server for FastAPI
