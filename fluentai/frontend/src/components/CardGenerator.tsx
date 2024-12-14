@@ -7,7 +7,7 @@ import { createCard } from "../app/api/createCard";
 import { CreateCardInterface } from "../interfaces/CreateCardInterface";
 
 interface CardGeneratorProps {
-  onCardCreated: (card: { img: string; word: string }) => void;
+  onCardCreated: (card: { img: string; word: string; keyPhrase: string; translation: string }) => void;
   onLoading: (loading: boolean) => void;
   onError: (error: string) => void;
   onWordChange: (word: string) => void;
@@ -49,7 +49,7 @@ export default function CardGenerator({
 
     try {
       const response = await createCard(input);
-      onCardCreated({ img: response.imageUrl, word: input.word });
+      onCardCreated({ img: response.imageUrl, word: input.word, keyPhrase: response.verbalCue, translation: response.translation });
     } catch (err: any) {
       onError(err.message || "An unexpected error occurred.");
     } finally {

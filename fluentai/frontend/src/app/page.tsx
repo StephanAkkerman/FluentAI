@@ -5,7 +5,7 @@ import CardGenerator from "../components/CardGenerator";
 import Flashcard from "../components/Flashcard";
 
 export default function Home() {
-  const [card, setCard] = useState<{ img: string; word: string } | null>(null);
+  const [card, setCard] = useState<{ img: string; word: string; keyPhrase: string; translation: string } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [currentWord, setCurrentWord] = useState("");
@@ -25,8 +25,8 @@ export default function Home() {
         <Flashcard
           word={currentWord}
           imageUrl={card?.img || ""}
-          correctWord="This is the English word." // TODO: Get this from the API
-          phrase="This is the key phrase" // TODO: Get this from the API
+          correctWord={card?.translation || "This is the English word."}
+          phrase={card?.keyPhrase || "This is the key phrase"}
           isLoading={loading}
           showFront={!!card}
         />

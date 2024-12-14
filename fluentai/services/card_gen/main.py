@@ -9,7 +9,7 @@ from fluentai.services.card_gen.mnemonic.word2mnemonic import generate_mnemonic
 from fluentai.services.card_gen.utils.logger import logger
 
 
-def generate_mnemonic_img(word: str, lang_code: str):
+def generate_mnemonic_img(word: str, lang_code: str) -> tuple:
     """
     Generate an image for a given word using the mnemonic pipeline.
 
@@ -19,6 +19,15 @@ def generate_mnemonic_img(word: str, lang_code: str):
         The word to generate an image for in the language of lang_code.
     lang_code : str
         The language code for the word.
+
+    Returns
+    -------
+    str
+        The path to the generated image.
+    str
+        The verbal cue for the image.
+    str
+        The translated word.
     """
     best_matches, translated_word, _ = generate_mnemonic(word, lang_code)
 
@@ -42,7 +51,7 @@ def generate_mnemonic_img(word: str, lang_code: str):
 
     # Generate the image
     image_path = generate_img(prompt=prompt, word1=word, word2=best_match["token_ort"])
-    return image_path
+    return image_path, prompt, translated_word
 
 
 if __name__ == "__main__":

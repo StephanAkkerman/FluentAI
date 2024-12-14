@@ -7,4 +7,6 @@ export interface CreateCardResponse {
   imageUrl: string;
   IPA: string;
   recording: string;
+  verbalCue: string;
+  translation: string;
 }

@@ -2,7 +2,6 @@ import axios from "axios";
 import { CreateCardInterface, CreateCardResponse } from "../../interfaces/CreateCardInterface";
 
 // API Endpoint
-//const CARD_GEN_URL = process.env.REACT_APP_CARD_GEN_BACKEND_URL;
 const CARD_GEN_URL = "http://localhost:8000";
 
 // Ensure cookies are included
@@ -23,25 +22,30 @@ export const createCard = async (
       cardData,
       { responseType: "json" }
     );
-
     const { IPA, recording } = wordData;
 
-    // Step 2: Fetch image
-    const { data: imgBlob } = await axios.get(
+    // Step 2: Fetch image with verbal cue and translation
+    const { data } = await axios.get(
       `${CARD_GEN_URL}/create_card/img`,
       {
         params: {
           word: cardData.word,
           language_code: cardData.language_code,
         },
-        responseType: "blob",
       }
     );
 
-    // Step 3: Convert image blob to URL
-    const imageUrl = URL.createObjectURL(imgBlob);
+    // Convert base64 image to blob
+    const imageBlob = await (await fetch(`data:image/jpeg;base64,${data.image}`)).blob();
+    const imageUrl = URL.createObjectURL(imageBlob);
 
-    const response: CreateCardResponse = { imageUrl, IPA, recording };
+    const response: CreateCardResponse = {
+      imageUrl,
+      IPA,
+      recording,
+      verbalCue: data.verbal_cue,
+      translation: data.translation
+    };
 
     console.log("Card created successfully:", response);
     return response;
