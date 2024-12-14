@@ -10,12 +10,14 @@ interface CardGeneratorProps {
   onCardCreated: (card: { img: string; word: string }) => void;
   onLoading: (loading: boolean) => void;
   onError: (error: string) => void;
+  onWordChange: (word: string) => void;
 }
 
 export default function CardGenerator({
   onCardCreated,
   onLoading,
   onError,
+  onWordChange,
 }: CardGeneratorProps) {
   const languagesArray = Object.keys(languages);
   const [input, setInput] = useState<CreateCardInterface>({
@@ -31,6 +33,11 @@ export default function CardGenerator({
     };
     setErrors(newErrors);
     return !newErrors.language_code && !newErrors.word;
+  };
+
+  const handleWordChange = (word: string) => {
+    setInput((prev) => ({ ...prev, word }));
+    onWordChange(word);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -65,8 +72,12 @@ export default function CardGenerator({
           <AutoCompleteInput
             suggestions={languagesArray}
             onSelect={(languageName) => {
-              const languageCode = languages[languageName as keyof typeof languages];
-              setInput((prev) => ({ ...prev, language_code: languageCode || "" }));
+              const languageCode =
+                languages[languageName as keyof typeof languages];
+              setInput((prev) => ({
+                ...prev,
+                language_code: languageCode || "",
+              }));
             }}
           />
         </FormField>
@@ -75,7 +86,7 @@ export default function CardGenerator({
           value={input.word}
           error={errors.word}
           required
-          onChange={(word) => setInput((prev) => ({ ...prev, word }))}
+          onChange={handleWordChange}
         />
         <Button
           text="Create Card"
