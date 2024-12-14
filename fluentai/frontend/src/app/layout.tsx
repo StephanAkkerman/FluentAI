@@ -25,9 +25,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans">
+      <body className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 text-gray-800 dark:text-gray-200 font-sans min-h-screen flex flex-col">
         <Header />
-        <main className="max-w-7xl mx-auto px-6 py-12">{children}</main>
+        <main className="flex-grow max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+          {children}
+        </main>
       </body>
     </html>
   );

@@ -30,6 +30,7 @@ export default function Home() {
               imageUrl={card.img}
               correctWord={card.word}
               phrase="This is the key phrase"
+              showFront={false}
             />
           </div>
         )}

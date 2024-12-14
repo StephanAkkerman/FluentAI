@@ -18,14 +18,22 @@ export default function Header() {
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
   return (
-    <header className="w-full flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
-      <div className="flex items-center space-x-2">
-        <Image src={logo} alt="FluentAI Logo" width={40} height={40} />
-        <h1 className="text-xl font-bold text-gray-800 dark:text-gray-200">FluentAI</h1>
+    <header className="w-full flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm">
+      <div className="flex items-center space-x-4">
+        <Image
+          src={logo}
+          alt="FluentAI Logo"
+          width={50}
+          height={50}
+          className="transition-transform duration-300 hover:rotate-12"
+        />
+        <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400">
+          FluentAI
+        </h1>
       </div>
       <button
         onClick={toggleDarkMode}
-        className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100"
+        className="px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-300 flex items-center space-x-2"
         aria-label="Toggle Dark Mode"
       >
         {darkMode ? "🌞 Light Mode" : "🌙 Dark Mode"}
