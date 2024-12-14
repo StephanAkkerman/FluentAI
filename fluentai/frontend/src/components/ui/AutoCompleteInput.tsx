@@ -11,6 +11,7 @@ export default function AutoCompleteInput({
 }: AutoCompleteInputProps) {
   const [inputValue, setInputValue] = useState("");
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
+  const [isFocused, setIsFocused] = useState(false);
 
   const handleChange = (value: string) => {
     setInputValue(value);
@@ -26,7 +27,7 @@ export default function AutoCompleteInput({
   };
 
   return (
-    <div className="relative">
+    <div className="relative" onBlur={() => setIsFocused(false)} onFocus={() => setIsFocused(true)}>
       <input
         type="text"
         value={inputValue}
@@ -34,13 +35,13 @@ export default function AutoCompleteInput({
         className="border rounded p-2 w-full bg-white text-gray-800 dark:text-black-200 dark:border-gray-600"
         placeholder="Choose a language"
       />
-      {filteredSuggestions.length > 0 && (
+      {isFocused && filteredSuggestions.length > 0 && (
         <ul className="absolute left-0 w-full border bg-white mt-1 z-10 max-h-60 overflow-y-auto rounded shadow-lg dark:border-gray-700">
           {filteredSuggestions.map((s, idx) => (
             <li
               key={idx}
               className="p-2 hover:bg-gray-200 cursor-pointer text-gray-800"
-              onClick={() => handleSelect(s)}
+              onMouseDown={() => handleSelect(s)}
             >
               {s}
             </li>
@@ -50,4 +51,3 @@ export default function AutoCompleteInput({
     </div>
   );
 }
-
