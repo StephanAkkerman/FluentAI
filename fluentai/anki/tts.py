@@ -46,6 +46,12 @@ class TTS:
         os.makedirs("local_data", exist_ok=True)
         os.makedirs("local_data/tts", exist_ok=True)
 
+        if len(lang_code) < 3:
+            logger.error(
+                f"Language code '{lang_code}' is too short. Please provide the ISO 639-3 language code (https://dl.fbaipublicfiles.com/mms/tts/all-tts-languages.html)."
+            )
+            return
+
         if lang_code not in supported_languages["Iso Code"].values:
             logger.error(
                 f"Language code '{lang_code}' is not supported. Please check the supported languages (https://dl.fbaipublicfiles.com/mms/tts/all-tts-languages.html)."

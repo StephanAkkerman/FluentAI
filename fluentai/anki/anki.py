@@ -216,7 +216,7 @@ This can be caused by two things:
         params = {
             "note": {
                 "deckName": deck_name,
-                "modelName": "FluentAI Model2",
+                "modelName": "FluentAI Model",
                 "fields": {
                     "Word": word,
                     "Answer": answer,
