@@ -240,7 +240,7 @@ def main():
         image_paths=[],  # Update with actual paths if you have images
         word_usage="This is an example of how the word 'example' is used in a sentence.",
         notes="These are sample notes for testing purposes.",
-        recording_file_path=None,  # Update with actual path if you have an audio file
+        recording_file_path="local_data/tts/tts.wav",  # Update with actual path if you have an audio file
         ipa_text="",  # Update with IPA pronunciation if available
         test_spelling=True,
     )
@@ -283,15 +283,13 @@ def create_model(lang_code: str = "id_ID"):
         "cardTemplates": [
             {
                 "Name": f"Word - Mnemonic ({lang_code})",
-                "Front": "{{tts " + lang_code + ":Word}}\n<br>\n{{Word}}\n\n",
+                "Front": "{{Word}}\n\n",
                 "Back": '{{FrontSide}}\n\n<hr id=answer>\n{{Picture}}\n\n{{#Pronunciation (Recording and/or IPA)}}\n<br>\n<font color=blue>{{Pronunciation (Recording and/or IPA)}}</font>{{/Pronunciation (Recording and/or IPA)}}<br>\n\n\n<span style="color:grey">\n{{Gender, Personal Connection, Extra Info (Back side)}}</span>\n<br><br>\n',
             },
             {
                 "Name": f"Mnemonic - Word ({lang_code})",
                 "Front": "{{Picture}}<br><br>\n\n<font color=red></font><br><br>\n<font color=red></font><br><br>\n",
-                "Back": "{{FrontSide}}\n\n<hr id=answer>\n\n{{tts "
-                + lang_code
-                + ':Word}}\n<br>\n<span style="font-size:1.5em;">{{Word}}</span><br>\n\n\n{{#Pronunciation (Recording and/or IPA)}}<br><font color=blue>{{Pronunciation (Recording and/or IPA)}}</font>{{/Pronunciation (Recording and/or IPA)}}\n\n{{#Gender, Personal Connection, Extra Info (Back side)}}<br><font color=grey>{{Gender, Personal Connection, Extra Info (Back side)}}</font>{{/Gender, Personal Connection, Extra Info (Back side)}}\n\n\n<span style="">',
+                "Back": '{{FrontSide}}\n\n<hr id=answer>\n<br>\n<span style="font-size:1.5em;">{{Word}}</span><br>\n\n\n{{#Pronunciation (Recording and/or IPA)}}<br><font color=blue>{{Pronunciation (Recording and/or IPA)}}</font>{{/Pronunciation (Recording and/or IPA)}}\n\n{{#Gender, Personal Connection, Extra Info (Back side)}}<br><font color=grey>{{Gender, Personal Connection, Extra Info (Back side)}}</font>{{/Gender, Personal Connection, Extra Info (Back side)}}\n\n\n<span style="">',
             },
             {
                 "Name": f"Mnemonic - Spelling ({lang_code})",

@@ -64,7 +64,7 @@ class TTS:
             "text-to-speech", model=self.model, tokenizer=self.tokenizer
         )
 
-    def tts(self, text: str) -> str:
+    def tts(self, text: str, file_name: str = "tts") -> str:
         """Generate a TTS audio file from the input text.
 
         The generated audio file will be saved in the local_data/tts directory.
@@ -87,9 +87,6 @@ class TTS:
         out = self.pipe(text)
         audio = out.get("audio")
         sampling_rate = out.get("sampling_rate")
-
-        # Generate a file name
-        file_name = ""
 
         # Save it to a file
         scipy.io.wavfile.write(
