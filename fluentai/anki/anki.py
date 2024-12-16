@@ -66,9 +66,15 @@ This can be caused by two things:
 
         if response["error"] is not None:
             if "model was not found" in response["error"]:
-                logger.error(
-                    f"The {response['error']}. Please ensure the model exists in Anki by installing the template located at FluentAI/deck/FluentAI.apkg. You can do so by dragging and dropping it into Anki."
+                logger.warning(
+                    f"The {response['error']}. We will create the model now and try again."
                 )
+                # Create the model if it does not exist
+                create_model(params["note"]["modelName"])
+
+                # Retry the action
+                return self.invoke(action, params)
+
             if "deck was not found" in response["error"]:
                 logger.error(
                     f"The following {response['error']}. Please ensure a deck with that name exists in Anki."
@@ -210,7 +216,7 @@ This can be caused by two things:
         params = {
             "note": {
                 "deckName": deck_name,
-                "modelName": "2. Picture Words",  # Could be moved to a config
+                "modelName": "FluentAI Model2",
                 "fields": {
                     "Word": word,
                     "Answer": answer,
@@ -237,29 +243,23 @@ def main():
     note_id = anki.add_note(
         word="Example",
         answer="Answer: Example",
-        image_paths=[],  # Update with actual paths if you have images
+        image_paths=["img/logo.jpg"],  # Update with actual paths if you have images
         word_usage="This is an example of how the word 'example' is used in a sentence.",
         notes="These are sample notes for testing purposes.",
         recording_file_path="local_data/tts/tts.wav",  # Update with actual path if you have an audio file
         ipa_text="",  # Update with IPA pronunciation if available
-        test_spelling=True,
+        test_spelling=False,
     )
     if note_id:
         logger.info(f"Note added successfully with ID: {note_id}")
 
 
-def get_models():
-    anki = AnkiConnect()
-    action = "modelNames"
-    response = anki.invoke(action)
-    print(response)
-
-
-def create_model(lang_code: str = "id_ID"):
+def create_model(model_name: str = "FluentAI Model"):
+    """Create the FluentAI model deck in Anki."""
     anki = AnkiConnect()
     action = "createModel"
     params = {
-        "modelName": f"FluentAI Model ({lang_code})",
+        "modelName": model_name,
         "inOrderFields": [
             "Word",
             "Picture",
@@ -282,17 +282,17 @@ def create_model(lang_code: str = "id_ID"):
         "isCloze": False,
         "cardTemplates": [
             {
-                "Name": f"Word - Mnemonic ({lang_code})",
+                "Name": "Word - Mnemonic",
                 "Front": "{{Word}}\n\n",
                 "Back": '{{FrontSide}}\n\n<hr id=answer>\n{{Picture}}\n\n{{#Pronunciation (Recording and/or IPA)}}\n<br>\n<font color=blue>{{Pronunciation (Recording and/or IPA)}}</font>{{/Pronunciation (Recording and/or IPA)}}<br>\n\n\n<span style="color:grey">\n{{Gender, Personal Connection, Extra Info (Back side)}}</span>\n<br><br>\n',
             },
             {
-                "Name": f"Mnemonic - Word ({lang_code})",
+                "Name": "Mnemonic - Word",
                 "Front": "{{Picture}}<br><br>\n\n<font color=red></font><br><br>\n<font color=red></font><br><br>\n",
                 "Back": '{{FrontSide}}\n\n<hr id=answer>\n<br>\n<span style="font-size:1.5em;">{{Word}}</span><br>\n\n\n{{#Pronunciation (Recording and/or IPA)}}<br><font color=blue>{{Pronunciation (Recording and/or IPA)}}</font>{{/Pronunciation (Recording and/or IPA)}}\n\n{{#Gender, Personal Connection, Extra Info (Back side)}}<br><font color=grey>{{Gender, Personal Connection, Extra Info (Back side)}}</font>{{/Gender, Personal Connection, Extra Info (Back side)}}\n\n\n<span style="">',
             },
             {
-                "Name": f"Mnemonic - Spelling ({lang_code})",
+                "Name": "Mnemonic - Spelling",
                 "Front": "{{#Test Spelling? (y = yes, blank = no)}}\nSpell this word: <br><br>\n{{Picture}}<br>\n\n{{#Pronunciation (Recording and/or IPA)}}<br><font color=blue>{{Pronunciation (Recording and/or IPA)}}</font>{{/Pronunciation (Recording and/or IPA)}}\n<br>\n\n{{/Test Spelling? (y = yes, blank = no)}}\n\n\n",
                 "Back": '<span style="font-size:1.5em;">{{Word}}</span><br><br>\n\n\n{{Picture}}<br>\n\n<span style="color:grey;">{{Gender, Personal Connection, Extra Info (Back side)}}</span>\n',
             },
@@ -302,11 +302,4 @@ def create_model(lang_code: str = "id_ID"):
 
 
 if __name__ == "__main__":
-    # main()
-    # get_models()
-    create_model()
-    # anki = AnkiConnect()
-    # action = "modelTemplates"
-    # params = {"modelName": "2. Picture Words"}
-    # response = anki.invoke(action, params)
-    # print(response)
+    main()
