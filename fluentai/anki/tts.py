@@ -52,18 +52,30 @@ class TTS:
             )
             return
 
-        if lang_code not in supported_languages["Iso Code"].values:
+        # Filter rows where Iso Code starts with the input
+        language_rows = supported_languages[
+            supported_languages["Iso Code"].str.startswith(lang_code)
+        ]
+
+        if language_rows.empty:
             logger.error(
                 f"Language code '{lang_code}' is not supported. Please check the supported languages (https://dl.fbaipublicfiles.com/mms/tts/all-tts-languages.html)."
             )
             return
-        self.lang_code = lang_code
+
+        self.lang_code = language_rows.iloc[0]["Iso Code"]
+
+        # TODO Handle multiple languages
+        if len(language_rows) > 1:
+            logger.warning(
+                f"Multiple TTS languages found for language code '{lang_code}'. We are now using {self.lang_code}, options are: {language_rows['Iso Code'].values}."
+            )
 
         self.tokenizer = VitsTokenizer.from_pretrained(
-            f"facebook/mms-tts-{lang_code}", cache_dir="models"
+            f"facebook/mms-tts-{self.lang_code}", cache_dir="models"
         )
         self.model = VitsModel.from_pretrained(
-            f"facebook/mms-tts-{lang_code}", cache_dir="models"
+            f"facebook/mms-tts-{self.lang_code}", cache_dir="models"
         )
 
         self.pipe = pipeline(
@@ -90,22 +102,32 @@ class TTS:
         str
             The path to the generated audio file
         """
-        out = self.pipe(text)
-        audio = out.get("audio")
-        sampling_rate = out.get("sampling_rate")
+        try:
+            out = self.pipe(text)
+            audio = out.get("audio")
+            sampling_rate = out.get("sampling_rate")
+        except Exception as e:
+            logger.error(
+                f"Failed to generate TTS audio: {e}. This could be due to a mismatch in the language code."
+            )
+            return
 
         # Save it to a file
-        scipy.io.wavfile.write(
-            f"local_data/tts/{file_name}.wav",
-            rate=sampling_rate,
-            data=audio[0],
-        )
+        try:
+            scipy.io.wavfile.write(
+                f"local_data/tts/{file_name}.wav",
+                rate=sampling_rate,
+                data=audio[0],
+            )
+        except Exception as e:
+            logger.error(f"Failed to save TTS audio: {e}")
+            return
 
         return f"local_data/tts/{file_name}.wav"
 
 
 if __name__ == "__main__":
-    tts = TTS("kor")
-    tts.tts("이봐 무슨 일이야")
+    tts = TTS("azj-script_latin")
+    tts.tts("Sağ olun!")
 
     # To prevent VRAM usage kill the TTS instance after use

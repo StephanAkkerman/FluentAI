@@ -161,6 +161,7 @@ This can be caused by two things:
         ipa_text: str,
         test_spelling: bool,
         deck_name: str = config["DECK_NAME"],
+        tags: list[str] = [],
     ) -> int:
         """Adds a new note to the specified Anki deck with provided fields.
 
@@ -184,6 +185,8 @@ This can be caused by two things:
             The IPA pronunciation of the word (back side).
         test_spelling : bool
             Whether to test spelling for the word.
+        tags : list[str], optional
+            The tags to add to the note, by default []
 
         Returns
         -------
@@ -225,7 +228,7 @@ This can be caused by two things:
                     "Pronunciation (Recording and/or IPA)": pronunciation_field,
                     "Test Spelling? (y = yes, blank = no)": test_spelling,
                 },
-                "tags": [],
+                "tags": tags,
             }
         }
 
