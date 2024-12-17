@@ -2,8 +2,6 @@ models/
 datasets/
 node_modules/
 *pkl
-data/clts*
-data
 *.bin
 local_data/
 imagine/generated-img/*

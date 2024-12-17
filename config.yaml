@@ -1,5 +1,8 @@
 LOGGING_LEVEL: "DEBUG"
 
+# Anki deck name
+DECK_NAME: "FluentAI"
+
 # The weights for the best mnemonic match
 # 1 = 100%
 WEIGHTS:
