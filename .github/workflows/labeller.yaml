@@ -1,0 +1,94 @@
+name: Auto Tag "In Progress"
+
+on:
+  push:
+    # Trigger on pushes to any branch
+    branches:
+      - '**'
+  pull_request:
+    # Trigger on pull request events
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - labeled
+      - unlabeled
+
+jobs:
+  tag-in-progress:
+    runs-on: ubuntu-latest
+
+    env:
+        label: "In Progress 🚧"
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Auto Tag Issues with "In Progress"
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const label = process.env.label;
+
+            // Function to add label to an issue
+            async function addLabel(owner, repo, issue_number) {
+              try {
+                await github.rest.issues.addLabels({
+                  owner,
+                  repo,
+                  issue_number,
+                  labels: [label],
+                });
+                console.log(`Added label "${label}" to issue #${issue_number}`);
+              } catch (error) {
+                console.error(`Failed to add label to issue #${issue_number}:`, error);
+              }
+            }
+
+            // Regex to find issue references like #123
+            const issueRegex = /#(\d+)/g;
+
+            // Set to store unique issue numbers
+            const issues = new Set();
+
+            if (context.eventName === 'push') {
+              const commits = context.payload.commits;
+              for (const commit of commits) {
+                let message = commit.message;
+                let matches;
+                while ((matches = issueRegex.exec(message)) !== null) {
+                  issues.add(parseInt(matches[1]));
+                }
+              }
+            }
+
+            if (context.eventName === 'pull_request') {
+              const pr = context.payload.pull_request;
+              const body = pr.body || '';
+              let matches;
+              while ((matches = issueRegex.exec(body)) !== null) {
+                issues.add(parseInt(matches[1]));
+              }
+
+              // Additionally, check the PR title for issue references
+              const title = pr.title || '';
+              while ((matches = issueRegex.exec(title)) !== null) {
+                issues.add(parseInt(matches[1]));
+              }
+
+              // Optionally, handle more PR metadata if needed
+            }
+
+            if (issues.size === 0) {
+              console.log('No issue references found.');
+              return;
+            }
+
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            for (const issue_number of issues) {
+              await addLabel(owner, repo, issue_number);
+            }
