@@ -1,0 +1,102 @@
+name: Auto Tag "In Progress"
+
+on:
+  push:
+    # Trigger on pushes to any branch
+    branches:
+      - '**'
+  pull_request:
+    # Trigger on pull request events
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - labeled
+      - unlabeled
+
+jobs:
+  tag-in-progress:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Run Tagging Script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm install -g @actions/core @actions/github
+          node << 'EOF'
+          const core = require('@actions/core');
+          const github = require('@actions/github');
+
+          const token = process.env.GITHUB_TOKEN;
+          const octokit = github.getOctokit(token);
+          const context = github.context;
+
+          const label = "In Progress 🚧";
+
+          // Function to add label to an issue
+          async function addLabel(owner, repo, issue_number) {
+            try {
+              await octokit.issues.addLabels({
+                owner,
+                repo,
+                issue_number,
+                labels: [label],
+              });
+              console.log(`Added label "${label}" to issue #${issue_number}`);
+            } catch (error) {
+              console.error(`Failed to add label to issue #${issue_number}:`, error);
+            }
+          }
+
+          // Handle push events
+          if (context.eventName === 'push') {
+            const commits = context.payload.commits;
+            const issueRegex = /#(\d+)/g;
+            let issues = new Set();
+
+            commits.forEach(commit => {
+              let message = commit.message;
+              let matches;
+              while ((matches = issueRegex.exec(message)) !== null) {
+                issues.add(parseInt(matches[1]));
+              }
+            });
+
+            issues.forEach(issue_number => {
+              addLabel(context.repo.owner, context.repo.repo, issue_number);
+            });
+          }
+
+          // Handle pull request events
+          if (context.eventName === 'pull_request') {
+            const pr = context.payload.pull_request;
+            const body = pr.body || '';
+            const issueRegex = /#(\d+)/g;
+            let issues = new Set();
+
+            let matches;
+            while ((matches = issueRegex.exec(body)) !== null) {
+              issues.add(parseInt(matches[1]));
+            }
+
+            // Additionally, check for linked issues via "Linked issues" section
+            if (pr.body && pr.body.includes('Closes')) {
+              // GitHub automatically closes linked issues, but you can parse them similarly
+              // For simplicity, we're using the same regex
+            }
+
+            issues.forEach(issue_number => {
+              addLabel(context.repo.owner, context.repo.repo, issue_number);
+            });
+          }
+
+          EOF
