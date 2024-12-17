@@ -14,12 +14,12 @@ on:
       - labeled
       - unlabeled
 
-env:
-    label: "In Progress 🚧"
-
 jobs:
   tag-in-progress:
     runs-on: ubuntu-latest
+
+    env:
+        label: "In Progress 🚧"
 
     steps:
       - name: Checkout Repository
@@ -30,7 +30,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const label = "In Progress 🚧";
+            const label = process.env.label;
 
             // Function to add label to an issue
             async function addLabel(owner, repo, issue_number) {
