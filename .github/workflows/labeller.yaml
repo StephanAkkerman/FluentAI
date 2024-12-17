@@ -31,7 +31,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const label = "In Progress 🚧";
-            const context = github.context;
 
             // Function to add label to an issue
             async function addLabel(owner, repo, issue_number) {
