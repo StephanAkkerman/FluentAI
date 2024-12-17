@@ -14,6 +14,9 @@ on:
       - labeled
       - unlabeled
 
+env:
+    label: "In Progress 🚧"
+
 jobs:
   tag-in-progress:
     runs-on: ubuntu-latest
@@ -22,81 +25,71 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Auto Tag Issues with "In Progress"
+        uses: actions/github-script@v7
         with:
-          node-version: '16'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const label = "In Progress 🚧";
+            const context = github.context;
 
-      - name: Run Tagging Script
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          npm install -g @actions/core @actions/github
-          node << 'EOF'
-          const core = require('@actions/core');
-          const github = require('@actions/github');
-
-          const token = process.env.GITHUB_TOKEN;
-          const octokit = github.getOctokit(token);
-          const context = github.context;
-
-          const label = "In Progress 🚧";
-
-          // Function to add label to an issue
-          async function addLabel(owner, repo, issue_number) {
-            try {
-              await octokit.issues.addLabels({
-                owner,
-                repo,
-                issue_number,
-                labels: [label],
-              });
-              console.log(`Added label "${label}" to issue #${issue_number}`);
-            } catch (error) {
-              console.error(`Failed to add label to issue #${issue_number}:`, error);
+            // Function to add label to an issue
+            async function addLabel(owner, repo, issue_number) {
+              try {
+                await github.rest.issues.addLabels({
+                  owner,
+                  repo,
+                  issue_number,
+                  labels: [label],
+                });
+                console.log(`Added label "${label}" to issue #${issue_number}`);
+              } catch (error) {
+                console.error(`Failed to add label to issue #${issue_number}:`, error);
+              }
             }
-          }
 
-          // Handle push events
-          if (context.eventName === 'push') {
-            const commits = context.payload.commits;
+            // Regex to find issue references like #123
             const issueRegex = /#(\d+)/g;
-            let issues = new Set();
 
-            commits.forEach(commit => {
-              let message = commit.message;
+            // Set to store unique issue numbers
+            const issues = new Set();
+
+            if (context.eventName === 'push') {
+              const commits = context.payload.commits;
+              for (const commit of commits) {
+                let message = commit.message;
+                let matches;
+                while ((matches = issueRegex.exec(message)) !== null) {
+                  issues.add(parseInt(matches[1]));
+                }
+              }
+            }
+
+            if (context.eventName === 'pull_request') {
+              const pr = context.payload.pull_request;
+              const body = pr.body || '';
               let matches;
-              while ((matches = issueRegex.exec(message)) !== null) {
+              while ((matches = issueRegex.exec(body)) !== null) {
                 issues.add(parseInt(matches[1]));
               }
-            });
 
-            issues.forEach(issue_number => {
-              addLabel(context.repo.owner, context.repo.repo, issue_number);
-            });
-          }
+              // Additionally, check the PR title for issue references
+              const title = pr.title || '';
+              while ((matches = issueRegex.exec(title)) !== null) {
+                issues.add(parseInt(matches[1]));
+              }
 
-          // Handle pull request events
-          if (context.eventName === 'pull_request') {
-            const pr = context.payload.pull_request;
-            const body = pr.body || '';
-            const issueRegex = /#(\d+)/g;
-            let issues = new Set();
-
-            let matches;
-            while ((matches = issueRegex.exec(body)) !== null) {
-              issues.add(parseInt(matches[1]));
+              // Optionally, handle more PR metadata if needed
             }
 
-            // Additionally, check for linked issues via "Linked issues" section
-            if (pr.body && pr.body.includes('Closes')) {
-              // GitHub automatically closes linked issues, but you can parse them similarly
-              // For simplicity, we're using the same regex
+            if (issues.size === 0) {
+              console.log('No issue references found.');
+              return;
             }
 
-            issues.forEach(issue_number => {
-              addLabel(context.repo.owner, context.repo.repo, issue_number);
-            });
-          }
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
 
-          EOF
+            for (const issue_number of issues) {
+              await addLabel(owner, repo, issue_number);
+            }
