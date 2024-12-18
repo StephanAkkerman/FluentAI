@@ -39,8 +39,8 @@ def word2ipa(
         logger.debug("Loading the IPA dataset")
         eng_ipa = pd.read_csv(
             hf_hub_download(
-                repo_id=config.get("PHONETIC_SIM").get("IPA_REPO"),
-                filename=config.get("PHONETIC_SIM").get("IPA_FILE"),
+                repo_id=config.get("PHONETIC_SIM").get("IPA").get("REPO"),
+                filename=config.get("PHONETIC_SIM").get("IPA").get("FILE"),
                 cache_dir="datasets",
                 repo_type="dataset",
             )

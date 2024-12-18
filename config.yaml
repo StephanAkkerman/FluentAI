@@ -67,7 +67,7 @@ PHONETIC_SIM:
   EVAL: "StephanAkkerman/english-words-human-similarity"
   IPA:
     REPO: "StephanAkkerman/english-words-IPA"
-    FILE: "en_US.csv"
+    FILE: "en_US_filtered.csv"
   EMBEDDINGS:
     METHOD: panphon
     REPO: StephanAkkerman/english-words-IPA-embeddings
