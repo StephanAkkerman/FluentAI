@@ -62,7 +62,7 @@ jobs:
               }
             }
 
-            // Regex to find issue references like #123
+            // Regex to find issue references like #138
             const issueRegex = /(?:^|\s)#(\d+)/g;
 
             // Set to store unique issue numbers
@@ -78,6 +78,7 @@ jobs:
                 let matches;
                 while ((matches = issueRegex.exec(message)) !== null) {
                   issues.add(parseInt(matches[1]));
+                  console.log(`Found issue reference #${matches[1]} in commit message: ${message}`);
                   // Add commit author as assignee
                   if (commit.author && commit.author.username) {
                     assignees.add(commit.author.username);
