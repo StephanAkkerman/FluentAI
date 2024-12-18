@@ -6,7 +6,7 @@ import base64
 import os
 
 import uvicorn
-from constants.languages import G2P_LANGCODES
+from constants.languages import G2P_LANGCODES, G2P_LANGUAGES
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -140,6 +140,19 @@ async def get_image(
     except Exception as e:
         logger.error(f"Error generating mnemonic: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
+
+
+@app.get("/create_card/supported_languages")
+async def get_supported_languages() -> JSONResponse:
+    """
+    Returns a list of languages that the backend supports.
+
+    Returns
+    -------
+    JSONResponse
+        The list of supported languages
+    """
+    return JSONResponse(content={"languages": G2P_LANGUAGES})
 
 
 if __name__ == "__main__":
