@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AutoCompleteInput from "./ui/AutoCompleteInput";
 import FormField from "./ui/FormField";
 import Button from "./ui/Button";
-import languages from "../config/languages.json";
 import { createCard } from "../app/api/createCard";
 import { CreateCardInterface } from "../interfaces/CreateCardInterface";
+import { getSupportedLanguages } from "@/app/api/languageService";
 
 interface CardGeneratorProps {
   onCardCreated: (card: { img: string; word: string; keyPhrase: string; translation: string }) => void;
@@ -19,12 +19,29 @@ export default function CardGenerator({
   onError,
   onWordChange,
 }: CardGeneratorProps) {
-  const languagesArray = Object.keys(languages);
+  const [languages, setLanguages] = useState<{ [key: string]: string }>({});
   const [input, setInput] = useState<CreateCardInterface>({
     language_code: "",
     word: "",
   });
   const [errors, setErrors] = useState({ language_code: "", word: "" });
+
+  useEffect(() => {
+    const fetchLanguages = async () => {
+      try {
+        onLoading(true); // Indicate loading
+        const response = await getSupportedLanguages();
+        setLanguages(response.languages);
+      } catch (error) {
+        console.error("Error fetching languages:", error);
+        onError("Failed to load supported languages.");
+      } finally {
+        onLoading(false); // Loading complete
+      }
+    };
+
+    fetchLanguages();
+  }, [onLoading, onError]);
 
   const validate = () => {
     const newErrors = {
@@ -70,7 +87,7 @@ export default function CardGenerator({
           required
         >
           <AutoCompleteInput
-            suggestions={languagesArray}
+            suggestions={Object.keys(languages)}
             onSelect={(languageName) => {
               const languageCode =
                 languages[languageName as keyof typeof languages];

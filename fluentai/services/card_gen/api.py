@@ -1,10 +1,12 @@
 # To run: uvicorn api:app --reload
 # if that doesn't work try: python -m uvicorn api:app --reload
 
+import argparse
 import base64
 import os
 
-from constants.languages import G2P_LANGCODES
+import uvicorn
+from constants.languages import G2P_LANGCODES, G2P_LANGUAGES
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -138,3 +140,28 @@ async def get_image(
     except Exception as e:
         logger.error(f"Error generating mnemonic: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error")
+
+
+@app.get("/create_card/supported_languages")
+async def get_supported_languages() -> JSONResponse:
+    """
+    Returns a list of languages that the backend supports.
+
+    Returns
+    -------
+    JSONResponse
+        The list of supported languages
+    """
+    return JSONResponse(content={"languages": G2P_LANGUAGES})
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="")
+    parser.add_argument(
+        "--host", type=str, default="127.0.0.1", help="Hosting default: 127.0.0.1"
+    )
+    parser.add_argument("--port", type=int, default=8000)
+
+    args = parser.parse_args()
+
+    uvicorn.run("api:app", host=args.host, port=args.port)

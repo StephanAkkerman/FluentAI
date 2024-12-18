@@ -2,7 +2,7 @@ import axios from "axios";
 import { CreateCardInterface, CreateCardResponse } from "../../interfaces/CreateCardInterface";
 
 // API Endpoint
-const CARD_GEN_URL = "http://localhost:8000";
+const CARD_GEN_URL = "http://localhost:8000/create_card";
 
 // Ensure cookies are included
 axios.defaults.withCredentials = true;
@@ -18,7 +18,7 @@ export const createCard = async (
 
     // Step 1: Fetch word data (IPA and recording)
     const { data: wordData } = await axios.post(
-      `${CARD_GEN_URL}/create_card/word_data`,
+      `${CARD_GEN_URL}/word_data`,
       cardData,
       { responseType: "json" }
     );
@@ -26,7 +26,7 @@ export const createCard = async (
 
     // Step 2: Fetch image with verbal cue and translation
     const { data } = await axios.get(
-      `${CARD_GEN_URL}/create_card/img`,
+      `${CARD_GEN_URL}/img`,
       {
         params: {
           word: cardData.word,
