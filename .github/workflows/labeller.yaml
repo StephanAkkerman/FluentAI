@@ -48,7 +48,7 @@ jobs:
             }
 
             // Regex to find issue references like #123
-            const issueRegex = /#(\d+)/g;
+            const issueRegex = /(?:^|\s)#(\d+)/g;
 
             // Set to store unique issue numbers
             const issues = new Set();
