@@ -7,9 +7,12 @@ DECK_NAME: "FluentAI"
 # 1 = 100%
 WEIGHTS:
   PHONETIC: 1
-  ORTHOGRAPHIC: 0.33
+  ORTHOGRAPHIC: 0.66
   SEMANTIC: 1
   IMAGEABILITY: 1
+
+# The number of words to consider for each similarity metric
+WORD_LIMIT: 1000
 
 G2P:
   MODEL: "charsiu/g2p_multilingual_byT5_small_100"
@@ -67,7 +70,7 @@ PHONETIC_SIM:
   EVAL: "StephanAkkerman/english-words-human-similarity"
   IPA:
     REPO: "StephanAkkerman/english-words-IPA"
-    FILE: "en_US.csv"
+    FILE: "en_US_filtered.csv"
   EMBEDDINGS:
     METHOD: panphon
     REPO: StephanAkkerman/english-words-IPA-embeddings

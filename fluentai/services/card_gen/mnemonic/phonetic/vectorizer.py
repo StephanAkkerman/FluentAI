@@ -128,7 +128,10 @@ def main(
     Args:
         method (str): Vectorization method to use ('clts' or 'panphon').
     """
-    data_file_name = config.get("PHONETIC_SIM").get("IPA_FILE")
+    # Make the directories
+    os.makedirs(save_loc, exist_ok=True)
+
+    data_file_name = config.get("PHONETIC_SIM").get("IPA").get("FILE")
 
     if method == "clts":
         output_file = f"{save_loc}/{data_file_name}_clts.parquet"
@@ -143,8 +146,8 @@ def main(
     # Load data
     ds = pd.read_csv(
         hf_hub_download(
-            repo_id=config.get("PHONETIC_SIM").get("IPA_REPO"),
-            filename=config.get("PHONETIC_SIM").get("IPA_FILE"),
+            repo_id=config.get("PHONETIC_SIM").get("IPA").get("REPO"),
+            filename=data_file_name,
             cache_dir="datasets",
             repo_type="dataset",
         )
@@ -186,8 +189,5 @@ if __name__ == "__main__":
     # Options:
     #   - "clts"    : Generate only CLTS vectors.
     #   - "panphon" : Generate only Panphon vectors.
-    method = "clts"  # Change this to "clts" or "panphon" as needed.
-    data_file1 = "local_data/phonological/eng_latn_us_broad.tsv"
-    data_file2 = "local_data/phonological/en_US.txt"
-
-    main(method, data_file=data_file1)
+    method = "panphon"  # Change this to "clts" or "panphon" as needed.
+    main(method)
