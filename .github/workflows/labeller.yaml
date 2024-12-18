@@ -62,7 +62,7 @@ jobs:
               }
             }
 
-            // Regex to find issue references like #138
+            // Regex to find issue references like #123
             const issueRegex = /(?:^|\s)#(\d+)/g;
 
             // Set to store unique issue numbers
