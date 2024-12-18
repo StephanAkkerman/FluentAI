@@ -1,4 +1,4 @@
-name: Auto Tag "In Progress"
+name: Auto Tag and Assign "In Progress"
 
 on:
   push:
@@ -15,17 +15,17 @@ on:
       - unlabeled
 
 jobs:
-  tag-in-progress:
+  tag-and-assign-in-progress:
     runs-on: ubuntu-latest
 
     env:
-        label: "In Progress 🚧"
+      label: "In Progress 🚧"
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Auto Tag Issues with "In Progress"
+      - name: Auto Tag and Assign Issues with "In Progress"
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -47,11 +47,29 @@ jobs:
               }
             }
 
+            // Function to assign a user to an issue
+            async function assignUser(owner, repo, issue_number, username) {
+              try {
+                await github.rest.issues.addAssignees({
+                  owner,
+                  repo,
+                  issue_number,
+                  assignees: [username],
+                });
+                console.log(`Assigned @${username} to issue #${issue_number}`);
+              } catch (error) {
+                console.error(`Failed to assign @${username} to issue #${issue_number}:`, error);
+              }
+            }
+
             // Regex to find issue references like #123
             const issueRegex = /(?:^|\s)#(\d+)/g;
 
             // Set to store unique issue numbers
             const issues = new Set();
+
+            // Set to store unique usernames to assign
+            const assignees = new Set();
 
             if (context.eventName === 'push') {
               const commits = context.payload.commits;
@@ -60,6 +78,10 @@ jobs:
                 let matches;
                 while ((matches = issueRegex.exec(message)) !== null) {
                   issues.add(parseInt(matches[1]));
+                  // Add commit author as assignee
+                  if (commit.author && commit.author.username) {
+                    assignees.add(commit.author.username);
+                  }
                 }
               }
             }
@@ -70,12 +92,20 @@ jobs:
               let matches;
               while ((matches = issueRegex.exec(body)) !== null) {
                 issues.add(parseInt(matches[1]));
+                // Add PR author as assignee
+                if (pr.user && pr.user.login) {
+                  assignees.add(pr.user.login);
+                }
               }
 
               // Additionally, check the PR title for issue references
               const title = pr.title || '';
               while ((matches = issueRegex.exec(title)) !== null) {
                 issues.add(parseInt(matches[1]));
+                // Add PR author as assignee
+                if (pr.user && pr.user.login) {
+                  assignees.add(pr.user.login);
+                }
               }
 
               // Optionally, handle more PR metadata if needed
@@ -91,4 +121,7 @@ jobs:
 
             for (const issue_number of issues) {
               await addLabel(owner, repo, issue_number);
+              for (const username of assignees) {
+                await assignUser(owner, repo, issue_number, username);
+              }
             }
