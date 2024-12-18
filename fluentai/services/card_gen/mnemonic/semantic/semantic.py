@@ -106,4 +106,6 @@ def example():
 
 
 if __name__ == "__main__":
-    example()
+    # example()
+    sem = SemanticSimilarity()
+    print(sem.compute_similarity("cat", "mace"))
