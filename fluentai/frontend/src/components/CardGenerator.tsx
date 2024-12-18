@@ -3,6 +3,7 @@ import AutoCompleteInput from "./ui/AutoCompleteInput";
 import FormField from "./ui/FormField";
 import Button from "./ui/Button";
 import { createCard } from "../app/api/createCard";
+import { saveToAnki, getAvailableDecks } from "@/app/api/ankiService";
 import { CreateCardInterface } from "../interfaces/CreateCardInterface";
 import { getSupportedLanguages } from "@/app/api/languageService";
 
@@ -25,18 +26,19 @@ export default function CardGenerator({
     word: "",
   });
   const [errors, setErrors] = useState({ language_code: "", word: "" });
+  const [card, setCard] = useState<{ img: string; word: string; keyPhrase: string; translation: string } | null>(null);
 
   useEffect(() => {
     const fetchLanguages = async () => {
       try {
-        onLoading(true); // Indicate loading
+        onLoading(true);
         const response = await getSupportedLanguages();
         setLanguages(response.languages);
       } catch (error) {
         console.error("Error fetching languages:", error);
         onError("Failed to load supported languages.");
       } finally {
-        onLoading(false); // Loading complete
+        onLoading(false);
       }
     };
 
@@ -66,11 +68,29 @@ export default function CardGenerator({
 
     try {
       const response = await createCard(input);
-      onCardCreated({ img: response.imageUrl, word: input.word, keyPhrase: response.verbalCue, translation: response.translation });
+      const newCard = {
+        img: response.imageUrl,
+        word: input.word,
+        keyPhrase: response.verbalCue,
+        translation: response.translation,
+      };
+      setCard(newCard);
+      onCardCreated(newCard);
     } catch (err: any) {
       onError(err.message || "An unexpected error occurred.");
     } finally {
       onLoading(false);
+    }
+  };
+
+  const handleSaveToAnki = async () => {
+    if (!card) return;
+    try {
+      await saveToAnki(card);
+      alert("Card saved to Anki!");
+    } catch (error) {
+      console.error("Error saving to Anki:", error);
+      alert("Failed to save card to Anki.");
     }
   };
 
@@ -111,6 +131,14 @@ export default function CardGenerator({
           type="submit"
           className="w-full py-3 text-lg font-bold transform hover:scale-105 transition-transform duration-200 hover:shadow-lg"
         />
+        {card && (
+          <Button
+            text="Save to Anki"
+            variant="secondary"
+            onClick={handleSaveToAnki}
+            className="w-full py-3 text-lg font-bold"
+          />
+        )}
       </form>
     </div>
   );
