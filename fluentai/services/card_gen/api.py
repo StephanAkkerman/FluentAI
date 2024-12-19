@@ -1,6 +1,3 @@
-# To run: uvicorn api:app --reload
-# if that doesn't work try: python -m uvicorn api:app --reload
-
 import argparse
 import base64
 import os
@@ -13,6 +10,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from fluentai.services.card_gen.main import generate_mnemonic_img
+from fluentai.services.card_gen.utils.load_models import download_all_models
 from fluentai.services.card_gen.utils.logger import logger
 
 app = FastAPI()
@@ -156,6 +154,9 @@ async def get_supported_languages() -> JSONResponse:
 
 
 if __name__ == "__main__":
+    # Start by downloading all models
+    download_all_models()
+
     parser = argparse.ArgumentParser(description="")
     parser.add_argument(
         "--host", type=str, default="127.0.0.1", help="Hosting default: 127.0.0.1"
