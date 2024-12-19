@@ -1,5 +1,19 @@
 name: Ruff
-on: [push, pull_request]
+
+on:
+  push:
+    paths:
+      - '**/*.py'            # All Python files in any directory
+      - 'requirements.txt'  # Dependency file
+      - 'setup.py'          # Setup script
+      - 'pyproject.toml'    # Modern Python project configuration
+  pull_request:
+    paths:
+      - '**/*.py'
+      - 'requirements.txt'
+      - 'setup.py'
+      - 'pyproject.toml'
+
 jobs:
   ruff:
     runs-on: ubuntu-latest
