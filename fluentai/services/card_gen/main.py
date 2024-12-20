@@ -29,6 +29,10 @@ def generate_mnemonic_img(word: str, lang_code: str) -> tuple:
         The verbal cue for the image.
     str
         The translated word.
+    str
+        The path to the generated audio file.
+    str
+        The IPA spelling of the best match.
     """
     best_matches, translated_word, _ = generate_mnemonic(word, lang_code)
 
@@ -52,10 +56,10 @@ def generate_mnemonic_img(word: str, lang_code: str) -> tuple:
 
     # Generate TTS
     tts_model = TTS(lang_code)
-    tts_file = tts_model.tts(prompt)
+    tts_path = tts_model.tts(prompt)
     _clean(tts_model)
 
-    return image_path, prompt, translated_word, tts_file, ipa
+    return image_path, prompt, translated_word, tts_path, ipa
 
 
 def _clean(var):
