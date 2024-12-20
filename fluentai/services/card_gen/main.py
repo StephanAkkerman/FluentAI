@@ -56,7 +56,7 @@ def generate_mnemonic_img(word: str, lang_code: str) -> tuple:
 
     # Generate TTS
     tts_model = TTS(lang_code)
-    tts_path = tts_model.tts(prompt)
+    tts_path = tts_model.tts(word)
     _clean(tts_model)
 
     return image_path, prompt, translated_word, tts_path, ipa
