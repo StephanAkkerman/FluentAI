@@ -6,6 +6,7 @@ from fluentai.services.card_gen.constants.config import config
 from fluentai.services.card_gen.imagine.image_gen import generate_img
 from fluentai.services.card_gen.imagine.verbal_cue import VerbalCue
 from fluentai.services.card_gen.mnemonic.word2mnemonic import generate_mnemonic
+from fluentai.services.card_gen.tts.tts import TTS
 from fluentai.services.card_gen.utils.logger import logger
 
 
@@ -28,8 +29,12 @@ def generate_mnemonic_img(word: str, lang_code: str) -> tuple:
         The verbal cue for the image.
     str
         The translated word.
+    str
+        The path to the generated audio file.
+    str
+        The IPA spelling of the best match.
     """
-    best_matches, translated_word, _ = generate_mnemonic(word, lang_code)
+    best_matches, translated_word, _, ipa = generate_mnemonic(word, lang_code)
 
     # Get the top phonetic match
     best_match = best_matches.iloc[0]
@@ -43,15 +48,23 @@ def generate_mnemonic_img(word: str, lang_code: str) -> tuple:
     prompt = vc.generate_cue(translated_word, best_match["token_ort"])
 
     if config.get("LLM", {}).get("DELETE_AFTER_USE", True):
-        del vc
-
-        gc.collect()
-
-        torch.cuda.empty_cache()
+        _clean(vc)
 
     # Generate the image
     image_path = generate_img(prompt=prompt, word1=word, word2=best_match["token_ort"])
-    return image_path, prompt, translated_word
+
+    # Generate TTS
+    tts_model = TTS(lang_code)
+    tts_path = tts_model.tts(word)
+    _clean(tts_model)
+
+    return image_path, prompt, translated_word, tts_path, ipa
+
+
+def _clean(var):
+    del var
+    gc.collect()
+    torch.cuda.empty_cache()
 
 
 if __name__ == "__main__":

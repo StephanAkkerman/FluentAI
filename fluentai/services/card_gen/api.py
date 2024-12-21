@@ -117,7 +117,9 @@ async def get_image(
 
     try:
         # Generate image and get its file path along with verbal cue and translation
-        image_path, verbal_cue, translation = generate_mnemonic_img(word, language_code)
+        image_path, verbal_cue, translation, tts_path, ipa = generate_mnemonic_img(
+            word, language_code
+        )
 
         # Ensure the file exists
         if not os.path.exists(image_path):
@@ -127,12 +129,18 @@ async def get_image(
         with open(image_path, "rb") as image_file:
             image_bytes = image_file.read()
 
+        # Read the image file as bytes
+        with open(tts_path, "rb") as tts_file:
+            tts_bytes = tts_file.read()
+
         # Return a JSON response with image and metadata
         return JSONResponse(
             content={
                 "image": base64.b64encode(image_bytes).decode("utf-8"),
                 "verbal_cue": verbal_cue,
                 "translation": translation.title(),
+                "tts_file": base64.b64encode(tts_bytes).decode("utf-8"),
+                "ipa": ipa,
             }
         )
     except Exception as e:

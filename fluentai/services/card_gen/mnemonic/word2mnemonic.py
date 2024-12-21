@@ -40,7 +40,7 @@ def generate_mnemonic(word: str, language_code: str):
 
     # Get the top x phonetically similar words
     logger.info(f"Generating top phonetic similarity for {word} in {language_code}...")
-    top = top_phonetic(word, language_code, config.get("WORD_LIMIT"), g2p_model)
+    top, ipa = top_phonetic(word, language_code, config.get("WORD_LIMIT"), g2p_model)
     logger.debug(f"Top phonetic similarity: {top}")
 
     # Generate their word imageability for all token_ort in top
@@ -81,7 +81,7 @@ def generate_mnemonic(word: str, language_code: str):
     if config.get("G2P", {}).get("DELETE_AFTER_USE", True):
         clean_models(g2p_model, imageability_predictor, semantic_sim)
 
-    return top, translated_word, transliterated_word
+    return top, translated_word, transliterated_word, ipa
 
 
 def clean_models(g2p_model, imageability_predictor, semantic_sim):

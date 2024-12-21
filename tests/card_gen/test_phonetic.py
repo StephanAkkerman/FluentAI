@@ -158,7 +158,7 @@ def test_top_phonetic_success(
         mock_g2p_model.g2p.return_value = "kʊtʃɪŋ"
 
         # Call the top_phonetic function
-        result = top_phonetic(
+        result, _ = top_phonetic(
             input_word="kucing",
             language_code="eng-us",
             top_n=3,
@@ -277,7 +277,7 @@ def test_top_phonetic_no_results(
         mock_g2p_model.g2p.return_value = "tɛst"
 
         # Call the top_phonetic function
-        result = top_phonetic(
+        result, _ = top_phonetic(
             input_word="test", language_code="eng-us", top_n=3, g2p_model=mock_g2p_model
         )
 
@@ -398,7 +398,7 @@ def test_top_phonetic_invalid_language_code(
         mock_g2p_model.g2p.return_value = "ɲaŋgʊŋ"
 
         # Call the top_phonetic function with an unsupported language code
-        result = top_phonetic(
+        result, _ = top_phonetic(
             input_word="nyangang",
             language_code="mal",  # Assuming 'mal' is unsupported
             top_n=3,

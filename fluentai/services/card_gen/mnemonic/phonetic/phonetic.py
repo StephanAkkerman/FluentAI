@@ -101,7 +101,7 @@ def vectorize_input(ipa_input, vectorizer, dimension):
 
 def top_phonetic(
     input_word: str, language_code: str, top_n: int, g2p_model
-) -> pd.DataFrame:
+) -> tuple[pd.DataFrame, str]:
     """
     Main function to find top_n closest phonetically similar words to the input IPA.
 
@@ -160,7 +160,7 @@ def top_phonetic(
     # Add the distance column
     closest_words["distance"] = distances[0]
 
-    return closest_words
+    return closest_words, ipa
 
 
 if __name__ == "__main__":
@@ -178,5 +178,4 @@ if __name__ == "__main__":
     from fluentai.services.card_gen.mnemonic.phonetic.g2p import G2P
 
     result = top_phonetic(word_input, language_code, top_n, G2P())
-    print(type(result))
     print(result)
