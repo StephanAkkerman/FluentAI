@@ -34,11 +34,10 @@ def generate_mnemonic_img(word: str, lang_code: str) -> tuple:
     str
         The IPA spelling of the best match.
     """
-    best_matches, translated_word, _ = generate_mnemonic(word, lang_code)
+    best_matches, translated_word, _, ipa = generate_mnemonic(word, lang_code)
 
     # Get the top phonetic match
     best_match = best_matches.iloc[0]
-    ipa = best_match["token_ipa"]
 
     vc = VerbalCue()
 
