@@ -46,30 +46,14 @@ class TTS:
         os.makedirs("local_data", exist_ok=True)
         os.makedirs("local_data/tts", exist_ok=True)
 
-        if len(lang_code) < 3:
-            logger.error(
-                f"Language code '{lang_code}' is too short. Please provide the ISO 639-3 language code (https://dl.fbaipublicfiles.com/mms/tts/all-tts-languages.html)."
-            )
-            return
-
-        # Filter rows where Iso Code starts with the input
-        language_rows = supported_languages[
-            supported_languages["Iso Code"].str.startswith(lang_code)
-        ]
-
-        if language_rows.empty:
-            logger.error(
-                f"Language code '{lang_code}' is not supported. Please check the supported languages (https://dl.fbaipublicfiles.com/mms/tts/all-tts-languages.html)."
-            )
-            return
-
-        self.lang_code = language_rows.iloc[0]["Iso Code"]
+        self.lang_code = get_mapping(lang_code)
 
         # TODO Handle multiple languages
-        if len(language_rows) > 1:
+        if len(self.lang_code) > 1:
             logger.warning(
-                f"Multiple TTS languages found for language code '{lang_code}'. We are now using {self.lang_code}, options are: {language_rows['Iso Code'].values}."
+                f"Multiple TTS languages found for language code '{lang_code}'. We are now using {self.lang_code[0]}, options are: {self.lang_code}."
             )
+        self.lang_code = self.lang_code[0]
 
         self.tokenizer = VitsTokenizer.from_pretrained(
             f"facebook/mms-tts-{self.lang_code}", cache_dir="models"
@@ -79,7 +63,7 @@ class TTS:
         )
 
         self.pipe = pipeline(
-            "text-to-speech", model=self.model, tokenizer=self.tokenizer
+            "text-to-speech", model=self.model, tokenizer=self.tokenizer, device="cpu"
         )
 
     def tts(self, text: str, file_name: str = "tts") -> str:
@@ -126,8 +110,27 @@ class TTS:
         return f"local_data/tts/{file_name}.wav"
 
 
-if __name__ == "__main__":
-    tts = TTS("azj-script_latin")
-    tts.tts("Sağ olun!")
+def get_mapping(lang_code: str) -> list:
+    """Given the G2P language code converts it to the TTS language code.
 
-    # To prevent VRAM usage kill the TTS instance after use
+    Parameters
+    ----------
+    lang_code : str, optional
+        The G2P language code
+
+    Returns
+    -------
+    list
+        The TTS language code(s).
+    """
+    mappings = pd.read_parquet("data/g2p-to-tss-mapping.parquet")
+    row = mappings[mappings["Iso Code_json"].str.contains(lang_code)]
+    if row.empty:
+        return []
+    else:
+        return row["Iso Code_parquet"].values[0]
+
+
+if __name__ == "__main__":
+    tts = TTS("dut")
+    tts.tts("Hallo allemaal, ik spreek Nederlands!")
