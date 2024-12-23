@@ -63,8 +63,8 @@ def generate_mnemonic_img(word: str, lang_code: str) -> tuple:
         torch.cuda.empty_cache()
 
     # Generate TTS
-    tts_model = TTS(lang_code)
-    tts_path = tts_model.tts(word)
+    tts_model = TTS()
+    tts_path = tts_model.tts(word, lang=lang_code)
 
     return image_path, prompt, translated_word, tts_path, ipa
 
