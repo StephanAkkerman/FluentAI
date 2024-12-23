@@ -103,6 +103,9 @@ class TTS:
                 rate=sampling_rate,
                 data=audio[0],
             )
+            logger.debug(
+                f"Saved TTS audio for {text} to local_data/tts/{file_name}.wav"
+            )
         except Exception as e:
             logger.error(f"Failed to save TTS audio: {e}")
             return
@@ -133,4 +136,4 @@ def get_mapping(lang_code: str) -> list:
 
 if __name__ == "__main__":
     tts = TTS("dut")
-    tts.tts("Hallo allemaal, ik spreek Nederlands!")
+    tts.tts("Kat")
