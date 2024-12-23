@@ -62,7 +62,7 @@ async def api_generate_mnemonic(request: CreateCardRequest) -> dict:
         If an error occurs during the generation process.
     """
     # Validate language code if necessary
-    if request.language_code not in G2P_LANGCODES:
+    if request.language_code not in G2P_LANGUAGES:
         raise HTTPException(status_code=400, detail="Invalid language code")
 
     try:
@@ -112,7 +112,7 @@ async def get_image(
         If an error occurs during the generation process.
     """
     # Validate language code if necessary
-    if language_code not in G2P_LANGCODES:
+    if language_code not in G2P_LANGUAGES:
         raise HTTPException(status_code=400, detail="Invalid language code")
 
     try:
@@ -158,7 +158,7 @@ async def get_supported_languages() -> JSONResponse:
     JSONResponse
         The list of supported languages
     """
-    return JSONResponse(content={"languages": G2P_LANGUAGES})
+    return JSONResponse(content={"languages": G2P_LANGCODES})
 
 
 if __name__ == "__main__":

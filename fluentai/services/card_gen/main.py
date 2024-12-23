@@ -48,23 +48,19 @@ def generate_mnemonic_img(word: str, lang_code: str) -> tuple:
     prompt = vc.generate_cue(translated_word, best_match["token_ort"])
 
     if config.get("LLM", {}).get("DELETE_AFTER_USE", True):
-        _clean(vc)
+        logger.debug("Deleting the VerbalCue model to free up memory.")
+        del vc
+        gc.collect()
+        torch.cuda.empty_cache()
 
     # Generate the image
     image_path = generate_img(prompt=prompt, word1=word, word2=best_match["token_ort"])
 
     # Generate TTS
-    tts_model = TTS(lang_code)
-    tts_path = tts_model.tts(word)
-    _clean(tts_model)
+    tts_model = TTS()
+    tts_path = tts_model.tts(word, lang=lang_code)
 
     return image_path, prompt, translated_word, tts_path, ipa
-
-
-def _clean(var):
-    del var
-    gc.collect()
-    torch.cuda.empty_cache()
 
 
 if __name__ == "__main__":

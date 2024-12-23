@@ -3,12 +3,12 @@ import json
 from googletrans import LANGCODES, LANGUAGES
 
 with open("data/languages.json") as f:
-    G2P_LANGUAGES = json.load(f)
-G2P_LANGCODES = dict(map(reversed, G2P_LANGUAGES.items()))
+    G2P_LANGCODES = json.load(f)
+G2P_LANGUAGES: dict = dict(map(reversed, G2P_LANGCODES.items()))
 
 # Google Translate
-TRANSLATE_LANGUAGES = LANGUAGES
-TRANSLATE_LANGCODES = LANGCODES
+TRANSLATE_LANGUAGES: dict = LANGUAGES
+TRANSLATE_LANGCODES: dict = LANGCODES
 
 # Vocab Languages
 VOCAB_LANGUAGES = [

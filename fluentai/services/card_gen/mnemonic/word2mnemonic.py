@@ -3,7 +3,7 @@ import gc
 import torch
 
 from fluentai.services.card_gen.constants.config import config, weights_percentages
-from fluentai.services.card_gen.constants.languages import G2P_LANGCODES
+from fluentai.services.card_gen.constants.languages import G2P_LANGUAGES
 from fluentai.services.card_gen.mnemonic.imageability.predictions import (
     ImageabilityPredictor,
 )
@@ -34,7 +34,7 @@ def generate_mnemonic(word: str, language_code: str):
     semantic_sim = SemanticSimilarity()
 
     # Test if the language code is valid
-    if language_code not in G2P_LANGCODES:
+    if language_code not in G2P_LANGUAGES:
         logger.error(f"Invalid language code: {language_code}")
         return
 
