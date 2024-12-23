@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-def map_iso_codes():
+def _map_iso_codes():
     # Define the custom mappings
     custom_mappings = {
         "East Armenian": ["hyw"],
@@ -120,4 +120,4 @@ def map_iso_codes():
 
 
 if __name__ == "__main__":
-    map_iso_codes()
+    _map_iso_codes()
