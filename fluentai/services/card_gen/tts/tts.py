@@ -32,5 +32,14 @@ class TTS:
         return save_path
 
 
+def _supported_languages():
+    supported = gtts.lang.tts_langs()
+
+    lang_list = [val for val in supported.values()]
+
+    for lang in sorted(lang_list):
+        print(lang)
+
+
 if __name__ == "__main__":
     TTS().tts("Hello, world!")
