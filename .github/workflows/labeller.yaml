@@ -5,14 +5,6 @@ on:
     # Trigger on pushes to any branch
     branches:
       - '**'
-  pull_request:
-    # Trigger on pull request events
-    types:
-      - opened
-      - reopened
-      - synchronize
-      - labeled
-      - unlabeled
 
 jobs:
   tag-and-assign-in-progress:
@@ -85,31 +77,6 @@ jobs:
                   }
                 }
               }
-            }
-
-            if (context.eventName === 'pull_request') {
-              const pr = context.payload.pull_request;
-              const body = pr.body || '';
-              let matches;
-              while ((matches = issueRegex.exec(body)) !== null) {
-                issues.add(parseInt(matches[1]));
-                // Add PR author as assignee
-                if (pr.user && pr.user.login) {
-                  assignees.add(pr.user.login);
-                }
-              }
-
-              // Additionally, check the PR title for issue references
-              const title = pr.title || '';
-              while ((matches = issueRegex.exec(title)) !== null) {
-                issues.add(parseInt(matches[1]));
-                // Add PR author as assignee
-                if (pr.user && pr.user.login) {
-                  assignees.add(pr.user.login);
-                }
-              }
-
-              // Optionally, handle more PR metadata if needed
             }
 
             if (issues.size === 0) {
