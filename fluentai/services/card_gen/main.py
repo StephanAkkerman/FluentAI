@@ -56,12 +56,6 @@ def generate_mnemonic_img(word: str, lang_code: str) -> tuple:
     # Generate the image
     image_path = generate_img(prompt=prompt, word1=word, word2=best_match["token_ort"])
 
-    if config.get("IMAGE_GEN", {}).get("DELETE_AFTER_USE", True):
-        logger.debug("Deleting the VerbalCue model to free up memory.")
-        del vc
-        gc.collect()
-        torch.cuda.empty_cache()
-
     # Generate TTS
     tts_model = TTS()
     tts_path = tts_model.tts(word, lang=lang_code)

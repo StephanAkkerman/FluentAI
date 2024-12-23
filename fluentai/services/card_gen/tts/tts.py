@@ -16,6 +16,7 @@ class TTS:
         This filename can be removed after adding it to a card.
         """
         lang = map_language_code(lang)
+        save_path = f"local_data/tts/{lang}.mp3"
 
         # Check if the language code is supported
         if lang not in self.languages:
@@ -26,7 +27,9 @@ class TTS:
 
         # TODO implement accents: https://gtts.readthedocs.io/en/latest/module.html#localized-accents
         tts = gTTS(text=text, lang=lang, slow=False)
-        tts.save(f"local_data/tts/{lang}.mp3")
+        tts.save(save_path)
+        logger.info(save_path)
+        return save_path
 
 
 if __name__ == "__main__":

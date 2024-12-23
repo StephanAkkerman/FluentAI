@@ -1,3 +1,4 @@
+import gc
 import os
 from pathlib import Path
 
@@ -56,6 +57,13 @@ def generate_img(
     logger.info(f"Saving image to: {file_path}")
 
     image.save(file_path)
+
+    if config.get("IMAGE_GEN", {}).get("DELETE_AFTER_USE", True):
+        logger.debug("Deleting the VerbalCue model to free up memory.")
+        del pipe
+        gc.collect()
+        torch.cuda.empty_cache()
+
     return file_path
 
 
