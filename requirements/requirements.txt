@@ -25,3 +25,4 @@ pycountry==24.6.1
 huggingface-hub==0.27.0
 fastapi==0.115.6
 uvicorn[standard]==0.32.0  # ASGI server for FastAPI
+gtts==2.5.4
