@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 import torch
-from diffusers import AutoPipelineForText2Image
+from diffusers import AutoPipelineForText2Image, SanaPipeline
 
 from fluentai.services.card_gen.constants.config import config
 from fluentai.services.card_gen.utils.logger import logger
@@ -68,4 +68,30 @@ def generate_img(
 
 
 if __name__ == "__main__":
-    generate_img()
+    # generate_img()
+    pipe = SanaPipeline.from_pretrained(
+        "Efficient-Large-Model/Sana_600M_512px_diffusers",
+        torch_dtype=torch.float16,
+        variant="fp16",
+        cache_dir="models",
+    )
+
+    # Check if cuda is enabled
+    if torch.cuda.is_available():
+        logger.debug("CUDA is available. Moving the t2i pipeline to CUDA.")
+        pipe.to("cuda")
+    else:
+        logger.info("CUDA is not available. Running the image gen pipeline on CPU.")
+
+    image = pipe(
+        prompt="A flashy bottle that stands out from the other bottles."
+    ).images[0]
+
+    # Get the output directory from config
+    output_dir = Path(config.get("IMAGE_GEN", {}).get("OUTPUT_DIR", "output")).resolve()
+    os.makedirs(output_dir, exist_ok=True)
+
+    file_path = output_dir / f"test.png"
+    logger.info(f"Saving image to: {file_path}")
+
+    image.save(file_path)
