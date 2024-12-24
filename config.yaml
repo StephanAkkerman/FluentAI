@@ -17,8 +17,6 @@ WORD_LIMIT: 1000
 G2P:
   MODEL: "charsiu/g2p_multilingual_byT5_small_100"
   TOKENIZER: "google/byt5-small"
-  DELETE_AFTER_USE: False
-  OFFLOAD: True
 
 LLM:
   MODEL: "microsoft/Phi-3-mini-4k-instruct"
