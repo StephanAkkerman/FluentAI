@@ -54,6 +54,21 @@ jobs:
               }
             }
 
+            // Function to check if a number corresponds to an issue (not a PR)
+            async function isIssue(owner, repo, issue_number) {
+              try {
+                const { data } = await github.rest.issues.get({
+                  owner,
+                  repo,
+                  issue_number,
+                });
+                return !data.pull_request; // If pull_request field is absent, it's an issue
+              } catch (error) {
+                console.error(`Failed to fetch issue #${issue_number}:`, error);
+                return false;
+              }
+            }
+
             // Regex to find issue references like #123
             const issueRegex = /(?:^|\s)#(\d+)/g;
 
@@ -69,8 +84,9 @@ jobs:
                 let message = commit.message;
                 let matches;
                 while ((matches = issueRegex.exec(message)) !== null) {
-                  issues.add(parseInt(matches[1]));
-                  console.log(`Found issue reference #${matches[1]} in commit message: ${message}`);
+                  const issueNum = parseInt(matches[1]);
+                  issues.add(issueNum);
+                  console.log(`Found issue reference #${issueNum} in commit message: ${message}`);
                   // Add commit author as assignee
                   if (commit.author && commit.author.username) {
                     assignees.add(commit.author.username);
@@ -88,8 +104,13 @@ jobs:
             const repo = context.repo.repo;
 
             for (const issue_number of issues) {
-              await addLabel(owner, repo, issue_number);
-              for (const username of assignees) {
-                await assignUser(owner, repo, issue_number, username);
+              const isIssueResult = await isIssue(owner, repo, issue_number);
+              if (isIssueResult) {
+                await addLabel(owner, repo, issue_number);
+                for (const username of assignees) {
+                  await assignUser(owner, repo, issue_number, username);
+                }
+              } else {
+                console.log(`Reference #${issue_number} is a Pull Request. Skipping.`);
               }
             }
