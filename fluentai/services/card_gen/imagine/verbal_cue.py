@@ -1,3 +1,4 @@
+import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
 from fluentai.services.card_gen.constants.config import config
@@ -6,7 +7,7 @@ from fluentai.services.card_gen.utils.logger import logger
 
 class VerbalCue:
     def __init__(self):
-        model = AutoModelForCausalLM.from_pretrained(
+        self.model = AutoModelForCausalLM.from_pretrained(
             config.get("LLM").get("MODEL"),
             device_map="auto",
             torch_dtype="auto",
@@ -20,7 +21,7 @@ class VerbalCue:
         )
         self.pipe = pipeline(
             "text-generation",
-            model=model,
+            model=self.model,
             tokenizer=tokenizer,
         )
         self.generation_args = {
@@ -42,6 +43,7 @@ class VerbalCue:
                 "content": "Imagine a flashy bottle that stands out from the rest!",
             },
         ]
+        self.offload = config.get("LLM").get("OFFLOAD")
 
     def generate_cue(self, word1: str, word2: str) -> str:
         """
@@ -59,6 +61,10 @@ class VerbalCue:
         str
             The generated verbal cue.
         """
+        # Check if the model should be offloaded
+        if self.offload:
+            self.model.to("cuda")
+
         final_message = {
             "role": "user",
             "content": f"Write a short, catchy sentence that connects {word1} and {word2}. Also, the sentence must start with 'Imagine'. ",
@@ -66,6 +72,10 @@ class VerbalCue:
         output = self.pipe(self.messages + [final_message], **self.generation_args)
         response = output[0]["generated_text"]
         logger.debug(f"Generated cue: {response}")
+
+        if self.offload:
+            self.model.to("cpu")
+
         return response
 
 

@@ -29,6 +29,7 @@ class ImageGen:
             variant="fp16",
             cache_dir="models",
         )
+        self.offload = config.get("IMAGE_GEN", {}).get("OFFLOAD")
 
     def _get_pipe_func(self):
         if "sana" in self.model_name.lower():
@@ -56,17 +57,11 @@ class ImageGen:
         """
         file_path = self.output_dir / f"{word1}_{word2}_{self.model_name}.png"
 
-        # Check if cuda is enabled
-        if torch.cuda.is_available():
-            logger.debug("CUDA is available. Moving the t2i pipeline to CUDA.")
+        if self.offload:
             self.pipe.to("cuda")
-        else:
-            logger.info("CUDA is not available. Running the image gen pipeline on CPU.")
 
         logger.info(f"Generating image for prompt: {prompt}")
-
         image = self.pipe(prompt=prompt, **self.image_gen_params).images[0]
-
         logger.info(f"Saving image to: {file_path}")
 
         image.save(file_path)
@@ -77,8 +72,13 @@ class ImageGen:
             gc.collect()
             torch.cuda.empty_cache()
 
+        if self.offload:
+            # TODO: suppress errors
+            self.pipe.to("cpu", silence_dtype_warnings=True)
+
         return file_path
 
 
 if __name__ == "__main__":
     ImageGen().generate_img()
+    ImageGen().generate_img("a kat that walks over the moon", "kat", "moon")
