@@ -9,7 +9,7 @@ from fluentai.services.card_gen.mnemonic.phonetic.clts_utils import get_clts
 from fluentai.services.card_gen.utils.logger import logger
 
 # Test if data/clts exists
-if not os.path.exists("local_dataclts"):
+if not os.path.exists("local_data/clts"):
     get_clts()
 
 # Load CLTS data and SoundVectors
