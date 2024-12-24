@@ -26,8 +26,9 @@ LLM:
 
 # You can also use the following smaller model:
 # stabilityai/stable-diffusion-2
+# stabilityai/sdxl-turbo
 IMAGE_GEN:
-  MODEL: stabilityai/sdxl-turbo
+  MODEL: Efficient-Large-Model/Sana_600M_512px_diffusers
   OUTPUT_DIR: "imagine/generated-img"
   DELETE_AFTER_USE: True
   PARAMS:
