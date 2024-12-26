@@ -1,8 +1,5 @@
-import gc
 
-import torch
 
-from fluentai.services.card_gen.constants.config import config
 from fluentai.services.card_gen.imagine.image_gen import ImageGen
 from fluentai.services.card_gen.imagine.verbal_cue import VerbalCue
 from fluentai.services.card_gen.mnemonic.word2mnemonic import Word2Mnemonic
