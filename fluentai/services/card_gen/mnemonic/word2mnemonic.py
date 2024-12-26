@@ -1,6 +1,4 @@
-import gc
 
-import torch
 
 from fluentai.services.card_gen.constants.config import config, weights_percentages
 from fluentai.services.card_gen.constants.languages import G2P_LANGUAGES

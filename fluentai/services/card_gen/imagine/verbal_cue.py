@@ -1,4 +1,3 @@
-import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
 from fluentai.services.card_gen.constants.config import config
