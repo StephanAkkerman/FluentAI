@@ -1,3 +1,4 @@
+import functools
 import gc
 import os
 from pathlib import Path
@@ -9,27 +10,89 @@ from fluentai.services.card_gen.constants.config import config
 from fluentai.services.card_gen.utils.logger import logger
 
 
+def manage_model_memory(method):
+    """
+    Decorator to manage model memory by offloading to GPU before the method call.
+    """
+
+    @functools.wraps(method)
+    def wrapper(self, *args, **kwargs):
+        # Initialize the pipe if it's not already loaded
+        if self.pipe is None:
+            self._initialize_pipe()
+
+        # Move to GPU if offloading is enabled
+        if self.offload:
+            logger.debug("Moving the pipeline to GPU (cuda).")
+            self.pipe.to("cuda")
+
+        try:
+            # Execute the decorated method
+            result = method(self, *args, **kwargs)
+        finally:
+            # Delete the pipeline if DELETE_AFTER_USE is True
+            if self.config.get("DELETE_AFTER_USE", True):
+                logger.debug("Deleting the pipeline to free up memory.")
+                del self.pipe
+                self.pipe = None
+                gc.collect()
+                torch.cuda.empty_cache()
+
+            # Move the pipeline back to CPU if offloading is enabled
+            if self.offload and self.pipe is not None:
+                logger.debug("Moving the pipeline back to CPU.")
+                self.pipe.to("cpu", silence_dtype_warnings=True)
+
+        return result
+
+    return wrapper
+
+
 class ImageGen:
     def __init__(self):
-        # Get all config values
-        self.model = config.get("IMAGE_GEN", {}).get("MODEL", "stabilityai/sdxl-turbo")
+        self.config = config.get("IMAGE_GEN", {})
+
+        # Show debug info
+        if torch.cuda.is_available():
+            vram = torch.cuda.get_device_properties(0).total_memory
+        else:
+            vram = 0
+
+        # Select model based on VRAM
+        self._select_model(vram)
+
+        logger.debug(f"Selected model: {self.model}")
+        logger.debug(f"VRAM: {vram / 1e9} GB")
         self.model_name = self.model.split("/")[-1]
 
-        self.output_dir = Path(
-            config.get("IMAGE_GEN", {}).get("OUTPUT_DIR", "output")
-        ).resolve()
+        self.output_dir = Path(self.config.get("OUTPUT_DIR", "output")).resolve()
         os.makedirs(self.output_dir, exist_ok=True)
 
-        self.image_gen_params = config.get("IMAGE_GEN", {}).get("PARAMS", {})
+        self.image_gen_params = self.config.get("PARAMS", {})
+        self.offload = self.config.get("OFFLOAD")
 
-        pipe_func = self._get_pipe_func()
-        self.pipe = pipe_func.from_pretrained(
-            self.model,
-            torch_dtype=torch.float16,
-            variant="fp16",
-            cache_dir="models",
-        )
-        self.offload = config.get("IMAGE_GEN", {}).get("OFFLOAD")
+        # Initialize pipe to None; will be loaded on first use
+        self.pipe = None
+
+    def _select_model(self, vram):
+        """Select the appropriate model based on available VRAM."""
+        if vram > 9e9:
+            self.model = config.get("IMAGE_GEN", {}).get(
+                "LARGE_MODEL", "stabilityai/sdxl-turbo"
+            )
+        elif vram > 6e9:
+            self.model = config.get("IMAGE_GEN", {}).get(
+                "MEDIUM_MODEL", "stabilityai/sdxl-turbo"
+            )
+        elif vram > 3e9:
+            self.model = config.get("IMAGE_GEN", {}).get(
+                "SMALL_MODEL", "stabilityai/sdxl-turbo"
+            )
+        else:
+            # Maybe a model that can run on CPU
+            self.model = config.get("IMAGE_GEN", {}).get(
+                "TINY_MODEL", "stabilityai/sdxl-turbo"
+            )
 
     def _get_pipe_func(self):
         if "sana" in self.model_name.lower():
@@ -37,6 +100,18 @@ class ImageGen:
         else:
             return AutoPipelineForText2Image
 
+    def _initialize_pipe(self):
+        """Initialize the pipeline."""
+        pipe_func = self._get_pipe_func()
+        logger.debug(f"Initializing pipeline for model: {self.model}")
+        self.pipe = pipe_func.from_pretrained(
+            self.model,
+            torch_dtype=torch.float16,
+            variant="fp16",
+            cache_dir="models",
+        )
+
+    @manage_model_memory
     def generate_img(
         self,
         prompt: str = "A flashy bottle that stands out from the other bottles.",
@@ -57,28 +132,16 @@ class ImageGen:
         """
         file_path = self.output_dir / f"{word1}_{word2}_{self.model_name}.png"
 
-        if self.offload:
-            self.pipe.to("cuda")
-
         logger.info(f"Generating image for prompt: {prompt}")
         image = self.pipe(prompt=prompt, **self.image_gen_params).images[0]
         logger.info(f"Saving image to: {file_path}")
 
         image.save(file_path)
 
-        if config.get("IMAGE_GEN", {}).get("DELETE_AFTER_USE", True):
-            logger.debug("Deleting the VerbalCue model to free up memory.")
-            del self.pipe
-            gc.collect()
-            torch.cuda.empty_cache()
-
-        if self.offload:
-            # TODO: suppress errors
-            self.pipe.to("cpu", silence_dtype_warnings=True)
-
         return file_path
 
 
 if __name__ == "__main__":
-    ImageGen().generate_img()
-    ImageGen().generate_img("a kat that walks over the moon", "kat", "moon")
+    img_gen = ImageGen()
+    img_gen.generate_img()
+    img_gen.generate_img("a cat that walks over the moon", "cat", "moon")

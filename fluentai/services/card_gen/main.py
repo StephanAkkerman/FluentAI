@@ -1,4 +1,4 @@
-
+import torch
 
 from fluentai.services.card_gen.imagine.image_gen import ImageGen
 from fluentai.services.card_gen.imagine.verbal_cue import VerbalCue
@@ -31,6 +31,10 @@ def generate_mnemonic_img(word: str, lang_code: str) -> tuple:
     str
         The IPA spelling of the best match.
     """
+    # Check if cuda is available
+    logger.info(f"cuda available: {torch.cuda.is_available()}")
+    logger.info(f"cuda device count: {torch.cuda.device_count()}")
+
     best_matches, translated_word, _, ipa = Word2Mnemonic().generate_mnemonic(
         word, lang_code
     )

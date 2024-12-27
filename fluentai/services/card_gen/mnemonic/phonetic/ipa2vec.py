@@ -16,8 +16,12 @@ if not os.path.exists("local_data/clts"):
 bipa = CLTS("local_data/clts").bipa
 sv = SoundVectors(ts=bipa)
 
-
-ft = panphon.FeatureTable()
+try:
+    ft = panphon.FeatureTable()
+except UnicodeDecodeError:
+    raise Exception(
+        "See instructions here on how to fix it: https://github.com/StephanAkkerman/FluentAI/issues/119"
+    )
 
 
 def panphon_vec(ipa: str) -> list:
