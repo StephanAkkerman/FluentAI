@@ -17,20 +17,20 @@ WORD_LIMIT: 1000
 G2P:
   MODEL: "charsiu/g2p_multilingual_byT5_small_100"
   TOKENIZER: "google/byt5-small"
-  DELETE_AFTER_USE: True
 
 LLM:
   MODEL: "microsoft/Phi-3-mini-4k-instruct"
   TOKENIZER: "microsoft/Phi-3-mini-4k-instruct"
-  DELETE_AFTER_USE: True
+  DELETE_AFTER_USE: False
+  OFFLOAD: True
 
-# You can also use the following smaller model:
-# stabilityai/stable-diffusion-2
-# stabilityai/sdxl-turbo
 IMAGE_GEN:
-  MODEL: Efficient-Large-Model/Sana_600M_512px_diffusers
+  SMALL_MODEL: stabilityai/stable-diffusion-2
+  MEDIUM_MODEL: stabilityai/sdxl-turbo # 6GB vram
+  LARGE_MODEL: Efficient-Large-Model/Sana_600M_512px_diffusers # 9GB vram
   OUTPUT_DIR: "imagine/generated-img"
-  DELETE_AFTER_USE: True
+  DELETE_AFTER_USE: False
+  OFFLOAD: True
   PARAMS:
     num_inference_steps: 40
     height: 512

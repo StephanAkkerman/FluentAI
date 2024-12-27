@@ -1,28 +1,60 @@
+import functools
+import gc
+
+import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
 from fluentai.services.card_gen.constants.config import config
 from fluentai.services.card_gen.utils.logger import logger
 
 
+def manage_model_memory(method):
+    """
+    Decorator to manage model memory by offloading to GPU before the method call.
+    """
+
+    @functools.wraps(method)
+    def wrapper(self, *args, **kwargs):
+        # Initialize the pipe if it's not already loaded
+        if self.pipe is None:
+            self._initialize_pipe()
+
+        # Move to GPU if offloading is enabled
+        if self.offload:
+            logger.debug("Moving the model to GPU (cuda).")
+            self.model.to("cuda")
+
+        try:
+            # Execute the decorated method
+            result = method(self, *args, **kwargs)
+        finally:
+            # Delete the pipeline if DELETE_AFTER_USE is True
+            if self.config.get("DELETE_AFTER_USE", True):
+                logger.debug("Deleting the model to free up memory.")
+                del self.model
+                del self.pipe
+                del self.tokenizer
+                self.model = None
+                self.pipe = None
+                self.tokenizer = None
+                gc.collect()
+                torch.cuda.empty_cache()
+
+            # Move the pipeline back to CPU if offloading is enabled
+            if self.offload and self.pipe is not None:
+                logger.debug("Moving the model back to CPU.")
+                self.model.to("cpu")
+
+        return result
+
+    return wrapper
+
+
 class VerbalCue:
     def __init__(self):
-        model = AutoModelForCausalLM.from_pretrained(
-            config.get("LLM").get("MODEL"),
-            device_map="auto",
-            torch_dtype="auto",
-            trust_remote_code=True,
-            cache_dir="models",
-        )
+        self.config = config.get("LLM")
+        self.offload = self.config.get("OFFLOAD")
 
-        tokenizer = AutoTokenizer.from_pretrained(
-            config.get("LLM").get("TOKENIZER"),
-            cache_dir="models",
-        )
-        self.pipe = pipeline(
-            "text-generation",
-            model=model,
-            tokenizer=tokenizer,
-        )
         self.generation_args = {
             "max_new_tokens": 500,
             "return_full_text": False,
@@ -42,7 +74,33 @@ class VerbalCue:
                 "content": "Imagine a flashy bottle that stands out from the rest!",
             },
         ]
+        # This will be initialized later
+        self.pipe = None
 
+    def _initialize_pipe(self):
+        """Initialize the pipeline."""
+        logger.debug(
+            f"Initializing pipeline for LLM with model: {self.config.get('MODEL')}"
+        )
+        self.model = AutoModelForCausalLM.from_pretrained(
+            self.config.get("MODEL"),
+            device_map="cuda" if self.offload else "auto",
+            torch_dtype="auto",
+            trust_remote_code=True,
+            cache_dir="models",
+        )
+
+        tokenizer = AutoTokenizer.from_pretrained(
+            self.config.get("TOKENIZER"),
+            cache_dir="models",
+        )
+        self.pipe = pipeline(
+            "text-generation",
+            model=self.model,
+            tokenizer=tokenizer,
+        )
+
+    @manage_model_memory
     def generate_cue(self, word1: str, word2: str) -> str:
         """
         Generate a verbal cue that connects two words.
@@ -66,6 +124,7 @@ class VerbalCue:
         output = self.pipe(self.messages + [final_message], **self.generation_args)
         response = output[0]["generated_text"]
         logger.debug(f"Generated cue: {response}")
+
         return response
 
 

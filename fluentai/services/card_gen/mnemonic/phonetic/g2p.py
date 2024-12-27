@@ -9,11 +9,12 @@ class G2P:
         # https://github.com/lingjzhu/CharsiuG2P
         logger.debug("Loading G2P model")
         self.model = T5ForConditionalGeneration.from_pretrained(
-            config.get("G2P").get("MODEL"), cache_dir="models"
+            config.get("G2P").get("MODEL"), device_map="cpu", cache_dir="models"
         )
         self.tokenizer = AutoTokenizer.from_pretrained(
             config.get("G2P").get("TOKENIZER"), cache_dir="models"
         )
+        self.offload = config.get("G2P").get("OFFLOAD")
         logger.debug("G2P model loaded")
 
     def g2p(self, words: list[str]) -> str:

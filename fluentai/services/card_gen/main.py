@@ -1,11 +1,8 @@
-import gc
-
 import torch
 
-from fluentai.services.card_gen.constants.config import config
-from fluentai.services.card_gen.imagine.image_gen import generate_img
+from fluentai.services.card_gen.imagine.image_gen import ImageGen
 from fluentai.services.card_gen.imagine.verbal_cue import VerbalCue
-from fluentai.services.card_gen.mnemonic.word2mnemonic import generate_mnemonic
+from fluentai.services.card_gen.mnemonic.word2mnemonic import Word2Mnemonic
 from fluentai.services.card_gen.tts.tts import TTS
 from fluentai.services.card_gen.utils.logger import logger
 
@@ -34,7 +31,13 @@ def generate_mnemonic_img(word: str, lang_code: str) -> tuple:
     str
         The IPA spelling of the best match.
     """
-    best_matches, translated_word, _, ipa = generate_mnemonic(word, lang_code)
+    # Check if cuda is available
+    logger.info(f"cuda available: {torch.cuda.is_available()}")
+    logger.info(f"cuda device count: {torch.cuda.device_count()}")
+
+    best_matches, translated_word, _, ipa = Word2Mnemonic().generate_mnemonic(
+        word, lang_code
+    )
 
     # Get the top phonetic match
     best_match = best_matches.iloc[0]
@@ -47,14 +50,10 @@ def generate_mnemonic_img(word: str, lang_code: str) -> tuple:
     )
     prompt = vc.generate_cue(translated_word, best_match["token_ort"])
 
-    if config.get("LLM", {}).get("DELETE_AFTER_USE", True):
-        logger.debug("Deleting the VerbalCue model to free up memory.")
-        del vc
-        gc.collect()
-        torch.cuda.empty_cache()
-
     # Generate the image
-    image_path = generate_img(prompt=prompt, word1=word, word2=best_match["token_ort"])
+    image_path = ImageGen().generate_img(
+        prompt=prompt, word1=word, word2=best_match["token_ort"]
+    )
 
     # Generate TTS
     tts_model = TTS()
