@@ -1,3 +1,5 @@
+import os
+
 import gtts
 from gtts import gTTS
 
@@ -8,6 +10,8 @@ from fluentai.services.card_gen.utils.logger import logger
 class TTS:
     def __init__(self):
         self.languages = gtts.lang.tts_langs()
+        # Create the local_data/tts directory if it doesn't exist
+        os.makedirs("local_data/tts", exist_ok=True)
 
     def tts(self, text: str, lang: str = "en") -> str:
         """Generate a TTS audio file from the input text.
