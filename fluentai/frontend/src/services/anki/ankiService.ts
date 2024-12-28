@@ -2,7 +2,8 @@ import axios from 'axios';
 import { Card, cardToAnkiNote } from '@/interfaces/CardInterfaces';
 
 export class AnkiService {
-  private readonly API_URL = '/api/anki';
+  private readonly isGithubPages = process.env.NODE_ENV === "production" && process.env.GITHUB_PAGES === "true";
+  private readonly API_URL = `${this.isGithubPages ? '/FluentAI' : ''}/api/anki`;
 
   private async getImageAsBase64(imageUrl: string): Promise<string> {
     try {
