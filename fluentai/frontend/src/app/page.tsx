@@ -3,16 +3,27 @@
 import { useState } from "react";
 import CardGenerator from "../components/CardGenerator";
 import Flashcard from "../components/Flashcard";
+import { Card } from "@/interfaces/CardInterfaces";
 
 export default function Home() {
-  const [card, setCard] = useState<{ img: string; word: string; keyPhrase: string; translation: string } | null>(null);
+  const [card, setCard] = useState<Card | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [currentWord, setCurrentWord] = useState("");
 
+  const defaultCard: Card = {
+    word: currentWord || "Your word",
+    translation: "This is the English word.",
+    verbalCue: "This is the key phrase",
+    imageUrl: "https://placehold.co/400",
+    audioUrl: "",
+    ipa: "jʊər wɜrd",
+    languageCode: "en"
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start min-h-screen">
-      <div>
+      <div className="flex gap-12 flex-col">
         <CardGenerator
           onCardCreated={setCard}
           onLoading={setLoading}
@@ -23,10 +34,7 @@ export default function Home() {
       </div>
       <div className="flex items-center justify-center">
         <Flashcard
-          word={currentWord}
-          imageUrl={card?.img || ""}
-          correctWord={card?.translation || "This is the English word."}
-          phrase={card?.keyPhrase || "This is the key phrase"}
+          card={card || defaultCard}
           isLoading={loading}
           showFront={!!card}
         />

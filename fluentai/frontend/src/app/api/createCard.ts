@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CreateCardInterface, CreateCardResponse } from "../../interfaces/CreateCardInterface";
+import { Card, CreateCardRequest, createCardFromResponse } from '@/interfaces/CardInterfaces';
 
 // API Endpoint
 const CARD_GEN_URL = "http://localhost:8000/create_card";
@@ -10,51 +10,35 @@ axios.defaults.withCredentials = true;
 /**
  * Create a card by fetching word data and image
  */
-export const createCard = async (
-  cardData: CreateCardInterface
-): Promise<CreateCardResponse> => {
+export const createCard = async (request: CreateCardRequest): Promise<Card> => {
   try {
-    console.log("Creating card...", cardData);
+    console.log("Creating card...", request);
 
-    // Step 1: Fetch word data (IPA and recording)
-    // NOTE: Currently not used
-    const { data: wordData } = await axios.post(
-      `${CARD_GEN_URL}/word_data`,
-      cardData,
-      { responseType: "json" }
-    );
-    const { IPA, recording } = wordData;
+    // Step 1: Fetch all required data in a single API call
+    const { data } = await axios.get(`${CARD_GEN_URL}/img`, {
+      params: {
+        word: request.word,
+        language_code: request.languageCode,
+      },
+    });
 
-    // Step 2: Fetch image with verbal cue and translation
-    const { data } = await axios.get(
-      `${CARD_GEN_URL}/img`,
-      {
-        params: {
-          word: cardData.word,
-          language_code: cardData.language_code,
-        },
-      }
-    );
-
-    // Convert base64 image to blob
-    const imageBlob = await (await fetch(`data:image/jpeg;base64,${data.image}`)).blob();
-    const imageUrl = URL.createObjectURL(imageBlob);
-
-    // Convert base64 audio to blob
-    const audioBlob = await (await fetch(`data:audio/wav;base64,${data.tts_file}`)).blob();
-    const audioUrl = URL.createObjectURL(audioBlob);
-
-    const response: CreateCardResponse = {
-      imageUrl: imageUrl,
-      ttsUrl: audioUrl,
-      recording: 'TODO',
-      IPA: data.ipa,
-      verbalCue: data.verbal_cue,
-      translation: data.translation
+    // Step 2: Convert base64 strings to Blob URLs
+    const createBlobUrl = (base64Data: string, type: string): string => {
+      const byteCharacters = atob(base64Data);
+      const byteNumbers = Array.from(byteCharacters, char => char.charCodeAt(0));
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type });
+      return URL.createObjectURL(blob);
     };
 
-    console.log("Card created successfully:", response);
-    return response;
+    const imageUrl = createBlobUrl(data.image, 'image/jpeg');
+    const audioUrl = createBlobUrl(data.tts_file, 'audio/wav');
+
+    // Step 3: Build response
+    const responseWithUrls = { ...data, imageUrl, ttsUrl: audioUrl };
+
+    // Step 4: Create and return the card
+    return createCardFromResponse(request, responseWithUrls);
   } catch (error: any) {
     console.error("Error creating card:", error.message || error);
     throw new Error(error.message || "Failed to create card.");
