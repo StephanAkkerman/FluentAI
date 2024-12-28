@@ -6,6 +6,7 @@ import { createCard } from "../app/api/createCard";
 import { AnkiService } from "@/services/anki/ankiService";
 import { CreateCardInterface } from "../interfaces/CreateCardInterface";
 import { getSupportedLanguages } from "@/app/api/languageService";
+import SaveToAnki from "./SaveToAnki";
 
 interface CardGeneratorProps {
   onCardCreated: (card: { img: string; word: string; keyPhrase: string; translation: string }) => void;
@@ -205,46 +206,13 @@ export default function CardGenerator({
       </div>
       {card && (
         <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-xl">
-          <form onSubmit={handleSaveToAnki} className="space-y-6">
-            <>
-              <FormField label="Anki Deck" value={selectedDeck} required>
-                <select
-                  className="w-full py-2 px-4 border rounded"
-                  value={selectedDeck}
-                  onChange={(e) => handleDeckChange(e.target.value)}
-                >
-                  <option value="" disabled>
-                    Select a deck
-                  </option>
-                  {decks.map((deck) => (
-                    <option key={deck} value={deck}>
-                      {deck}
-                    </option>
-                  ))}
-                </select>
-              </FormField>
-              <FormField value="true">
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="testSpellingToggle"
-                    className="mr-2"
-                    checked={testSpelling}
-                    onChange={(e) => handleSpellingPreferenceChange(e.target.checked)}
-                  />
-                  <label htmlFor="testSpellingToggle">Enable Test Spelling</label>
-                </div>
-              </FormField>
-              <Button
-                text={getSaveButtonText()}
-                variant={getSaveButtonVariant()}
-                type="submit"
-                disabled={!selectedDeck || saveStatus === 'saving' || saveStatus === 'success'}
-                className={`w-full py-3 text-lg font-bold ${saveStatus === 'saving' ? 'opacity-70 cursor-not-allowed' : ''
-                  }`}
-              />
-            </>
-          </form>
+          <h3 className="text-xl font-bold mb-4">Save to Anki</h3>
+          <SaveToAnki
+            card={card}
+            decks={decks}
+            onError={onError}
+            onLoading={onLoading}
+          />
         </div>
       )}
     </>
