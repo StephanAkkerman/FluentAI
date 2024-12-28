@@ -3,9 +3,10 @@
 import { useState } from "react";
 import CardGenerator from "../components/CardGenerator";
 import Flashcard from "../components/Flashcard";
+import { Card } from "@/interfaces/AnkiInterface";
 
 export default function Home() {
-  const [card, setCard] = useState<{ img: string; word: string; keyPhrase: string; translation: string } | null>(null);
+  const [card, setCard] = useState<Card | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [currentWord, setCurrentWord] = useState("");

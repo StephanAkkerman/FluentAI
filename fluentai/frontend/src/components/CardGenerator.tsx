@@ -7,9 +7,10 @@ import { AnkiService } from "@/services/anki/ankiService";
 import { CreateCardInterface } from "../interfaces/CreateCardInterface";
 import { getSupportedLanguages } from "@/app/api/languageService";
 import SaveToAnki from "./SaveToAnki";
+import { Card } from "@/interfaces/AnkiInterface";
 
 interface CardGeneratorProps {
-  onCardCreated: (card: { img: string; word: string; keyPhrase: string; translation: string }) => void;
+  onCardCreated: (card: Card) => void;
   onLoading: (loading: boolean) => void;
   onError: (error: string) => void;
   onWordChange: (word: string) => void;
@@ -30,7 +31,7 @@ export default function CardGenerator({
     word: "",
   });
   const [errors, setErrors] = useState({ language_code: "", word: "" });
-  const [card, setCard] = useState<{ img: string; word: string; keyPhrase: string; translation: string } | null>(null);
+  const [card, setCard] = useState<Card | null>(null);
 
   useEffect(() => {
     const fetchLanguagesAndDecks = async () => {
@@ -82,6 +83,8 @@ export default function CardGenerator({
         word: input.word,
         keyPhrase: response.verbalCue,
         translation: response.translation,
+        recording: response.ttsUrl,
+        ipa: response.ipa,
       };
       setCard(newCard);
       onCardCreated(newCard);

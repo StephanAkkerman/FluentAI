@@ -18,5 +18,7 @@ export interface Card {
   word: string;
   keyPhrase: string;
   translation: string;
+  ipa: string;
+  recording: string;
 }
 

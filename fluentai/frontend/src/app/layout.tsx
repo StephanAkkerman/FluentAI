@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "FluentAI",
   description: "Learning languages in a flash.",
   icons: {
-    icon: "logo.png",
+    icon: "FluentAI/logo.png",
   }
 };
 

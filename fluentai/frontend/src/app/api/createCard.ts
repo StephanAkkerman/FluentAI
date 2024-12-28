@@ -47,8 +47,7 @@ export const createCard = async (
     const response: CreateCardResponse = {
       imageUrl: imageUrl,
       ttsUrl: audioUrl,
-      recording: 'TODO',
-      IPA: data.ipa,
+      ipa: data.ipa,
       verbalCue: data.verbal_cue,
       translation: data.translation
     };

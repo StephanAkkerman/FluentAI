@@ -79,17 +79,17 @@ export class AnkiService {
               {
                 Name: 'Word - Mnemonic',
                 Front: '{{Word}}\n\n',
-                Back: '{{FrontSide}}\n\n<hr id=answer>\n{{Picture}}\n\n{{#Pronunciation (Recording and/or IPA)}}<br><font color=blue>{{Pronunciation (Recording and/or IPA)}}</font>{{/Pronunciation (Recording and/or IPA)}}<br>\n<span style="color:grey">{{Gender, Personal Connection, Extra Info (Back side)}}</span><br><br>',
+                Back: '{{FrontSide}}\n\n<hr id=answer>\n{{Picture}}\n\n{{#Pronunciation (Recording and/or IPA)}}\n<br>\n<font color=blue>{{Pronunciation (Recording and/or IPA)}}</font>{{/Pronunciation (Recording and/or IPA)}}<br>\n\n\n<span style="color:grey">\n{{Gender, Personal Connection, Extra Info (Back side)}}</span>\n<br><br>\n',
               },
               {
                 Name: 'Mnemonic - Word',
                 Front: '{{Picture}}<br><br>',
-                Back: '{{FrontSide}}\n\n<hr id=answer>\n<span style="font-size:1.5em;">{{Word}}</span><br>\n{{#Pronunciation (Recording and/or IPA)}}<br><font color=blue>{{Pronunciation (Recording and/or IPA)}}</font>{{/Pronunciation (Recording and/or IPA)}}\n{{#Gender, Personal Connection, Extra Info (Back side)}}<br><font color=grey>{{Gender, Personal Connection, Extra Info (Back side)}}</font>{{/Gender, Personal Connection, Extra Info (Back side)}}',
+                Back: '{{FrontSide}}\n\n<hr id=answer>\n<br>\n<span style="font-size:1.5em;">{{Word}}</span><br>\n\n\n{{#Pronunciation (Recording and/or IPA)}}<br><font color=blue>{{Pronunciation (Recording and/or IPA)}}</font>{{/Pronunciation (Recording and/or IPA)}}\n\n{{#Gender, Personal Connection, Extra Info (Back side)}}<br><font color=grey>{{Gender, Personal Connection, Extra Info (Back side)}}</font>{{/Gender, Personal Connection, Extra Info (Back side)}}\n\n\n<span style="">',
               },
               {
                 Name: 'Mnemonic - Spelling',
-                Front: '{{#Test Spelling? (y = yes, blank = no)}}Spell this word: <br><br>{{Picture}}<br>{{#Pronunciation (Recording and/or IPA)}}<br><font color=blue>{{Pronunciation (Recording and/or IPA)}}</font>{{/Pronunciation (Recording and/or IPA)}}<br>{{/Test Spelling? (y = yes, blank = no)}}',
-                Back: '<span style="font-size:1.5em;">{{Word}}</span><br><br>{{Picture}}<br><span style="color:grey;">{{Gender, Personal Connection, Extra Info (Back side)}}</span>',
+                Front: "{{#Test Spelling? (y = yes, blank = no)}}\nSpell this word: <br><br>\n{{Picture}}<br>\n\n{{#Pronunciation (Recording and/or IPA)}}<br><font color=blue>{{Pronunciation (Recording and/or IPA)}}</font>{{/Pronunciation (Recording and/or IPA)}}\n<br>\n\n{{/Test Spelling? (y = yes, blank = no)}}\n\n\n",
+                Back: '<span style="font-size:1.5em;">{{Word}}</span><br><br>\n\n\n{{Picture}}<br>\n\n<span style="color:grey;">{{Gender, Personal Connection, Extra Info (Back side)}}</span>\n',
               },
             ],
           },
@@ -105,10 +105,21 @@ export class AnkiService {
     try {
       // Ensure the model exists
       await this.checkAndCreateModel();
+
       // First, convert the image to base64 and store it
       const base64Image = await this.getImageAsBase64(card.img);
-      const filename = `fluentai-${card.word}-${Date.now()}.jpg`;
-      await this.storeMediaFile(filename, base64Image);
+      const imageFilename = `fluentai-${card.word}-${Date.now()}.jpg`;
+      await this.storeMediaFile(imageFilename, base64Image);
+
+      // Python equivalent: 'escaped_usage + formatted_notes'
+      const genderNotesField = card.keyPhrase + " <div></div> ";
+
+      // Convert the pronunciation to base64 and store it
+      const base64Audio = await this.getImageAsBase64(card.recording);
+      const recordingFilename = `fluentai-${card.word}-${Date.now()}.wav`;
+      await this.storeMediaFile(recordingFilename, base64Audio);
+
+      const pronunciationField = card.ipa + `[sound:${recordingFilename}]`;
 
       // Then create the note with the stored image
       await axios.post(this.API_URL, {
@@ -120,10 +131,9 @@ export class AnkiService {
             modelName: 'FluentAI Model',
             fields: {
               "Word": card.word,
-              "Answer": card.translation,
-              "Picture": `<img src="${filename}" />`,
-              "Gender, Personal Connection, Extra Info (Back side)": "",
-              "Pronunciation (Recording and/or IPA)": "",
+              "Picture": `<img src="${imageFilename}" />`,
+              "Gender, Personal Connection, Extra Info (Back side)": genderNotesField,
+              "Pronunciation (Recording and/or IPA)": pronunciationField,
               "Test Spelling? (y = yes, blank = no)": testSpelling ? "y" : "",
             },
             options: {
