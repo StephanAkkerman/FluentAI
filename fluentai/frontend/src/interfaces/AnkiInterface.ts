@@ -1,3 +1,8 @@
+export interface AnkiConnectResponse {
+  result: any;
+  error: string | null;
+}
+
 export interface AnkiNote {
   deckName: string;
   modelName: string;
@@ -7,3 +12,11 @@ export interface AnkiNote {
   };
   tags?: string[];
 }
+
+export interface Card {
+  img: string;
+  word: string;
+  keyPhrase: string;
+  translation: string;
+}
+

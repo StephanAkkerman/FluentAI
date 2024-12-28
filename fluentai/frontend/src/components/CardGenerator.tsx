@@ -3,7 +3,7 @@ import AutoCompleteInput from "./ui/AutoCompleteInput";
 import FormField from "./ui/FormField";
 import Button from "./ui/Button";
 import { createCard } from "../app/api/createCard";
-import { saveToAnki, getAvailableDecks } from "@/app/api/ankiService";
+import { AnkiService } from "@/services/anki/ankiService";
 import { CreateCardInterface } from "../interfaces/CreateCardInterface";
 import { getSupportedLanguages } from "@/app/api/languageService";
 
@@ -14,6 +14,8 @@ interface CardGeneratorProps {
   onWordChange: (word: string) => void;
 }
 
+const ankiService = new AnkiService();
+
 export default function CardGenerator({
   onCardCreated,
   onLoading,
@@ -21,28 +23,38 @@ export default function CardGenerator({
   onWordChange,
 }: CardGeneratorProps) {
   const [languages, setLanguages] = useState<{ [key: string]: string }>({});
+  const [decks, setDecks] = useState<string[]>([]);
+  const [selectedDeck, setSelectedDeck] = useState<string>(() => {
+    // Load the default deck from localStorage (if available)
+    return localStorage.getItem("selectedDeck") || "";
+  });
   const [input, setInput] = useState<CreateCardInterface>({
     language_code: "",
     word: "",
   });
   const [errors, setErrors] = useState({ language_code: "", word: "" });
   const [card, setCard] = useState<{ img: string; word: string; keyPhrase: string; translation: string } | null>(null);
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
 
   useEffect(() => {
-    const fetchLanguages = async () => {
+    const fetchLanguagesAndDecks = async () => {
       try {
         onLoading(true);
-        const response = await getSupportedLanguages();
-        setLanguages(response.languages);
+        const [languageResponse, deckResponse] = await Promise.all([
+          getSupportedLanguages(),
+          ankiService.getAvailableDecks(),
+        ]);
+        setLanguages(languageResponse.languages);
+        setDecks(deckResponse);
       } catch (error) {
-        console.error("Error fetching languages:", error);
-        onError("Failed to load supported languages.");
+        console.error("Error fetching data:", error);
+        onError("Failed to load data.");
       } finally {
         onLoading(false);
       }
     };
 
-    fetchLanguages();
+    fetchLanguagesAndDecks();
   }, [onLoading, onError]);
 
   const validate = () => {
@@ -84,13 +96,54 @@ export default function CardGenerator({
   };
 
   const handleSaveToAnki = async () => {
-    if (!card) return;
+    if (!card || !selectedDeck) {
+      onError("Please select a deck.");
+      return;
+    }
+
+    setSaveStatus('saving');
+    onLoading(true);
+
     try {
-      await saveToAnki(card);
-      alert("Card saved to Anki!");
+      await ankiService.saveCard(card, selectedDeck);
+      setSaveStatus('success');
+      setTimeout(() => setSaveStatus('idle'), 3000);
     } catch (error) {
       console.error("Error saving to Anki:", error);
-      alert("Failed to save card to Anki.");
+      setSaveStatus('error');
+      onError("Failed to save card to Anki.");
+    } finally {
+      onLoading(false);
+    }
+  };
+
+  const handleDeckChange = (deck: string) => {
+    setSelectedDeck(deck);
+    // Save the selected deck to localStorage
+    localStorage.setItem("selectedDeck", deck);
+  };
+
+  const getSaveButtonText = () => {
+    switch (saveStatus) {
+      case 'saving':
+        return 'Saving...';
+      case 'success':
+        return 'Saved!';
+      case 'error':
+        return 'Failed to Save';
+      default:
+        return 'Save to Anki';
+    }
+  };
+
+  const getSaveButtonVariant = () => {
+    switch (saveStatus) {
+      case 'success':
+        return 'primary';
+      case 'error':
+        return 'danger';
+      default:
+        return 'secondary';
     }
   };
 
@@ -132,15 +185,34 @@ export default function CardGenerator({
           className="w-full py-3 text-lg font-bold transform hover:scale-105 transition-transform duration-200 hover:shadow-lg"
         />
         {card && (
-          <Button
-            text="Save to Anki"
-            variant="secondary"
-            onClick={handleSaveToAnki}
-            className="w-full py-3 text-lg font-bold"
-          />
+          <>
+            <FormField label="Anki Deck" value={selectedDeck}>
+              <select
+                className="w-full py-2 px-4 border rounded"
+                value={selectedDeck}
+                onChange={(e) => handleDeckChange(e.target.value)}
+              >
+                <option value="" disabled>
+                  Select a deck
+                </option>
+                {decks.map((deck) => (
+                  <option key={deck} value={deck}>
+                    {deck}
+                  </option>
+                ))}
+              </select>
+            </FormField>
+            <Button
+              text={getSaveButtonText()}
+              variant={getSaveButtonVariant()}
+              onClick={handleSaveToAnki}
+              disabled={!selectedDeck || saveStatus === 'saving' || saveStatus === 'success'}
+              className={`w-full py-3 text-lg font-bold ${saveStatus === 'saving' ? 'opacity-70 cursor-not-allowed' : ''
+                }`}
+            />
+          </>
         )}
       </form>
     </div>
   );
 }
-
