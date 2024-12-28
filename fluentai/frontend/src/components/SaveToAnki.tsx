@@ -6,23 +6,35 @@ import { Card } from "@/interfaces/CardInterfaces";
 
 interface SaveToAnkiProps {
   card: Card;
-  decks: string[];
   onError: (error: string) => void;
 }
 
 const ankiService = new AnkiService();
 
-export default function SaveToAnki({ card, decks, onError }: SaveToAnkiProps) {
+export default function SaveToAnki({ card, onError }: SaveToAnkiProps) {
   const [selectedDeck, setSelectedDeck] = useState<string>("");
   const [testSpelling, setTestSpelling] = useState<boolean>(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
   const [localLoading, setLocalLoading] = useState(false);
+  const [decks, setDecks] = useState<string[]>([]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       setSelectedDeck(localStorage.getItem("selectedDeck") || "");
       setTestSpelling(localStorage.getItem("testSpelling") === "true");
     }
+
+    const fetchDecks = async () => {
+      try {
+        const deckResponse = await ankiService.getAvailableDecks()
+        setDecks(deckResponse);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        onError("Failed to load data.");
+      }
+    }
+
+    fetchDecks();
   }, []);
 
   const handleSaveToAnki = async (e: React.FormEvent) => {

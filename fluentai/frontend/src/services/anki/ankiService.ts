@@ -1,10 +1,8 @@
 import axios from 'axios';
 import { Card, cardToAnkiNote } from '@/interfaces/CardInterfaces';
+import { ANKI_CONFIG } from '@/config/constants';
 
 export class AnkiService {
-  private readonly isGithubPages = process.env.NODE_ENV === "production" && process.env.GITHUB_PAGES === "true";
-  private readonly API_URL = `${this.isGithubPages ? '/FluentAI' : ''}/api/anki`;
-
   private async getImageAsBase64(imageUrl: string): Promise<string> {
     try {
       // Fetch the image
@@ -27,7 +25,7 @@ export class AnkiService {
 
   private async storeMediaFile(filename: string, data: string): Promise<void> {
     try {
-      await axios.post(this.API_URL, {
+      await axios.post(ANKI_CONFIG.API_URL, {
         action: 'storeMediaFile',
         version: 6,
         params: {
@@ -44,7 +42,7 @@ export class AnkiService {
   async checkAndCreateModel(modelName: string = 'FluentAI Model'): Promise<void> {
     try {
       // Check if the model exists
-      const response = await axios.post(this.API_URL, {
+      const response = await axios.post(ANKI_CONFIG.API_URL, {
         action: 'modelNames',
         version: 6,
       });
@@ -52,7 +50,7 @@ export class AnkiService {
       const models: string[] = response.data.result;
       if (!models.includes(modelName)) {
         // Create the model if it doesn't exist
-        await axios.post(this.API_URL, {
+        await axios.post(ANKI_CONFIG.API_URL, {
           action: 'createModel',
           version: 6,
           params: {
@@ -123,7 +121,7 @@ export class AnkiService {
       const note = cardToAnkiNote(cardWithMediaFiles, deckName);
 
       // Then create the note with the stored image
-      await axios.post(this.API_URL, {
+      await axios.post(ANKI_CONFIG.API_URL, {
         action: 'addNote',
         version: 6,
         params: { note },
@@ -136,7 +134,7 @@ export class AnkiService {
 
   async getAvailableDecks(): Promise<string[]> {
     try {
-      const response = await axios.post(this.API_URL, {
+      const response = await axios.post(ANKI_CONFIG.API_URL, {
         action: 'deckNames',
         version: 6,
       });
