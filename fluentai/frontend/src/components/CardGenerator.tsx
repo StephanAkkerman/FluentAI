@@ -25,23 +25,12 @@ export default function CardGenerator({
 }: CardGeneratorProps) {
   const [languages, setLanguages] = useState<{ [key: string]: string }>({});
   const [decks, setDecks] = useState<string[]>([]);
-  const [selectedDeck, setSelectedDeck] = useState<string>("");
   const [input, setInput] = useState<CreateCardInterface>({
     language_code: "",
     word: "",
   });
   const [errors, setErrors] = useState({ language_code: "", word: "" });
   const [card, setCard] = useState<{ img: string; word: string; keyPhrase: string; translation: string } | null>(null);
-  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
-  const [testSpelling, setTestSpelling] = useState<boolean>(false);
-
-  // Initialize `selectedDeck` and `testSpelling` from localStorage on the client side
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      setSelectedDeck(localStorage.getItem("selectedDeck") || "");
-      setTestSpelling(localStorage.getItem("testSpelling") === "true");
-    }
-  }, []);
 
   useEffect(() => {
     const fetchLanguagesAndDecks = async () => {
@@ -84,6 +73,7 @@ export default function CardGenerator({
 
     onLoading(true);
     onError("");
+    setCard(null);
 
     try {
       const response = await createCard(input);
@@ -99,68 +89,6 @@ export default function CardGenerator({
       onError(err.message || "An unexpected error occurred.");
     } finally {
       onLoading(false);
-    }
-  };
-
-  const handleSaveToAnki = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!card || !selectedDeck) {
-      onError("Please select a deck.");
-      return;
-    }
-
-    setSaveStatus('saving');
-    onLoading(true);
-
-    try {
-      await ankiService.saveCard(card, selectedDeck, testSpelling);
-      setSaveStatus('success');
-      setTimeout(() => setSaveStatus('idle'), 3000);
-    } catch (error) {
-      console.error("Error saving to Anki:", error);
-      setSaveStatus('error');
-      onError("Failed to save card to Anki.");
-    } finally {
-      onLoading(false);
-    }
-  };
-
-  const handleDeckChange = (deck: string) => {
-    setSelectedDeck(deck);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("selectedDeck", deck);
-    }
-  };
-
-  const handleSpellingPreferenceChange = (checked: boolean) => {
-    setTestSpelling(checked);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("testSpelling", checked.toString());
-    }
-  };
-
-  const getSaveButtonText = () => {
-    switch (saveStatus) {
-      case 'saving':
-        return 'Saving...';
-      case 'success':
-        return 'Saved!';
-      case 'error':
-        return 'Failed to Save';
-      default:
-        return 'Save to Anki';
-    }
-  };
-
-  const getSaveButtonVariant = () => {
-    switch (saveStatus) {
-      case 'success':
-        return 'primary';
-      case 'error':
-        return 'danger';
-      default:
-        return 'secondary';
     }
   };
 

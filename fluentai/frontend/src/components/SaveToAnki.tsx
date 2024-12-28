@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FormField from "./ui/FormField";
 import Button from "./ui/Button";
 import { AnkiService } from "@/services/anki/ankiService";
@@ -16,6 +16,14 @@ export default function SaveToAnki({ card, decks, onError, onLoading }: SaveToAn
   const [selectedDeck, setSelectedDeck] = useState<string>("");
   const [testSpelling, setTestSpelling] = useState<boolean>(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
+  const [localLoading, setLocalLoading] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setSelectedDeck(localStorage.getItem("selectedDeck") || "");
+      setTestSpelling(localStorage.getItem("testSpelling") === "true");
+    }
+  }, []);
 
   const handleSaveToAnki = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +34,7 @@ export default function SaveToAnki({ card, decks, onError, onLoading }: SaveToAn
     }
 
     setSaveStatus('saving');
-    onLoading(true);
+    setLocalLoading(true);
 
     try {
       await ankiService.saveCard(card, selectedDeck, testSpelling);
@@ -37,7 +45,7 @@ export default function SaveToAnki({ card, decks, onError, onLoading }: SaveToAn
       setSaveStatus('error');
       onError("Failed to save card to Anki.");
     } finally {
-      onLoading(false);
+      setLocalLoading(false);
     }
   };
 
@@ -110,10 +118,10 @@ export default function SaveToAnki({ card, decks, onError, onLoading }: SaveToAn
         </div>
       </FormField>
       <Button
-        text={getSaveButtonText()}
+        text={localLoading ? "Saving..." : getSaveButtonText()}
         variant={getSaveButtonVariant()}
         type="submit"
-        disabled={!selectedDeck || saveStatus === 'saving' || saveStatus === 'success'}
+        disabled={localLoading || !selectedDeck || saveStatus === "success"}
         className={`w-full py-3 text-lg font-bold ${saveStatus === 'saving' ? 'opacity-70 cursor-not-allowed' : ''}`}
       />
     </form>
