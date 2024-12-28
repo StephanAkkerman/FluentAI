@@ -78,7 +78,7 @@ export default function CardGenerator({
 
     try {
       const response = await createCard(input);
-      const newCard = {
+      const newCard: Card = {
         img: response.imageUrl,
         word: input.word,
         keyPhrase: response.verbalCue,

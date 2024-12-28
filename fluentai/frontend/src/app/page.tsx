@@ -11,6 +11,15 @@ export default function Home() {
   const [error, setError] = useState("");
   const [currentWord, setCurrentWord] = useState("");
 
+  let defaultCard: Card = {
+    word: currentWord || "Your word",
+    translation: "This is the English word.",
+    keyPhrase: "This is the key phrase",
+    img: "https://placehold.co/400",
+    recording: "",
+    ipa: "jʊər wɜrd"
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start min-h-screen">
       <div className="flex gap-12 flex-col">
@@ -24,10 +33,7 @@ export default function Home() {
       </div>
       <div className="flex items-center justify-center">
         <Flashcard
-          word={currentWord}
-          imageUrl={card?.img || ""}
-          correctWord={card?.translation || "This is the English word."}
-          phrase={card?.keyPhrase || "This is the key phrase"}
+          card={card || defaultCard}
           isLoading={loading}
           showFront={!!card}
         />
