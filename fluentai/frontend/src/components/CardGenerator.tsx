@@ -24,10 +24,7 @@ export default function CardGenerator({
 }: CardGeneratorProps) {
   const [languages, setLanguages] = useState<{ [key: string]: string }>({});
   const [decks, setDecks] = useState<string[]>([]);
-  const [selectedDeck, setSelectedDeck] = useState<string>(() => {
-    // Load the default deck from localStorage (if available)
-    return localStorage.getItem("selectedDeck") || "";
-  });
+  const [selectedDeck, setSelectedDeck] = useState<string>("");
   const [input, setInput] = useState<CreateCardInterface>({
     language_code: "",
     word: "",
@@ -35,6 +32,15 @@ export default function CardGenerator({
   const [errors, setErrors] = useState({ language_code: "", word: "" });
   const [card, setCard] = useState<{ img: string; word: string; keyPhrase: string; translation: string } | null>(null);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
+  const [testSpelling, setTestSpelling] = useState<boolean>(false);
+
+  // Initialize `selectedDeck` and `testSpelling` from localStorage on the client side
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setSelectedDeck(localStorage.getItem("selectedDeck") || "");
+      setTestSpelling(localStorage.getItem("testSpelling") === "true");
+    }
+  }, []);
 
   useEffect(() => {
     const fetchLanguagesAndDecks = async () => {
@@ -95,7 +101,9 @@ export default function CardGenerator({
     }
   };
 
-  const handleSaveToAnki = async () => {
+  const handleSaveToAnki = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     if (!card || !selectedDeck) {
       onError("Please select a deck.");
       return;
@@ -105,7 +113,7 @@ export default function CardGenerator({
     onLoading(true);
 
     try {
-      await ankiService.saveCard(card, selectedDeck);
+      await ankiService.saveCard(card, selectedDeck, testSpelling);
       setSaveStatus('success');
       setTimeout(() => setSaveStatus('idle'), 3000);
     } catch (error) {
@@ -119,8 +127,16 @@ export default function CardGenerator({
 
   const handleDeckChange = (deck: string) => {
     setSelectedDeck(deck);
-    // Save the selected deck to localStorage
-    localStorage.setItem("selectedDeck", deck);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("selectedDeck", deck);
+    }
+  };
+
+  const handleSpellingPreferenceChange = (checked: boolean) => {
+    setTestSpelling(checked);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("testSpelling", checked.toString());
+    }
   };
 
   const getSaveButtonText = () => {
@@ -148,71 +164,89 @@ export default function CardGenerator({
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-xl">
-      <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 mb-6 text-center">
-        Create Your Flashcard
-      </h2>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <FormField
-          label="Language"
-          value={input.language_code}
-          error={errors.language_code}
-          required
-        >
-          <AutoCompleteInput
-            suggestions={Object.keys(languages)}
-            onSelect={(languageName) => {
-              const languageCode =
-                languages[languageName as keyof typeof languages];
-              setInput((prev) => ({
-                ...prev,
-                language_code: languageCode || "",
-              }));
-            }}
-          />
-        </FormField>
-        <FormField
-          label="Word"
-          value={input.word}
-          error={errors.word}
-          required
-          onChange={handleWordChange}
-        />
-        <Button
-          text="Create Card"
-          variant="primary"
-          type="submit"
-          className="w-full py-3 text-lg font-bold transform hover:scale-105 transition-transform duration-200 hover:shadow-lg"
-        />
-        {card && (
-          <>
-            <FormField label="Anki Deck" value={selectedDeck}>
-              <select
-                className="w-full py-2 px-4 border rounded"
-                value={selectedDeck}
-                onChange={(e) => handleDeckChange(e.target.value)}
-              >
-                <option value="" disabled>
-                  Select a deck
-                </option>
-                {decks.map((deck) => (
-                  <option key={deck} value={deck}>
-                    {deck}
-                  </option>
-                ))}
-              </select>
-            </FormField>
-            <Button
-              text={getSaveButtonText()}
-              variant={getSaveButtonVariant()}
-              onClick={handleSaveToAnki}
-              disabled={!selectedDeck || saveStatus === 'saving' || saveStatus === 'success'}
-              className={`w-full py-3 text-lg font-bold ${saveStatus === 'saving' ? 'opacity-70 cursor-not-allowed' : ''
-                }`}
+    <>
+      <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-xl">
+        <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 mb-6 text-center">
+          Create Your Flashcard
+        </h2>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <FormField
+            label="Language"
+            value={input.language_code}
+            error={errors.language_code}
+            required
+          >
+            <AutoCompleteInput
+              suggestions={Object.keys(languages)}
+              onSelect={(languageName) => {
+                const languageCode =
+                  languages[languageName as keyof typeof languages];
+                setInput((prev) => ({
+                  ...prev,
+                  language_code: languageCode || "",
+                }));
+              }}
             />
-          </>
-        )}
-      </form>
-    </div>
+          </FormField>
+          <FormField
+            label="Word"
+            value={input.word}
+            error={errors.word}
+            required
+            onChange={handleWordChange}
+          />
+          <Button
+            text="Create Card"
+            variant="primary"
+            type="submit"
+            className="w-full py-3 text-lg font-bold transform hover:scale-105 transition-transform duration-200 hover:shadow-lg"
+          />
+        </form>
+      </div>
+      {card && (
+        <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-xl">
+          <form onSubmit={handleSaveToAnki} className="space-y-6">
+            <>
+              <FormField label="Anki Deck" value={selectedDeck} required>
+                <select
+                  className="w-full py-2 px-4 border rounded"
+                  value={selectedDeck}
+                  onChange={(e) => handleDeckChange(e.target.value)}
+                >
+                  <option value="" disabled>
+                    Select a deck
+                  </option>
+                  {decks.map((deck) => (
+                    <option key={deck} value={deck}>
+                      {deck}
+                    </option>
+                  ))}
+                </select>
+              </FormField>
+              <FormField value="true">
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="testSpellingToggle"
+                    className="mr-2"
+                    checked={testSpelling}
+                    onChange={(e) => handleSpellingPreferenceChange(e.target.checked)}
+                  />
+                  <label htmlFor="testSpellingToggle">Enable Test Spelling</label>
+                </div>
+              </FormField>
+              <Button
+                text={getSaveButtonText()}
+                variant={getSaveButtonVariant()}
+                type="submit"
+                disabled={!selectedDeck || saveStatus === 'saving' || saveStatus === 'success'}
+                className={`w-full py-3 text-lg font-bold ${saveStatus === 'saving' ? 'opacity-70 cursor-not-allowed' : ''
+                  }`}
+              />
+            </>
+          </form>
+        </div>
+      )}
+    </>
   );
 }

@@ -101,7 +101,7 @@ export class AnkiService {
     }
   }
 
-  async saveCard(card: Card, deckName: string): Promise<void> {
+  async saveCard(card: Card, deckName: string, testSpelling: boolean): Promise<void> {
     try {
       // Ensure the model exists
       await this.checkAndCreateModel();
@@ -124,7 +124,7 @@ export class AnkiService {
               "Picture": `<img src="${filename}" />`,
               "Gender, Personal Connection, Extra Info (Back side)": "",
               "Pronunciation (Recording and/or IPA)": "",
-              "Test Spelling? (y = yes, blank = no)": "",
+              "Test Spelling? (y = yes, blank = no)": testSpelling ? "y" : "",
             },
             options: {
               allowDuplicate: false,
