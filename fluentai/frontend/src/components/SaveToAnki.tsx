@@ -2,17 +2,17 @@ import React, { useState, useEffect } from "react";
 import FormField from "./ui/FormField";
 import Button from "./ui/Button";
 import { AnkiService } from "@/services/anki/ankiService";
+import { Card } from "@/interfaces/CardInterfaces";
 
 interface SaveToAnkiProps {
-  card: { img: string; word: string; keyPhrase: string; translation: string };
+  card: Card;
   decks: string[];
   onError: (error: string) => void;
-  onLoading: (loading: boolean) => void;
 }
 
 const ankiService = new AnkiService();
 
-export default function SaveToAnki({ card, decks, onError, onLoading }: SaveToAnkiProps) {
+export default function SaveToAnki({ card, decks, onError }: SaveToAnkiProps) {
   const [selectedDeck, setSelectedDeck] = useState<string>("");
   const [testSpelling, setTestSpelling] = useState<boolean>(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');

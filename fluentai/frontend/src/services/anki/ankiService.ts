@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Card } from '@/interfaces/AnkiInterface';
+import { Card, cardToAnkiNote } from '@/interfaces/CardInterfaces';
 
 export class AnkiService {
   private readonly API_URL = '/FluentAI/api/anki';
@@ -107,41 +107,25 @@ export class AnkiService {
       await this.checkAndCreateModel();
 
       // First, convert the image to base64 and store it
-      const base64Image = await this.getImageAsBase64(card.img);
+      const base64Image = await this.getImageAsBase64(card.imageUrl);
       const imageFilename = `fluentai-${card.word}-${Date.now()}.jpg`;
       await this.storeMediaFile(imageFilename, base64Image);
 
-      // Python equivalent: 'escaped_usage + formatted_notes'
-      const genderNotesField = card.keyPhrase + " <div></div> ";
-
       // Convert the pronunciation to base64 and store it
-      const base64Audio = await this.getImageAsBase64(card.recording);
+      const base64Audio = await this.getImageAsBase64(card.audioUrl);
       const recordingFilename = `fluentai-${card.word}-${Date.now()}.wav`;
       await this.storeMediaFile(recordingFilename, base64Audio);
 
-      const pronunciationField = card.ipa + `[sound:${recordingFilename}]`;
+      // Update the card URLs to use the media files instead
+      const cardWithMediaFiles = { ...card, testSpelling, imageUrl: imageFilename, audioUrl: recordingFilename }
+
+      const note = cardToAnkiNote(cardWithMediaFiles, deckName);
 
       // Then create the note with the stored image
       await axios.post(this.API_URL, {
         action: 'addNote',
         version: 6,
-        params: {
-          note: {
-            deckName: deckName,
-            modelName: 'FluentAI Model',
-            fields: {
-              "Word": card.word,
-              "Picture": `<img src="${imageFilename}" />`,
-              "Gender, Personal Connection, Extra Info (Back side)": genderNotesField,
-              "Pronunciation (Recording and/or IPA)": pronunciationField,
-              "Test Spelling? (y = yes, blank = no)": testSpelling ? "y" : "",
-            },
-            options: {
-              allowDuplicate: false,
-            },
-            tags: ['FluentAI'],
-          },
-        },
+        params: { note },
       });
     } catch (error) {
       console.error('Error saving to Anki:', error);

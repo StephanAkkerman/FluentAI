@@ -4,10 +4,9 @@ import FormField from "./ui/FormField";
 import Button from "./ui/Button";
 import { createCard } from "../app/api/createCard";
 import { AnkiService } from "@/services/anki/ankiService";
-import { CreateCardInterface } from "../interfaces/CreateCardInterface";
 import { getSupportedLanguages } from "@/app/api/languageService";
 import SaveToAnki from "./SaveToAnki";
-import { Card } from "@/interfaces/AnkiInterface";
+import { Card, CreateCardRequest } from "@/interfaces/CardInterfaces";
 
 interface CardGeneratorProps {
   onCardCreated: (card: Card) => void;
@@ -26,11 +25,11 @@ export default function CardGenerator({
 }: CardGeneratorProps) {
   const [languages, setLanguages] = useState<{ [key: string]: string }>({});
   const [decks, setDecks] = useState<string[]>([]);
-  const [input, setInput] = useState<CreateCardInterface>({
-    language_code: "",
+  const [input, setInput] = useState<CreateCardRequest>({
+    languageCode: "",
     word: "",
   });
-  const [errors, setErrors] = useState({ language_code: "", word: "" });
+  const [errors, setErrors] = useState({ languageCode: "", word: "" });
   const [card, setCard] = useState<Card | null>(null);
 
   useEffect(() => {
@@ -56,11 +55,11 @@ export default function CardGenerator({
 
   const validate = () => {
     const newErrors = {
-      language_code: input.language_code ? "" : "Language is required.",
+      languageCode: input.languageCode ? "" : "Language is required.",
       word: input.word ? "" : "Word is required.",
     };
     setErrors(newErrors);
-    return !newErrors.language_code && !newErrors.word;
+    return !newErrors.languageCode && !newErrors.word;
   };
 
   const handleWordChange = (word: string) => {
@@ -77,15 +76,7 @@ export default function CardGenerator({
     setCard(null);
 
     try {
-      const response = await createCard(input);
-      const newCard: Card = {
-        img: response.imageUrl,
-        word: input.word,
-        keyPhrase: response.verbalCue,
-        translation: response.translation,
-        recording: response.ttsUrl,
-        ipa: response.ipa,
-      };
+      const newCard = await createCard(input);
       setCard(newCard);
       onCardCreated(newCard);
     } catch (err: any) {
@@ -104,8 +95,8 @@ export default function CardGenerator({
         <form onSubmit={handleSubmit} className="space-y-6">
           <FormField
             label="Language"
-            value={input.language_code}
-            error={errors.language_code}
+            value={input.languageCode}
+            error={errors.languageCode}
             required
           >
             <AutoCompleteInput
@@ -115,7 +106,7 @@ export default function CardGenerator({
                   languages[languageName as keyof typeof languages];
                 setInput((prev) => ({
                   ...prev,
-                  language_code: languageCode || "",
+                  languageCode: languageCode || "",
                 }));
               }}
             />
@@ -142,7 +133,6 @@ export default function CardGenerator({
             card={card}
             decks={decks}
             onError={onError}
-            onLoading={onLoading}
           />
         </div>
       )}

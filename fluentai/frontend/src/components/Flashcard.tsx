@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Speaker } from "lucide-react";
-import { Card } from "@/interfaces/AnkiInterface";
+import { Card } from "@/interfaces/CardInterfaces";
 
 interface FlashcardProps {
   card: Card;
@@ -25,10 +25,10 @@ export default function Flashcard({
   useEffect(() => {
     if (isLoading) {
       setFlipped(false);
-    } else if (card.img) {
+    } else if (card.imageUrl) {
       setFlipped(false);
     }
-  }, [isLoading, card.img]);
+  }, [isLoading, card.imageUrl]);
 
   // Set up audio event listeners
   useEffect(() => {
@@ -58,13 +58,13 @@ export default function Flashcard({
 
   const playAudio = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!audioRef.current || !card.recording) return;
+    if (!audioRef.current || !card.audioUrl) return;
 
     try {
       setAudioError(false);
 
       // Update audio source and play
-      audioRef.current.src = card.recording;
+      audioRef.current.src = card.audioUrl;
       await audioRef.current.play();
     } catch (error) {
       console.error("Error playing audio:", error);
@@ -90,7 +90,7 @@ export default function Flashcard({
             <>
               <div className="w-full h-64 overflow-hidden rounded-xl">
                 <img
-                  src={card.img || "https://placehold.co/400"}
+                  src={card.imageUrl || "https://placehold.co/400"}
                   alt={card.word}
                   className="w-full h-full object-cover"
                 />
@@ -103,7 +103,7 @@ export default function Flashcard({
         <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-teal-100 dark:bg-gradient-to-br dark:from-blue-800 dark:to-teal-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 backface-hidden transform rotate-y-180 flex flex-col justify-center items-center p-6 text-center">
           <div className="w-full h-64 overflow-hidden rounded-xl mb-4">
             <img
-              src={card.img || "https://placehold.co/400"}
+              src={card.imageUrl || "https://placehold.co/400"}
               alt={card.word}
               className="w-full h-full object-cover"
             />
@@ -116,7 +116,7 @@ export default function Flashcard({
             <p className="font-mono text-lg text-gray-600 dark:text-gray-300">
               {card.ipa || "IPA pronunciation"}
             </p>
-            {card.recording && (
+            {card.audioUrl && (
               <button
                 onClick={playAudio}
                 className={`p-1 rounded-full transition-colors ${isPlaying
@@ -136,7 +136,7 @@ export default function Flashcard({
           </div>
 
           <p className="text-lg italic text-gray-700 dark:text-gray-300">
-            {card.keyPhrase || "This is the key phrase"}
+            {card.verbalCue || "This is the key phrase"}
           </p>
         </div>
       </div>

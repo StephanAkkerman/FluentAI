@@ -3,7 +3,7 @@
 import { useState } from "react";
 import CardGenerator from "../components/CardGenerator";
 import Flashcard from "../components/Flashcard";
-import { Card } from "@/interfaces/AnkiInterface";
+import { Card } from "@/interfaces/CardInterfaces";
 
 export default function Home() {
   const [card, setCard] = useState<Card | null>(null);
@@ -11,13 +11,14 @@ export default function Home() {
   const [error, setError] = useState("");
   const [currentWord, setCurrentWord] = useState("");
 
-  let defaultCard: Card = {
+  const defaultCard: Card = {
     word: currentWord || "Your word",
     translation: "This is the English word.",
-    keyPhrase: "This is the key phrase",
-    img: "https://placehold.co/400",
-    recording: "",
-    ipa: "jʊər wɜrd"
+    verbalCue: "This is the key phrase",
+    imageUrl: "https://placehold.co/400",
+    audioUrl: "",
+    ipa: "jʊər wɜrd",
+    languageCode: "en"
   };
 
   return (
