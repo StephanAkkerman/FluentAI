@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { ANKI_CONFIG } from "@/config/constants";
 
 interface APIStatus {
   available: boolean | null;
@@ -19,7 +20,7 @@ export default function StatusChecker() {
         statuses.map(async (status) => {
           try {
             if (status.name === "AnkiConnect") {
-              const response = await fetch("http://127.0.0.1:8765", {
+              const response = await fetch(ANKI_CONFIG.API_URL, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ action: "version", version: 6 }),
