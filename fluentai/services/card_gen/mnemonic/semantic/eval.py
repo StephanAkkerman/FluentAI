@@ -139,16 +139,15 @@ def evaluate_models():
 
     models = config.get("SEMANTIC_SIM").get("EVAL").get("MODELS")
 
-    # Create the model objects
-    semantic_models = [SemanticSimilarity(model) for model in models]
-
-    for model in semantic_models:
-        logger.info(f"Processing model: {model.model_name}")
+    for model_name in models:
+        model_name = model_name.lower()
+        logger.info(f"Processing model: {model_name}")
 
         # Check if this model and dataset_hash combination exists in logs
         if not existing_logs.empty:
+            logger.debug("Found existing logs, checking for matching entry...")
             mask = (existing_logs["dataset_hash"] == dataset_hash) & (
-                existing_logs["model_name"] == model.model_name
+                existing_logs["model_name"] == model_name
             )
             existing_entry = existing_logs[mask]
 
@@ -161,7 +160,7 @@ def evaluate_models():
             )  # Handle if time_seconds is missing
             results_list.append(
                 {
-                    "model": model.model_name,
+                    "model": model_name,
                     "pearson_corr": pearson_corr,
                     "spearman_corr": spearman_corr,
                     "time_seconds": time_seconds,
@@ -169,11 +168,15 @@ def evaluate_models():
                 }
             )
             logger.info(
-                f"Skipped evaluation for model '{model.model_name}'. Loaded results from logs."
+                f"Skipped evaluation for model '{model_name}'. Loaded results from logs."
             )
         else:
             # Perform evaluation
-            logger.info(f"Evaluating model '{model.model_name}'...")
+            logger.info(f"Evaluating model '{model_name}'...")
+
+            # Initialize the model
+            model = SemanticSimilarity(model_name)
+
             computed_similarities = []
             valid_indices = []
 
