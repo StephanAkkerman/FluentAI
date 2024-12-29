@@ -90,7 +90,7 @@ If you would like to run the code on a GPU, you can install the `torch` package 
 After installing the required dependencies, run the following command:
 
 ```bash
-pip install -r requirements/gpu-requirements.txt
+pip install -r requirements/gpu.txt
 ```
 
 ## Usage ⌨️

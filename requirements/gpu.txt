@@ -3,3 +3,5 @@ torch==2.5.1+cu124
 torchaudio==2.5.1+cu124
 torchvision==0.20.1+cu124
 faiss-gpu ; sys_platform == 'linux'
+--extra-index-url https://download.pytorch.org/whl/cu124
+xformers==0.0.29
