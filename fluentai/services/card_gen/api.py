@@ -1,8 +1,8 @@
 import argparse
 import base64
 import os
-import httpx
 
+import httpx
 import uvicorn
 from constants.languages import G2P_LANGCODES, G2P_LANGUAGES
 from fastapi import FastAPI, HTTPException, Query, Request
@@ -124,8 +124,7 @@ async def get_image(
 
         # Ensure the file exists
         if not os.path.exists(image_path):
-            raise HTTPException(
-                status_code=500, detail="Generated image not found")
+            raise HTTPException(status_code=500, detail="Generated image not found")
 
         # Read the image file as bytes
         with open(image_path, "rb") as image_file:
@@ -190,7 +189,7 @@ async def anki_proxy(request: Request):
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 "http://127.0.0.1:8765",  # Assuming Anki is running on localhost with default port
-                json=request_body
+                json=request_body,
             )
 
         # Return the JSON response from Anki server
@@ -198,15 +197,13 @@ async def anki_proxy(request: Request):
 
     except httpx.RequestError as e:
         return JSONResponse(
-            content={"error": "Failed to connect to Anki server.",
-                     "details": str(e)},
-            status_code=500
+            content={"error": "Failed to connect to Anki server.", "details": str(e)},
+            status_code=500,
         )
     except Exception as e:
         return JSONResponse(
-            content={"error": "An unexpected error occurred.",
-                     "details": str(e)},
-            status_code=500
+            content={"error": "An unexpected error occurred.", "details": str(e)},
+            status_code=500,
         )
 
 
