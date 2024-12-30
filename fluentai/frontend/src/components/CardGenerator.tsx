@@ -54,14 +54,6 @@ export default function CardGenerator({
 
         setLanguages(languageResponse.languages);
         setModelOptions(modelResponse);
-
-        // Set default models if available
-        if (modelResponse.imageModels.length > 0) {
-          setInput(prev => ({ ...prev, imageModel: modelResponse.imageModels[0] }));
-        }
-        if (modelResponse.llmModels.length > 0) {
-          setInput(prev => ({ ...prev, llmModel: modelResponse.llmModels[0] }));
-        }
       } catch (error) {
         console.error("Error fetching data:", error);
         onError("Failed to load data.");
@@ -156,34 +148,22 @@ export default function CardGenerator({
               label="Image Model"
               value={input.imageModel || ""}
             >
-              <select
-                className="w-full py-2 px-4 border rounded bg-white text-gray-800"
-                value={input.imageModel}
-                onChange={(e) => setInput(prev => ({ ...prev, imageModel: e.target.value }))}
-              >
-                {modelOptions.imageModels.map((model: string) => (
-                  <option key={model} value={model}>
-                    {model}
-                  </option>
-                ))}
-              </select>
+              <AutoCompleteInput
+                suggestions={modelOptions.imageModels}
+                onSelect={(model) => setInput(prev => ({ ...prev, imageModel: model }))}
+                placeholder="Select or enter image model"
+              />
             </FormField>
 
             <FormField
               label="LLM Model"
               value={input.llmModel || ""}
             >
-              <select
-                className="w-full py-2 px-4 border rounded bg-white text-gray-800"
-                value={input.llmModel}
-                onChange={(e) => setInput(prev => ({ ...prev, llmModel: e.target.value }))}
-              >
-                {modelOptions.llmModels.map((model: string) => (
-                  <option key={model} value={model}>
-                    {model}
-                  </option>
-                ))}
-              </select>
+              <AutoCompleteInput
+                suggestions={modelOptions.llmModels}
+                onSelect={(model) => setInput(prev => ({ ...prev, llmModel: model }))}
+                placeholder="Select or enter LLM model"
+              />
             </FormField>
           </div>
 

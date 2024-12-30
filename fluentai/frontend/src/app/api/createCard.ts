@@ -19,6 +19,8 @@ export const createCard = async (request: CreateCardRequest): Promise<Card> => {
       params: {
         word: request.word,
         language_code: request.languageCode,
+        llm_model: request.llmModel,
+        image_model: request.imageModel,
       },
     });
 

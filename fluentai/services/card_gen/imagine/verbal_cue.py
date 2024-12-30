@@ -1,3 +1,4 @@
+# verbal_cue.py
 import functools
 import gc
 
@@ -51,9 +52,10 @@ def manage_model_memory(method):
 
 
 class VerbalCue:
-    def __init__(self):
+    def __init__(self, model_name: str = None):
         self.config = config.get("LLM")
         self.offload = self.config.get("OFFLOAD")
+        self.model_name = model_name if model_name else self.config.get("MODEL")
 
         self.generation_args = {
             "max_new_tokens": 500,
@@ -76,28 +78,28 @@ class VerbalCue:
         ]
         # This will be initialized later
         self.pipe = None
+        self.tokenizer = None  # Initialize tokenizer attribute
+        self.model = None  # Initialize model attribute
 
     def _initialize_pipe(self):
         """Initialize the pipeline."""
-        logger.debug(
-            f"Initializing pipeline for LLM with model: {self.config.get('MODEL')}"
-        )
+        logger.debug(f"Initializing pipeline for LLM with model: {self.model_name}")
         self.model = AutoModelForCausalLM.from_pretrained(
-            self.config.get("MODEL"),
+            self.model_name,
             device_map="cuda" if self.offload else "auto",
             torch_dtype="auto",
             trust_remote_code=True,
             cache_dir="models",
         )
 
-        tokenizer = AutoTokenizer.from_pretrained(
-            self.config.get("TOKENIZER"),
+        self.tokenizer = AutoTokenizer.from_pretrained(
+            self.model_name,
             cache_dir="models",
         )
         self.pipe = pipeline(
             "text-generation",
             model=self.model,
-            tokenizer=tokenizer,
+            tokenizer=self.tokenizer,
         )
 
     @manage_model_memory
