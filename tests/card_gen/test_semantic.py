@@ -7,8 +7,10 @@ import pytest
 
 os.environ["FLUENTAI_CONFIG_PATH"] = "config.yaml"  # noqa
 
-# Replace with the actual import path to SemanticSimilarity
+from fluentai.services.card_gen.constants.config import config
 from fluentai.services.card_gen.mnemonic.semantic.semantic import SemanticSimilarity
+
+model_name = config.get("SEMANTIC_SIM").get("MODEL").lower()
 
 
 @pytest.fixture
@@ -40,8 +42,8 @@ def test_compute_similarity_transformer(mock_config, mock_sentence_transformer):
     """
     # Setup mock config to return the Transformer model name
     mock_config.get.return_value = {
-        "MODEL": "paraphrase-multilingual-minilm-l12-v2",
-        "EVAL": {"MODELS": ["paraphrase-multilingual-minilm-l12-v2"]},
+        "MODEL": model_name,
+        "EVAL": {"MODELS": [model_name]},
     }
 
     # Patch 'SentenceTransformer' to return the mock transformer model
@@ -74,8 +76,8 @@ def test_compute_similarity_word_not_in_transformer(
     """
     # Setup mock config to return the Transformer model name
     mock_config.get.return_value = {
-        "MODEL": "paraphrase-multilingual-minilm-l12-v2",
-        "EVAL": {"MODELS": ["paraphrase-multilingual-minilm-l12-v2"]},
+        "MODEL": model_name,
+        "EVAL": {"MODELS": [model_name]},
     }
 
     # Configure the mock to raise a ValueError when similarity is called
@@ -104,8 +106,8 @@ def test_load_semantic_model_transformer(mock_config, mock_sentence_transformer)
     """
     # Setup mock config to return the Transformer model name
     mock_config.get.return_value = {
-        "MODEL": "paraphrase-multilingual-minilm-l12-v2",
-        "EVAL": {"MODELS": ["paraphrase-multilingual-minilm-l12-v2"]},
+        "MODEL": model_name,
+        "EVAL": {"MODELS": [model_name]},
     }
 
     # Patch 'SentenceTransformer' to return the mock transformer model
@@ -120,7 +122,7 @@ def test_load_semantic_model_transformer(mock_config, mock_sentence_transformer)
         # Encoding happens during compute_similarity
         mock_sentence_transformer.encode.assert_not_called()
         mock_sentence_transformer.similarity.assert_not_called()
-        assert semantic_sim.model_name == "paraphrase-multilingual-minilm-l12-v2"
+        assert semantic_sim.model_name == model_name
         assert semantic_sim.model == mock_sentence_transformer
 
 
@@ -132,8 +134,8 @@ def test_example_function(mocker, mock_config, mock_sentence_transformer, caplog
 
     # Setup mock config to return models
     mock_config.get.return_value = {
-        "MODEL": "paraphrase-multilingual-minilm-l12-v2",
-        "EVAL": {"MODELS": ["paraphrase-multilingual-minilm-l12-v2"]},
+        "MODEL": model_name,
+        "EVAL": {"MODELS": [model_name]},
     }
 
     # Patch 'SentenceTransformer' to return the mock transformer model
@@ -152,6 +154,6 @@ def test_example_function(mocker, mock_config, mock_sentence_transformer, caplog
 
         # Assertions
         assert (
-            "Similarity between 'train' and 'brain' using 'paraphrase-multilingual-minilm-l12-v2': 0.9200"
+            f"Similarity between 'train' and 'brain' using '{model_name}': 0.9200"
             in caplog.text
         )
