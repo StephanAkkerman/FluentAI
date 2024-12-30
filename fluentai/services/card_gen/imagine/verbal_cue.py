@@ -82,10 +82,7 @@ class VerbalCue:
 
     def _initialize_pipe(self):
         """Initialize the pipeline."""
-        logger.debug(
-            f"Initializing pipeline for LLM with model: {
-                     self.model_name}"
-        )
+        logger.debug(f"Initializing pipeline for LLM with model: {self.model_name}")
         self.model = AutoModelForCausalLM.from_pretrained(
             self.model_name,
             device_map="cuda" if self.offload else "auto",
