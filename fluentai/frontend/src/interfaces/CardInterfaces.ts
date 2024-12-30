@@ -23,6 +23,10 @@ export interface Card {
 export interface CreateCardRequest {
   word: string;
   languageCode: string;
+  mnemonicKeyword?: string;
+  keySentence?: string;
+  imageModel?: string;
+  llmModel?: string;
 }
 
 // Used when mapping a Card to an Anki note

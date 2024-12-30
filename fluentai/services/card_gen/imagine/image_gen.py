@@ -49,27 +49,26 @@ def manage_model_memory(method):
 
 
 class ImageGen:
-    def __init__(self):
+    def __init__(self, model: str = None):
         self.config = config.get("IMAGE_GEN", {})
+        self.offload = self.config.get("OFFLOAD")
 
-        # Show debug info
-        if torch.cuda.is_available():
-            vram = torch.cuda.get_device_properties(0).total_memory
+        # Select model based on VRAM or provided model
+        if model:
+            self.model = model
+            logger.debug(f"Using provided image model: {self.model}")
         else:
-            vram = 0
+            if torch.cuda.is_available():
+                vram = torch.cuda.get_device_properties(0).total_memory
+            else:
+                vram = 0
+            self._select_model(vram)
+            logger.debug(f"Selected image model based on VRAM: {self.model}")
 
-        # Select model based on VRAM
-        self._select_model(vram)
-
-        logger.debug(f"Selected model: {self.model}")
-        logger.debug(f"VRAM: {vram / 1e9} GB")
         self.model_name = self.model.split("/")[-1]
-
         self.output_dir = Path(self.config.get("OUTPUT_DIR", "output")).resolve()
         os.makedirs(self.output_dir, exist_ok=True)
-
         self.image_gen_params = self.config.get("PARAMS", {})
-        self.offload = self.config.get("OFFLOAD")
 
         # Initialize pipe to None; will be loaded on first use
         self.pipe = None
@@ -77,22 +76,14 @@ class ImageGen:
     def _select_model(self, vram):
         """Select the appropriate model based on available VRAM."""
         if vram > 9e9:
-            self.model = config.get("IMAGE_GEN", {}).get(
-                "LARGE_MODEL", "stabilityai/sdxl-turbo"
-            )
+            self.model = self.config.get("LARGE_MODEL", "stabilityai/sdxl-turbo")
         elif vram > 6e9:
-            self.model = config.get("IMAGE_GEN", {}).get(
-                "MEDIUM_MODEL", "stabilityai/sdxl-turbo"
-            )
+            self.model = self.config.get("MEDIUM_MODEL", "stabilityai/sdxl-turbo")
         elif vram > 3e9:
-            self.model = config.get("IMAGE_GEN", {}).get(
-                "SMALL_MODEL", "stabilityai/sdxl-turbo"
-            )
+            self.model = self.config.get("SMALL_MODEL", "stabilityai/sdxl-turbo")
         else:
             # Maybe a model that can run on CPU
-            self.model = config.get("IMAGE_GEN", {}).get(
-                "TINY_MODEL", "stabilityai/sdxl-turbo"
-            )
+            self.model = self.config.get("TINY_MODEL", "stabilityai/sdxl-turbo")
 
     def _get_pipe_func(self):
         if "sana" in self.model_name.lower():
