@@ -115,7 +115,7 @@ def load_data(local_file: bool = False, filename: str = None):
     else:
         if filename is None:
             model = config.get("IMAGEABILITY").get("EMBEDDINGS").get("MODEL")
-            filename = f"{model}_embeddings.parquet"
+            filename = f"{model.replace('/', '_')}_embeddings.parquet"
         logger.info(f"Loading embeddings from {filename}...")
         df = pd.read_parquet(
             hf_hub_download(
@@ -306,7 +306,9 @@ def train_and_evaluate_models(X_train, X_test, y_train, y_test, dataset_hash):
             # Save the best model
             best_model_instance = best_model[1]
             model_name_clean = best_method.replace(" ", "_").lower()
-            filename = f"models/{model_name_clean}-{embedding_model}.joblib"
+            filename = (
+                f"models/{model_name_clean}-{embedding_model.replace('/', '_')}.joblib"
+            )
             os.makedirs("models", exist_ok=True)
             joblib.dump(best_model_instance, filename)
             logger.info(f"Best model '{best_method}' saved to '{filename}'.")

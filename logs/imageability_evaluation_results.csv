@@ -13,3 +13,10 @@ dataset_hash,dataset_name,embedding_model,model_name,MSE,R2 Score,timestamp
 020b0a980d949ef0a5b4d1d29c25a318,StephanAkkerman/imageability,paraphrase-multilingual-MiniLM-L12-v2,Gradient Boosting,0.02004529782883117,0.43508907842199107,2024-11-10T12:22:52.460273
 020b0a980d949ef0a5b4d1d29c25a318,StephanAkkerman/imageability,paraphrase-multilingual-MiniLM-L12-v2,XGBoost,0.021835318856595218,0.38464321141253266,2024-11-10T12:22:54.072621
 020b0a980d949ef0a5b4d1d29c25a318,StephanAkkerman/imageability,paraphrase-multilingual-MiniLM-L12-v2,LightGBM,0.019010264935572924,0.46425808307270244,2024-11-10T12:22:55.962059
+fa8b207bd01f634789bd41bccd6ec315,StephanAkkerman/imageability,dunzhang/stella_en_400M_v5,Linear Regression (OLS),0.01427093606191622,0.5978205107572596,2024-12-30T17:13:49.164319
+fa8b207bd01f634789bd41bccd6ec315,StephanAkkerman/imageability,dunzhang/stella_en_400M_v5,Support Vector Regression,0.014022829566843772,0.60481257792322,2024-12-30T17:13:52.030994
+fa8b207bd01f634789bd41bccd6ec315,StephanAkkerman/imageability,dunzhang/stella_en_400M_v5,Random Forest,0.01969459705628945,0.4449724285376334,2024-12-30T17:22:19.840330
+fa8b207bd01f634789bd41bccd6ec315,StephanAkkerman/imageability,dunzhang/stella_en_400M_v5,Gradient Boosting,0.017196323003371095,0.5153780822545195,2024-12-30T17:26:29.117078
+fa8b207bd01f634789bd41bccd6ec315,StephanAkkerman/imageability,dunzhang/stella_en_400M_v5,XGBoost,0.01873411010503355,0.47204060050648367,2024-12-30T17:26:31.841405
+fa8b207bd01f634789bd41bccd6ec315,StephanAkkerman/imageability,dunzhang/stella_en_400M_v5,LightGBM,0.016160899086489187,0.5445581066225473,2024-12-30T17:26:35.633014
+fa8b207bd01f634789bd41bccd6ec315,StephanAkkerman/imageability,dunzhang/stella_en_400M_v5,Ridge Regression,0.013348926400112305,0.6238043266227608,2024-12-30T17:30:37.276974
