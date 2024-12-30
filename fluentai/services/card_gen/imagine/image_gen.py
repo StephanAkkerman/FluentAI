@@ -1,4 +1,3 @@
-# image_gen.py
 import functools
 import gc
 import os
