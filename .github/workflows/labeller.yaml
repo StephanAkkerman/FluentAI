@@ -82,11 +82,21 @@ jobs:
               const commits = context.payload.commits;
               for (const commit of commits) {
                 let message = commit.message;
+
+                // Identify merge commits
+                const isMergeCommit = message.startsWith('Merge pull request');
+
+                if (isMergeCommit) {
+                  console.log(`Skipping merge commit: ${commit.id}`);
+                  continue; // Skip merge commits
+                }
+
                 let matches;
                 while ((matches = issueRegex.exec(message)) !== null) {
                   const issueNum = parseInt(matches[1]);
                   issues.add(issueNum);
-                  console.log(`Found issue reference #${issueNum} in commit message: ${message}`);
+                  console.log(`Found issue reference #${issueNum} in commit message: "${message}"`);
+
                   // Add commit author as assignee
                   if (commit.author && commit.author.username) {
                     assignees.add(commit.author.username);
