@@ -6,6 +6,8 @@ import { createCard } from "../app/api/createCard";
 import { getSupportedLanguages } from "@/app/api/languageService";
 import SaveToAnki from "./SaveToAnki";
 import { Card, CreateCardRequest } from "@/interfaces/CardInterfaces";
+import { ModelOptions } from "@/interfaces/ModelInterface";
+import { ModelService } from "@/services/modelService";
 
 interface CardGeneratorProps {
   onCardCreated: (card: Card) => void;
@@ -14,6 +16,8 @@ interface CardGeneratorProps {
   onWordChange: (word: string) => void;
 }
 
+const modelService = new ModelService();
+
 export default function CardGenerator({
   onCardCreated,
   onLoading,
@@ -21,19 +25,43 @@ export default function CardGenerator({
   onWordChange,
 }: CardGeneratorProps) {
   const [languages, setLanguages] = useState<{ [key: string]: string }>({});
+  const [modelOptions, setModelOptions] = useState<ModelOptions>({
+    imageModels: [],
+    llmModels: []
+  });
   const [input, setInput] = useState<CreateCardRequest>({
     languageCode: "",
     word: "",
+    mnemonicKeyword: "",
+    keySentence: "",
+    imageModel: "",
+    llmModel: ""
   });
-  const [errors, setErrors] = useState({ languageCode: "", word: "" });
+  const [errors, setErrors] = useState({
+    languageCode: "",
+    word: ""
+  });
   const [card, setCard] = useState<Card | null>(null);
 
   useEffect(() => {
-    const fetchLanguages = async () => {
+    const fetchData = async () => {
       try {
         onLoading(true);
-        const languageResponse = await getSupportedLanguages();
+        const [languageResponse, modelResponse] = await Promise.all([
+          getSupportedLanguages(),
+          modelService.getAvailableModels()
+        ]);
+
         setLanguages(languageResponse.languages);
+        setModelOptions(modelResponse);
+
+        // Set default models if available
+        if (modelResponse.imageModels.length > 0) {
+          setInput(prev => ({ ...prev, imageModel: modelResponse.imageModels[0] }));
+        }
+        if (modelResponse.llmModels.length > 0) {
+          setInput(prev => ({ ...prev, llmModel: modelResponse.llmModels[0] }));
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
         onError("Failed to load data.");
@@ -42,7 +70,7 @@ export default function CardGenerator({
       }
     };
 
-    fetchLanguages();
+    fetchData();
   }, [onLoading, onError]);
 
   const validate = () => {
@@ -94,8 +122,7 @@ export default function CardGenerator({
             <AutoCompleteInput
               suggestions={Object.keys(languages)}
               onSelect={(languageName) => {
-                const languageCode =
-                  languages[languageName as keyof typeof languages];
+                const languageCode = languages[languageName as keyof typeof languages];
                 setInput((prev) => ({
                   ...prev,
                   languageCode: languageCode || "",
@@ -103,6 +130,7 @@ export default function CardGenerator({
               }}
             />
           </FormField>
+
           <FormField
             label="Word"
             value={input.word}
@@ -110,6 +138,55 @@ export default function CardGenerator({
             required
             onChange={handleWordChange}
           />
+
+          <FormField
+            label="Mnemonic Keyword (Optional)"
+            value={input.mnemonicKeyword || ""}
+            onChange={(mnemonicKeyword) => setInput(prev => ({ ...prev, mnemonicKeyword }))}
+          />
+
+          <FormField
+            label="Key Sentence (Optional)"
+            value={input.keySentence || ""}
+            onChange={(keySentence) => setInput(prev => ({ ...prev, keySentence }))}
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormField
+              label="Image Model"
+              value={input.imageModel || ""}
+            >
+              <select
+                className="w-full py-2 px-4 border rounded bg-white text-gray-800"
+                value={input.imageModel}
+                onChange={(e) => setInput(prev => ({ ...prev, imageModel: e.target.value }))}
+              >
+                {modelOptions.imageModels.map((model: string) => (
+                  <option key={model} value={model}>
+                    {model}
+                  </option>
+                ))}
+              </select>
+            </FormField>
+
+            <FormField
+              label="LLM Model"
+              value={input.llmModel || ""}
+            >
+              <select
+                className="w-full py-2 px-4 border rounded bg-white text-gray-800"
+                value={input.llmModel}
+                onChange={(e) => setInput(prev => ({ ...prev, llmModel: e.target.value }))}
+              >
+                {modelOptions.llmModels.map((model: string) => (
+                  <option key={model} value={model}>
+                    {model}
+                  </option>
+                ))}
+              </select>
+            </FormField>
+          </div>
+
           <Button
             text="Create Card"
             variant="primary"
