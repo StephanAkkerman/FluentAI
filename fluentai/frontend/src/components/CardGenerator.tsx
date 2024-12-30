@@ -3,7 +3,6 @@ import AutoCompleteInput from "./ui/AutoCompleteInput";
 import FormField from "./ui/FormField";
 import Button from "./ui/Button";
 import { createCard } from "../app/api/createCard";
-import { AnkiService } from "@/services/anki/ankiService";
 import { getSupportedLanguages } from "@/app/api/languageService";
 import SaveToAnki from "./SaveToAnki";
 import { Card, CreateCardRequest } from "@/interfaces/CardInterfaces";
@@ -15,8 +14,6 @@ interface CardGeneratorProps {
   onWordChange: (word: string) => void;
 }
 
-const ankiService = new AnkiService();
-
 export default function CardGenerator({
   onCardCreated,
   onLoading,
@@ -24,7 +21,6 @@ export default function CardGenerator({
   onWordChange,
 }: CardGeneratorProps) {
   const [languages, setLanguages] = useState<{ [key: string]: string }>({});
-  const [decks, setDecks] = useState<string[]>([]);
   const [input, setInput] = useState<CreateCardRequest>({
     languageCode: "",
     word: "",
@@ -33,15 +29,11 @@ export default function CardGenerator({
   const [card, setCard] = useState<Card | null>(null);
 
   useEffect(() => {
-    const fetchLanguagesAndDecks = async () => {
+    const fetchLanguages = async () => {
       try {
         onLoading(true);
-        const [languageResponse, deckResponse] = await Promise.all([
-          getSupportedLanguages(),
-          ankiService.getAvailableDecks(),
-        ]);
+        const languageResponse = await getSupportedLanguages();
         setLanguages(languageResponse.languages);
-        setDecks(deckResponse);
       } catch (error) {
         console.error("Error fetching data:", error);
         onError("Failed to load data.");
@@ -50,7 +42,7 @@ export default function CardGenerator({
       }
     };
 
-    fetchLanguagesAndDecks();
+    fetchLanguages();
   }, [onLoading, onError]);
 
   const validate = () => {
@@ -131,7 +123,6 @@ export default function CardGenerator({
           <h3 className="text-xl font-bold mb-4">Save to Anki</h3>
           <SaveToAnki
             card={card}
-            decks={decks}
             onError={onError}
           />
         </div>

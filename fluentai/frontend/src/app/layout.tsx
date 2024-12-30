@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "../components/Header";
 
+const isGithubPages = process.env.NODE_ENV === "production" && process.env.GITHUB_PAGES === "true";
+
 export const metadata: Metadata = {
   title: "FluentAI",
   description: "Learning languages in a flash.",
   icons: {
-    icon: "logo.png",
+    icon: `${isGithubPages ? '/FluentAI' : ''}/logo.png`,
   }
 };
 
