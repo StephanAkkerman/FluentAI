@@ -132,13 +132,13 @@ export default function CardGenerator({
           />
 
           <FormField
-            label="Mnemonic Keyword (Optional)"
+            label="Mnemonic Keyword"
             value={input.mnemonicKeyword || ""}
             onChange={(mnemonicKeyword) => setInput(prev => ({ ...prev, mnemonicKeyword }))}
           />
 
           <FormField
-            label="Key Sentence (Optional)"
+            label="Key Sentence"
             value={input.keySentence || ""}
             onChange={(keySentence) => setInput(prev => ({ ...prev, keySentence }))}
           />

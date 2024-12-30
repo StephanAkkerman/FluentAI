@@ -91,58 +91,56 @@ async def get_image(
     language_code: str = Query(...),
     llm_model: str = Query(None),
     image_model: str = Query(None),
+    keyword: str = Query(None),
+    key_sentence: str = Query(None),
 ) -> JSONResponse:
     """
     Generates a mnemonic image for a given word and language code.
 
     Parameters
     ----------
-    word : str, optional
-        The word to generate a mnemonic image for, by default Query(...)
-    language_code : str, optional
-        The language code of the word, by default Query(...)
+    word : str
+        The word to generate a mnemonic image for.
+    language_code : str
+        The language code of the word.
     llm_model : str, optional
         The name of the LLM model to use for verbal cue generation.
     image_model : str, optional
         The name of the image model to use for image generation.
+    keyword : str, optional
+        A user-supplied keyword to use in the mnemonic.
+    key_sentence : str, optional
+        A user-supplied key sentence to use as the prompt for image generation.
 
     Returns
     -------
-    FileResponse
-        The image file response.
+    JSONResponse
+        A JSON response containing the generated image, verbal cue, translation,
+        TTS file path, and IPA.
 
     Raises
     ------
     HTTPException
-        If the language code is invalid.
-    HTTPException
-        If the generated image is not found.
-    HTTPException
-        If an error occurs during the generation process.
+        If the language code is invalid, the generated image is not found,
+        or an error occurs during the generation process.
     """
-    # Validate language code if necessary
     if language_code not in G2P_LANGUAGES:
         raise HTTPException(status_code=400, detail="Invalid language code")
 
     try:
-        # Generate image and get its file path along with verbal cue and translation
         image_path, verbal_cue, translation, tts_path, ipa = generate_mnemonic_img(
-            word, language_code, llm_model, image_model
+            word, language_code, llm_model, image_model, keyword, key_sentence
         )
 
-        # Ensure the file exists
         if not os.path.exists(image_path):
             raise HTTPException(status_code=500, detail="Generated image not found")
 
-        # Read the image file as bytes
         with open(image_path, "rb") as image_file:
             image_bytes = image_file.read()
 
-        # Read the image file as bytes
         with open(tts_path, "rb") as tts_file:
             tts_bytes = tts_file.read()
 
-        # Return a JSON response with image and metadata
         return JSONResponse(
             content={
                 "image": base64.b64encode(image_bytes).decode("utf-8"),
@@ -152,9 +150,11 @@ async def get_image(
                 "ipa": ipa,
             }
         )
+    except HTTPException as e:
+        raise e
     except Exception as e:
         logger.error(f"Error generating mnemonic: {e}")
-        raise HTTPException(status_code=500, detail="Internal Server Error")
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {e}")
 
 
 @app.get("/create_card/supported_languages")
