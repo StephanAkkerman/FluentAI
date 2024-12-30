@@ -3,8 +3,10 @@ name: Deploy Next.js site to Pages
 on:
   workflow_dispatch:
   push:
+    branches:
+      - 'main'
     paths:
-      - 'fluentai/frontend/*'
+      - 'fluentai/frontend/**'
 
 permissions:
   contents: read
