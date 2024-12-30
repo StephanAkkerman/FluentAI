@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import AutoCompleteInput from "./ui/AutoCompleteInput";
 import FormField from "./ui/FormField";
 import Button from "./ui/Button";
@@ -42,6 +43,7 @@ export default function CardGenerator({
     word: ""
   });
   const [card, setCard] = useState<Card | null>(null);
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -100,88 +102,124 @@ export default function CardGenerator({
 
   return (
     <>
-      <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-xl">
-        <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 mb-6 text-center">
-          Create Your Flashcard
-        </h2>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <FormField
-            label="Language"
-            value={input.languageCode}
-            error={errors.languageCode}
-            required
-          >
-            <AutoCompleteInput
-              suggestions={Object.keys(languages)}
-              onSelect={(languageName) => {
-                const languageCode = languages[languageName as keyof typeof languages];
-                setInput((prev) => ({
-                  ...prev,
-                  languageCode: languageCode || "",
-                }));
-              }}
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 transition-all duration-300">
+        <div className="p-6">
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-500 to-teal-400 bg-clip-text text-transparent mb-6">
+            Create Your Flashcard
+          </h2>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Required Fields */}
+            <div className="space-y-4">
+              <div className="relative">
+                <FormField
+                  label="Language"
+                  value={input.languageCode}
+                  error={errors.languageCode}
+                  required
+                >
+                  <AutoCompleteInput
+                    suggestions={Object.keys(languages)}
+                    onSelect={(languageName) => {
+                      const languageCode = languages[languageName as keyof typeof languages];
+                      setInput((prev) => ({
+                        ...prev,
+                        languageCode: languageCode || "",
+                      }));
+                    }}
+                  />
+                </FormField>
+              </div>
+
+              <FormField
+                label="Word"
+                value={input.word}
+                error={errors.word}
+                required
+                onChange={handleWordChange}
+              />
+            </div>
+
+            {/* Advanced Options Toggle */}
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={() => setShowAdvanced(!showAdvanced)}
+                className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100 transition-colors"
+              >
+                {showAdvanced ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                <span>Advanced Options</span>
+              </button>
+            </div>
+
+            {/* Optional Fields */}
+            <div
+              className={`space-y-4 transition-all duration-300 ease-in-out ${showAdvanced ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                }`}
+            >
+              <div className="space-y-4 pt-2">
+                <FormField
+                  label="Key Sentence"
+                  value={input.keySentence || ""}
+                  onChange={(keySentence) => setInput(prev => ({ ...prev, keySentence }))}
+                />
+
+                <FormField
+                  label="Mnemonic Keyword"
+                  value={input.mnemonicKeyword || ""}
+                  onChange={(mnemonicKeyword) => setInput(prev => ({ ...prev, mnemonicKeyword }))}
+                >
+                  <input
+                    type="text"
+                    className={`w-full border rounded p-2 bg-white text-gray-800 dark:border-gray-600 
+                      ${input.keySentence ? 'opacity-50 cursor-not-allowed' : ''}
+                      ${errors.word ? "border-red-500" : "border-gray-300 dark:border-gray-600"}`}
+                    value={input.mnemonicKeyword || ""}
+                    onChange={(e) => setInput(prev => ({ ...prev, mnemonicKeyword: e.target.value }))}
+                    disabled={!!input.keySentence}
+                    placeholder={input.keySentence ? "Disabled when key sentence is provided" : "Enter a mnemonic keyword"}
+                  />
+                </FormField>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="relative">
+                    <FormField label="Image Model" value={input.imageModel || ""}>
+                      <AutoCompleteInput
+                        suggestions={modelOptions.imageModels}
+                        onSelect={(model) => setInput(prev => ({ ...prev, imageModel: model }))}
+                        placeholder="Select or enter image model"
+                      />
+                    </FormField>
+                  </div>
+
+                  <div className="relative">
+                    <FormField label="LLM Model" value={input.llmModel || ""}>
+                      <AutoCompleteInput
+                        suggestions={modelOptions.llmModels}
+                        onSelect={(model) => setInput(prev => ({ ...prev, llmModel: model }))}
+                        placeholder="Select or enter LLM model"
+                      />
+                    </FormField>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <Button
+              text="Create Card"
+              variant="primary"
+              type="submit"
+              className="w-full py-3 text-lg font-bold transform hover:scale-105 transition-transform duration-200 hover:shadow-lg mt-6"
             />
-          </FormField>
-
-          <FormField
-            label="Word"
-            value={input.word}
-            error={errors.word}
-            required
-            onChange={handleWordChange}
-          />
-
-          <FormField
-            label="Mnemonic Keyword"
-            value={input.mnemonicKeyword || ""}
-            onChange={(mnemonicKeyword) => setInput(prev => ({ ...prev, mnemonicKeyword }))}
-          />
-
-          <FormField
-            label="Key Sentence"
-            value={input.keySentence || ""}
-            onChange={(keySentence) => setInput(prev => ({ ...prev, keySentence }))}
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FormField
-              label="Image Model"
-              value={input.imageModel || ""}
-            >
-              <AutoCompleteInput
-                suggestions={modelOptions.imageModels}
-                onSelect={(model) => setInput(prev => ({ ...prev, imageModel: model }))}
-                placeholder="Select or enter image model"
-              />
-            </FormField>
-
-            <FormField
-              label="LLM Model"
-              value={input.llmModel || ""}
-            >
-              <AutoCompleteInput
-                suggestions={modelOptions.llmModels}
-                onSelect={(model) => setInput(prev => ({ ...prev, llmModel: model }))}
-                placeholder="Select or enter LLM model"
-              />
-            </FormField>
-          </div>
-
-          <Button
-            text="Create Card"
-            variant="primary"
-            type="submit"
-            className="w-full py-3 text-lg font-bold transform hover:scale-105 transition-transform duration-200 hover:shadow-lg"
-          />
-        </form>
+          </form>
+        </div>
       </div>
+
       {card && (
-        <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 transition-all duration-300 hover:shadow-xl">
-          <h3 className="text-xl font-bold mb-4">Save to Anki</h3>
-          <SaveToAnki
-            card={card}
-            onError={onError}
-          />
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 mt-8">
+          <div className="p-6">
+            <h3 className="text-xl font-bold mb-4">Save to Anki</h3>
+            <SaveToAnki card={card} onError={onError} />
+          </div>
         </div>
       )}
     </>
