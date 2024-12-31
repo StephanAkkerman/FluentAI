@@ -212,4 +212,25 @@ export class AnkiService {
       throw new Error(`Failed to load media file: ${filename}`);
     }
   }
+
+  async createDeck(deckName: string): Promise<void> {
+    try {
+      const response = await axios.post(ANKI_CONFIG.API_URL, {
+        action: 'createDeck',
+        version: 6,
+        params: {
+          deck: deckName,
+        },
+      });
+
+      if (response.data.error) {
+        throw new Error(`Error creating deck: ${response.data.error}`);
+      }
+
+      console.log(`Deck "${deckName}" created successfully.`);
+    } catch (error) {
+      console.error('Error creating deck:', error);
+      throw new Error('Failed to create a new deck in Anki.');
+    }
+  }
 }

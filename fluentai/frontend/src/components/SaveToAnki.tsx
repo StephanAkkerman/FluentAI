@@ -3,7 +3,7 @@ import FormField from "./ui/FormField";
 import Button from "./ui/Button";
 import { AnkiService } from "@/services/anki/ankiService";
 import { Card } from "@/interfaces/CardInterfaces";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, Plus } from "lucide-react";
 
 interface SaveToAnkiProps {
   card: Card;
@@ -80,6 +80,23 @@ export default function SaveToAnki({ card, onError }: SaveToAnkiProps) {
     }
   };
 
+  const handleCreateDeck = async () => {
+    const newDeckName = prompt("Enter the name of the new deck:");
+    if (!newDeckName) return;
+
+    try {
+      await ankiService.createDeck(newDeckName);
+      setDecks((prevDecks) => [...prevDecks, newDeckName]);
+      setSelectedDeck(newDeckName);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("selectedDeck", newDeckName);
+      }
+    } catch (error) {
+      console.error("Error creating new deck:", error);
+      onError("Failed to create new deck.");
+    }
+  };
+
   const getSaveButtonText = () => {
     switch (saveStatus) {
       case 'saving':
@@ -122,6 +139,13 @@ export default function SaveToAnki({ card, onError }: SaveToAnkiProps) {
               </option>
             ))}
           </select>
+          <button
+            type="button"
+            onClick={handleCreateDeck}
+            className="p-2 border rounded hover:bg-gray-100"
+          >
+            <Plus className="h-5 w-5" />
+          </button>
           <button
             type="button"
             onClick={fetchDecks}
