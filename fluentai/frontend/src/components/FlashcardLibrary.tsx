@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Library, AlertCircle } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { ChevronLeft, ChevronRight, Library, AlertCircle, RefreshCw } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { AnkiService } from '@/services/anki/ankiService';
 import Flashcard from '@/components/Flashcard';
@@ -13,6 +13,7 @@ const FlashcardLibrary = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const cardsPerPage = 6;
 
@@ -21,19 +22,24 @@ const FlashcardLibrary = () => {
   const endIndex = startIndex + cardsPerPage;
   const currentCards = cards.slice(startIndex, endIndex);
 
-  useEffect(() => {
-    const fetchDecks = async () => {
-      try {
-        const ankiService = new AnkiService();
-        const availableDecks = await ankiService.getAvailableDecks();
-        setDecks(availableDecks);
-      } catch (err) {
-        console.error("Error loading decks: ", err);
-        setError('Failed to load decks');
-      }
-    };
-    fetchDecks();
+  const fetchDecks = useCallback(async () => {
+    setIsRefreshing(true);
+    setError('');
+    try {
+      const ankiService = new AnkiService();
+      const availableDecks = await ankiService.getAvailableDecks();
+      setDecks(availableDecks);
+    } catch (err) {
+      console.error("Error loading decks: ", err);
+      setError('Failed to load decks');
+    } finally {
+      setIsRefreshing(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchDecks();
+  }, [fetchDecks]);
 
   const getMediaFile = async (filename: string): Promise<string> => {
     try {
@@ -209,23 +215,34 @@ const FlashcardLibrary = () => {
       {/* Deck Selection Card */}
       <div className="bg-white dark:bg-gray-800 shadow-2xl border border-gray-200 dark:border-gray-700 rounded-2xl">
         <div className="p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <Library className="w-6 h-6 text-blue-500" />
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-teal-400 bg-clip-text text-transparent">
-              Select Your Deck
-            </h2>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <Library className="w-6 h-6 text-blue-500" />
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-teal-400 bg-clip-text text-transparent">
+                Select Your Deck
+              </h2>
+            </div>
           </div>
-          <select
-            className="w-full p-3 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 
-                       focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-            value={selectedDeck}
-            onChange={(e) => loadDeck(e.target.value)}
-          >
-            <option value="" disabled>Choose a deck...</option>
-            {decks.map((deck) => (
-              <option key={deck} value={deck}>{deck}</option>
-            ))}
-          </select>
+          <div className="flex gap-2">
+            <select
+              className="w-full p-3 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 
+                         focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+              value={selectedDeck}
+              onChange={(e) => loadDeck(e.target.value)}
+            >
+              <option value="" disabled>Choose a deck...</option>
+              {decks.map((deck) => (
+                <option key={deck} value={deck}>{deck}</option>
+              ))}
+            </select>
+            <button
+              onClick={fetchDecks}
+              disabled={isRefreshing}
+              className="p-2 border rounded hover:bg-gray-100 disabled:opacity-50"
+            >
+              <RefreshCw className={`h-5 w-5 ${isRefreshing ? 'animate-spin' : ''}`} />
+            </button>
+          </div>
         </div>
       </div>
 
