@@ -4,7 +4,8 @@ import Button from '@/components/ui/Button';
 import { AnkiService } from '@/services/anki/ankiService';
 import Flashcard from '@/components/Flashcard';
 import { Card as FlashCard } from '@/interfaces/CardInterfaces';
-import { ANKI_CONFIG } from '@/config/constants';
+
+const ankiService = new AnkiService();
 
 const FlashcardLibrary = () => {
   const [cards, setCards] = useState<FlashCard[]>([]);
@@ -16,7 +17,6 @@ const FlashcardLibrary = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const cardsPerPage = 6;
-
   const totalPages = Math.ceil(cards.length / cardsPerPage);
   const startIndex = (currentPage - 1) * cardsPerPage;
   const endIndex = startIndex + cardsPerPage;
@@ -26,7 +26,6 @@ const FlashcardLibrary = () => {
     setIsRefreshing(true);
     setError('');
     try {
-      const ankiService = new AnkiService();
       const availableDecks = await ankiService.getAvailableDecks();
       setDecks(availableDecks);
     } catch (err) {
@@ -36,41 +35,6 @@ const FlashcardLibrary = () => {
       setIsRefreshing(false);
     }
   }, []);
-
-  useEffect(() => {
-    fetchDecks();
-  }, [fetchDecks]);
-
-  const getMediaFile = async (filename: string): Promise<string> => {
-    try {
-      const response = await fetch(ANKI_CONFIG.API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'retrieveMediaFile',
-          version: 6,
-          params: {
-            filename
-          }
-        })
-      });
-
-      const data = await response.json();
-      if (!data.result) {
-        throw new Error('Media file not found');
-      }
-
-      const base64Data = data.result;
-      const isImage = filename.match(/\.(jpg|jpeg|png|gif)$/i);
-      const mimeType = isImage ? `image/${filename.split('.').pop()}` : 'audio/mpeg';
-
-      const blob = await fetch(`data:${mimeType};base64,${base64Data}`).then(res => res.blob());
-      return URL.createObjectURL(blob);
-    } catch (err) {
-      console.error(`Failed to load media file ${filename}:`, err);
-      return '';
-    }
-  };
 
   const sanitizeHtml = (html: string): string => {
     // Create a temporary div to handle HTML content
@@ -129,62 +93,32 @@ const FlashcardLibrary = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch(ANKI_CONFIG.API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'findNotes',
-          version: 6,
-          params: {
-            query: `deck:"${deckName}"`
-          }
+      const notesInfo = await ankiService.getCardsFromDeck(deckName);
+
+      const transformedCards = await Promise.all(
+        notesInfo.map(async (note: any) => {
+          const imageFilename = note.fields.Picture.value.match(/src="([^"]+)"/)?.[1] || '';
+          const audioFilename = note.fields['Pronunciation (Recording and/or IPA)'].value.match(/\[sound:([^\]]+)\]/)?.[1] || '';
+
+          const [imageUrl, audioUrl] = await Promise.all([
+            imageFilename ? ankiService.getMediaFile(imageFilename) : Promise.resolve(''),
+            audioFilename ? ankiService.getMediaFile(audioFilename) : Promise.resolve(''),
+          ]);
+
+          const verbalCueHtml = note.fields['Gender, Personal Connection, Extra Info (Back side)'].value;
+          const sanitizedVerbalCue = sanitizeHtml(verbalCueHtml);
+
+          return {
+            word: note.fields.Word.value,
+            translation: '',
+            imageUrl,
+            audioUrl,
+            ipa: note.fields['Pronunciation (Recording and/or IPA)'].value.replace(/\[sound:[^\]]+\]/, '').trim(),
+            verbalCue: sanitizedVerbalCue,
+            languageCode: 'en',
+          };
         })
-      });
-
-      const data = await response.json();
-      const noteIds = data.result;
-
-      const notesResponse = await fetch(ANKI_CONFIG.API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'notesInfo',
-          version: 6,
-          params: {
-            notes: noteIds
-          }
-        })
-      });
-
-      const notesData = await notesResponse.json();
-      let notesInfo = notesData.result;
-      notesInfo = notesInfo.filter((note: any) =>
-        note.modelName === "FluentAI Model"
       );
-
-      const transformedCards = await Promise.all(notesInfo.map(async (note: any) => {
-        const imageFilename = note.fields.Picture.value.match(/src="([^"]+)"/)?.[1] || '';
-        const audioFilename = note.fields['Pronunciation (Recording and/or IPA)'].value.match(/\[sound:([^\]]+)\]/)?.[1] || '';
-
-        const [imageUrl, audioUrl] = await Promise.all([
-          imageFilename ? getMediaFile(imageFilename) : Promise.resolve(''),
-          audioFilename ? getMediaFile(audioFilename) : Promise.resolve('')
-        ]);
-
-        // Sanitize the verbal cue HTML content
-        const verbalCueHtml = note.fields['Gender, Personal Connection, Extra Info (Back side)'].value;
-        const sanitizedVerbalCue = sanitizeHtml(verbalCueHtml);
-
-        return {
-          word: note.fields.Word.value,
-          translation: '',
-          imageUrl,
-          audioUrl,
-          ipa: note.fields['Pronunciation (Recording and/or IPA)'].value.replace(/\[sound:[^\]]+\]/, '').trim(),
-          verbalCue: sanitizedVerbalCue,
-          languageCode: 'en'
-        };
-      }));
 
       setCards(transformedCards);
       setSelectedDeck(deckName);
@@ -196,6 +130,10 @@ const FlashcardLibrary = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchDecks();
+  }, [fetchDecks]);
 
   useEffect(() => {
     return () => {
@@ -228,7 +166,13 @@ const FlashcardLibrary = () => {
               className="w-full p-3 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 
                          focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
               value={selectedDeck}
-              onChange={(e) => loadDeck(e.target.value)}
+              onChange={(e) => {
+                const newDeck = e.target.value;
+                if (newDeck !== selectedDeck) { // Prevent redundant updates
+                  setSelectedDeck(newDeck);
+                  loadDeck(newDeck); // Only load the deck if it has changed
+                }
+              }}
             >
               <option value="" disabled>Choose a deck...</option>
               {decks.map((deck) => (
