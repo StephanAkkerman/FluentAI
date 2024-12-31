@@ -14,7 +14,6 @@ const FlashcardLibrary = () => {
   const [error, setError] = useState('');
 
   const cardsPerPage = 6;
-  const ankiService = new AnkiService();
 
   const totalPages = Math.ceil(cards.length / cardsPerPage);
   const startIndex = (currentPage - 1) * cardsPerPage;
@@ -24,9 +23,11 @@ const FlashcardLibrary = () => {
   useEffect(() => {
     const fetchDecks = async () => {
       try {
+        const ankiService = new AnkiService();
         const availableDecks = await ankiService.getAvailableDecks();
         setDecks(availableDecks);
       } catch (err) {
+        console.error("Error loading decks: ", err);
         setError('Failed to load decks');
       }
     };
@@ -112,11 +113,9 @@ const FlashcardLibrary = () => {
     };
 
     // Process the content and clean up extra whitespace
-    let cleanText = processNode(tempDiv)
+    return processNode(tempDiv)
       .replace(/\n{3,}/g, '\n\n')  // Replace multiple newlines with double newlines
       .trim();
-
-    return cleanText;
   };
 
   const loadDeck = async (deckName: string) => {
@@ -184,6 +183,7 @@ const FlashcardLibrary = () => {
       setSelectedDeck(deckName);
       setCurrentPage(1);
     } catch (err) {
+      console.error('Failed to load deck: ', err);
       setError('Failed to load deck');
     } finally {
       setLoading(false);
@@ -301,7 +301,7 @@ const FlashcardLibrary = () => {
           <Library className="w-16 h-16 text-gray-400 mb-4" />
           <h3 className="text-xl font-semibold mb-2">No Cards Found</h3>
           <p className="text-gray-600 dark:text-gray-400 text-center">
-            This deck doesn't have any FluentAI cards yet. Create some cards first!
+            This deck doesn&apos;t have any FluentAI cards yet. Create some cards first!
           </p>
         </div>
       )}

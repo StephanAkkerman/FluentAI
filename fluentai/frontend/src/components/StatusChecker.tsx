@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ANKI_CONFIG } from "@/config/constants";
 
 interface APIStatus {
@@ -14,10 +14,13 @@ export default function StatusChecker() {
     { name: "Card Generator", description: "Card creation API", available: null, show: true },
   ]);
 
+  // Use a ref to store the initial statuses
+  const initialStatuses = useRef(statuses);
+
   useEffect(() => {
     const checkAPIStatuses = async () => {
       const newStatuses = await Promise.all(
-        statuses.map(async (status) => {
+        initialStatuses.current.map(async (status) => {
           try {
             if (status.name === "AnkiConnect") {
               const response = await fetch(ANKI_CONFIG.API_URL, {
@@ -57,8 +60,9 @@ export default function StatusChecker() {
         }
       });
     };
+
     checkAPIStatuses();
-  }, []);
+  }, []); // Empty dependency array since we use initialStatuses.current
 
   return (
     <div className="space-y-0">
