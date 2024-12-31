@@ -231,7 +231,7 @@ const FlashcardLibrary = () => {
 
       {/* Error Message */}
       {error && (
-        <div className="flex items-center gap-3 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 p-4 rounded-lg border border-red-200 dark:border-red-800">
+        <div className="flex items-center gap-3 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 p-4 rounded-2xl border border-red-200 dark:border-red-800">
           <AlertCircle className="w-5 h-5" />
           <p>{error}</p>
         </div>
@@ -298,7 +298,7 @@ const FlashcardLibrary = () => {
 
       {/* Empty State */}
       {!loading && !error && cards.length === 0 && selectedDeck && (
-        <div className="flex flex-col items-center justify-center p-12 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+        <div className="flex flex-col items-center justify-center p-12 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700">
           <Library className="w-16 h-16 text-gray-400 mb-4" />
           <h3 className="text-xl font-semibold mb-2">No Cards Found</h3>
           <p className="text-gray-600 dark:text-gray-400 text-center">
