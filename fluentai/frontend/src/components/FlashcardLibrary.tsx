@@ -4,6 +4,7 @@ import Button from '@/components/ui/Button';
 import { AnkiService } from '@/services/anki/ankiService';
 import Flashcard from '@/components/Flashcard';
 import { Card as FlashCard } from '@/interfaces/CardInterfaces';
+import { ANKI_CONFIG } from '@/config/constants';
 
 const FlashcardLibrary = () => {
   const [cards, setCards] = useState<FlashCard[]>([]);
@@ -36,7 +37,7 @@ const FlashcardLibrary = () => {
 
   const getMediaFile = async (filename: string): Promise<string> => {
     try {
-      const response = await fetch('/api/anki', {
+      const response = await fetch(ANKI_CONFIG.API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -122,7 +123,7 @@ const FlashcardLibrary = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch('/api/anki', {
+      const response = await fetch(ANKI_CONFIG.API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -137,7 +138,7 @@ const FlashcardLibrary = () => {
       const data = await response.json();
       const noteIds = data.result;
 
-      const notesResponse = await fetch('/api/anki', {
+      const notesResponse = await fetch(ANKI_CONFIG.API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
