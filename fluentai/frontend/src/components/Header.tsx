@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import logo from "../../public/logo.png";
 
 export default function Header() {
@@ -30,6 +31,14 @@ export default function Header() {
         <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400">
           FluentAI
         </h1>
+      </div>
+      <div className="flex items-center space-x-6">
+        <Link href="/" className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100">
+          Home
+        </Link>
+        <Link href="/library" className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100">
+          Library
+        </Link>
       </div>
       <button
         onClick={toggleDarkMode}

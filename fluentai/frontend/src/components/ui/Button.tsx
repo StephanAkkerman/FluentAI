@@ -1,12 +1,13 @@
 import React from "react";
 
 interface ButtonProps {
-  text: string;
+  text?: string;
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
   variant?: "primary" | "secondary" | "danger" | "success";
   className?: string;
   disabled?: boolean;
+  children?: React.ReactNode;
 }
 
 export default function Button({
@@ -16,8 +17,10 @@ export default function Button({
   variant = "primary",
   className = "",
   disabled = false,
+  children, // Destructure children
 }: ButtonProps) {
-  const baseStyles = "px-4 py-2 rounded-md font-semibold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2";
+  const baseStyles =
+    "px-4 py-2 rounded-md font-semibold transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2";
 
   const variants = {
     primary: "bg-gradient-to-r from-blue-500 to-teal-400 text-white hover:from-blue-600 hover:to-teal-500 focus:ring-blue-300",
@@ -37,7 +40,8 @@ export default function Button({
       disabled={disabled}
       className={`${baseStyles} ${variants[variant]} ${disabledStyles} ${className}`}
     >
-      {text}
+      {children || text /* Render children if provided, otherwise text */}
     </button>
   );
 }
+
