@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Library, AlertCircle } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { AnkiService } from '@/services/anki/ankiService';
 import Flashcard from '@/components/Flashcard';
-import { Card } from '@/interfaces/CardInterfaces';
+import { Card as FlashCard } from '@/interfaces/CardInterfaces';
 
 const FlashcardLibrary = () => {
-  const [cards, setCards] = useState<Card[]>([]);
+  const [cards, setCards] = useState<FlashCard[]>([]);
   const [selectedDeck, setSelectedDeck] = useState('');
   const [decks, setDecks] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -205,38 +205,51 @@ const FlashcardLibrary = () => {
 
   return (
     <div className="space-y-8">
-      <div className='p-6'>
-        <h2 className="text-2xl font-bold mb-4">Select Deck</h2>
-        <select
-          className="w-full p-2 border rounded"
-          value={selectedDeck}
-          onChange={(e) => loadDeck(e.target.value)}
-        >
-          <option value="">Choose a deck...</option>
-          {decks.map((deck) => (
-            <option key={deck} value={deck}>{deck}</option>
-          ))}
-        </select>
+      {/* Deck Selection Card */}
+      <div className="bg-white dark:bg-gray-800 shadow-2xl border border-gray-200 dark:border-gray-700 rounded-2xl">
+        <div className="p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <Library className="w-6 h-6 text-blue-500" />
+            <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-teal-400 bg-clip-text text-transparent">
+              Select Your Deck
+            </h2>
+          </div>
+          <select
+            className="w-full p-3 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 
+                       focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+            value={selectedDeck}
+            onChange={(e) => loadDeck(e.target.value)}
+          >
+            <option value="" disabled>Choose a deck...</option>
+            {decks.map((deck) => (
+              <option key={deck} value={deck}>{deck}</option>
+            ))}
+          </select>
+        </div>
       </div>
 
+      {/* Error Message */}
       {error && (
-        <div className="bg-red-100 text-red-700 p-4 rounded">
-          {error}
+        <div className="flex items-center gap-3 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 p-4 rounded-lg border border-red-200 dark:border-red-800">
+          <AlertCircle className="w-5 h-5" />
+          <p>{error}</p>
         </div>
       )}
 
+      {/* Loading State */}
       {loading && (
-        <div className="text-center p-8">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4">Loading cards...</p>
+        <div className="flex flex-col items-center justify-center p-12 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+          <p className="mt-4 text-gray-600 dark:text-gray-400">Loading your flashcards...</p>
         </div>
       )}
 
+      {/* Cards Grid */}
       {!loading && cards.length > 0 && (
-        <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center items-center">
             {currentCards.map((card, index) => (
-              <div key={index} className="transform transition-all duration-300 hover:scale-105">
+              <div key={index} className="transform transition-all duration-300 hover:scale-105 m-auto">
                 <Flashcard
                   card={card}
                   isLoading={false}
@@ -246,30 +259,51 @@ const FlashcardLibrary = () => {
             ))}
           </div>
 
-          <div className="flex justify-center items-center space-x-4 mt-8">
+          {/* Pagination */}
+          <div className="flex justify-center items-center gap-6 bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700">
             <Button
-              text=""
               onClick={() => setCurrentPage(curr => Math.max(1, curr - 1))}
               disabled={currentPage === 1}
-              className="p-2"
+              variant="secondary"
+              className="flex items-center gap-2"
             >
-              <ChevronLeft className="w-6 h-6" />
+              <ChevronLeft className="w-5 h-5" />
+              Previous
             </Button>
 
-            <span className="text-lg font-medium">
-              Page {currentPage} of {totalPages}
-            </span>
+            <div className="flex items-center gap-3">
+              <span className="text-lg font-medium px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700">
+                {currentPage}
+              </span>
+              <span className="text-gray-500 dark:text-gray-400">of</span>
+              <span className="text-lg font-medium px-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-700">
+                {totalPages}
+              </span>
+            </div>
 
             <Button
-              text=""
               onClick={() => setCurrentPage(curr => Math.min(totalPages, curr + 1))}
               disabled={currentPage === totalPages}
-              className="p-2"
+              variant="secondary"
+              className="flex items-center gap-2"
             >
-              <ChevronRight className="w-6 h-6" />
+              Next
+              <ChevronRight className="w-5 h-5" />
             </Button>
           </div>
-        </>
+        </div>
+      )}
+
+
+      {/* Empty State */}
+      {!loading && !error && cards.length === 0 && selectedDeck && (
+        <div className="flex flex-col items-center justify-center p-12 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+          <Library className="w-16 h-16 text-gray-400 mb-4" />
+          <h3 className="text-xl font-semibold mb-2">No Cards Found</h3>
+          <p className="text-gray-600 dark:text-gray-400 text-center">
+            This deck doesn't have any FluentAI cards yet. Create some cards first!
+          </p>
+        </div>
       )}
     </div>
   );
