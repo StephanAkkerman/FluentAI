@@ -23,7 +23,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col gap-12">
+    <div className="flex flex-col gap-12">
       <StatusChecker />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
         <div className="flex gap-12 flex-col">

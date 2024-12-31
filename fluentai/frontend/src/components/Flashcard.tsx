@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React, { useEffect, useState, useRef } from "react";
 import { Speaker } from "lucide-react";
 import { Card } from "@/interfaces/CardInterfaces";
@@ -89,9 +90,11 @@ export default function Flashcard({
           ) : (
             <>
               <div className="w-full h-64 overflow-hidden rounded-xl">
-                <img
+                <Image
                   src={card.imageUrl || "https://placehold.co/400"}
                   alt={card.word}
+                  width={0}
+                  height={0}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -102,9 +105,11 @@ export default function Flashcard({
         {/* Back Side */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-teal-100 dark:bg-gradient-to-br dark:from-blue-800 dark:to-teal-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 backface-hidden transform rotate-y-180 flex flex-col justify-center items-center p-6 text-center">
           <div className="w-full h-64 overflow-hidden rounded-xl mb-4">
-            <img
+            <Image
               src={card.imageUrl || "https://placehold.co/400"}
               alt={card.word}
+              width={0}
+              height={0}
               className="w-full h-full object-cover"
             />
           </div>

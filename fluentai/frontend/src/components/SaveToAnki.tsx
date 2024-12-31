@@ -35,7 +35,7 @@ export default function SaveToAnki({ card, onError }: SaveToAnkiProps) {
     }
 
     fetchDecks();
-  }, []);
+  }, [onError]);
 
   const handleSaveToAnki = async (e: React.FormEvent) => {
     e.preventDefault();
