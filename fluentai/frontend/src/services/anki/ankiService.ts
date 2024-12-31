@@ -148,4 +148,89 @@ export class AnkiService {
       throw new Error('Failed to fetch decks.');
     }
   }
+
+  async getCardsFromDeck(deckName: string): Promise<any[]> {
+    try {
+      // Step 1: Find notes in the deck
+      const findNotesResponse = await axios.post(ANKI_CONFIG.API_URL, {
+        action: 'findNotes',
+        version: 6,
+        params: {
+          query: `deck:"${deckName}"`,
+        },
+      });
+
+      const noteIds = findNotesResponse.data.result;
+
+      if (!noteIds.length) {
+        return [];
+      }
+
+      // Step 2: Fetch detailed info for the notes
+      const notesInfoResponse = await axios.post(ANKI_CONFIG.API_URL, {
+        action: 'notesInfo',
+        version: 6,
+        params: {
+          notes: noteIds,
+        },
+      });
+
+      const notesInfo = notesInfoResponse.data.result;
+
+      // Filter for relevant model
+      return notesInfo.filter((note: any) => note.modelName === 'FluentAI Model');
+    } catch (error) {
+      console.error('Error fetching cards from deck:', error);
+      throw new Error('Failed to fetch cards from deck.');
+    }
+  }
+
+  async getMediaFile(filename: string): Promise<string> {
+    try {
+      const response = await axios.post(ANKI_CONFIG.API_URL, {
+        action: 'retrieveMediaFile',
+        version: 6,
+        params: {
+          filename,
+        },
+      });
+
+      if (!response.data.result) {
+        throw new Error('Media file not found');
+      }
+
+      const base64Data = response.data.result;
+      const isImage = filename.match(/\.(jpg|jpeg|png|gif)$/i);
+      const mimeType = isImage ? `image/${filename.split('.').pop()}` : 'audio/mpeg';
+
+      const blob = await fetch(`data:${mimeType};base64,${base64Data}`).then((res) =>
+        res.blob()
+      );
+      return URL.createObjectURL(blob);
+    } catch (error) {
+      console.error(`Failed to load media file ${filename}:`, error);
+      throw new Error(`Failed to load media file: ${filename}`);
+    }
+  }
+
+  async createDeck(deckName: string): Promise<void> {
+    try {
+      const response = await axios.post(ANKI_CONFIG.API_URL, {
+        action: 'createDeck',
+        version: 6,
+        params: {
+          deck: deckName,
+        },
+      });
+
+      if (response.data.error) {
+        throw new Error(`Error creating deck: ${response.data.error}`);
+      }
+
+      console.log(`Deck "${deckName}" created successfully.`);
+    } catch (error) {
+      console.error('Error creating deck:', error);
+      throw new Error('Failed to create a new deck in Anki.');
+    }
+  }
 }

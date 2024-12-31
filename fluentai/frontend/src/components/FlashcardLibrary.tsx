@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Library, AlertCircle } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { ChevronLeft, ChevronRight, Library, AlertCircle, RefreshCw } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { AnkiService } from '@/services/anki/ankiService';
 import Flashcard from '@/components/Flashcard';
 import { Card as FlashCard } from '@/interfaces/CardInterfaces';
-import { ANKI_CONFIG } from '@/config/constants';
+
+const ankiService = new AnkiService();
 
 const FlashcardLibrary = () => {
   const [cards, setCards] = useState<FlashCard[]>([]);
@@ -13,58 +14,27 @@ const FlashcardLibrary = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const cardsPerPage = 6;
-
   const totalPages = Math.ceil(cards.length / cardsPerPage);
   const startIndex = (currentPage - 1) * cardsPerPage;
   const endIndex = startIndex + cardsPerPage;
   const currentCards = cards.slice(startIndex, endIndex);
 
-  useEffect(() => {
-    const fetchDecks = async () => {
-      try {
-        const ankiService = new AnkiService();
-        const availableDecks = await ankiService.getAvailableDecks();
-        setDecks(availableDecks);
-      } catch (err) {
-        console.error("Error loading decks: ", err);
-        setError('Failed to load decks');
-      }
-    };
-    fetchDecks();
-  }, []);
-
-  const getMediaFile = async (filename: string): Promise<string> => {
+  const fetchDecks = useCallback(async () => {
+    setIsRefreshing(true);
+    setError('');
     try {
-      const response = await fetch(ANKI_CONFIG.API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'retrieveMediaFile',
-          version: 6,
-          params: {
-            filename
-          }
-        })
-      });
-
-      const data = await response.json();
-      if (!data.result) {
-        throw new Error('Media file not found');
-      }
-
-      const base64Data = data.result;
-      const isImage = filename.match(/\.(jpg|jpeg|png|gif)$/i);
-      const mimeType = isImage ? `image/${filename.split('.').pop()}` : 'audio/mpeg';
-
-      const blob = await fetch(`data:${mimeType};base64,${base64Data}`).then(res => res.blob());
-      return URL.createObjectURL(blob);
+      const availableDecks = await ankiService.getAvailableDecks();
+      setDecks(availableDecks);
     } catch (err) {
-      console.error(`Failed to load media file ${filename}:`, err);
-      return '';
+      console.error("Error loading decks: ", err);
+      setError('Failed to load decks');
+    } finally {
+      setIsRefreshing(false);
     }
-  };
+  }, []);
 
   const sanitizeHtml = (html: string): string => {
     // Create a temporary div to handle HTML content
@@ -123,62 +93,32 @@ const FlashcardLibrary = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await fetch(ANKI_CONFIG.API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'findNotes',
-          version: 6,
-          params: {
-            query: `deck:"${deckName}"`
-          }
+      const notesInfo = await ankiService.getCardsFromDeck(deckName);
+
+      const transformedCards = await Promise.all(
+        notesInfo.map(async (note: any) => {
+          const imageFilename = note.fields.Picture.value.match(/src="([^"]+)"/)?.[1] || '';
+          const audioFilename = note.fields['Pronunciation (Recording and/or IPA)'].value.match(/\[sound:([^\]]+)\]/)?.[1] || '';
+
+          const [imageUrl, audioUrl] = await Promise.all([
+            imageFilename ? ankiService.getMediaFile(imageFilename) : Promise.resolve(''),
+            audioFilename ? ankiService.getMediaFile(audioFilename) : Promise.resolve(''),
+          ]);
+
+          const verbalCueHtml = note.fields['Gender, Personal Connection, Extra Info (Back side)'].value;
+          const sanitizedVerbalCue = sanitizeHtml(verbalCueHtml);
+
+          return {
+            word: note.fields.Word.value,
+            translation: '',
+            imageUrl,
+            audioUrl,
+            ipa: note.fields['Pronunciation (Recording and/or IPA)'].value.replace(/\[sound:[^\]]+\]/, '').trim(),
+            verbalCue: sanitizedVerbalCue,
+            languageCode: 'en',
+          };
         })
-      });
-
-      const data = await response.json();
-      const noteIds = data.result;
-
-      const notesResponse = await fetch(ANKI_CONFIG.API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'notesInfo',
-          version: 6,
-          params: {
-            notes: noteIds
-          }
-        })
-      });
-
-      const notesData = await notesResponse.json();
-      let notesInfo = notesData.result;
-      notesInfo = notesInfo.filter((note: any) =>
-        note.modelName === "FluentAI Model"
       );
-
-      const transformedCards = await Promise.all(notesInfo.map(async (note: any) => {
-        const imageFilename = note.fields.Picture.value.match(/src="([^"]+)"/)?.[1] || '';
-        const audioFilename = note.fields['Pronunciation (Recording and/or IPA)'].value.match(/\[sound:([^\]]+)\]/)?.[1] || '';
-
-        const [imageUrl, audioUrl] = await Promise.all([
-          imageFilename ? getMediaFile(imageFilename) : Promise.resolve(''),
-          audioFilename ? getMediaFile(audioFilename) : Promise.resolve('')
-        ]);
-
-        // Sanitize the verbal cue HTML content
-        const verbalCueHtml = note.fields['Gender, Personal Connection, Extra Info (Back side)'].value;
-        const sanitizedVerbalCue = sanitizeHtml(verbalCueHtml);
-
-        return {
-          word: note.fields.Word.value,
-          translation: '',
-          imageUrl,
-          audioUrl,
-          ipa: note.fields['Pronunciation (Recording and/or IPA)'].value.replace(/\[sound:[^\]]+\]/, '').trim(),
-          verbalCue: sanitizedVerbalCue,
-          languageCode: 'en'
-        };
-      }));
 
       setCards(transformedCards);
       setSelectedDeck(deckName);
@@ -190,6 +130,10 @@ const FlashcardLibrary = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchDecks();
+  }, [fetchDecks]);
 
   useEffect(() => {
     return () => {
@@ -209,23 +153,40 @@ const FlashcardLibrary = () => {
       {/* Deck Selection Card */}
       <div className="bg-white dark:bg-gray-800 shadow-2xl border border-gray-200 dark:border-gray-700 rounded-2xl">
         <div className="p-6">
-          <div className="flex items-center gap-2 mb-4">
-            <Library className="w-6 h-6 text-blue-500" />
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-teal-400 bg-clip-text text-transparent">
-              Select Your Deck
-            </h2>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <Library className="w-6 h-6 text-blue-500" />
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-teal-400 bg-clip-text text-transparent">
+                Select Your Deck
+              </h2>
+            </div>
           </div>
-          <select
-            className="w-full p-3 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 
-                       focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-            value={selectedDeck}
-            onChange={(e) => loadDeck(e.target.value)}
-          >
-            <option value="" disabled>Choose a deck...</option>
-            {decks.map((deck) => (
-              <option key={deck} value={deck}>{deck}</option>
-            ))}
-          </select>
+          <div className="flex gap-2">
+            <select
+              className="w-full p-3 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 
+                         focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+              value={selectedDeck}
+              onChange={(e) => {
+                const newDeck = e.target.value;
+                if (newDeck !== selectedDeck) { // Prevent redundant updates
+                  setSelectedDeck(newDeck);
+                  loadDeck(newDeck); // Only load the deck if it has changed
+                }
+              }}
+            >
+              <option value="" disabled>Choose a deck...</option>
+              {decks.map((deck) => (
+                <option key={deck} value={deck}>{deck}</option>
+              ))}
+            </select>
+            <button
+              onClick={fetchDecks}
+              disabled={isRefreshing}
+              className="p-2 border rounded hover:bg-gray-100 disabled:opacity-50"
+            >
+              <RefreshCw className={`h-5 w-5 ${isRefreshing ? 'animate-spin' : ''}`} />
+            </button>
+          </div>
         </div>
       </div>
 

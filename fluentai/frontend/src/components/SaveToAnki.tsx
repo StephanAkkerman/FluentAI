@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import FormField from "./ui/FormField";
 import Button from "./ui/Button";
 import { AnkiService } from "@/services/anki/ankiService";
 import { Card } from "@/interfaces/CardInterfaces";
+import { RefreshCw, Plus } from "lucide-react";
 
 interface SaveToAnkiProps {
   card: Card;
@@ -17,6 +18,20 @@ export default function SaveToAnki({ card, onError }: SaveToAnkiProps) {
   const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'success' | 'error'>('idle');
   const [localLoading, setLocalLoading] = useState(false);
   const [decks, setDecks] = useState<string[]>([]);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const fetchDecks = useCallback(async () => {
+    try {
+      setIsRefreshing(true);
+      const deckResponse = await ankiService.getAvailableDecks();
+      setDecks(deckResponse);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      onError("Failed to load data.");
+    } finally {
+      setIsRefreshing(false);
+    }
+  }, [onError]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -24,18 +39,8 @@ export default function SaveToAnki({ card, onError }: SaveToAnkiProps) {
       setTestSpelling(localStorage.getItem("testSpelling") === "true");
     }
 
-    const fetchDecks = async () => {
-      try {
-        const deckResponse = await ankiService.getAvailableDecks()
-        setDecks(deckResponse);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        onError("Failed to load data.");
-      }
-    }
-
     fetchDecks();
-  }, [onError]);
+  }, [fetchDecks]);
 
   const handleSaveToAnki = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,6 +80,23 @@ export default function SaveToAnki({ card, onError }: SaveToAnkiProps) {
     }
   };
 
+  const handleCreateDeck = async () => {
+    const newDeckName = prompt("Enter the name of the new deck:");
+    if (!newDeckName) return;
+
+    try {
+      await ankiService.createDeck(newDeckName);
+      setDecks((prevDecks) => [...prevDecks, newDeckName]);
+      setSelectedDeck(newDeckName);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("selectedDeck", newDeckName);
+      }
+    } catch (error) {
+      console.error("Error creating new deck:", error);
+      onError("Failed to create new deck.");
+    }
+  };
+
   const getSaveButtonText = () => {
     switch (saveStatus) {
       case 'saving':
@@ -102,20 +124,39 @@ export default function SaveToAnki({ card, onError }: SaveToAnkiProps) {
   return (
     <form onSubmit={handleSaveToAnki} className="space-y-6">
       <FormField label="Anki Deck" value={selectedDeck} required>
-        <select
-          className="w-full py-2 px-4 border rounded"
-          value={selectedDeck}
-          onChange={(e) => handleDeckChange(e.target.value)}
-        >
-          <option value="" disabled>
-            Select a deck
-          </option>
-          {decks.map((deck) => (
-            <option key={deck} value={deck}>
-              {deck}
+        <div className="flex gap-2">
+          <select
+            className="w-full py-2 px-4 border rounded"
+            value={selectedDeck}
+            onChange={(e) => handleDeckChange(e.target.value)}
+          >
+            <option value="" disabled>
+              Select a deck
             </option>
-          ))}
-        </select>
+            {decks.map((deck) => (
+              <option key={deck} value={deck}>
+                {deck}
+              </option>
+            ))}
+          </select>
+          <button
+            type="button"
+            onClick={handleCreateDeck}
+            className="p-2 border rounded hover:bg-gray-100"
+          >
+            <Plus className="h-5 w-5" />
+          </button>
+          <button
+            type="button"
+            onClick={fetchDecks}
+            disabled={isRefreshing}
+            className="p-2 border rounded hover:bg-gray-100 disabled:opacity-50"
+          >
+            <RefreshCw
+              className={`h-5 w-5 ${isRefreshing ? 'animate-spin' : ''}`}
+            />
+          </button>
+        </div>
       </FormField>
       <FormField value="true">
         <div className="flex items-center">
@@ -139,4 +180,3 @@ export default function SaveToAnki({ card, onError }: SaveToAnkiProps) {
     </form>
   );
 }
-
