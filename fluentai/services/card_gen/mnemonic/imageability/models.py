@@ -5,6 +5,7 @@ from datetime import datetime
 
 import joblib
 import pandas as pd
+from catboost import CatBoostRegressor
 from huggingface_hub import HfApi, hf_hub_download
 from lightgbm import LGBMRegressor
 from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor
@@ -198,8 +199,8 @@ def train_and_evaluate_models(X_train, X_test, y_train, y_test, dataset_hash):
 
     # Define the models to evaluate
     models = [
-        ("Linear Regression (OLS)", LinearRegression()),
-        ("Ridge Regression", Ridge()),
+        ("Linear Regression (OLS)", LinearRegression()),  # Baseline
+        ("Ridge Regression", Ridge()),  # Baseline
         ("Support Vector Regression", SVR(kernel="linear")),
         ("Random Forest", RandomForestRegressor(n_estimators=100)),
         ("Gradient Boosting", GradientBoostingRegressor(n_estimators=100)),
@@ -213,6 +214,7 @@ def train_and_evaluate_models(X_train, X_test, y_train, y_test, dataset_hash):
             ),
         ),
         ("LightGBM", LGBMRegressor(n_estimators=100)),
+        ("CatBoost", CatBoostRegressor(n_estimators=100)),
     ]
 
     # Load existing logs
@@ -342,6 +344,9 @@ def upload_model(model_path: str):
 
 
 if __name__ == "__main__":
+    # Install the following extra dependencies:
+    # pip install scikit-learn lightgbm xgboost catboost
+
     # Load data
     embeddings, scores, dataset_hash = load_data()
 
@@ -350,3 +355,6 @@ if __name__ == "__main__":
 
     # Train and evaluate models
     train_and_evaluate_models(X_train, X_test, y_train, y_test, dataset_hash)
+
+    # TODO: hyperparameter optimization
+    # TODO: ensemble methods

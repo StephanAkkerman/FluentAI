@@ -20,3 +20,4 @@ fa8b207bd01f634789bd41bccd6ec315,StephanAkkerman/imageability,dunzhang/stella_en
 fa8b207bd01f634789bd41bccd6ec315,StephanAkkerman/imageability,dunzhang/stella_en_400M_v5,XGBoost,0.01873411010503355,0.47204060050648367,2024-12-30T17:26:31.841405
 fa8b207bd01f634789bd41bccd6ec315,StephanAkkerman/imageability,dunzhang/stella_en_400M_v5,LightGBM,0.016160899086489187,0.5445581066225473,2024-12-30T17:26:35.633014
 fa8b207bd01f634789bd41bccd6ec315,StephanAkkerman/imageability,dunzhang/stella_en_400M_v5,Ridge Regression,0.013348926400112305,0.6238043266227608,2024-12-30T17:30:37.276974
+fa8b207bd01f634789bd41bccd6ec315,StephanAkkerman/imageability,dunzhang/stella_en_400M_v5,CatBoost,0.017140226553598325,0.5169589765574623,2025-01-02T22:25:44.350773
