@@ -4,6 +4,7 @@ node_modules/
 *pkl
 *.bin
 local_data/
+catboost_info/
 imagine/generated-img/*
 
 # Byte-compiled / optimized / DLL files

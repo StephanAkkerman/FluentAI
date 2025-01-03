@@ -52,13 +52,14 @@ SEMANTIC_SIM:
 IMAGEABILITY:
   EMBEDDINGS:
     # Model is also used to get the right embeddings dataset in the evaluation
-    MODEL: paraphrase-multilingual-MiniLM-L12-v2
+    MODEL: dunzhang/stella_en_400M_v5
     REPO: StephanAkkerman/imageability-embeddings
     EVAL:
       DATASET: StephanAkkerman/imageability
       MODELS:
         - fasttext
         - paraphrase-multilingual-MiniLM-L12-v2
+        - dunzhang/stella_en_400M_v5
   PREDICTOR:
     REPO: StephanAkkerman/imageability-predictor
     FILE: lightgbm-fasttext.joblib
