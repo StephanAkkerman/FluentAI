@@ -194,6 +194,7 @@ def train_and_evaluate_models(X_train, X_test, y_train, y_test, dataset_hash):
                     l2_leaf_reg=best_params.get("l2_leaf_reg", 3),
                     subsample=best_params.get("subsample", 1.0),
                     random_state=42,
+                    task_type="GPU",
                     verbose=0,
                 )
             elif name == "Support Vector Regression":
