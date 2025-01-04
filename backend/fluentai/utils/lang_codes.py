@@ -1,6 +1,6 @@
 import pycountry
 
-from fluentai.services.card_gen.constants.languages import (
+from fluentai.constants.languages import (
     G2P_LANGCODES,
     TRANSLATE_LANGCODES,
 )

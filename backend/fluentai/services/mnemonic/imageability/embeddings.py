@@ -26,6 +26,7 @@ class ImageabilityEmbeddings:
         Load the specified embedding model.
         """
         if self.model_name == "fasttext":
+            logger.info("Loading FastText model for imageability embeddings...")
             from fluentai.utils.fasttext import fasttext_model
 
             return fasttext_model
