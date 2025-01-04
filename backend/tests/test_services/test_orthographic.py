@@ -6,7 +6,7 @@ import pytest
 
 os.environ["FLUENTAI_CONFIG_PATH"] = "config.yaml"  # noqa
 
-from fluentai.services.card_gen.mnemonic.orthographic.orthographic import (
+from fluentai.services.mnemonic.orthographic.orthographic import (
     compute_damerau_levenshtein_similarity,
 )
 

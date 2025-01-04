@@ -1,4 +1,4 @@
-# tests/test_card_gen.py
+# tests/test_py
 
 import os
 from unittest.mock import MagicMock
@@ -10,7 +10,7 @@ import pytest
 os.environ["FLUENTAI_CONFIG_PATH"] = "config.yaml"  # noqa
 
 # Import the functions and classes to be tested
-from fluentai.services.card_gen.mnemonic.imageability.predictions import (
+from fluentai.services.mnemonic.imageability.imageability import (
     ImageabilityPredictor,
     make_predictions,
 )
@@ -22,7 +22,7 @@ def mock_hf_hub_download(mocker):
     Fixture to mock hf_hub_download function.
     """
     return mocker.patch(
-        "fluentai.services.card_gen.mnemonic.imageability.predictions.hf_hub_download"
+        "fluentai.services.mnemonic.imageability.imageability.hf_hub_download"
     )
 
 
@@ -32,7 +32,7 @@ def mock_joblib_load(mocker):
     Fixture to mock joblib.load function.
     """
     return mocker.patch(
-        "fluentai.services.card_gen.mnemonic.imageability.predictions.joblib.load"
+        "fluentai.services.mnemonic.imageability.imageability.joblib.load"
     )
 
 
@@ -42,7 +42,7 @@ def mock_pd_read_csv(mocker):
     Fixture to mock pandas.read_csv function.
     """
     return mocker.patch(
-        "fluentai.services.card_gen.mnemonic.imageability.predictions.pd.read_csv"
+        "fluentai.services.mnemonic.imageability.imageability.pd.read_csv"
     )
 
 
@@ -52,7 +52,7 @@ def mock_ImageabilityEmbeddings(mocker):
     Fixture to mock ImageabilityEmbeddings class.
     """
     mock_class = mocker.patch(
-        "fluentai.services.card_gen.mnemonic.imageability.predictions.ImageabilityEmbeddings"
+        "fluentai.services.mnemonic.imageability.imageability.ImageabilityEmbeddings"
     )
     mock_instance = MagicMock()
     mock_instance.get_embedding.side_effect = lambda word: np.array([1.0, 2.0, 3.0])
@@ -72,7 +72,7 @@ def test_make_predictions(
     """
     # Mock the configuration
     mock_config = mocker.patch(
-        "fluentai.services.card_gen.mnemonic.imageability.predictions.config"
+        "fluentai.services.mnemonic.imageability.imageability.config"
     )
     mock_config.get.side_effect = lambda key: {
         "IMAGEABILITY": {
@@ -109,7 +109,7 @@ def test_make_predictions(
 
     # Mock tqdm to just return the iterator
     mocker.patch(
-        "fluentai.services.card_gen.mnemonic.imageability.predictions.tqdm",
+        "fluentai.services.mnemonic.imageability.imageability.tqdm",
         side_effect=lambda x, total=None: x,
     )
 
@@ -142,7 +142,7 @@ def test_ImageabilityPredictor_get_prediction(
     """
     # Mock the configuration
     mock_config = mocker.patch(
-        "fluentai.services.card_gen.mnemonic.imageability.predictions.config"
+        "fluentai.services.mnemonic.imageability.imageability.config"
     )
     mock_config.get.side_effect = lambda key: {
         "IMAGEABILITY": {
@@ -185,7 +185,7 @@ def test_ImageabilityPredictor_get_predictions(
     """
     # Mock the configuration
     mock_config = mocker.patch(
-        "fluentai.services.card_gen.mnemonic.imageability.predictions.config"
+        "fluentai.services.mnemonic.imageability.imageability.config"
     )
     mock_config.get.side_effect = lambda key: {
         "IMAGEABILITY": {
@@ -225,7 +225,7 @@ def test_ImageabilityPredictor_get_column_imageability(
     """
     # Mock the configuration
     mock_config = mocker.patch(
-        "fluentai.services.card_gen.mnemonic.imageability.predictions.config"
+        "fluentai.services.mnemonic.imageability.imageability.config"
     )
     mock_config.get.side_effect = lambda key: {
         "IMAGEABILITY": {
