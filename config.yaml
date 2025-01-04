@@ -62,7 +62,7 @@ IMAGEABILITY:
         - dunzhang/stella_en_400M_v5
   PREDICTOR:
     REPO: StephanAkkerman/imageability-predictor
-    FILE: lightgbm-fasttext.joblib
+    FILE: stacking_regressor-dunzhang_stella_en_400M_v5.joblib
     EVAL:
       DATASET: StephanAkkerman/imageability
       MODELS: # TODO
