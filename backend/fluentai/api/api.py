@@ -10,10 +10,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
-from fluentai.services.card_gen.constants.config import config
-from fluentai.services.card_gen.main import generate_mnemonic_img
-from fluentai.services.card_gen.utils.load_models import download_all_models
-from fluentai.services.card_gen.utils.logger import logger
+from fluentai.constants.config import config
+from fluentai.logger import logger
+from fluentai.services.main import generate_mnemonic_img
+from fluentai.utils.load_models import download_all_models
 
 app = FastAPI()
 

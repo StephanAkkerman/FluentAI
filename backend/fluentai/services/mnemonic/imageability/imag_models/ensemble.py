@@ -9,11 +9,11 @@ from sklearn.ensemble import (
 from sklearn.linear_model import Ridge
 from sklearn.metrics import mean_squared_error, r2_score
 
-from fluentai.services.card_gen.constants.config import config
-from fluentai.services.card_gen.mnemonic.imageability.imag_models.data import (
+from fluentai.constants.config import config
+from fluentai.logger import logger
+from fluentai.services.mnemonic.imageability.imag_models.data import (
     append_to_log,
 )
-from fluentai.services.card_gen.utils.logger import logger
 
 
 def implement_ensemble_methods(

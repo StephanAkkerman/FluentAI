@@ -2,9 +2,9 @@ import joblib
 import numpy as np
 from huggingface_hub import hf_hub_download
 
-from fluentai.services.card_gen.constants.config import config
-from fluentai.services.card_gen.utils.fasttext import fasttext_model
-from fluentai.services.card_gen.utils.logger import logger
+from fluentai.constants.config import config
+from fluentai.logger import logger
+from fluentai.utils.fasttext import fasttext_model
 
 
 class ImageabilityPredictor:

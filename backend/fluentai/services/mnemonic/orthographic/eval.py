@@ -4,8 +4,8 @@ from orthographic import compute_similarity
 from scipy.stats import pearsonr, spearmanr
 from sklearn.preprocessing import MinMaxScaler
 
-from fluentai.services.card_gen.constants.config import config
-from fluentai.services.card_gen.utils.logger import logger
+from fluentai.constants.config import config
+from fluentai.logger import logger
 
 
 def scale_ratings(ratings: pd.Series) -> pd.Series:

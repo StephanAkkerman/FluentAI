@@ -9,9 +9,9 @@ from datasets import load_dataset
 from scipy.stats import pearsonr, spearmanr
 from tqdm import tqdm
 
-from fluentai.services.card_gen.constants.config import config
+from fluentai.constants.config import config
+from fluentai.logger import logger
 from fluentai.services.card_gen.mnemonic.semantic.semantic import SemanticSimilarity
-from fluentai.services.card_gen.utils.logger import logger
 
 
 def compute_dataset_hash(df: pd.DataFrame) -> str:

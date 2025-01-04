@@ -1,8 +1,8 @@
 from gensim.models.fasttext import FastTextKeyedVectors
 from sentence_transformers import SentenceTransformer
 
-from fluentai.services.card_gen.constants.config import config
-from fluentai.services.card_gen.utils.logger import logger
+from fluentai.constants.config import config
+from fluentai.logger import logger
 
 
 class SemanticSimilarity:

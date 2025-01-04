@@ -4,8 +4,8 @@ import numpy as np
 import pandas as pd
 from huggingface_hub import hf_hub_download
 
-from fluentai.services.card_gen.constants.config import config
-from fluentai.services.card_gen.utils.logger import logger
+from fluentai.constants.config import config
+from fluentai.logger import logger
 
 
 def pad_vectors(vectors):

@@ -1,16 +1,16 @@
-from fluentai.services.card_gen.constants.config import config, weights_percentages
-from fluentai.services.card_gen.constants.languages import G2P_LANGUAGES
-from fluentai.services.card_gen.mnemonic.imageability.predictions import (
+from fluentai.constants.config import config, weights_percentages
+from fluentai.constants.languages import G2P_LANGUAGES
+from fluentai.logger import logger
+from fluentai.services.mnemonic.imageability.imageability import (
     ImageabilityPredictor,
 )
-from fluentai.services.card_gen.mnemonic.orthographic.orthographic import (
+from fluentai.services.mnemonic.orthographic.orthographic import (
     compute_damerau_levenshtein_similarity,
 )
-from fluentai.services.card_gen.mnemonic.phonetic.g2p import G2P
-from fluentai.services.card_gen.mnemonic.phonetic.phonetic import top_phonetic, word2ipa
-from fluentai.services.card_gen.mnemonic.semantic.semantic import SemanticSimilarity
-from fluentai.services.card_gen.mnemonic.semantic.translator import translate_word
-from fluentai.services.card_gen.utils.logger import logger
+from fluentai.services.mnemonic.phonetic.g2p import G2P
+from fluentai.services.mnemonic.phonetic.phonetic import top_phonetic, word2ipa
+from fluentai.services.mnemonic.semantic.semantic import SemanticSimilarity
+from fluentai.services.mnemonic.semantic.translator import translate_word
 
 
 class Word2Mnemonic:

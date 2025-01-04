@@ -5,8 +5,8 @@ import panphon
 from pyclts import CLTS
 from soundvectors import SoundVectors
 
-from fluentai.services.card_gen.mnemonic.phonetic.clts_utils import get_clts
-from fluentai.services.card_gen.utils.logger import logger
+from fluentai.logger import logger
+from fluentai.services.mnemonic.phonetic.clts_utils import get_clts
 
 # Test if data/clts exists
 if not os.path.exists("local_data/clts"):

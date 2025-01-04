@@ -8,8 +8,8 @@ from huggingface_hub import HfApi
 from sentence_transformers import SentenceTransformer
 from tqdm import tqdm
 
-from fluentai.services.card_gen.constants.config import config
-from fluentai.services.card_gen.utils.logger import logger
+from fluentai.constants.config import config
+from fluentai.logger import logger
 
 EMBEDDING_MODEL = None
 
@@ -26,7 +26,7 @@ class ImageabilityEmbeddings:
         Load the specified embedding model.
         """
         if self.model_name == "fasttext":
-            from fluentai.services.card_gen.utils.fasttext import fasttext_model
+            from fluentai.utils.fasttext import fasttext_model
 
             return fasttext_model
 

@@ -6,8 +6,8 @@ from pathlib import Path
 import torch
 from diffusers import AutoPipelineForText2Image, SanaPipeline
 
-from fluentai.services.card_gen.constants.config import config
-from fluentai.services.card_gen.utils.logger import logger
+from fluentai.constants.config import config
+from fluentai.logger import logger
 
 
 def manage_model_memory(method):

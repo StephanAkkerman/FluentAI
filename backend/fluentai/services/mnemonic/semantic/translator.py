@@ -3,8 +3,8 @@ from functools import lru_cache
 
 from googletrans import Translator
 
+from fluentai.logger import logger
 from fluentai.services.card_gen.utils.lang_codes import map_language_code
-from fluentai.services.card_gen.utils.logger import logger
 
 translator = Translator()
 

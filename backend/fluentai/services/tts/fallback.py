@@ -4,7 +4,7 @@ import pandas as pd
 import scipy
 from transformers import VitsModel, VitsTokenizer, pipeline
 
-from fluentai.services.card_gen.utils.logger import logger
+from fluentai.logger import logger
 
 # Check if the language code is supported
 supported_languages = pd.read_parquet("data/tts-languages.parquet")

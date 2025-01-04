@@ -3,8 +3,8 @@ import os
 import gtts
 from gtts import gTTS
 
+from fluentai.logger import logger
 from fluentai.services.card_gen.utils.lang_codes import map_language_code
-from fluentai.services.card_gen.utils.logger import logger
 
 
 class TTS:

@@ -29,11 +29,7 @@ def parse_requirements(filename: str) -> list[str]:
 
 
 # Read dependencies from requirements.txt
-requirements = parse_requirements("requirements/requirements.txt")
-
-# Read the long description from README.md
-with open("README.md", encoding="utf-8") as fh:
-    long_description = fh.read()
+requirements = parse_requirements("requirements.txt")
 
 setup(
     name="fluentai",
@@ -41,8 +37,6 @@ setup(
     packages=find_packages(),
     install_requires=requirements,
     description="FluentAI short description",
-    long_description=long_description,
-    long_description_content_type="text/markdown",
     url="https://github.com/StephanAkkerman/",
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -51,7 +45,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "fluentai-main=fluentai.main:main",  # Adjust as needed
+            "fluentai-main=fluentai.main:main",
         ],
     },
     python_requires=">=3.10",

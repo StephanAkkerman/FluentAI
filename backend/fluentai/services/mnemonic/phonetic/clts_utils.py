@@ -4,7 +4,7 @@ from pathlib import Path
 from git import GitCommandError, RemoteProgress, Repo
 from tqdm import tqdm
 
-from fluentai.services.card_gen.utils.logger import logger
+from fluentai.logger import logger
 
 
 def check_directory_exists(directory_path):

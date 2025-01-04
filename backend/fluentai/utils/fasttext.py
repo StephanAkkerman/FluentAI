@@ -9,7 +9,7 @@ import requests
 from gensim.models.fasttext import FastTextKeyedVectors, load_facebook_vectors
 from tqdm import tqdm
 
-from fluentai.services.card_gen.utils.logger import logger
+from fluentai.logger import logger
 
 
 def download_file(url, dest_path, chunk_size=1024):

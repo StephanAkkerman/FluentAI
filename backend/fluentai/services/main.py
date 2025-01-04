@@ -1,10 +1,10 @@
 import torch
 
-from fluentai.services.card_gen.imagine.image_gen import ImageGen
-from fluentai.services.card_gen.imagine.verbal_cue import VerbalCue
-from fluentai.services.card_gen.mnemonic.word2mnemonic import Word2Mnemonic
-from fluentai.services.card_gen.tts.tts import TTS
-from fluentai.services.card_gen.utils.logger import logger
+from fluentai.logger import logger
+from fluentai.services.imagine.image_gen import ImageGen
+from fluentai.services.imagine.verbal_cue import VerbalCue
+from fluentai.services.mnemonic.word2mnemonic import Word2Mnemonic
+from fluentai.services.tts.tts import TTS
 
 
 def generate_mnemonic_img(

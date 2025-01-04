@@ -3,12 +3,12 @@ import os
 
 import torch
 
-from fluentai.services.card_gen.constants.config import config
+from fluentai.constants.config import config
+from fluentai.logger import logger
 from fluentai.services.card_gen.imagine.image_gen import ImageGen
 from fluentai.services.card_gen.imagine.verbal_cue import VerbalCue
 from fluentai.services.card_gen.mnemonic.phonetic.g2p import G2P
 from fluentai.services.card_gen.mnemonic.semantic.semantic import SemanticSimilarity
-from fluentai.services.card_gen.utils.logger import logger
 
 
 def get_model_dir_name(model: str) -> str:

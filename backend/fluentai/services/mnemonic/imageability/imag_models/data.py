@@ -8,8 +8,8 @@ import pandas as pd
 from huggingface_hub import HfApi, hf_hub_download
 from sklearn.model_selection import train_test_split
 
-from fluentai.services.card_gen.constants.config import config
-from fluentai.services.card_gen.utils.logger import logger
+from fluentai.constants.config import config
+from fluentai.logger import logger
 
 
 def upload_model(model_path: str):

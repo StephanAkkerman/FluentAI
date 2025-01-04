@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
-from fluentai.services.card_gen.utils.logger import logger
+from fluentai.logger import logger
 
 
 # Function to scale similarity scores to 0-1 range

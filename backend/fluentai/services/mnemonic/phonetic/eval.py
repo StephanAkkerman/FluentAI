@@ -9,9 +9,9 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import MinMaxScaler
 from tqdm import tqdm
 
-from fluentai.services.card_gen.constants.config import config
-from fluentai.services.card_gen.mnemonic.phonetic.ipa2vec import panphon_vec, soundvec
-from fluentai.services.card_gen.utils.logger import logger
+from fluentai.constants.config import config
+from fluentai.logger import logger
+from fluentai.services.mnemonic.phonetic.ipa2vec import panphon_vec, soundvec
 
 
 def word2ipa(

@@ -18,8 +18,9 @@ from sklearn.svm import SVR
 from tqdm import tqdm
 from xgboost import XGBRegressor
 
-from fluentai.services.card_gen.constants.config import config
-from fluentai.services.card_gen.mnemonic.imageability.imag_models.data import (
+from fluentai.constants.config import config
+from fluentai.logger import logger
+from fluentai.services.mnemonic.imageability.imag_models.data import (
     append_to_log,
     ensure_logs_directory,
     load_data,
@@ -28,13 +29,12 @@ from fluentai.services.card_gen.mnemonic.imageability.imag_models.data import (
     split_dataset,
     upload_model,
 )
-from fluentai.services.card_gen.mnemonic.imageability.imag_models.ensemble import (
+from fluentai.services.mnemonic.imageability.imag_models.ensemble import (
     implement_ensemble_methods,
 )
-from fluentai.services.card_gen.mnemonic.imageability.imag_models.optimization import (
+from fluentai.services.mnemonic.imageability.imag_models.optimization import (
     objective,
 )
-from fluentai.services.card_gen.utils.logger import logger
 
 
 def train_and_evaluate_models(X_train, X_test, y_train, y_test, dataset_hash):

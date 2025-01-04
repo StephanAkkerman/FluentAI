@@ -15,10 +15,10 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVR
 from xgboost import XGBRegressor
 
-from fluentai.services.card_gen.mnemonic.imageability.imag_models.data import (
+from fluentai.logger import logger
+from fluentai.services.mnemonic.imageability.imag_models.data import (
     append_hyperparameters_log,
 )
-from fluentai.services.card_gen.utils.logger import logger
 
 
 def get_optuna_search_space(trial, model_name):

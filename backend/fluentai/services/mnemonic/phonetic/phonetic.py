@@ -3,14 +3,14 @@ import numpy as np
 import pandas as pd
 from huggingface_hub import hf_hub_download
 
-from fluentai.services.card_gen.constants.config import config
-from fluentai.services.card_gen.mnemonic.phonetic.ipa2vec import panphon_vec, soundvec
-from fluentai.services.card_gen.mnemonic.phonetic.utils import (
+from fluentai.constants.config import config
+from fluentai.logger import logger
+from fluentai.services.mnemonic.phonetic.ipa2vec import panphon_vec, soundvec
+from fluentai.services.mnemonic.phonetic.utils import (
     convert_to_matrix,
     load_cache,
     pad_vectors,
 )
-from fluentai.services.card_gen.utils.logger import logger
 
 
 def word2ipa(
@@ -175,7 +175,7 @@ if __name__ == "__main__":
     os.environ["KMP_DUPLICATE_LIB_OK"] = "True"
 
     # Load the G2P model
-    from fluentai.services.card_gen.mnemonic.phonetic.g2p import G2P
+    from fluentai.services.mnemonic.phonetic.g2p import G2P
 
     result = top_phonetic(word_input, language_code, top_n, G2P())
     print(result)

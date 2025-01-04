@@ -5,10 +5,10 @@ import pandas as pd
 from huggingface_hub import hf_hub_download
 from tqdm import tqdm
 
-from fluentai.services.card_gen.constants.config import config
-from fluentai.services.card_gen.mnemonic.phonetic.ipa2vec import ft, sv
-from fluentai.services.card_gen.mnemonic.phonetic.utils import flatten_vectors
-from fluentai.services.card_gen.utils.logger import logger
+from fluentai.constants.config import config
+from fluentai.logger import logger
+from fluentai.services.mnemonic.phonetic.ipa2vec import ft, sv
+from fluentai.services.mnemonic.phonetic.utils import flatten_vectors
 
 
 def vectorize_word_clts(word, sv):

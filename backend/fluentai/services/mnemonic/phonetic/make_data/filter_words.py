@@ -6,7 +6,7 @@ from nltk.corpus import wordnet, words
 from nltk.stem import WordNetLemmatizer
 from tqdm import tqdm
 
-from fluentai.services.card_gen.constants.config import config
+from fluentai.constants.config import config
 
 # Download required NLTK data
 nltk.download("words")
