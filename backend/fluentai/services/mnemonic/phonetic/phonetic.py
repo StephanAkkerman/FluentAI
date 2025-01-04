@@ -6,7 +6,7 @@ from huggingface_hub import hf_hub_download
 from fluentai.constants.config import config
 from fluentai.logger import logger
 from fluentai.services.mnemonic.phonetic.ipa2vec import panphon_vec, soundvec
-from fluentai.services.mnemonic.phonetic.utils import (
+from fluentai.services.mnemonic.phonetic.utils.utils import (
     convert_to_matrix,
     load_cache,
     pad_vectors,
