@@ -105,7 +105,7 @@ class ImageGen:
     @manage_model_memory
     def generate_img(
         self,
-        prompt: str = "A flashy bottle that stands out from the other bottles.",
+        prompt: str = "Imagine a flashy bottle that stands out from the other bottles.",
         word1: str = "flashy",
         word2: str = "bottle",
     ):
@@ -123,6 +123,9 @@ class ImageGen:
         """
         file_path = self.output_dir / f"{word1}_{word2}_{self.model_name}.png"
 
+        # Clean prompt by dropping "imagine " prefix
+        prompt = prompt.lower().lstrip("imagine").strip()
+
         logger.info(f"Generating image for prompt: {prompt}")
         image = self.pipe(prompt=prompt, **self.image_gen_params).images[0]
         logger.info(f"Saving image to: {file_path}")
@@ -135,4 +138,4 @@ class ImageGen:
 if __name__ == "__main__":
     img_gen = ImageGen()
     img_gen.generate_img()
-    img_gen.generate_img("a cat that walks over the moon", "cat", "moon")
+    img_gen.generate_img("Imagine a cat that walks over the moon", "cat", "moon")
