@@ -4,13 +4,13 @@ import os
 
 import httpx
 import uvicorn
-from constants.languages import G2P_LANGCODES, G2P_LANGUAGES
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from fluentai.constants.config import config
+from fluentai.constants.languages import G2P_LANGCODES, G2P_LANGUAGES
 from fluentai.logger import logger
 from fluentai.services.main import generate_mnemonic_img
 from fluentai.utils.load_models import download_all_models
