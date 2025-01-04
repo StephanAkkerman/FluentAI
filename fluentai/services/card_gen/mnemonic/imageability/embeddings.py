@@ -92,7 +92,9 @@ def generate_embeddings(
         ValueError: If required columns are missing or unsupported model is specified.
     """
     model = config.get("IMAGEABILITY").get("EMBEDDINGS").get("MODEL")
-    output_parquet = f"local_data/imageability/{model}_embeddings.parquet"
+    # Remove any / from the output_parquet path
+    model_name = model.replace("/", "_")
+    output_parquet = f"local_data/imageability/{model_name}_embeddings.parquet"
 
     # Load your dataset
     df = load_dataset(
@@ -187,6 +189,6 @@ def upload_embeddings(output_parquet: str):
 # Example usage
 if __name__ == "__main__":
     generate_embeddings(
-        n_jobs=2,  # Use desired number of CPU cores; -1 for all available
+        n_jobs=-1,  # Use desired number of CPU cores; -1 for all available
         verbose=True,  # Enable progress bar
     )
