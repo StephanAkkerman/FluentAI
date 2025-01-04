@@ -1,6 +1,8 @@
+import asyncio
+
 from fluentai.services.card_gen.constants.config import config, weights_percentages
 from fluentai.services.card_gen.constants.languages import G2P_LANGUAGES
-from fluentai.services.card_gen.mnemonic.imageability.predictions import (
+from fluentai.services.card_gen.mnemonic.imageability.imageability import (
     ImageabilityPredictor,
 )
 from fluentai.services.card_gen.mnemonic.orthographic.orthographic import (
@@ -53,7 +55,9 @@ class Word2Mnemonic:
             logger.error(f"Invalid language code: {language_code}")
             return
 
-        translated_word, transliterated_word = translate_word(word, language_code)
+        translated_word, transliterated_word = asyncio.run(
+            translate_word(word, language_code)
+        )
 
         if keyword or key_sentence:
             # If keyword is provided, use it directly for scoring
