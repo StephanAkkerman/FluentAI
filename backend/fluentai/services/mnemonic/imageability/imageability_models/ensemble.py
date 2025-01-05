@@ -11,7 +11,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 
 from fluentai.constants.config import config
 from fluentai.logger import logger
-from fluentai.services.mnemonic.imageability.imag_models.data import (
+from fluentai.services.mnemonic.imageability.imageability_models.data import (
     append_to_log,
 )
 

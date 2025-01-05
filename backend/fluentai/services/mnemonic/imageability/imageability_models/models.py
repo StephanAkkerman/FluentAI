@@ -20,7 +20,7 @@ from xgboost import XGBRegressor
 
 from fluentai.constants.config import config
 from fluentai.logger import logger
-from fluentai.services.mnemonic.imageability.imag_models.data import (
+from fluentai.services.mnemonic.imageability.imageability_models.data import (
     append_to_log,
     ensure_logs_directory,
     load_data,
@@ -29,10 +29,10 @@ from fluentai.services.mnemonic.imageability.imag_models.data import (
     split_dataset,
     upload_model,
 )
-from fluentai.services.mnemonic.imageability.imag_models.ensemble import (
+from fluentai.services.mnemonic.imageability.imageability_models.ensemble import (
     implement_ensemble_methods,
 )
-from fluentai.services.mnemonic.imageability.imag_models.optimization import (
+from fluentai.services.mnemonic.imageability.imageability_models.optimization import (
     objective,
 )
 

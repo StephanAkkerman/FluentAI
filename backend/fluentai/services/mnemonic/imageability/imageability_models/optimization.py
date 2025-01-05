@@ -16,7 +16,7 @@ from sklearn.svm import SVR
 from xgboost import XGBRegressor
 
 from fluentai.logger import logger
-from fluentai.services.mnemonic.imageability.imag_models.data import (
+from fluentai.services.mnemonic.imageability.imageability_models.data import (
     append_hyperparameters_log,
 )
 
