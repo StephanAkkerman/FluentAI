@@ -53,7 +53,7 @@ Before starting, make sure you have the following requirements:
 We have bundled all required dependencies into a package for easy installation. To get started, simply run one of the following commands:
 
 ```bash
-pip install .
+pip install backend/.
 ```
 
 or install directly from the repository:

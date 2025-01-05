@@ -6,9 +6,9 @@ import torch
 from fluentai.constants.config import config
 from fluentai.logger import logger
 from fluentai.services.imagine.image_gen import ImageGen
-from fluentai.services.imagine.verbal_cue import VerbalCue
-from fluentai.services.mnemonic.phonetic.g2p import G2P
-from fluentai.services.mnemonic.semantic.semantic import SemanticSimilarity
+from fluentai.services.imagine.verbal_cue_gen import VerbalCue
+from fluentai.services.mnemonic.phonetic.grapheme2phoneme import Grapheme2Phoneme
+from fluentai.services.mnemonic.semantic.compute import SemanticSimilarity
 
 
 def get_model_dir_name(model: str) -> str:
@@ -43,7 +43,7 @@ def download_all_models():
     g2p_model = config.get("G2P").get("MODEL")
     if get_model_dir_name(g2p_model) not in downloaded_models:
         logger.info(f"Downloading G2P model: {g2p_model}")
-        clean(G2P())
+        clean(Grapheme2Phoneme())
 
     # LLM model
     llm_model = config.get("LLM").get("MODEL")

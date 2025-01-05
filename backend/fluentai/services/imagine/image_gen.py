@@ -1,5 +1,3 @@
-import functools
-import gc
 import os
 from pathlib import Path
 
@@ -8,44 +6,7 @@ from diffusers import AutoPipelineForText2Image, SanaPipeline
 
 from fluentai.constants.config import config
 from fluentai.logger import logger
-
-
-def manage_model_memory(method):
-    """
-    Decorator to manage model memory by offloading to GPU before the method call.
-    """
-
-    @functools.wraps(method)
-    def wrapper(self, *args, **kwargs):
-        # Initialize the pipe if it's not already loaded
-        if self.pipe is None:
-            self._initialize_pipe()
-
-        # Move to GPU if offloading is enabled
-        if self.offload:
-            logger.debug("Moving the pipeline to GPU (cuda).")
-            self.pipe.to("cuda")
-
-        try:
-            # Execute the decorated method
-            result = method(self, *args, **kwargs)
-        finally:
-            # Delete the pipeline if DELETE_AFTER_USE is True
-            if self.config.get("DELETE_AFTER_USE", True):
-                logger.debug("Deleting the pipeline to free up memory.")
-                del self.pipe
-                self.pipe = None
-                gc.collect()
-                torch.cuda.empty_cache()
-
-            # Move the pipeline back to CPU if offloading is enabled
-            if self.offload and self.pipe is not None:
-                logger.debug("Moving the pipeline back to CPU.")
-                self.pipe.to("cpu", silence_dtype_warnings=True)
-
-        return result
-
-    return wrapper
+from fluentai.utils.model_mem import manage_memory
 
 
 class ImageGen:
@@ -102,7 +63,11 @@ class ImageGen:
             cache_dir="models",
         )
 
-    @manage_model_memory
+    @manage_memory(
+        targets=["pipe"],
+        delete_attrs=["pipe"],
+        move_kwargs={"silence_dtype_warnings": True},
+    )
     def generate_img(
         self,
         prompt: str = "A flashy bottle that stands out from the other bottles.",

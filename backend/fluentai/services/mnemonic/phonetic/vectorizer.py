@@ -8,7 +8,7 @@ from tqdm import tqdm
 from fluentai.constants.config import config
 from fluentai.logger import logger
 from fluentai.services.mnemonic.phonetic.ipa2vec import ft, sv
-from fluentai.services.mnemonic.phonetic.utils.utils import flatten_vectors
+from fluentai.services.mnemonic.phonetic.utils.vectors import flatten_vectors
 
 
 def vectorize_word_clts(word, sv):

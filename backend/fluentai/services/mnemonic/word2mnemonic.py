@@ -1,21 +1,23 @@
 from fluentai.constants.config import config, weights_percentages
 from fluentai.constants.languages import G2P_LANGUAGES
 from fluentai.logger import logger
-from fluentai.services.mnemonic.imageability.imageability import (
+from fluentai.services.mnemonic.imageability.predictor import (
     ImageabilityPredictor,
 )
-from fluentai.services.mnemonic.orthographic.orthographic import (
+from fluentai.services.mnemonic.orthographic.compute import (
     compute_damerau_levenshtein_similarity,
 )
-from fluentai.services.mnemonic.phonetic.g2p import G2P
-from fluentai.services.mnemonic.phonetic.phonetic import top_phonetic, word2ipa
-from fluentai.services.mnemonic.semantic.semantic import SemanticSimilarity
+from fluentai.services.mnemonic.phonetic.compute import top_phonetic, word2ipa
+from fluentai.services.mnemonic.phonetic.grapheme2phoneme import (
+    Grapheme2Phoneme,
+)
+from fluentai.services.mnemonic.semantic.compute import SemanticSimilarity
 from fluentai.services.mnemonic.semantic.translator import translate_word
 
 
 class Word2Mnemonic:
     def __init__(self):
-        self.g2p_model = G2P()
+        self.g2p_model = Grapheme2Phoneme()
         self.imageability_predictor = ImageabilityPredictor()
         self.semantic_sim = SemanticSimilarity()
 

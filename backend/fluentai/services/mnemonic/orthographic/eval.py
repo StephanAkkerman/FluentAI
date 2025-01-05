@@ -1,11 +1,11 @@
 import pandas as pd
 from datasets import load_dataset
-from orthographic import compute_similarity
 from scipy.stats import pearsonr, spearmanr
 from sklearn.preprocessing import MinMaxScaler
 
 from fluentai.constants.config import config
 from fluentai.logger import logger
+from fluentai.services.mnemonic.orthographic.compute import compute_similarity
 
 
 def scale_ratings(ratings: pd.Series) -> pd.Series:

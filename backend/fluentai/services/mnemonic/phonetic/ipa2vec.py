@@ -6,7 +6,7 @@ from pyclts import CLTS
 from soundvectors import SoundVectors
 
 from fluentai.logger import logger
-from fluentai.services.mnemonic.phonetic.utils.clts_utils import get_clts
+from fluentai.services.mnemonic.phonetic.utils.clts import get_clts
 
 # Test if data/clts exists
 if not os.path.exists("local_data/clts"):

@@ -11,7 +11,7 @@ from tqdm import tqdm
 
 from fluentai.constants.config import config
 from fluentai.logger import logger
-from fluentai.services.mnemonic.semantic.semantic import SemanticSimilarity
+from fluentai.services.mnemonic.semantic.compute import SemanticSimilarity
 
 
 def compute_dataset_hash(df: pd.DataFrame) -> str:

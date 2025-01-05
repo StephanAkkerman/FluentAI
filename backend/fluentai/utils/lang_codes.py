@@ -1,8 +1,8 @@
 import pycountry
+from googletrans import LANGCODES as TRANSLATE_LANGCODES
 
 from fluentai.constants.languages import (
     G2P_LANGCODES,
-    TRANSLATE_LANGCODES,
 )
 
 

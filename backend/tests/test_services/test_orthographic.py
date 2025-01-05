@@ -1,12 +1,10 @@
-# test_similarity.py
-
 import os
 
 import pytest
 
 os.environ["FLUENTAI_CONFIG_PATH"] = "config.yaml"  # noqa
 
-from fluentai.services.mnemonic.orthographic.orthographic import (
+from fluentai.services.mnemonic.orthographic.compute import (
     compute_damerau_levenshtein_similarity,
 )
 

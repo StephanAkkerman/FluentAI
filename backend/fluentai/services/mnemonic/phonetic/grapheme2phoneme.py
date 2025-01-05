@@ -4,7 +4,7 @@ from fluentai.constants.config import config
 from fluentai.logger import logger
 
 
-class G2P:
+class Grapheme2Phoneme:
     def __init__(self):
         # https://github.com/lingjzhu/CharsiuG2P
         logger.debug("Loading G2P model")
@@ -49,7 +49,7 @@ def example():
     """
     Example usage of the G2P module. It prints the phonetic transcription of the words in Indonesian, English, and Dutch.
     """
-    g2p = G2P()
+    g2p = Grapheme2Phoneme()
 
     # https://en.wiktionary.org/wiki/kucing#Indonesian
     # IPA(key): /ˈkut͡ʃɪŋ/

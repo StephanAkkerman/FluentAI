@@ -2,7 +2,7 @@ import torch
 
 from fluentai.logger import logger
 from fluentai.services.imagine.image_gen import ImageGen
-from fluentai.services.imagine.verbal_cue import VerbalCue
+from fluentai.services.imagine.verbal_cue_gen import VerbalCue
 from fluentai.services.mnemonic.word2mnemonic import Word2Mnemonic
 from fluentai.services.tts.tts import TTS
 

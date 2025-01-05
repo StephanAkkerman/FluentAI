@@ -6,9 +6,9 @@ from huggingface_hub import hf_hub_download
 from fluentai.constants.config import config
 from fluentai.logger import logger
 from fluentai.services.mnemonic.phonetic.ipa2vec import panphon_vec, soundvec
-from fluentai.services.mnemonic.phonetic.utils.utils import (
+from fluentai.services.mnemonic.phonetic.utils.cache import load_from_cache
+from fluentai.services.mnemonic.phonetic.utils.vectors import (
     convert_to_matrix,
-    load_cache,
     pad_vectors,
 )
 
@@ -124,7 +124,7 @@ def top_phonetic(
     ipa = word2ipa(input_word, language_code, g2p_model)
 
     # Attempt to load from cache
-    dataset = load_cache(method)
+    dataset = load_from_cache(method)
 
     dataset_vectors_flat = dataset["flattened_vectors"].tolist()
 
@@ -175,7 +175,7 @@ if __name__ == "__main__":
     os.environ["KMP_DUPLICATE_LIB_OK"] = "True"
 
     # Load the G2P model
-    from fluentai.services.mnemonic.phonetic.g2p import G2P
+    from fluentai.services.mnemonic.phonetic.grapheme2phoneme import Grapheme2Phoneme
 
-    result = top_phonetic(word_input, language_code, top_n, G2P())
+    result = top_phonetic(word_input, language_code, top_n, Grapheme2Phoneme())
     print(result)

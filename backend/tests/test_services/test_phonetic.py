@@ -1,5 +1,3 @@
-# tests/card_gen/test_phonetic.py
-
 import os
 from unittest.mock import MagicMock, patch
 
@@ -10,7 +8,7 @@ import pytest
 os.environ["FLUENTAI_CONFIG_PATH"] = "config.yaml"  # noqa
 
 # Import the top_phonetic function
-from fluentai.services.mnemonic.phonetic.phonetic import top_phonetic
+from fluentai.services.mnemonic.phonetic.compute import top_phonetic
 
 
 @pytest.fixture
@@ -18,7 +16,7 @@ def mock_config(mocker):
     """
     Fixture to mock the config.get method.
     """
-    return mocker.patch("fluentai.services.mnemonic.phonetic.phonetic.config")
+    return mocker.patch("fluentai.services.mnemonic.phonetic.compute.config")
 
 
 @pytest.fixture
@@ -26,7 +24,7 @@ def mock_word2ipa(mocker):
     """
     Fixture to mock the word2ipa function.
     """
-    return mocker.patch("fluentai.services.mnemonic.phonetic.phonetic.word2ipa")
+    return mocker.patch("fluentai.services.mnemonic.phonetic.compute.word2ipa")
 
 
 @pytest.fixture
@@ -34,7 +32,7 @@ def mock_load_cache(mocker):
     """
     Fixture to mock the load_cache function.
     """
-    return mocker.patch("fluentai.services.mnemonic.phonetic.phonetic.load_cache")
+    return mocker.patch("fluentai.services.mnemonic.phonetic.compute.load_cache")
 
 
 @pytest.fixture
@@ -42,7 +40,7 @@ def mock_pad_vectors(mocker):
     """
     Fixture to mock the pad_vectors function.
     """
-    return mocker.patch("fluentai.services.mnemonic.phonetic.phonetic.pad_vectors")
+    return mocker.patch("fluentai.services.mnemonic.phonetic.compute.pad_vectors")
 
 
 @pytest.fixture
@@ -50,9 +48,7 @@ def mock_convert_to_matrix(mocker):
     """
     Fixture to mock the convert_to_matrix function.
     """
-    return mocker.patch(
-        "fluentai.services.mnemonic.phonetic.phonetic.convert_to_matrix"
-    )
+    return mocker.patch("fluentai.services.mnemonic.phonetic.compute.convert_to_matrix")
 
 
 @pytest.fixture
@@ -61,7 +57,7 @@ def mock_faiss_normalize_L2(mocker):
     Fixture to mock the faiss.normalize_L2 function.
     """
     return mocker.patch(
-        "fluentai.services.mnemonic.phonetic.phonetic.faiss.normalize_L2"
+        "fluentai.services.mnemonic.phonetic.compute.faiss.normalize_L2"
     )
 
 
@@ -74,7 +70,7 @@ def mock_faiss_IndexFlatIP(mocker):
     """
     instance_mock = MagicMock()
     constructor_mock = mocker.patch(
-        "fluentai.services.mnemonic.phonetic.phonetic.faiss.IndexFlatIP",
+        "fluentai.services.mnemonic.phonetic.compute.faiss.IndexFlatIP",
         return_value=instance_mock,
     )
     return constructor_mock, instance_mock
@@ -144,7 +140,7 @@ def test_top_phonetic_success(
 
     # Create a mock vectorizer function (panphon_vec or soundvec)
     with patch(
-        "fluentai.services.mnemonic.phonetic.phonetic.panphon_vec",
+        "fluentai.services.mnemonic.phonetic.compute.panphon_vec",
         return_value=[[0.1, 0.2, 0.3]],
     ):
         # Initialize a mock g2p_model with a g2p method
@@ -263,7 +259,7 @@ def test_top_phonetic_no_results(
 
     # Create a mock vectorizer function (panphon_vec or soundvec)
     with patch(
-        "fluentai.services.mnemonic.phonetic.phonetic.panphon_vec",
+        "fluentai.services.mnemonic.phonetic.compute.panphon_vec",
         return_value=[[]],
     ):
         # Initialize a mock g2p_model with a g2p method
@@ -384,7 +380,7 @@ def test_top_phonetic_invalid_language_code(
 
     # Create a mock vectorizer function (soundvec)
     with patch(
-        "fluentai.services.mnemonic.phonetic.phonetic.soundvec",
+        "fluentai.services.mnemonic.phonetic.compute.soundvec",
         return_value=[[0.2, 0.3, 0.4]],
     ):
         # Initialize a mock g2p_model with a g2p method

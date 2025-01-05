@@ -8,7 +8,7 @@ import pytest
 os.environ["FLUENTAI_CONFIG_PATH"] = "config.yaml"  # noqa
 
 from fluentai.constants.config import config
-from fluentai.services.mnemonic.semantic.semantic import SemanticSimilarity
+from fluentai.services.mnemonic.semantic.compute import SemanticSimilarity
 
 model_name = config.get("SEMANTIC_SIM").get("MODEL").lower()
 
@@ -130,7 +130,7 @@ def test_example_function(mocker, mock_config, mock_sentence_transformer, caplog
     """
     Test the example function to ensure it logs similarities correctly.
     """
-    from fluentai.services.mnemonic.semantic.semantic import example
+    from backend.fluentai.services.mnemonic.semantic.compute import example
 
     # Setup mock config to return models
     mock_config.get.return_value = {

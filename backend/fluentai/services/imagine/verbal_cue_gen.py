@@ -1,53 +1,8 @@
-import functools
-import gc
-
-import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
 
 from fluentai.constants.config import config
 from fluentai.logger import logger
-
-
-def manage_model_memory(method):
-    """
-    Decorator to manage model memory by offloading to GPU before the method call.
-    """
-
-    @functools.wraps(method)
-    def wrapper(self, *args, **kwargs):
-        # Initialize the pipe if it's not already loaded
-        if self.pipe is None:
-            self._initialize_pipe()
-
-        # Move to GPU if offloading is enabled
-        if self.offload:
-            logger.debug("Moving the model to GPU (cuda).")
-            self.model.to("cuda")
-
-        try:
-            # Execute the decorated method
-            result = method(self, *args, **kwargs)
-        finally:
-            # Delete the pipeline if DELETE_AFTER_USE is True
-            if self.config.get("DELETE_AFTER_USE", True):
-                logger.debug("Deleting the model to free up memory.")
-                del self.model
-                del self.pipe
-                del self.tokenizer
-                self.model = None
-                self.pipe = None
-                self.tokenizer = None
-                gc.collect()
-                torch.cuda.empty_cache()
-
-            # Move the pipeline back to CPU if offloading is enabled
-            if self.offload and self.pipe is not None:
-                logger.debug("Moving the model back to CPU.")
-                self.model.to("cpu")
-
-        return result
-
-    return wrapper
+from fluentai.utils.model_mem import manage_memory
 
 
 class VerbalCue:
@@ -101,7 +56,9 @@ class VerbalCue:
             tokenizer=self.tokenizer,
         )
 
-    @manage_model_memory
+    @manage_memory(
+        targets=["model"], delete_attrs=["model", "pipe", "tokenizer"], move_kwargs={}
+    )
     def generate_cue(self, word1: str, word2: str) -> str:
         """
         Generate a verbal cue that connects two words.

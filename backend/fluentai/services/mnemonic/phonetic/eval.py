@@ -2,7 +2,6 @@ import faiss
 import numpy as np
 import pandas as pd
 from datasets import load_dataset
-from g2p import G2P
 from huggingface_hub import hf_hub_download
 from scipy.stats import pearsonr, spearmanr
 from sklearn.metrics.pairwise import cosine_similarity
@@ -11,6 +10,7 @@ from tqdm import tqdm
 
 from fluentai.constants.config import config
 from fluentai.logger import logger
+from fluentai.services.mnemonic.phonetic.grapheme2phoneme import Grapheme2Phoneme
 from fluentai.services.mnemonic.phonetic.ipa2vec import panphon_vec, soundvec
 
 
@@ -18,7 +18,7 @@ def word2ipa(
     word: str,
     ipa_dataset: pd.DataFrame,
     use_fallback: bool = True,
-    g2p_model: G2P = G2P(),
+    g2p_model: Grapheme2Phoneme = Grapheme2Phoneme(),
 ) -> str:
     """
     Convert a word to its IPA transcription using the dataset and fallback to the g2p model if necessary.

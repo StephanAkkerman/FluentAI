@@ -1,33 +1,16 @@
-import argparse
 import base64
 import os
 
-import httpx
-import uvicorn
-from fastapi import FastAPI, HTTPException, Query, Request
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from fluentai.constants.config import config
 from fluentai.constants.languages import G2P_LANGCODES, G2P_LANGUAGES
 from fluentai.logger import logger
-from fluentai.services.main import generate_mnemonic_img
-from fluentai.utils.load_models import download_all_models
+from fluentai.run import generate_mnemonic_img
 
-app = FastAPI()
-
-# Allow all origins for development (adjust in production)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "https://akkerman.ai",
-    ],  # Replace "*" with your front-end URL in production
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+create_card_router = APIRouter()
 
 
 # Define Pydantic models for request and responses
@@ -41,7 +24,7 @@ class CreateCardResponse(BaseModel):
     recording: str = None  # Placeholder for future implementation
 
 
-@app.post("/create_card/word_data", response_model=CreateCardResponse)
+@create_card_router.post("/create_card/word_data", response_model=CreateCardResponse)
 async def api_generate_mnemonic(request: CreateCardRequest) -> dict:
     """
     Calls the main function to generate a mnemonic for a given word and language code.
@@ -85,7 +68,7 @@ async def api_generate_mnemonic(request: CreateCardRequest) -> dict:
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
-@app.get("/create_card/img")
+@create_card_router.get("/create_card/img")
 async def get_image(
     word: str = Query(...),
     language_code: str = Query(...),
@@ -157,7 +140,7 @@ async def get_image(
         raise HTTPException(status_code=500, detail=f"Internal Server Error: {e}")
 
 
-@app.get("/create_card/supported_languages")
+@create_card_router.get("/create_card/supported_languages")
 async def get_supported_languages() -> JSONResponse:
     """
     Returns a list of languages that the backend supports.
@@ -170,7 +153,7 @@ async def get_supported_languages() -> JSONResponse:
     return JSONResponse(content={"languages": G2P_LANGCODES})
 
 
-@app.get("/create_card/image_models")
+@create_card_router.get("/create_card/image_models")
 async def get_image_models() -> JSONResponse:
     """
     Returns a list of available image generation models, with the recommended model at the top.
@@ -191,7 +174,7 @@ async def get_image_models() -> JSONResponse:
     return JSONResponse(content={"models": available_models})
 
 
-@app.get("/create_card/llm_models")
+@create_card_router.get("/create_card/llm_models")
 async def get_llm_models() -> JSONResponse:
     """
     Returns a list of available LLM models, with the recommended model at the top.
@@ -211,65 +194,3 @@ async def get_llm_models() -> JSONResponse:
     available_models = [recommended_model] + models["all"]
 
     return JSONResponse(content={"models": available_models})
-
-
-# HACK: This uses the backend as a proxy for when the frontend is deployed in GH Pages
-
-
-@app.post("/api/anki")
-async def anki_proxy(request: Request):
-    """
-    Proxy API endpoint for forwarding requests to the Anki server.
-
-    This function receives a JSON request from the client, forwards it to the Anki
-    server running on localhost, and returns the response back to the client.
-
-    Parameters
-    ----------
-    request : Request
-        The incoming HTTP request object containing the JSON payload to be forwarded.
-
-    Returns
-    -------
-    JSONResponse
-        A JSON response containing the Anki server response or an error message if
-        the request fails.
-    """
-    try:
-        # Forward the incoming request body to the Anki server
-        request_body = await request.json()
-
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                "http://127.0.0.1:8765",  # Assuming Anki is running on localhost with default port
-                json=request_body,
-            )
-
-        # Return the JSON response from Anki server
-        return JSONResponse(content=response.json(), status_code=response.status_code)
-
-    except httpx.RequestError as e:
-        return JSONResponse(
-            content={"error": "Failed to connect to Anki server.", "details": str(e)},
-            status_code=500,
-        )
-    except Exception as e:
-        return JSONResponse(
-            content={"error": "An unexpected error occurred.", "details": str(e)},
-            status_code=500,
-        )
-
-
-if __name__ == "__main__":
-    # Start by downloading all models
-    download_all_models()
-
-    parser = argparse.ArgumentParser(description="")
-    parser.add_argument(
-        "--host", type=str, default="127.0.0.1", help="Hosting default: 127.0.0.1"
-    )
-    parser.add_argument("--port", type=int, default=8000)
-
-    args = parser.parse_args()
-
-    uvicorn.run("api:app", host=args.host, port=args.port)
