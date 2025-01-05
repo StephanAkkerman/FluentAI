@@ -53,7 +53,7 @@ Before starting, make sure you have the following requirements:
 We have bundled all required dependencies into a package for easy installation. To get started, simply run one of the following commands:
 
 ```bash
-pip install .
+pip install backend/.
 ```
 
 or install directly from the repository:
@@ -81,7 +81,7 @@ If you prefer to build from source, follow these steps:
 3. Install the dependencies:
 
    ```bash
-   pip install -r requirements.txt
+   pip install -r backend/requirements.txt
    ```
 
 ### Install with GPU Support (Recommended)
@@ -90,7 +90,7 @@ If you would like to run the code on a GPU, you can install the `torch` package 
 After installing the required dependencies, run the following command:
 
 ```bash
-pip install -r requirements/gpu.txt
+pip install -r backend/gpu-requirements.txt
 ```
 
 ## Usage ⌨️

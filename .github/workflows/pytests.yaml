@@ -7,8 +7,6 @@ on:
       - 'requirements.txt'  # Dependency file
       - 'setup.py'          # Setup script
       - 'pyproject.toml'    # Modern Python project configuration
-      # Add any other relevant paths as needed
-
 permissions:
   contents: read
 
@@ -26,6 +24,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          cd backend
           python -m pip install --upgrade pip
           pip install pytest pytest-mock
           pip install -e .
