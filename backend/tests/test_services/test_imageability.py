@@ -8,7 +8,7 @@ import pytest
 os.environ["FLUENTAI_CONFIG_PATH"] = "config.yaml"  # noqa
 
 # Import the functions and classes to be tested
-from backend.fluentai.services.mnemonic.imageability.predictor import (
+from fluentai.services.mnemonic.imageability.predictor import (
     ImageabilityPredictor,
     make_predictions,
 )
