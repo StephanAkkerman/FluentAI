@@ -1,12 +1,12 @@
+import asyncio
 import unicodedata
 from functools import lru_cache
 
+import pandas as pd
 from googletrans import Translator
 
 from fluentai.logger import logger
 from fluentai.utils.lang_codes import map_language_code
-
-translator = Translator()
 
 
 def is_latin_script(word: str) -> bool:
@@ -49,7 +49,7 @@ def remove_diacritics(word: str) -> str:
     return "".join(char for char in decomposed if unicodedata.category(char) != "Mn")
 
 
-def get_transliteration(word: str, src: str) -> str:
+async def get_transliteration(word: str, src: str) -> str:
     """
     Given a word, returns its transliteration in the same language.
 
@@ -68,25 +68,20 @@ def get_transliteration(word: str, src: str) -> str:
     if is_latin_script(word):
         return word
 
-    try:
-        transliterated_word = translator.translate(
-            word, src=src, dest=src
-        ).pronunciation
-    except Exception as e:
-        logger.error(f"Error transliterating {word} from {src} to {src}: {e}")
-        detected_lang = translator.detect(word)
-        logger.info(
-            f"Could not comprehend original language code ({src}), detected {detected_lang.lang} with {detected_lang.confidence} confidence."
-        )
-        src = detected_lang.lang
+    transliterated_word = await get_translation(
+        word, src, src, return_pronunciation=True
+    )
 
     # Lower case it
     transliterated_word = transliterated_word.lower()
+
     # Remove diacritics
     return remove_diacritics(transliterated_word)
 
 
-def get_translation(word: str, src: str, target: str) -> str:
+async def get_translation(
+    word: str, src: str, target: str, return_pronunciation: bool = False
+) -> str:
     """
     Translates a word from the source language to the target language.
 
@@ -105,21 +100,31 @@ def get_translation(word: str, src: str, target: str) -> str:
         The translated word.
     """
     try:
-        return translator.translate(word, src=src, dest=target).text
+        async with Translator() as translator:
+            translation = await translator.translate(word, src=src, dest=target)
+            if return_pronunciation:
+                return translation.pronunciation
+            return translation.text
     except Exception as e:
         logger.error(f"Error translating {word} from {src} to {target}: {e}")
 
     # Detect the language of the word
-    detected_lang = translator.detect(word)
-    logger.info(
-        f"Could not comprehend original language code ({src}), detected {detected_lang.lang} with {detected_lang.confidence} confidence."
-    )
+    async with Translator() as translator:
+        detected_lang = await translator.detect(word)
+        logger.info(
+            f"Could not comprehend original language code ({src}), detected {detected_lang.lang} with {detected_lang.confidence} confidence."
+        )
 
-    return translator.translate(word, src=detected_lang.lang, dest=target).text
+        translation = await translator.translate(
+            word, src=detected_lang.lang, dest=target
+        )
+        if return_pronunciation:
+            return translation.pronunciation
+        return translation.text
 
 
 @lru_cache(maxsize=10000)
-def translate_word(word, src_lang_code, target_lang_code: str = "en") -> tuple:
+async def translate_word(word, src_lang_code, target_lang_code: str = "en") -> tuple:
     """
     Translates a word from the source language to target languages.
 
@@ -144,23 +149,25 @@ def translate_word(word, src_lang_code, target_lang_code: str = "en") -> tuple:
     else:
         target = target_lang_code
 
-    return get_translation(word, src, target), get_transliteration(word, src)
+    return await get_translation(word, src, target), await get_transliteration(
+        word, src
+    )
 
 
-def translate_dataframe_column(
-    df,
+async def translate_dataframe_column(
+    df: pd.DataFrame,
     word_col: str,
     lang_code: str,
     translated_col: str = "translated_word",
     target_lang_code: str = "en",
-):
+) -> pd.DataFrame:
     """
-    Translates a column in the DataFrame to the target language.
+    Asynchronously translates a column in the DataFrame to the target language.
 
     Args:
         df (pd.DataFrame): The DataFrame containing words and language codes.
         word_col (str): The name of the column containing words to translate.
-        lang_code_col (str): The name of the source language codes.
+        lang_code (str): The source language code.
         translated_col (str, optional): The name of the new column for translations. Defaults to 'translated_word'.
         target_lang_code (str, optional): The target language code. Defaults to 'en'.
 
@@ -168,16 +175,28 @@ def translate_dataframe_column(
     -------
         pd.DataFrame: The DataFrame with an added translated column.
     """
-    # Apply translation with progress bar
-    df[translated_col] = df.apply(
-        lambda row: translate_word(row[word_col], lang_code, target_lang_code),
-        axis=1,
-    )
+
+    # Define a coroutine for translating a single word
+    async def translate_row(word):
+        return await translate_word(word, lang_code, target_lang_code)
+
+    # Create a list of coroutines for all words to translate
+    tasks = [translate_row(word) for word in df[word_col]]
+
+    # Alternatively, without a progress bar:
+    translations = await asyncio.gather(*tasks)
+
+    # Assign the translations to the new column in the DataFrame
+    df[translated_col] = translations
 
     return df
 
 
 if __name__ == "__main__":
-    print(translate_word("kat", "dut"))
-    print(translate_word("amigo", "spa-latin"))
-    print(translate_word("猫", "zho-s"))
+    print(asyncio.run(translate_word("kat", "dut")))
+    print(asyncio.run(translate_word("amigo", "spa-latin")))
+    print(asyncio.run(translate_word("猫", "zho-s")))
+
+    # Test the DataFrame translation
+    df = pd.DataFrame({"word": ["kat", "hond", "kip"]})
+    print(asyncio.run(translate_dataframe_column(df, "word", "dut")))
