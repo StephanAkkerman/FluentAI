@@ -3,7 +3,7 @@ import asyncio
 from fluentai.constants.config import config, weights_percentages
 from fluentai.constants.languages import G2P_LANGUAGES
 from fluentai.logger import logger
-from fluentai.services.card_gen.mnemonic.imageability.imageability import (
+from fluentai.services.mnemonic.imageability.predictor import (
     ImageabilityPredictor,
 )
 from fluentai.services.mnemonic.orthographic.compute import (
