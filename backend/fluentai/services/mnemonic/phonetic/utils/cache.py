@@ -17,6 +17,8 @@ def load_from_cache(method: str = "panphon"):
     -------
     - DataFrame containing the cached dataset
     """
+    logger.debug("Loading the cached dataset from Huggingface")
+
     repo = config.get("PHONETIC_SIM").get("EMBEDDINGS").get("REPO")
     # Remove the file extension to get the dataset name
     dataset = config.get("PHONETIC_SIM").get("IPA").get("FILE").split(".")[0]
