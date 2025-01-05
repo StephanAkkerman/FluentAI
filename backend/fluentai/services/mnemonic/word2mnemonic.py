@@ -23,7 +23,7 @@ class Word2Mnemonic:
         self.imageability_predictor = ImageabilityPredictor()
         self.semantic_sim = SemanticSimilarity()
 
-    def generate_mnemonic(
+    async def generate_mnemonic(
         self,
         word: str,
         language_code: str,
@@ -57,9 +57,7 @@ class Word2Mnemonic:
             logger.error(f"Invalid language code: {language_code}")
             return
 
-        translated_word, transliterated_word = asyncio.run(
-            translate_word(word, language_code)
-        )
+        translated_word, transliterated_word = await translate_word(word, language_code)
 
         if keyword or key_sentence:
             # If keyword is provided, use it directly for scoring
@@ -119,6 +117,6 @@ class Word2Mnemonic:
 
 if __name__ == "__main__":
     w2m = Word2Mnemonic()
-    print(w2m.generate_mnemonic("kat", "dut"))
-    print(w2m.generate_mnemonic("house", "eng", keyword="হাউজ"))
-    print(w2m.generate_mnemonic("猫", "zho-s"))
+    print(asyncio.run(w2m.generate_mnemonic("kat", "dut")))
+    print(asyncio.run(w2m.generate_mnemonic("house", "eng", keyword="হাউজ")))
+    print(asyncio.run(w2m.generate_mnemonic("猫", "zho-s")))

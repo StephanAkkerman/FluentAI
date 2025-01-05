@@ -8,7 +8,7 @@ from pydantic import BaseModel
 from fluentai.constants.config import config
 from fluentai.constants.languages import G2P_LANGCODES, G2P_LANGUAGES
 from fluentai.logger import logger
-from fluentai.run import generate_mnemonic_img
+from fluentai.run import MnemonicPipeline
 
 create_card_router = APIRouter()
 
@@ -110,9 +110,13 @@ async def get_image(
     if language_code not in G2P_LANGUAGES:
         raise HTTPException(status_code=400, detail="Invalid language code")
 
+    mnemonic_pipe = MnemonicPipeline()
+
     try:
-        image_path, verbal_cue, translation, tts_path, ipa = generate_mnemonic_img(
-            word, language_code, llm_model, image_model, keyword, key_sentence
+        image_path, verbal_cue, translation, tts_path, ipa = (
+            await mnemonic_pipe.generate_mnemonic_img(
+                word, language_code, llm_model, image_model, keyword, key_sentence
+            )
         )
 
         if not os.path.exists(image_path):
