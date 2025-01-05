@@ -28,11 +28,13 @@ def mock_word2ipa(mocker):
 
 
 @pytest.fixture
-def mock_load_cache(mocker):
+def mock_load_from_cache(mocker):
     """
-    Fixture to mock the load_cache function.
+    Fixture to mock the load_from_cache function.
     """
-    return mocker.patch("fluentai.services.mnemonic.phonetic.compute.load_cache")
+    return mocker.patch(
+        "fluentai.services.mnemonic.phonetic.utils.cache.load_from_cache"
+    )
 
 
 @pytest.fixture
@@ -79,7 +81,7 @@ def mock_faiss_IndexFlatIP(mocker):
 def test_top_phonetic_success(
     mock_config,
     mock_word2ipa,
-    mock_load_cache,
+    mock_load_from_cache,
     mock_pad_vectors,
     mock_convert_to_matrix,
     mock_faiss_normalize_L2,
@@ -114,8 +116,8 @@ def test_top_phonetic_success(
         }
     )
 
-    # Mock the load_cache function to return the mock dataset
-    mock_load_cache.return_value = mock_dataset
+    # Mock the load_from_cache function to return the mock dataset
+    mock_load_from_cache.return_value = mock_dataset
 
     # Mock pad_vectors to return padded vectors (assuming dimension=3 for simplicity)
     mock_pad_vectors.return_value = [
@@ -159,8 +161,8 @@ def test_top_phonetic_success(
         # Ensure word2ipa was called correctly
         mock_word2ipa.assert_called_once_with("kucing", "eng-us", mock_g2p_model)
 
-        # Ensure load_cache was called with the correct method
-        mock_load_cache.assert_called_once_with("panphon")
+        # Ensure load_from_cache was called with the correct method
+        mock_load_from_cache.assert_called_once_with("panphon")
 
         # Ensure pad_vectors was called with the correct data
         mock_pad_vectors.assert_called_once_with(
@@ -210,7 +212,7 @@ def test_top_phonetic_success(
 def test_top_phonetic_no_results(
     mock_config,
     mock_word2ipa,
-    mock_load_cache,
+    mock_load_from_cache,
     mock_pad_vectors,
     mock_convert_to_matrix,
     mock_faiss_normalize_L2,
@@ -237,8 +239,8 @@ def test_top_phonetic_no_results(
         {"token_ort": [], "token_ipa": [], "flattened_vectors": []}
     )
 
-    # Mock the load_cache function to return the empty dataset
-    mock_load_cache.return_value = mock_dataset
+    # Mock the load_from_cache function to return the empty dataset
+    mock_load_from_cache.return_value = mock_dataset
 
     # Mock pad_vectors to return empty list
     mock_pad_vectors.return_value = []
@@ -275,8 +277,8 @@ def test_top_phonetic_no_results(
         # Ensure word2ipa was called correctly
         mock_word2ipa.assert_called_once_with("test", "eng-us", mock_g2p_model)
 
-        # Ensure load_cache was called with the correct method
-        mock_load_cache.assert_called_once_with("panphon")
+        # Ensure load_from_cache was called with the correct method
+        mock_load_from_cache.assert_called_once_with("panphon")
 
         # Ensure pad_vectors was called with the correct data
         mock_pad_vectors.assert_called_once_with(
@@ -318,7 +320,7 @@ def test_top_phonetic_no_results(
 def test_top_phonetic_invalid_language_code(
     mock_config,
     mock_word2ipa,
-    mock_load_cache,
+    mock_load_from_cache,
     mock_pad_vectors,
     mock_convert_to_matrix,
     mock_faiss_normalize_L2,
@@ -334,7 +336,7 @@ def test_top_phonetic_invalid_language_code(
     # Setup mock config.get to return necessary configuration
     mock_config.get.return_value = {
         # Testing with a different vectorizer
-        "EMBEDDINGS": {"METHOD": "soundvec"},
+        "EMBEDDINGS": {"METHOD": "clts"},
         "PHONETIC_SIM": {"IPA_REPO": "mock_repo", "IPA_FILE": "mock_file.tsv"},
     }
 
@@ -354,8 +356,8 @@ def test_top_phonetic_invalid_language_code(
         }
     )
 
-    # Mock the load_cache function to return the mock dataset
-    mock_load_cache.return_value = mock_dataset
+    # Mock the load_from_cache function to return the mock dataset
+    mock_load_from_cache.return_value = mock_dataset
 
     # Mock pad_vectors to return padded vectors (assuming dimension=3 for simplicity)
     mock_pad_vectors.return_value = [
@@ -399,8 +401,8 @@ def test_top_phonetic_invalid_language_code(
         # Ensure word2ipa was called correctly
         mock_word2ipa.assert_called_once_with("nyangang", "mal", mock_g2p_model)
 
-        # Ensure load_cache was called with the correct method
-        mock_load_cache.assert_called_once_with("soundvec")
+        # Ensure load_from_cache was called with the correct method
+        mock_load_from_cache.assert_called_once_with("soundvec")
 
         # Ensure pad_vectors was called with the correct data
         mock_pad_vectors.assert_called_once_with(

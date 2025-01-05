@@ -1,5 +1,3 @@
-# tests/card_gen/test_semantic.py
-
 import os
 from unittest.mock import MagicMock, patch
 
@@ -18,7 +16,7 @@ def mock_config(mocker):
     """
     Fixture to mock the config.get method.
     """
-    return mocker.patch("fluentai.services.mnemonic.semantic.semantic.config")
+    return mocker.patch("fluentai.services.mnemonic.semantic.compute.config")
 
 
 @pytest.fixture
@@ -48,7 +46,7 @@ def test_compute_similarity_transformer(mock_config, mock_sentence_transformer):
 
     # Patch 'SentenceTransformer' to return the mock transformer model
     with patch(
-        "fluentai.services.mnemonic.semantic.semantic.SentenceTransformer",
+        "fluentai.services.mnemonic.semantic.compute.SentenceTransformer",
         return_value=mock_sentence_transformer,
     ):
         # Initialize SemanticSimilarity
@@ -87,7 +85,7 @@ def test_compute_similarity_word_not_in_transformer(
 
     # Patch 'SentenceTransformer' to return the mock transformer model
     with patch(
-        "fluentai.services.mnemonic.semantic.semantic.SentenceTransformer",
+        "fluentai.services.mnemonic.semantic.compute.SentenceTransformer",
         return_value=mock_sentence_transformer,
     ):
         # Initialize SemanticSimilarity
@@ -112,7 +110,7 @@ def test_load_semantic_model_transformer(mock_config, mock_sentence_transformer)
 
     # Patch 'SentenceTransformer' to return the mock transformer model
     with patch(
-        "fluentai.services.mnemonic.semantic.semantic.SentenceTransformer",
+        "fluentai.services.mnemonic.semantic.compute.SentenceTransformer",
         return_value=mock_sentence_transformer,
     ):
         # Initialize SemanticSimilarity
@@ -130,7 +128,7 @@ def test_example_function(mocker, mock_config, mock_sentence_transformer, caplog
     """
     Test the example function to ensure it logs similarities correctly.
     """
-    from backend.fluentai.services.mnemonic.semantic.compute import example
+    from fluentai.services.mnemonic.semantic.compute import example
 
     # Setup mock config to return models
     mock_config.get.return_value = {
@@ -140,7 +138,7 @@ def test_example_function(mocker, mock_config, mock_sentence_transformer, caplog
 
     # Patch 'SentenceTransformer' to return the mock transformer model
     with patch(
-        "fluentai.services.mnemonic.semantic.semantic.SentenceTransformer",
+        "fluentai.services.mnemonic.semantic.compute.SentenceTransformer",
         return_value=mock_sentence_transformer,
     ):
         # Configure the mock models
