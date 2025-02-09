@@ -1,4 +1,10 @@
-from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
+import torch
+from transformers import (
+    AutoModelForCausalLM,
+    AutoTokenizer,
+    BitsAndBytesConfig,
+    pipeline,
+)
 
 from fluentai.constants.config import config
 from fluentai.logger import logger
@@ -12,9 +18,10 @@ class VerbalCue:
         self.model_name = model_name if model_name else self.config.get("MODEL")
 
         self.generation_args = {
-            "max_new_tokens": 500,
+            "max_new_tokens": 256,
+            "do_sample": True,
             "return_full_text": False,
-            "temperature": 1.0,
+            "temperature": config.get("LLM").get("temperature"),
         }
         self.messages = [
             {
@@ -23,11 +30,11 @@ class VerbalCue:
             },
             {
                 "role": "user",
-                "content": "Write a short, catchy sentence that connects flashy and bottle. Also, the sentence must start with 'Imagine'.",
+                "content": "Generate a mnemonic sentence for the given input. Start the sentence with 'imagine' and keep it simple. \n Input: English Word: bottle | Mnemonic Word: flashy",
             },
             {
                 "role": "assistant",
-                "content": "Imagine a flashy bottle that stands out from the rest!",
+                "content": "Imagine a flashy bottle that stands out from the rest.",
             },
         ]
         # This will be initialized later
@@ -38,12 +45,25 @@ class VerbalCue:
     def _initialize_pipe(self):
         """Initialize the pipeline."""
         logger.debug(f"Initializing pipeline for LLM with model: {self.model_name}")
+
+        bnb_config = None
+        if config.get("LLM").get("QUANTIZATION") == "4bit":
+            bnb_config = BitsAndBytesConfig(
+                load_in_4bit=True,
+                # bnb_4bit_use_double_quant=True,
+                # bnb_4bit_quant_type="nf4",
+                # bnb_4bit_compute_dtype=torch.bfloat16,
+            )
+        elif config.get("LLM").get("QUANTIZATION") == "8bit":
+            bnb_config = BitsAndBytesConfig(load_in_8bit=True)
+
         self.model = AutoModelForCausalLM.from_pretrained(
             self.model_name,
             device_map="cuda" if self.offload else "auto",
             torch_dtype="auto",
             trust_remote_code=True,
             cache_dir="models",
+            quantization_config=bnb_config,
         )
 
         self.tokenizer = AutoTokenizer.from_pretrained(

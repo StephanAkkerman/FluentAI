@@ -24,10 +24,12 @@ LLM:
   TOKENIZER: "microsoft/Phi-3-mini-4k-instruct"
   # Options are: None, 4bit, 8bit
   QUANTIZATION: None
-  # If you want to add a LoRA to the model
-  LORA: 
+  USE_LORA: True
+  LORA: "StephanAkkerman/Phi-3-mini-4k-instruct-QLoRA-4bit-Mnemonic"
   DELETE_AFTER_USE: False
   OFFLOAD: True
+  PARAMS:
+    temperature: 0.3
 
 IMAGE_GEN:
   SMALL_MODEL: stabilityai/stable-diffusion-2
