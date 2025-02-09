@@ -17,9 +17,13 @@ class VerbalCue:
         self.offload = self.config.get("OFFLOAD")
         self.model_name = model_name if model_name else self.config.get("MODEL")
 
+        # use recommended settings for phi-3.5
         self.generation_args = {
             "max_new_tokens": 256,
             "do_sample": True,
+            "num_beams": 1,
+            "top_k": 50,
+            "top_p": 0.95,
             "return_full_text": False,
             "temperature": config.get("LLM").get("temperature"),
         }
@@ -48,6 +52,7 @@ class VerbalCue:
 
         bnb_config = None
         if config.get("LLM").get("QUANTIZATION") == "4bit":
+            logger.debug("Using 4-bit quantization for LLM")
             bnb_config = BitsAndBytesConfig(
                 load_in_4bit=True,
                 # bnb_4bit_use_double_quant=True,
@@ -55,6 +60,7 @@ class VerbalCue:
                 # bnb_4bit_compute_dtype=torch.bfloat16,
             )
         elif config.get("LLM").get("QUANTIZATION") == "8bit":
+            logger.debug("Using 8-bit quantization for LLM")
             bnb_config = BitsAndBytesConfig(load_in_8bit=True)
 
         self.model = AutoModelForCausalLM.from_pretrained(
@@ -68,10 +74,10 @@ class VerbalCue:
 
         # Check if LoRA should be enabled
         if config.get("LLM").get("USE_LORA"):
+            lora = config.get("LLM").get("LORA")
+            logger.debug(f"Loading LoRA ({lora}) for LLM")
             # Load the model with LoRA
-            self.model = PeftModel.from_pretrained(
-                self.model, config.get("LLM").get("LORA")
-            )
+            self.model = PeftModel.from_pretrained(self.model, lora)
             self.model = self.model.merge_and_unload()
 
         # Ensure the model is in evaluation mode (disables dropout, etc.)
@@ -108,8 +114,9 @@ class VerbalCue:
         """
         final_message = {
             "role": "user",
-            "content": f"Write a short, catchy sentence that connects {word1} and {word2}. Also, the sentence must start with 'Imagine'. ",
+            "content": f"Generate a mnemonic sentence for the given input. Start the sentence with 'imagine' and keep it simple. \n Input: English Word: {word1} | Mnemonic Word: {word2}",
         }
+        # For some reason using tokenizer.apply_chat_template() here causes weird output
         output = self.pipe(self.messages + [final_message], **self.generation_args)
         response = output[0]["generated_text"]
         logger.debug(f"Generated cue: {response}")
@@ -119,5 +126,5 @@ class VerbalCue:
 
 if __name__ == "__main__":
     vc = VerbalCue()
-    print(vc.generate_cue("hairdresser ", "freezer"))
-    print(vc.generate_cue("needing ", "broken"))
+    print(vc.generate_cue("hairdresser", "freezer"))
+    print(vc.generate_cue("needing", "broken"))
