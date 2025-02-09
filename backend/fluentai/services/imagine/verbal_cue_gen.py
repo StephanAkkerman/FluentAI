@@ -1,4 +1,4 @@
-import torch
+from peft import PeftModel
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
@@ -65,6 +65,17 @@ class VerbalCue:
             cache_dir="models",
             quantization_config=bnb_config,
         )
+
+        # Check if LoRA should be enabled
+        if config.get("LLM").get("USE_LORA"):
+            # Load the model with LoRA
+            self.model = PeftModel.from_pretrained(
+                self.model, config.get("LLM").get("LORA")
+            )
+            self.model = self.model.merge_and_unload()
+
+        # Ensure the model is in evaluation mode (disables dropout, etc.)
+        self.model.eval()
 
         self.tokenizer = AutoTokenizer.from_pretrained(
             self.model_name,
