@@ -22,6 +22,10 @@ G2P:
 LLM:
   MODEL: "microsoft/Phi-3-mini-4k-instruct"
   TOKENIZER: "microsoft/Phi-3-mini-4k-instruct"
+  # Options are: None, 4bit, 8bit
+  QUANTIZATION: None
+  # If you want to add a LoRA to the model
+  LORA: 
   DELETE_AFTER_USE: False
   OFFLOAD: True
 
