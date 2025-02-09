@@ -1,4 +1,10 @@
-from transformers import AutoModelForCausalLM, AutoTokenizer, pipeline
+from peft import PeftModel
+from transformers import (
+    AutoModelForCausalLM,
+    AutoTokenizer,
+    BitsAndBytesConfig,
+    pipeline,
+)
 
 from fluentai.constants.config import config
 from fluentai.logger import logger
@@ -11,10 +17,15 @@ class VerbalCue:
         self.offload = self.config.get("OFFLOAD")
         self.model_name = model_name if model_name else self.config.get("MODEL")
 
+        # use recommended settings for phi-3.5
         self.generation_args = {
-            "max_new_tokens": 500,
+            "max_new_tokens": 256,
+            "do_sample": True,
+            "num_beams": 1,
+            "top_k": 50,
+            "top_p": 0.95,
             "return_full_text": False,
-            "temperature": 1.0,
+            "temperature": config.get("LLM").get("temperature"),
         }
         self.messages = [
             {
@@ -23,11 +34,11 @@ class VerbalCue:
             },
             {
                 "role": "user",
-                "content": "Write a short, catchy sentence that connects flashy and bottle. Also, the sentence must start with 'Imagine'.",
+                "content": "Generate a mnemonic sentence for the given input. Start the sentence with 'imagine' and keep it simple. \n Input: English Word: bottle | Mnemonic Word: flashy",
             },
             {
                 "role": "assistant",
-                "content": "Imagine a flashy bottle that stands out from the rest!",
+                "content": "Imagine a flashy bottle that stands out from the rest.",
             },
         ]
         # This will be initialized later
@@ -38,13 +49,39 @@ class VerbalCue:
     def _initialize_pipe(self):
         """Initialize the pipeline."""
         logger.debug(f"Initializing pipeline for LLM with model: {self.model_name}")
+
+        bnb_config = None
+        if config.get("LLM").get("QUANTIZATION") == "4bit":
+            logger.debug("Using 4-bit quantization for LLM")
+            bnb_config = BitsAndBytesConfig(
+                load_in_4bit=True,
+                # bnb_4bit_use_double_quant=True,
+                # bnb_4bit_quant_type="nf4",
+                # bnb_4bit_compute_dtype=torch.bfloat16,
+            )
+        elif config.get("LLM").get("QUANTIZATION") == "8bit":
+            logger.debug("Using 8-bit quantization for LLM")
+            bnb_config = BitsAndBytesConfig(load_in_8bit=True)
+
         self.model = AutoModelForCausalLM.from_pretrained(
             self.model_name,
             device_map="cuda" if self.offload else "auto",
             torch_dtype="auto",
             trust_remote_code=True,
             cache_dir="models",
+            quantization_config=bnb_config,
         )
+
+        # Check if LoRA should be enabled
+        if config.get("LLM").get("USE_LORA"):
+            lora = config.get("LLM").get("LORA")
+            logger.debug(f"Loading LoRA ({lora}) for LLM")
+            # Load the model with LoRA
+            self.model = PeftModel.from_pretrained(self.model, lora)
+            self.model = self.model.merge_and_unload()
+
+        # Ensure the model is in evaluation mode (disables dropout, etc.)
+        self.model.eval()
 
         self.tokenizer = AutoTokenizer.from_pretrained(
             self.model_name,
@@ -77,8 +114,9 @@ class VerbalCue:
         """
         final_message = {
             "role": "user",
-            "content": f"Write a short, catchy sentence that connects {word1} and {word2}. Also, the sentence must start with 'Imagine'. ",
+            "content": f"Generate a mnemonic sentence for the given input. Start the sentence with 'imagine' and keep it simple. \n Input: English Word: {word1} | Mnemonic Word: {word2}",
         }
+        # For some reason using tokenizer.apply_chat_template() here causes weird output
         output = self.pipe(self.messages + [final_message], **self.generation_args)
         response = output[0]["generated_text"]
         logger.debug(f"Generated cue: {response}")
@@ -88,5 +126,5 @@ class VerbalCue:
 
 if __name__ == "__main__":
     vc = VerbalCue()
-    print(vc.generate_cue("hairdresser ", "freezer"))
-    print(vc.generate_cue("needing ", "broken"))
+    print(vc.generate_cue("hairdresser", "freezer"))
+    print(vc.generate_cue("needing", "broken"))
