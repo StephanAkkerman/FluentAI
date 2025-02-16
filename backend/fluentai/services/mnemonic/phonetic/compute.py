@@ -100,7 +100,9 @@ def vectorize_input(ipa_input: str, vectorizer, dimension: int) -> np.ndarray:
 
 
 class Phonetic_Similarity:
-    def __init__(self):
+
+    def __init__(self, g2p_model):
+        self.g2p_model = g2p_model
         method = config.get("PHONETIC_SIM").get("EMBEDDINGS").get("METHOD")
 
         # Default to panphon if method is not specified
@@ -126,7 +128,10 @@ class Phonetic_Similarity:
         self.index = build_faiss_index(dataset_matrix)
 
     def top_phonetic(
-        self, input_word: str, language_code: str, top_n: int, g2p_model
+        self,
+        input_word: str,
+        language_code: str,
+        top_n: int,
     ) -> tuple[pd.DataFrame, str]:
         """
         Main function to find top_n closest phonetically similar words to the input IPA.
@@ -144,7 +149,7 @@ class Phonetic_Similarity:
         - The IPA representation of the input word
         """
         # Convert the input word to IPA representation
-        ipa = word2ipa(input_word, language_code, g2p_model)
+        ipa = word2ipa(input_word, language_code, self.g2p_model)
 
         # Vectorize input
         input_vector_padded = vectorize_input(
@@ -187,7 +192,7 @@ if __name__ == "__main__":
     # Load the G2P model
     from fluentai.services.mnemonic.phonetic.grapheme2phoneme import Grapheme2Phoneme
 
-    phon_sim = Phonetic_Similarity()
+    phon_sim = Phonetic_Similarity(Grapheme2Phoneme())
 
-    result = phon_sim.top_phonetic(word_input, language_code, top_n, Grapheme2Phoneme())
+    result = phon_sim.top_phonetic(word_input, language_code, top_n)
     print(result)
