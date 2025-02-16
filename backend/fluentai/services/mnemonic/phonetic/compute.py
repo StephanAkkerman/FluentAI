@@ -187,6 +187,7 @@ class Phonetic_Similarity:
     ) -> tuple[pd.DataFrame, str]:
         """
         Find the top_n closest phonetically similar words to the input IPA.
+
         In addition to a full-word search, this function tries every possible split
         of the IPA transcription (respecting a minimum segment length) and retrieves
         top_k candidates for each segment. For each candidate pair, the similarity scores
@@ -292,6 +293,10 @@ class Phonetic_Similarity:
 
         # Combine full-word and split results.
         combined_results = pd.concat([single_results, split_results], ignore_index=True)
+        # Drop duplicates based on token_ort and token_ipa.
+        combined_results = combined_results.drop_duplicates(
+            subset=["token_ort", "token_ipa"]
+        )
         combined_results = combined_results.sort_values(by="distance", ascending=False)
         final_results = combined_results.head(top_n).reset_index(drop=True)
 
@@ -300,8 +305,8 @@ class Phonetic_Similarity:
 
 if __name__ == "__main__":
     # Example usage
-    word_input = "ratatouille"
-    language_code = "eng-us"
+    word_input = "kucing"  # "ratatouille"
+    language_code = "ind"  # "eng-us"
     top_n = 25
 
     # Temporary fix
