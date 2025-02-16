@@ -127,7 +127,7 @@ class Phonetic_Similarity:
         # Build FAISS index
         self.index = build_faiss_index(dataset_matrix)
 
-    def top_phonetic(
+    def top_phonetic_old(
         self,
         input_word: str,
         language_code: str,
@@ -177,12 +177,132 @@ class Phonetic_Similarity:
 
         return closest_words, ipa
 
+    def top_phonetic(
+        self,
+        input_word: str,
+        language_code: str,
+        top_n: int,
+        min_seg_length: int = 3,
+        top_k: int = 3,
+    ) -> tuple[pd.DataFrame, str]:
+        """
+        Find the top_n closest phonetically similar words to the input IPA.
+        In addition to a full-word search, this function tries every possible split
+        of the IPA transcription (respecting a minimum segment length) and retrieves
+        top_k candidates for each segment. For each candidate pair, the similarity scores
+        are averaged to create a combined candidate.
+
+        Parameters
+        ----------
+        input_word : str
+            The input word.
+        language_code : str
+            The language code of the word.
+        top_n : int
+            Number of top similar matches to retrieve.
+        min_seg_length : int, optional
+            Minimum length for each IPA segment when splitting (default is 3).
+        top_k : int, optional
+            Number of candidates to retrieve for each segment (default is 3).
+
+        Returns
+        -------
+        tuple[pd.DataFrame, str]
+            A tuple containing:
+            - A DataFrame with columns "token_ort", "token_ipa", "distance", "match_type", and "split_position"
+            - The IPA transcription of the input word.
+        """
+        # Convert the input word to IPA.
+        ipa = word2ipa(input_word, language_code, self.g2p_model)
+
+        # Full–word search.
+        input_vector = vectorize_input(ipa, self.vectorizer, self.dimension)
+        faiss.normalize_L2(input_vector)
+        full_dists, full_indices = self.index.search(input_vector, top_n)
+        single_results = self.dataset.iloc[full_indices[0]][
+            ["token_ort", "token_ipa"]
+        ].copy()
+        single_results["distance"] = full_dists[0]
+        single_results["match_type"] = "full"
+        single_results["split_position"] = None
+
+        # Prepare to store split–based candidates.
+        split_candidates = []
+
+        # Only try splitting if IPA is long enough.
+        if len(ipa) >= 2 * min_seg_length:
+            # Try every possible split position that respects the min_seg_length requirement.
+            for i in range(min_seg_length, len(ipa) - min_seg_length + 1):
+                prefix_ipa = ipa[:i]
+                suffix_ipa = ipa[i:]
+
+                # Vectorize both segments.
+                prefix_vec = vectorize_input(
+                    prefix_ipa, self.vectorizer, self.dimension
+                )
+                suffix_vec = vectorize_input(
+                    suffix_ipa, self.vectorizer, self.dimension
+                )
+                faiss.normalize_L2(prefix_vec)
+                faiss.normalize_L2(suffix_vec)
+
+                # Get top_k candidates for each segment.
+                prefix_dists, prefix_indices = self.index.search(prefix_vec, top_k)
+                suffix_dists, suffix_indices = self.index.search(suffix_vec, top_k)
+
+                # For each candidate pair, average the scores.
+                for j in range(top_k):
+                    for k in range(top_k):
+                        cand_prefix = self.dataset.iloc[prefix_indices[0][j]]
+                        cand_suffix = self.dataset.iloc[suffix_indices[0][k]]
+                        avg_score = (prefix_dists[0][j] + suffix_dists[0][k]) / 2.0
+
+                        combined_word = (
+                            f"{cand_prefix['token_ort']}+{cand_suffix['token_ort']}"
+                        )
+                        combined_ipa = (
+                            f"{cand_prefix['token_ipa']}+{cand_suffix['token_ipa']}"
+                        )
+                        split_candidates.append(
+                            (combined_word, combined_ipa, avg_score, "split", i)
+                        )
+
+        # Convert split candidates to DataFrame.
+        if split_candidates:
+            split_results = pd.DataFrame(
+                split_candidates,
+                columns=[
+                    "token_ort",
+                    "token_ipa",
+                    "distance",
+                    "match_type",
+                    "split_position",
+                ],
+            )
+        else:
+            split_results = pd.DataFrame(
+                columns=[
+                    "token_ort",
+                    "token_ipa",
+                    "distance",
+                    "match_type",
+                    "split_position",
+                ]
+            )
+
+        # Combine full-word and split results.
+        combined_results = pd.concat([single_results, split_results], ignore_index=True)
+        combined_results = combined_results.sort_values(by="distance", ascending=False)
+        final_results = combined_results.head(top_n).reset_index(drop=True)
+
+        return final_results, ipa
+
 
 if __name__ == "__main__":
     # Example usage
     word_input = "ratatouille"
     language_code = "eng-us"
-    top_n = 15
+    top_n = 25
 
     # Temporary fix
     import os
