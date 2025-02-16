@@ -99,74 +99,79 @@ def vectorize_input(ipa_input, vectorizer, dimension):
     return input_vector_padded
 
 
-def top_phonetic(
-    input_word: str, language_code: str, top_n: int, g2p_model
-) -> tuple[pd.DataFrame, str]:
-    """
-    Main function to find top_n closest phonetically similar words to the input IPA.
+class Phonetic_Similarity:
+    def __init__(self):
+        method = config.get("PHONETIC_SIM").get("EMBEDDINGS").get("METHOD")
 
-    Parameters
-    ----------
-    - ipa_input: String, IPA representation of the input word
-    - top_n: Integer, number of top similar words to retrieve
-    - vectorizer: Function used for vectorizing IPA input
-    - vector_column: String, name of the column containing vectors
-    """
-    method = config.get("PHONETIC_SIM").get("EMBEDDINGS").get("METHOD")
+        # Default to panphon if method is not specified
+        self.vectorizer = panphon_vec
 
-    # Default to panphon if method is not specified
-    vectorizer = panphon_vec
+        if method == "clts":
+            self.vectorizer = soundvec
 
-    if method == "clts":
-        vectorizer = soundvec
+        # Attempt to load from cache
+        self.dataset = load_from_cache(method)
 
-    # Convert the input word to IPA representation
-    ipa = word2ipa(input_word, language_code, g2p_model)
+        # Pad the flattened vectors
+        dataset_vectors_padded = pad_vectors(self.dataset["flattened_vectors"].tolist())
 
-    # Attempt to load from cache
-    dataset = load_from_cache(method)
+        # Convert to matrix
+        dataset_matrix = convert_to_matrix(dataset_vectors_padded)
+        self.dimension = dataset_matrix.shape[1]
 
-    dataset_vectors_flat = dataset["flattened_vectors"].tolist()
+        # Normalize dataset vectors
+        faiss.normalize_L2(dataset_matrix)
 
-    # Pad vectors
-    dataset_vectors_padded = pad_vectors(dataset_vectors_flat)
+        # Build FAISS index
+        self.index = build_faiss_index(dataset_matrix)
 
-    # Convert to matrix
-    dataset_matrix = convert_to_matrix(dataset_vectors_padded)
+    def top_phonetic(
+        self, input_word: str, language_code: str, top_n: int, g2p_model
+    ) -> tuple[pd.DataFrame, str]:
+        """
+        Main function to find top_n closest phonetically similar words to the input IPA.
 
-    # Normalize dataset vectors
-    faiss.normalize_L2(dataset_matrix)
+        Parameters
+        ----------
+        - ipa_input: String, IPA representation of the input word
+        - top_n: Integer, number of top similar words to retrieve
+        - vectorizer: Function used for vectorizing IPA input
+        - vector_column: String, name of the column containing vectors
+        """
+        # Convert the input word to IPA representation
+        ipa = word2ipa(input_word, language_code, g2p_model)
 
-    # Build FAISS index
-    index = build_faiss_index(dataset_matrix)
+        # Vectorize input
+        input_vector_padded = vectorize_input(
+            ipa,
+            self.vectorizer,
+            self.dimension,
+        )
 
-    # Vectorize input
-    input_vector_padded = vectorize_input(ipa, vectorizer, dataset_matrix.shape[1])
+        # Normalize input vector
+        faiss.normalize_L2(input_vector_padded)
 
-    # Normalize input vector
-    faiss.normalize_L2(input_vector_padded)
+        # Perform search
+        distances, indices = self.index.search(input_vector_padded, top_n)
 
-    # Perform search
-    distances, indices = index.search(input_vector_padded, top_n)
+        # Check if no similar words found
+        if len(indices) == 0:
+            logger.error("No similar words found.")
+            return pd.DataFrame({"token_ort": [], "token_ipa": [], "distance": []})
 
-    # Check if no similar words found
-    if len(indices) == 0:
-        logger.error("No similar words found.")
-        return pd.DataFrame({"token_ort": [], "token_ipa": [], "distance": []})
+        # Retrieve closest words
+        closest_words = self.dataset.iloc[indices[0]][["token_ort", "token_ipa"]]
 
-    # Retrieve closest words
-    closest_words = dataset.iloc[indices[0]][["token_ort", "token_ipa"]]
+        # Add the distance column
+        closest_words["distance"] = distances[0]
 
-    # Add the distance column
-    closest_words["distance"] = distances[0]
-
-    return closest_words, ipa
+        return closest_words, ipa
 
 
 if __name__ == "__main__":
     # Example usage
-    word_input = "kucing"
-    language_code = "ind"
+    word_input = "ratatouille"
+    language_code = "eng-us"
     top_n = 15
 
     # Temporary fix
@@ -177,5 +182,7 @@ if __name__ == "__main__":
     # Load the G2P model
     from fluentai.services.mnemonic.phonetic.grapheme2phoneme import Grapheme2Phoneme
 
-    result = top_phonetic(word_input, language_code, top_n, Grapheme2Phoneme())
+    phon_sim = Phonetic_Similarity()
+
+    result = phon_sim.top_phonetic(word_input, language_code, top_n, Grapheme2Phoneme())
     print(result)
