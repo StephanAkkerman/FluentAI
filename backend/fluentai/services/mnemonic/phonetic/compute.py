@@ -56,7 +56,7 @@ def word2ipa(
     return g2p_model.g2p([f"<{language_code}>:{word}"])
 
 
-def build_faiss_index(matrix):
+def build_faiss_index(matrix: np.ndarray) -> faiss.Index:
     """
     Build a FAISS index for Inner Product similarity search.
 
@@ -74,7 +74,7 @@ def build_faiss_index(matrix):
     return index
 
 
-def vectorize_input(ipa_input, vectorizer, dimension):
+def vectorize_input(ipa_input: str, vectorizer, dimension: int) -> np.ndarray:
     """
     Vectorize the input IPA string and pad to match dataset vector dimensions.
 
@@ -137,6 +137,11 @@ class Phonetic_Similarity:
         - top_n: Integer, number of top similar words to retrieve
         - vectorizer: Function used for vectorizing IPA input
         - vector_column: String, name of the column containing vectors
+
+        Returns
+        -------
+        - DataFrame containing the top_n similar words and their distances
+        - The IPA representation of the input word
         """
         # Convert the input word to IPA representation
         ipa = word2ipa(input_word, language_code, g2p_model)
