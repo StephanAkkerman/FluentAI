@@ -226,6 +226,7 @@ class Phonetic_Similarity:
         single_results["distance"] = full_dists[0]
         single_results["match_type"] = "full"
         single_results["split_position"] = None
+        # single_results["score"] =
 
         # Prepare to store split–based candidates.
         split_candidates = []
@@ -257,6 +258,7 @@ class Phonetic_Similarity:
                         cand_prefix = self.dataset.iloc[prefix_indices[0][j]]
                         cand_suffix = self.dataset.iloc[suffix_indices[0][k]]
                         avg_score = (prefix_dists[0][j] + suffix_dists[0][k]) / 2.0
+                        # avg_score -= penalty
 
                         combined_word = (
                             f"{cand_prefix['token_ort']}+{cand_suffix['token_ort']}"
