@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from huggingface_hub import hf_hub_download
 
@@ -42,6 +43,19 @@ ipa = ipa.rename(columns={"word": "token_ort"})
 # Fill NaNs for AoA_Kup_lem and Freq_pm and rename
 ipa["aoa"] = ipa["AoA_Kup_lem"].fillna(15)
 ipa["freq"] = ipa["Freq_pm"].fillna(0.1)
+
+# Scale frequency: log transform then min-max normalization
+ipa["log_freq"] = np.log(ipa["freq"] + 1)
+ipa["norm_freq"] = (ipa["log_freq"] - ipa["log_freq"].min()) / (
+    ipa["log_freq"].max() - ipa["log_freq"].min()
+)
+
+# Scale aoa: min-max normalization and invert (lower age -> higher score)
+ipa["scaled_aoa"] = 1 - (
+    (ipa["aoa"] - ipa["aoa"].min()) / (ipa["aoa"].max() - ipa["aoa"].min())
+)
+
+ipa = ipa[["token_ort", "token_ipa", "norm_freq", "scaled_aoa", "imageability_score"]]
 
 ipa.to_csv("datasets/ipa.csv", index=False)
 
