@@ -55,8 +55,17 @@ ipa["scaled_aoa"] = 1 - (
     (ipa["aoa"] - ipa["aoa"].min()) / (ipa["aoa"].max() - ipa["aoa"].min())
 )
 
-ipa = ipa[["token_ort", "token_ipa", "norm_freq", "scaled_aoa", "imageability_score"]]
+ipa = ipa[
+    [
+        "token_ort",
+        "token_ipa",
+        "flattened_vectors",
+        "norm_freq",
+        "scaled_aoa",
+        "imageability_score",
+    ]
+]
 
-ipa.to_csv("datasets/ipa.csv", index=False)
+ipa.to_parquet("datasets/mnemonics.parquet", index=False)
 
 print(ipa.head())
