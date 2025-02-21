@@ -190,19 +190,7 @@ class Phonetic_Similarity:
 
         return closest_words, ipa
 
-    def semantic_sim(self, input_word: str, single_results: pd.DataFrame) -> list:
-        # Translate word to English
-        translated, _ = asyncio.run(translate_word(input_word, language_code))
-
-        # Convert the translated word to a embedding
-        embedding = self.model.encode(
-            translated, convert_to_tensor=True, normalize_embeddings=True
-        )
-
-        # Ensure the query embedding is 2D (shape: [1, embedding_dim])
-        query_embedding = (
-            embedding.unsqueeze(0) if len(embedding.shape) == 1 else embedding
-        )
+    def semantic_sim(self, embedding, single_results: pd.DataFrame) -> list:
 
         # Stack the numpy arrays into one array and convert it to a tensor
         corpus_embeddings = torch.tensor(
@@ -213,9 +201,7 @@ class Phonetic_Similarity:
         corpus_embeddings = corpus_embeddings.to(embedding.device)
 
         # Compute cosine similarity between the query and all corpus embeddings.
-        cos_scores = util.cos_sim(
-            query_embedding, corpus_embeddings
-        )  # Shape: [1, num_embeddings]
+        cos_scores = util.cos_sim(embedding, corpus_embeddings)
 
         return cos_scores.squeeze(0).cpu().tolist()
 
@@ -257,6 +243,17 @@ class Phonetic_Similarity:
         """
         logger.debug(f"Finding top {top_n} phonetically similar words to {input_word}.")
 
+        # Translate word to English
+        translated, _ = asyncio.run(translate_word(input_word, language_code))
+
+        # Convert the translated word to a embedding
+        embedding = self.model.encode(
+            translated, convert_to_tensor=True, normalize_embeddings=True
+        )
+
+        # Ensure the query embedding is 2D (shape: [1, embedding_dim])
+        embedding = embedding.unsqueeze(0) if len(embedding.shape) == 1 else embedding
+
         # Convert the input word to IPA.
         ipa = word2ipa(input_word, language_code, self.g2p_model)
 
@@ -278,7 +275,7 @@ class Phonetic_Similarity:
 
         # Assign the similarity scores to the dataframe (converting to list if necessary)
         single_results["semantic_similarity"] = self.semantic_sim(
-            input_word, single_results
+            embedding, single_results
         )
 
         # Combine all scores into a single score
@@ -320,7 +317,7 @@ class Phonetic_Similarity:
                         cand_prefix = self.dataset.iloc[prefix_indices[0][j]]
                         cand_suffix = self.dataset.iloc[suffix_indices[0][k]]
                         # The penalty is used to avoid overly long splits.
-                        # TODO: add to config
+                        # TODO: add penalty to config
                         penalty = 0
                         avg_distance = (
                             prefix_dists[0][j] + suffix_dists[0][k]
@@ -335,7 +332,17 @@ class Phonetic_Similarity:
                             cand_prefix["imageability_score"]
                             + cand_suffix["imageability_score"]
                         ) / 2
-                        semantic_similarity = 0
+
+                        # Calculate semantic similarity
+                        print(cand_prefix)
+                        prefix_semantic = self.semantic_sim(embedding, cand_prefix)
+                        suffix_semantic = self.semantic_sim(embedding, cand_suffix)
+
+                        semantic_similarity = [
+                            (a + b) / 2
+                            for a, b in zip(prefix_semantic, suffix_semantic)
+                        ]
+
                         score = (
                             avg_distance
                             + freq
