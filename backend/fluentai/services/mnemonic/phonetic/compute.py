@@ -190,6 +190,35 @@ class Phonetic_Similarity:
 
         return closest_words, ipa
 
+    def semantic_sim(self, input_word: str, single_results: pd.DataFrame) -> list:
+        # Translate word to English
+        translated, _ = asyncio.run(translate_word(input_word, language_code))
+
+        # Convert the translated word to a embedding
+        embedding = self.model.encode(
+            translated, convert_to_tensor=True, normalize_embeddings=True
+        )
+
+        # Ensure the query embedding is 2D (shape: [1, embedding_dim])
+        query_embedding = (
+            embedding.unsqueeze(0) if len(embedding.shape) == 1 else embedding
+        )
+
+        # Stack the numpy arrays into one array and convert it to a tensor
+        corpus_embeddings = torch.tensor(
+            np.vstack(single_results["word_embedding"].tolist())
+        )
+
+        # Move to same device
+        corpus_embeddings = corpus_embeddings.to(embedding.device)
+
+        # Compute cosine similarity between the query and all corpus embeddings.
+        cos_scores = util.cos_sim(
+            query_embedding, corpus_embeddings
+        )  # Shape: [1, num_embeddings]
+
+        return cos_scores.squeeze(0).cpu().tolist()
+
     def top_phonetic(
         self,
         input_word: str,
@@ -228,14 +257,6 @@ class Phonetic_Similarity:
         """
         logger.debug(f"Finding top {top_n} phonetically similar words to {input_word}.")
 
-        # Translate word to English
-        translated, _ = asyncio.run(translate_word(input_word, language_code))
-
-        # Convert the translated word to a embedding
-        embedding = self.model.encode(
-            translated, convert_to_tensor=True, normalize_embeddings=True
-        )
-
         # Convert the input word to IPA.
         ipa = word2ipa(input_word, language_code, self.g2p_model)
 
@@ -255,26 +276,10 @@ class Phonetic_Similarity:
         ].copy()
         single_results["distance"] = full_dists[0]
 
-        # Ensure the query embedding is 2D (shape: [1, embedding_dim])
-        query_embedding = (
-            embedding.unsqueeze(0) if len(embedding.shape) == 1 else embedding
-        )
-
-        # Stack the numpy arrays into one array and convert it to a tensor
-        corpus_embeddings = torch.tensor(
-            np.vstack(single_results["word_embedding"].tolist())
-        )
-
-        # Move to same device
-        corpus_embeddings = corpus_embeddings.to(embedding.device)
-
-        # Compute cosine similarity between the query and all corpus embeddings.
-        cos_scores = util.cos_sim(
-            query_embedding, corpus_embeddings
-        )  # Shape: [1, num_embeddings]
-
         # Assign the similarity scores to the dataframe (converting to list if necessary)
-        single_results["semantic_similarity"] = cos_scores.squeeze(0).cpu().tolist()
+        single_results["semantic_similarity"] = self.semantic_sim(
+            input_word, single_results
+        )
 
         # Combine all scores into a single score
         single_results["score"] = (
