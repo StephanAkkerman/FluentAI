@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from huggingface_hub import hf_hub_download
+from sentence_transformers import SentenceTransformer
 
 from fluentai.constants.config import config
 from fluentai.services.mnemonic.phonetic.utils.cache import load_from_cache
@@ -37,6 +38,22 @@ frequency = frequency[["word", "AoA_Kup_lem", "Freq_pm"]]
 ipa = ipa.merge(imageability, on="word", how="left")
 ipa = ipa.merge(frequency, on="word", how="left")
 
+model_name = config.get("SEMANTIC_SIM").get("MODEL").lower()
+model = SentenceTransformer(model_name, trust_remote_code=True, cache_folder="models")
+print("Computing embeddings...")
+embeddings = (
+    model.encode(
+        ipa["word"].tolist(),
+        convert_to_tensor=True,
+        normalize_embeddings=True,
+        show_progress_bar=True,
+    )
+    .cpu()
+    .numpy()
+)
+
+ipa["word_embedding"] = list(embeddings)
+
 # Rename word to token_ort
 ipa = ipa.rename(columns={"word": "token_ort"})
 
@@ -55,6 +72,7 @@ ipa["scaled_aoa"] = 1 - (
     (ipa["aoa"] - ipa["aoa"].min()) / (ipa["aoa"].max() - ipa["aoa"].min())
 )
 
+
 ipa = ipa[
     [
         "token_ort",
@@ -63,6 +81,7 @@ ipa = ipa[
         "norm_freq",
         "scaled_aoa",
         "imageability_score",
+        "word_embedding",
     ]
 ]
 

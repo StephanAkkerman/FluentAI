@@ -1,7 +1,11 @@
+import asyncio
+
 import faiss
 import numpy as np
 import pandas as pd
+import torch
 from huggingface_hub import hf_hub_download
+from sentence_transformers import SentenceTransformer, util
 
 from fluentai.constants.config import config
 from fluentai.logger import logger
@@ -11,6 +15,7 @@ from fluentai.services.mnemonic.phonetic.utils.vectors import (
     convert_to_matrix,
     pad_vectors,
 )
+from fluentai.services.mnemonic.semantic.translator import translate_word
 
 
 def word2ipa(
@@ -112,7 +117,9 @@ class Phonetic_Similarity:
             self.vectorizer = soundvec
 
         # Attempt to load from cache
-        self.dataset = load_from_cache(method)
+        self.dataset = pd.read_parquet(
+            "datasets/mnemonics.parquet"
+        )  # load_from_cache(method)
 
         # Pad the flattened vectors
         # TODO: move this (and other steps) to the dataset creation
@@ -127,6 +134,11 @@ class Phonetic_Similarity:
 
         # Build FAISS index
         self.index = build_faiss_index(dataset_matrix)
+
+        model_name = config.get("SEMANTIC_SIM").get("MODEL").lower()
+        self.model = SentenceTransformer(
+            model_name, trust_remote_code=True, cache_folder="models"
+        )
 
     def top_phonetic_old(
         self,
@@ -184,7 +196,7 @@ class Phonetic_Similarity:
         language_code: str,
         top_n: int,
         min_seg_length: int = 3,
-        top_k: int = 3,
+        top_k: int = 10,
     ) -> tuple[pd.DataFrame, str]:
         """
         Find the top_n closest phonetically similar words to the input IPA.
@@ -214,6 +226,16 @@ class Phonetic_Similarity:
             - A DataFrame with columns "token_ort", "token_ipa", "distance", "match_type", and "split_position"
             - The IPA transcription of the input word.
         """
+        logger.debug(f"Finding top {top_n} phonetically similar words to {input_word}.")
+
+        # Translate word to English
+        translated, _ = asyncio.run(translate_word(input_word, language_code))
+
+        # Convert the translated word to a embedding
+        embedding = self.model.encode(
+            translated, convert_to_tensor=True, normalize_embeddings=True
+        )
+
         # Convert the input word to IPA.
         ipa = word2ipa(input_word, language_code, self.g2p_model)
 
@@ -222,16 +244,46 @@ class Phonetic_Similarity:
         faiss.normalize_L2(input_vector)
         full_dists, full_indices = self.index.search(input_vector, top_n)
         single_results = self.dataset.iloc[full_indices[0]][
-            ["token_ort", "token_ipa"]
+            [
+                "token_ort",
+                "token_ipa",
+                "norm_freq",
+                "scaled_aoa",
+                "imageability_score",
+                "word_embedding",
+            ]
         ].copy()
         single_results["distance"] = full_dists[0]
-        single_results["match_type"] = "full"
-        single_results["split_position"] = None
 
-        # Add the scores to the single_results DataFrame.
-        # By matching on token_ort
+        # Ensure the query embedding is 2D (shape: [1, embedding_dim])
+        query_embedding = (
+            embedding.unsqueeze(0) if len(embedding.shape) == 1 else embedding
+        )
 
-        # Calculate semantic similarity
+        # Stack the numpy arrays into one array and convert it to a tensor
+        corpus_embeddings = torch.tensor(
+            np.vstack(single_results["word_embedding"].tolist())
+        )
+
+        # Move to same device
+        corpus_embeddings = corpus_embeddings.to(embedding.device)
+
+        # Compute cosine similarity between the query and all corpus embeddings.
+        cos_scores = util.cos_sim(
+            query_embedding, corpus_embeddings
+        )  # Shape: [1, num_embeddings]
+
+        # Assign the similarity scores to the dataframe (converting to list if necessary)
+        single_results["semantic_similarity"] = cos_scores.squeeze(0).cpu().tolist()
+
+        # Combine all scores into a single score
+        single_results["score"] = (
+            single_results["distance"]
+            + single_results["norm_freq"]
+            + single_results["scaled_aoa"]
+            + single_results["imageability_score"]
+            + single_results["semantic_similarity"]
+        )
 
         # Prepare to store split–based candidates.
         split_candidates = []
@@ -262,12 +314,35 @@ class Phonetic_Similarity:
                     for k in range(top_k):
                         cand_prefix = self.dataset.iloc[prefix_indices[0][j]]
                         cand_suffix = self.dataset.iloc[suffix_indices[0][k]]
-                        avg_score = (prefix_dists[0][j] + suffix_dists[0][k]) / 2.0
-
-                        # Add the scores to the single_results DataFrame.
-                        # By matching on token_ort for both prefix and suffix
+                        # The penalty is used to avoid overly long splits.
+                        # TODO: add to config
+                        penalty = 0
+                        avg_distance = (
+                            prefix_dists[0][j] + suffix_dists[0][k]
+                        ) / 2.0 - penalty
 
                         # Calculate semantic similarity
+                        freq = (cand_prefix["norm_freq"] + cand_suffix["norm_freq"]) / 2
+                        aoa = (
+                            cand_prefix["scaled_aoa"] + cand_suffix["scaled_aoa"]
+                        ) / 2
+                        imageability = (
+                            cand_prefix["imageability_score"]
+                            + cand_suffix["imageability_score"]
+                        ) / 2
+                        semantic_similarity = 0
+                        score = (
+                            avg_distance
+                            + freq
+                            + aoa
+                            + imageability
+                            + semantic_similarity
+                        )
+
+                        # For debugging
+                        if cand_prefix["token_ort"] == "rat":
+                            if cand_suffix["token_ort"] == "tattoo":
+                                print("\nFOUND IT!\n")
 
                         combined_word = (
                             f"{cand_prefix['token_ort']}+{cand_suffix['token_ort']}"
@@ -276,7 +351,16 @@ class Phonetic_Similarity:
                             f"{cand_prefix['token_ipa']}+{cand_suffix['token_ipa']}"
                         )
                         split_candidates.append(
-                            (combined_word, combined_ipa, avg_score, "split", i)
+                            (
+                                combined_word,
+                                combined_ipa,
+                                avg_distance,
+                                freq,
+                                aoa,
+                                imageability,
+                                semantic_similarity,
+                                score,
+                            )
                         )
 
         # Convert split candidates to DataFrame.
@@ -287,8 +371,11 @@ class Phonetic_Similarity:
                     "token_ort",
                     "token_ipa",
                     "distance",
-                    "match_type",
-                    "split_position",
+                    "norm_freq",
+                    "scaled_aoa",
+                    "imageability_score",
+                    "semantic_similarity",
+                    "score",
                 ],
             )
         else:
@@ -297,8 +384,11 @@ class Phonetic_Similarity:
                     "token_ort",
                     "token_ipa",
                     "distance",
-                    "match_type",
-                    "split_position",
+                    "norm_freq",
+                    "scaled_aoa",
+                    "imageability_score",
+                    "semantic_similarity",
+                    "score",
                 ]
             )
 
@@ -308,7 +398,7 @@ class Phonetic_Similarity:
         combined_results = combined_results.drop_duplicates(
             subset=["token_ort", "token_ipa"]
         )
-        combined_results = combined_results.sort_values(by="distance", ascending=False)
+        combined_results = combined_results.sort_values(by="score", ascending=False)
         final_results = combined_results.head(top_n).reset_index(drop=True)
 
         return final_results, ipa
@@ -316,8 +406,8 @@ class Phonetic_Similarity:
 
 if __name__ == "__main__":
     # Example usage
-    word_input = "kucing"  # "ratatouille"
-    language_code = "ind"  # "eng-us"
+    word_input = "ratatouille"
+    language_code = "eng-us"
     top_n = 25
 
     # Load the G2P model
