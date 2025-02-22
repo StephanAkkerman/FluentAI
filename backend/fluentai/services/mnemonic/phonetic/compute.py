@@ -200,6 +200,17 @@ class Phonetic_Similarity:
         # Move to same device
         corpus_embeddings = corpus_embeddings.to(embedding.device)
 
+        print(corpus_embeddings)
+        print(corpus_embeddings.shape)
+
+        # Ensure query embedding is 2D
+        if embedding.dim() == 1:
+            embedding = embedding.unsqueeze(0)
+
+        # Ensure corpus embeddings are 2D (if there's only one, unsqueeze it)
+        if corpus_embeddings.dim() == 1:
+            corpus_embeddings = corpus_embeddings.unsqueeze(0)
+
         # Compute cosine similarity between the query and all corpus embeddings.
         cos_scores = util.cos_sim(embedding, corpus_embeddings)
 
@@ -311,6 +322,14 @@ class Phonetic_Similarity:
                 prefix_dists, prefix_indices = self.index.search(prefix_vec, top_k)
                 suffix_dists, suffix_indices = self.index.search(suffix_vec, top_k)
 
+                # Calculate the semantic similarity for each candidate pair.
+                prefix_semantic = self.semantic_sim(embedding, cand_prefix)
+                suffix_semantic = self.semantic_sim(embedding, cand_suffix)
+
+                semantic_similarity = [
+                    (a + b) / 2 for a, b in zip(prefix_semantic, suffix_semantic)
+                ]
+
                 # For each candidate pair, average the scores.
                 for j in range(top_k):
                     for k in range(top_k):
@@ -332,16 +351,6 @@ class Phonetic_Similarity:
                             cand_prefix["imageability_score"]
                             + cand_suffix["imageability_score"]
                         ) / 2
-
-                        # Calculate semantic similarity
-                        print(cand_prefix)
-                        prefix_semantic = self.semantic_sim(embedding, cand_prefix)
-                        suffix_semantic = self.semantic_sim(embedding, cand_suffix)
-
-                        semantic_similarity = [
-                            (a + b) / 2
-                            for a, b in zip(prefix_semantic, suffix_semantic)
-                        ]
 
                         score = (
                             avg_distance
