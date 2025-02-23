@@ -5,17 +5,30 @@ from huggingface_hub import create_repo, hf_hub_download, upload_file
 from sentence_transformers import SentenceTransformer
 
 from fluentai.constants.config import config
-from fluentai.services.mnemonic.phonetic.utils.cache import load_ipa
 from fluentai.services.mnemonic.phonetic.utils.vectors import (
     convert_to_matrix,
     pad_vectors,
 )
 
 
-def create_dataset(method: str):
+def create_dataset(method: str, file: str = "en_US_filtered") -> None:
+    """Creates a dataset for mnemonics.
 
-    # Combine the IPA dataset with the frequency and imageability dataset
-    ipa = load_ipa(method)
+    Parameters
+    ----------
+    method : str
+        Options are: panphon and clts.
+    file : str, optional
+        Options are: en_US, en_US_filtered, and eng_latn_us_broad.
+    """
+    ipa = pd.read_parquet(
+        hf_hub_download(
+            repo_id="StephanAkkerman/english-words-IPA-embeddings",
+            filename=f"{file}_{method}.parquet",
+            cache_dir="datasets",
+            repo_type="dataset",
+        )
+    )
 
     # Rename token_ort to word
     ipa = ipa.rename(columns={"token_ort": "word"})
@@ -106,15 +119,15 @@ def create_dataset(method: str):
         ]
     ]
 
-    file_name = f"{method}_mnemonics.parquet"
+    file_name = f"{file}_{method}_mnemonics.parquet"
     path = f"datasets/{file_name}"
     ipa.to_parquet(path, index=False)
 
     print(ipa.head())
 
 
-def upload_dataset(method):
-    file_name = f"{method}_mnemonics.parquet"
+def upload_dataset(method: str, file: str):
+    file_name = f"{file}_{method}_mnemonics.parquet"
     path = f"datasets/{file_name}"
     repo_id = "StephanAkkerman/mnemonics"
 
@@ -131,7 +144,10 @@ def upload_dataset(method):
 
 
 if __name__ == "__main__":
-    METHOD = "panphon"
+    # Options are: panphon and clts.
+    METHOD = "clts"
+    # Options are: en_US, en_US_filtered, and eng_latn_us_broad.
+    file = "en_US"
 
-    create_dataset(METHOD)
-    upload_dataset(METHOD)
+    create_dataset(METHOD, file)
+    upload_dataset(METHOD, file)

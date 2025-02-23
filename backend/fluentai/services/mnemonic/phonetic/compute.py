@@ -12,8 +12,8 @@ from fluentai.logger import logger
 from fluentai.services.mnemonic.orthographic.compute import (
     compute_damerau_levenshtein_similarity,
 )
+from fluentai.services.mnemonic.phonetic.grapheme2phoneme import Grapheme2Phoneme
 from fluentai.services.mnemonic.phonetic.ipa2vec import panphon_vec, soundvec
-from fluentai.services.mnemonic.phonetic.utils.cache import load_mnemonics
 from fluentai.services.mnemonic.semantic.translator import translate_word
 
 
@@ -87,8 +87,9 @@ def vectorize_input(ipa_input: str, vectorizer, dimension: int) -> np.ndarray:
 
 class Phonetic_Similarity:
 
-    def __init__(self, g2p_model):
-        self.g2p_model = g2p_model
+    def __init__(self):
+        self.g2p_model = Grapheme2Phoneme()
+
         method = config.get("PHONETIC_SIM").get("EMBEDDINGS").get("METHOD")
 
         # Default to panphon if method is not specified
@@ -97,8 +98,39 @@ class Phonetic_Similarity:
         if method == "clts":
             self.vectorizer = soundvec
 
-        # Attempt to load from cache
-        self.dataset = load_mnemonics(method)
+        # Todo: move to config
+        file = "en_US_filtered"
+        file = f"{file}_{method}_mnemonics.parquet"
+
+        self.dataset = pd.read_parquet(
+            hf_hub_download(
+                repo_id="StephanAkkerman/mnemonics",
+                filename=file,
+                cache_dir="datasets",
+                repo_type="dataset",
+            )
+        )
+
+        # We don't really care about the matrix later on
+        self.dataset_columns = [
+            "token_ort",
+            "token_ipa",
+            "freq",
+            "aoa",
+            "imageability",
+            "word_embedding",
+        ]
+        self.final_columns = [
+            "token_ort",
+            "token_ipa",
+            "distance",
+            "freq",
+            "aoa",
+            "imageability",
+            "semantic",
+            "orthographic",
+            "score",
+        ]
 
         # Get the matrix from the dataset
         dataset_matrix = np.array(self.dataset["matrix"].tolist())
@@ -112,6 +144,17 @@ class Phonetic_Similarity:
         self.model = SentenceTransformer(
             model_name, trust_remote_code=True, cache_folder="models"
         )
+
+        # Load the weights
+        weights = config.get("WEIGHTS")
+        self.distance_weights = weights.get("PHONETIC")
+        self.imageability_weights = weights.get("IMAGEABILITY")
+        self.semantic_weights = weights.get("SEMANTIC")
+        self.orthographic_weights = weights.get("ORTHOGRAPHIC")
+        self.freq_weights = weights.get("FREQUENCY")
+        self.aoa_weights = weights.get("AOA")
+
+        self.penalty = config.get("PENALTY")
 
     def semantic_sim(self, embedding, single_results: pd.DataFrame) -> list:
         """Calculate the semantic similarity between the input word and the corpus embeddings.
@@ -159,7 +202,6 @@ class Phonetic_Similarity:
         language_code: str,
         top_n: int,
         min_seg_length: int = 3,
-        top_k: int = 10,
     ) -> tuple[pd.DataFrame, str]:
         """
         Find the top_n closest phonetically similar words to the input IPA.
@@ -183,7 +225,7 @@ class Phonetic_Similarity:
 
         # Step 4: Compute split–based candidates if the IPA is long enough.
         split_results = self._split_candidates_search(
-            ipa, embedding, min_seg_length, top_k, transliterated
+            ipa, embedding, min_seg_length, top_n, transliterated
         )
 
         # Step 5: Combine the full–word and split candidates, remove duplicates, and sort.
@@ -205,28 +247,19 @@ class Phonetic_Similarity:
         faiss.normalize_L2(input_vector)
         full_dists, full_indices = self.index.search(input_vector, top_n)
 
-        results = self.dataset.iloc[full_indices[0]][
-            [
-                "token_ort",
-                "token_ipa",
-                "freq",
-                "aoa",
-                "imageability",
-                "word_embedding",
-            ]
-        ].copy()
+        results = self.dataset.iloc[full_indices[0]][self.dataset_columns].copy()
         results["distance"] = full_dists[0]
         results["semantic"] = self.semantic_sim(embedding, results)
         results["orthographic"] = self.orthographic_sim(
             transliterated, results["token_ort"].to_list()
         )
         results["score"] = (
-            results["distance"]
-            + results["freq"]
-            + results["aoa"]
-            + results["imageability"]
-            + results["semantic"]
-            + results["orthographic"]
+            results["distance"] * self.distance_weights
+            + results["freq"] * self.freq_weights
+            + results["aoa"] * self.aoa_weights
+            + results["imageability"] * self.imageability_weights
+            + results["semantic"] * self.semantic_weights
+            + results["orthographic"] * self.orthographic_weights
         )
         return results
 
@@ -234,21 +267,8 @@ class Phonetic_Similarity:
         self, ipa: str, embedding, min_seg_length: int, top_k: int, transliterated: str
     ) -> pd.DataFrame:
         """Compute candidate pairs based on splitting the IPA transcription."""
-        penalty = 0.1
         if len(ipa) < 2 * min_seg_length:
-            return pd.DataFrame(
-                columns=[
-                    "token_ort",
-                    "token_ipa",
-                    "distance",
-                    "freq",
-                    "aoa",
-                    "imageability",
-                    "semantic",
-                    "orthographic",
-                    "score",
-                ]
-            )
+            return pd.DataFrame(columns=self.final_columns)
 
         candidates = []
         # Iterate over all valid split positions.
@@ -267,24 +287,10 @@ class Phonetic_Similarity:
             suffix_dists, suffix_indices = self.index.search(suffix_vec, top_k)
 
             prefix_results = self.dataset.iloc[prefix_indices[0]][
-                [
-                    "token_ort",
-                    "token_ipa",
-                    "freq",
-                    "aoa",
-                    "imageability",
-                    "word_embedding",
-                ]
+                self.dataset_columns
             ].copy()
             suffix_results = self.dataset.iloc[suffix_indices[0]][
-                [
-                    "token_ort",
-                    "token_ipa",
-                    "freq",
-                    "aoa",
-                    "imageability",
-                    "word_embedding",
-                ]
+                self.dataset_columns
             ].copy()
 
             # Calculate semantic similarity for each segment.
@@ -344,13 +350,13 @@ class Phonetic_Similarity:
             )
 
             score_matrix = (
-                avg_distance
-                + freq
-                + aoa
-                + imageability
-                + semantic_similarity
-                + orthographic_similarity
-            ) * (1 - penalty)
+                avg_distance * self.distance_weights
+                + freq * self.freq_weights
+                + aoa * self.aoa_weights
+                + imageability * self.imageability_weights
+                + semantic_similarity * self.semantic_weights
+                + orthographic_similarity * self.orthographic_weights
+            ) * (1 - self.penalty)
 
             prefix_ipas = np.array(
                 prefix_results["token_ipa"].astype(str).values, dtype="<U50"
@@ -380,17 +386,7 @@ class Phonetic_Similarity:
 
         return pd.DataFrame(
             candidates,
-            columns=[
-                "token_ort",
-                "token_ipa",
-                "distance",
-                "freq",
-                "aoa",
-                "imageability",
-                "semantic",
-                "orthographic",
-                "score",
-            ],
+            columns=self.final_columns,
         )
 
     def _combine_results(
@@ -412,9 +408,10 @@ if __name__ == "__main__":
     top_n = 25
 
     # Load the G2P model
-    from fluentai.services.mnemonic.phonetic.grapheme2phoneme import Grapheme2Phoneme
-
-    phon_sim = Phonetic_Similarity(Grapheme2Phoneme())
+    phon_sim = Phonetic_Similarity()
 
     result = phon_sim.top_phonetic(word_input, language_code, top_n)
     print(result)
+
+    # Print where token_ort == "rat+tattoo"
+    print(result[0][result[0]["token_ort"] == "rat+tattoo"])
