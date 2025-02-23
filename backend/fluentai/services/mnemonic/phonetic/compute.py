@@ -191,6 +191,7 @@ class Phonetic_Similarity:
         return closest_words, ipa
 
     def semantic_sim(self, embedding, single_results: pd.DataFrame) -> list:
+        # Shape should be [x, embedding_dim]
 
         # Stack the numpy arrays into one array and convert it to a tensor
         corpus_embeddings = torch.tensor(
@@ -199,17 +200,6 @@ class Phonetic_Similarity:
 
         # Move to same device
         corpus_embeddings = corpus_embeddings.to(embedding.device)
-
-        print(corpus_embeddings)
-        print(corpus_embeddings.shape)
-
-        # Ensure query embedding is 2D
-        if embedding.dim() == 1:
-            embedding = embedding.unsqueeze(0)
-
-        # Ensure corpus embeddings are 2D (if there's only one, unsqueeze it)
-        if corpus_embeddings.dim() == 1:
-            corpus_embeddings = corpus_embeddings.unsqueeze(0)
 
         # Compute cosine similarity between the query and all corpus embeddings.
         cos_scores = util.cos_sim(embedding, corpus_embeddings)
@@ -253,6 +243,10 @@ class Phonetic_Similarity:
             - The IPA transcription of the input word.
         """
         logger.debug(f"Finding top {top_n} phonetically similar words to {input_word}.")
+
+        # The penalty is used to avoid overly long splits.
+        # TODO: add penalty to config
+        penalty = 0
 
         # Translate word to English
         translated, _ = asyncio.run(translate_word(input_word, language_code))
@@ -322,67 +316,107 @@ class Phonetic_Similarity:
                 prefix_dists, prefix_indices = self.index.search(prefix_vec, top_k)
                 suffix_dists, suffix_indices = self.index.search(suffix_vec, top_k)
 
+                prefix_results = self.dataset.iloc[prefix_indices[0]][
+                    [
+                        "token_ort",
+                        "token_ipa",
+                        "norm_freq",
+                        "scaled_aoa",
+                        "imageability_score",
+                        "word_embedding",
+                    ]
+                ].copy()
+
+                suffix_results = self.dataset.iloc[suffix_indices[0]][
+                    [
+                        "token_ort",
+                        "token_ipa",
+                        "norm_freq",
+                        "scaled_aoa",
+                        "imageability_score",
+                        "word_embedding",
+                    ]
+                ].copy()
+
                 # Calculate the semantic similarity for each candidate pair.
-                prefix_semantic = self.semantic_sim(embedding, cand_prefix)
-                suffix_semantic = self.semantic_sim(embedding, cand_suffix)
+                prefix_semantic = self.semantic_sim(embedding, prefix_results)
+                suffix_semantic = self.semantic_sim(embedding, suffix_results)
 
-                semantic_similarity = [
-                    (a + b) / 2 for a, b in zip(prefix_semantic, suffix_semantic)
-                ]
+                # Assume these are your top_k arrays extracted from FAISS (shape: (1, top_k))
+                prefix_dists_arr = prefix_dists[0]  # shape: (top_k,)
+                suffix_dists_arr = suffix_dists[0]  # shape: (top_k,)
 
-                # For each candidate pair, average the scores.
-                for j in range(top_k):
-                    for k in range(top_k):
-                        cand_prefix = self.dataset.iloc[prefix_indices[0][j]]
-                        cand_suffix = self.dataset.iloc[suffix_indices[0][k]]
-                        # The penalty is used to avoid overly long splits.
-                        # TODO: add penalty to config
-                        penalty = 0
-                        avg_distance = (
-                            prefix_dists[0][j] + suffix_dists[0][k]
-                        ) / 2.0 - penalty
+                # Vectorized average distance: result shape (top_k, top_k)
+                avg_distance = (
+                    prefix_dists_arr[:, None] + suffix_dists_arr[None, :]
+                ) / 2.0
 
-                        # Calculate semantic similarity
-                        freq = (cand_prefix["norm_freq"] + cand_suffix["norm_freq"]) / 2
-                        aoa = (
-                            cand_prefix["scaled_aoa"] + cand_suffix["scaled_aoa"]
-                        ) / 2
-                        imageability = (
-                            cand_prefix["imageability_score"]
-                            + cand_suffix["imageability_score"]
-                        ) / 2
+                # For other scores, first extract arrays from the DataFrames:
+                freq_prefix = prefix_results["norm_freq"].values  # shape: (top_k,)
+                freq_suffix = suffix_results["norm_freq"].values  # shape: (top_k,)
+                freq = (freq_prefix[:, None] + freq_suffix[None, :]) / 2
 
-                        score = (
-                            avg_distance
-                            + freq
-                            + aoa
-                            + imageability
-                            + semantic_similarity
-                        )
+                aoa_prefix = prefix_results["scaled_aoa"].values
+                aoa_suffix = suffix_results["scaled_aoa"].values
+                aoa = (aoa_prefix[:, None] + aoa_suffix[None, :]) / 2
 
-                        # For debugging
-                        if cand_prefix["token_ort"] == "rat":
-                            if cand_suffix["token_ort"] == "tattoo":
-                                print("\nFOUND IT!\n")
+                img_prefix = prefix_results["imageability_score"].values
+                img_suffix = suffix_results["imageability_score"].values
+                imageability = (img_prefix[:, None] + img_suffix[None, :]) / 2
 
-                        combined_word = (
-                            f"{cand_prefix['token_ort']}+{cand_suffix['token_ort']}"
-                        )
-                        combined_ipa = (
-                            f"{cand_prefix['token_ipa']}+{cand_suffix['token_ipa']}"
-                        )
-                        split_candidates.append(
-                            (
-                                combined_word,
-                                combined_ipa,
-                                avg_distance,
-                                freq,
-                                aoa,
-                                imageability,
-                                semantic_similarity,
-                                score,
-                            )
-                        )
+                # For semantic similarity, you already computed:
+                # prefix_semantic = self.semantic_sim(embedding, prefix_results)  (1D array, length top_k)
+                # suffix_semantic = self.semantic_sim(embedding, suffix_results)  (1D array, length top_k)
+                # And then you averaged them elementwise:
+                semantic_similarity_1d = np.array(
+                    [(a + b) / 2 for a, b in zip(prefix_semantic, suffix_semantic)]
+                )
+                # In your original loop, you only used semantic_similarity[j] (i.e. by prefix candidate)
+                # so we broadcast this over the second axis:
+                semantic_similarity = np.repeat(
+                    semantic_similarity_1d[:, None], top_k, axis=1
+                )
+
+                # Combine all scores into one matrix (same shape)
+                score_matrix = (
+                    avg_distance + freq + aoa + imageability + semantic_similarity
+                ) * (1 - penalty)
+
+                # If you also need the combined words and IPA from the candidates:
+                prefix_words = np.array(
+                    prefix_results["token_ort"].astype(str).values, dtype="<U50"
+                )
+                suffix_words = np.array(
+                    suffix_results["token_ort"].astype(str).values, dtype="<U50"
+                )
+                combined_words = np.char.add(
+                    np.char.add(prefix_words[:, None], "+"), suffix_words[None, :]
+                )
+
+                prefix_ipas = np.array(
+                    prefix_results["token_ipa"].astype(str).values, dtype="<U50"
+                )
+                suffix_ipas = np.array(
+                    suffix_results["token_ipa"].astype(str).values, dtype="<U50"
+                )
+                combined_ipas = np.char.add(
+                    np.char.add(prefix_ipas[:, None], "+"), suffix_ipas[None, :]
+                )
+
+                # If a flat list of candidate tuples is desired, you can flatten the matrices:
+                split_candidates = list(
+                    zip(
+                        combined_words.flatten(),
+                        combined_ipas.flatten(),
+                        avg_distance.flatten(),
+                        freq.flatten(),
+                        aoa.flatten(),
+                        imageability.flatten(),
+                        semantic_similarity.flatten(),
+                        score_matrix.flatten(),
+                    )
+                )
+                print(split_candidates)
 
         # Convert split candidates to DataFrame.
         if split_candidates:
