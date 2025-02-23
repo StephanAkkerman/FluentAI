@@ -1,3 +1,4 @@
+import faiss
 import numpy as np
 import pandas as pd
 from huggingface_hub import hf_hub_download
@@ -5,12 +6,25 @@ from sentence_transformers import SentenceTransformer
 
 from fluentai.constants.config import config
 from fluentai.services.mnemonic.phonetic.utils.cache import load_from_cache
+from fluentai.services.mnemonic.phonetic.utils.vectors import (
+    convert_to_matrix,
+    pad_vectors,
+)
 
 # Combine the IPA dataset with the frequency and imageability dataset
 ipa = load_from_cache()
 
 # Rename token_ort to word
 ipa = ipa.rename(columns={"token_ort": "word"})
+
+dataset_vectors_padded = pad_vectors(ipa["flattened_vectors"].tolist())
+
+# Convert to matrix
+dataset_matrix = convert_to_matrix(dataset_vectors_padded)
+
+# Normalize dataset vectors
+faiss.normalize_L2(dataset_matrix)
+ipa["matrix"] = list(dataset_matrix)
 
 imageability = pd.read_csv(
     hf_hub_download(
@@ -77,7 +91,7 @@ ipa = ipa[
     [
         "token_ort",
         "token_ipa",
-        "flattened_vectors",
+        "matrix",
         "norm_freq",
         "scaled_aoa",
         "imageability_score",

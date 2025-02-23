@@ -61,24 +61,6 @@ def word2ipa(
     return g2p_model.g2p([f"<{language_code}>:{word}"])
 
 
-def build_faiss_index(matrix: np.ndarray) -> faiss.Index:
-    """
-    Build a FAISS index for Inner Product similarity search.
-
-    Parameters
-    ----------
-    - matrix: Normalized NumPy array
-
-    Returns
-    -------
-    - FAISS index
-    """
-    dimension = matrix.shape[1]
-    index = faiss.IndexFlatIP(dimension)
-    index.add(matrix)
-    return index
-
-
 def vectorize_input(ipa_input: str, vectorizer, dimension: int) -> np.ndarray:
     """
     Vectorize the input IPA string and pad to match dataset vector dimensions.
@@ -121,76 +103,34 @@ class Phonetic_Similarity:
             "datasets/mnemonics.parquet"
         )  # load_from_cache(method)
 
-        # Pad the flattened vectors
-        # TODO: move this (and other steps) to the dataset creation
-        dataset_vectors_padded = pad_vectors(self.dataset["flattened_vectors"].tolist())
-
-        # Convert to matrix
-        dataset_matrix = convert_to_matrix(dataset_vectors_padded)
+        # Get the matrix from the dataset
+        dataset_matrix = np.array(self.dataset["matrix"].tolist())
         self.dimension = dataset_matrix.shape[1]
 
-        # Normalize dataset vectors
-        faiss.normalize_L2(dataset_matrix)
-
         # Build FAISS index
-        self.index = build_faiss_index(dataset_matrix)
+        self.index = faiss.IndexFlatIP(self.dimension)
+        self.index.add(dataset_matrix)
 
         model_name = config.get("SEMANTIC_SIM").get("MODEL").lower()
         self.model = SentenceTransformer(
             model_name, trust_remote_code=True, cache_folder="models"
         )
 
-    def top_phonetic_old(
-        self,
-        input_word: str,
-        language_code: str,
-        top_n: int,
-    ) -> tuple[pd.DataFrame, str]:
-        """
-        Main function to find top_n closest phonetically similar words to the input IPA.
+    def semantic_sim(self, embedding, single_results: pd.DataFrame) -> list:
+        """Calculate the semantic similarity between the input word and the corpus embeddings.
 
         Parameters
         ----------
-        - ipa_input: String, IPA representation of the input word
-        - top_n: Integer, number of top similar words to retrieve
-        - vectorizer: Function used for vectorizing IPA input
-        - vector_column: String, name of the column containing vectors
+        embedding : tensor
+            The embedding of the input word
+        single_results : pd.DataFrame
+            The results of the single word search
 
         Returns
         -------
-        - DataFrame containing the top_n similar words and their distances
-        - The IPA representation of the input word
+        list
+            The cosine similarity scores between the input word and the corpus embeddings
         """
-        # Convert the input word to IPA representation
-        ipa = word2ipa(input_word, language_code, self.g2p_model)
-
-        # Vectorize input
-        input_vector_padded = vectorize_input(
-            ipa,
-            self.vectorizer,
-            self.dimension,
-        )
-
-        # Normalize input vector
-        faiss.normalize_L2(input_vector_padded)
-
-        # Perform search
-        distances, indices = self.index.search(input_vector_padded, top_n)
-
-        # Check if no similar words found
-        if len(indices) == 0:
-            logger.error("No similar words found.")
-            return pd.DataFrame({"token_ort": [], "token_ipa": [], "distance": []})
-
-        # Retrieve closest words
-        closest_words = self.dataset.iloc[indices[0]][["token_ort", "token_ipa"]]
-
-        # Add the distance column
-        closest_words["distance"] = distances[0]
-
-        return closest_words, ipa
-
-    def semantic_sim(self, embedding, single_results: pd.DataFrame) -> list:
         # Shape should be [x, embedding_dim]
 
         # Stack the numpy arrays into one array and convert it to a tensor
