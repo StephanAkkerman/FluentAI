@@ -209,24 +209,24 @@ class Phonetic_Similarity:
             [
                 "token_ort",
                 "token_ipa",
-                "norm_freq",
-                "scaled_aoa",
-                "imageability_score",
+                "freq",
+                "aoa",
+                "imageability",
                 "word_embedding",
             ]
         ].copy()
         results["distance"] = full_dists[0]
-        results["semantic_similarity"] = self.semantic_sim(embedding, results)
-        results["orthographic_similarity"] = self.orthographic_sim(
+        results["semantic"] = self.semantic_sim(embedding, results)
+        results["orthographic"] = self.orthographic_sim(
             transliterated, results["token_ort"].to_list()
         )
         results["score"] = (
             results["distance"]
-            + results["norm_freq"]
-            + results["scaled_aoa"]
-            + results["imageability_score"]
-            + results["semantic_similarity"]
-            + results["orthographic_similarity"]
+            + results["freq"]
+            + results["aoa"]
+            + results["imageability"]
+            + results["semantic"]
+            + results["orthographic"]
         )
         return results
 
@@ -241,11 +241,11 @@ class Phonetic_Similarity:
                     "token_ort",
                     "token_ipa",
                     "distance",
-                    "norm_freq",
-                    "scaled_aoa",
-                    "imageability_score",
-                    "semantic_similarity",
-                    "orthographic_similarity",
+                    "freq",
+                    "aoa",
+                    "imageability",
+                    "semantic",
+                    "orthographic",
                     "score",
                 ]
             )
@@ -270,9 +270,9 @@ class Phonetic_Similarity:
                 [
                     "token_ort",
                     "token_ipa",
-                    "norm_freq",
-                    "scaled_aoa",
-                    "imageability_score",
+                    "freq",
+                    "aoa",
+                    "imageability",
                     "word_embedding",
                 ]
             ].copy()
@@ -280,9 +280,9 @@ class Phonetic_Similarity:
                 [
                     "token_ort",
                     "token_ipa",
-                    "norm_freq",
-                    "scaled_aoa",
-                    "imageability_score",
+                    "freq",
+                    "aoa",
+                    "imageability",
                     "word_embedding",
                 ]
             ].copy()
@@ -297,16 +297,16 @@ class Phonetic_Similarity:
             avg_distance = (prefix_dists_arr[:, None] + suffix_dists_arr[None, :]) / 2.0
 
             freq = (
-                prefix_results["norm_freq"].values[:, None]
-                + suffix_results["norm_freq"].values[None, :]
+                prefix_results["freq"].values[:, None]
+                + suffix_results["freq"].values[None, :]
             ) / 2
             aoa = (
-                prefix_results["scaled_aoa"].values[:, None]
-                + suffix_results["scaled_aoa"].values[None, :]
+                prefix_results["aoa"].values[:, None]
+                + suffix_results["aoa"].values[None, :]
             ) / 2
             imageability = (
-                prefix_results["imageability_score"].values[:, None]
-                + suffix_results["imageability_score"].values[None, :]
+                prefix_results["imageability"].values[:, None]
+                + suffix_results["imageability"].values[None, :]
             ) / 2
 
             semantic_similarity_1d = np.array(
@@ -384,11 +384,11 @@ class Phonetic_Similarity:
                 "token_ort",
                 "token_ipa",
                 "distance",
-                "norm_freq",
-                "scaled_aoa",
-                "imageability_score",
-                "semantic_similarity",
-                "orthographic_similarity",
+                "freq",
+                "aoa",
+                "imageability",
+                "semantic",
+                "orthographic",
                 "score",
             ],
         )
@@ -400,6 +400,8 @@ class Phonetic_Similarity:
         combined = pd.concat([full_results, split_results], ignore_index=True)
         combined = combined.drop_duplicates(subset=["token_ort", "token_ipa"])
         combined = combined.sort_values(by="score", ascending=False)
+        # Drop word_embedding column
+        combined = combined.drop(columns=["word_embedding"])
         return combined.head(top_n).reset_index(drop=True)
 
 
