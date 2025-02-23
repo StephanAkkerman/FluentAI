@@ -9,12 +9,11 @@ from sentence_transformers import SentenceTransformer, util
 
 from fluentai.constants.config import config
 from fluentai.logger import logger
-from fluentai.services.mnemonic.phonetic.ipa2vec import panphon_vec, soundvec
-from fluentai.services.mnemonic.phonetic.utils.cache import load_from_cache
-from fluentai.services.mnemonic.phonetic.utils.vectors import (
-    convert_to_matrix,
-    pad_vectors,
+from fluentai.services.mnemonic.orthographic.compute import (
+    compute_damerau_levenshtein_similarity,
 )
+from fluentai.services.mnemonic.phonetic.ipa2vec import panphon_vec, soundvec
+from fluentai.services.mnemonic.phonetic.utils.cache import load_mnemonics
 from fluentai.services.mnemonic.semantic.translator import translate_word
 
 
@@ -99,9 +98,7 @@ class Phonetic_Similarity:
             self.vectorizer = soundvec
 
         # Attempt to load from cache
-        self.dataset = pd.read_parquet(
-            "datasets/mnemonics.parquet"
-        )  # load_from_cache(method)
+        self.dataset = load_mnemonics(method)
 
         # Get the matrix from the dataset
         dataset_matrix = np.array(self.dataset["matrix"].tolist())
@@ -132,6 +129,7 @@ class Phonetic_Similarity:
             The cosine similarity scores between the input word and the corpus embeddings
         """
         # Shape should be [x, embedding_dim]
+        logger.debug("Generating semantic similarity...")
 
         # Stack the numpy arrays into one array and convert it to a tensor
         corpus_embeddings = torch.tensor(
@@ -145,6 +143,15 @@ class Phonetic_Similarity:
         cos_scores = util.cos_sim(embedding, corpus_embeddings)
 
         return cos_scores.squeeze(0).cpu().tolist()
+
+    def orthographic_sim(self, transliterated_word: str, words: list) -> list:
+        """Calculate the orthographic similarity between the input word and the corpus words."""
+        # Orthographic similarity, use damerau levenshtein
+        logger.info("Generating orthographic similarity...")
+        return [
+            compute_damerau_levenshtein_similarity(transliterated_word, word)
+            for word in words
+        ]
 
     def top_phonetic(
         self,
@@ -161,21 +168,22 @@ class Phonetic_Similarity:
         to generate additional candidate pairs using vectorized operations.
         """
         logger.debug(f"Finding top {top_n} phonetically similar words to {input_word}.")
-        penalty = 0  # TODO: add penalty to config
 
         # Step 1: Translate and embed the input word.
-        translated, _ = asyncio.run(translate_word(input_word, language_code))
+        translated, transliterated = asyncio.run(
+            translate_word(input_word, language_code)
+        )
         embedding = self._get_embedding(translated)
 
         # Step 2: Convert the input word to IPA.
         ipa = word2ipa(input_word, language_code, self.g2p_model)
 
         # Step 3: Perform a full–word search.
-        full_results = self._full_word_search(ipa, top_n, embedding)
+        full_results = self._full_word_search(ipa, top_n, embedding, transliterated)
 
         # Step 4: Compute split–based candidates if the IPA is long enough.
         split_results = self._split_candidates_search(
-            ipa, embedding, min_seg_length, top_k, penalty
+            ipa, embedding, min_seg_length, top_k, transliterated
         )
 
         # Step 5: Combine the full–word and split candidates, remove duplicates, and sort.
@@ -189,7 +197,9 @@ class Phonetic_Similarity:
         )
         return embedding.unsqueeze(0) if embedding.dim() == 1 else embedding
 
-    def _full_word_search(self, ipa: str, top_n: int, embedding) -> pd.DataFrame:
+    def _full_word_search(
+        self, ipa: str, top_n: int, embedding, transliterated: str
+    ) -> pd.DataFrame:
         """Perform a full–word search using FAISS and compute the full search scores."""
         input_vector = vectorize_input(ipa, self.vectorizer, self.dimension)
         faiss.normalize_L2(input_vector)
@@ -207,19 +217,24 @@ class Phonetic_Similarity:
         ].copy()
         results["distance"] = full_dists[0]
         results["semantic_similarity"] = self.semantic_sim(embedding, results)
+        results["orthographic_similarity"] = self.orthographic_sim(
+            transliterated, results["token_ort"].to_list()
+        )
         results["score"] = (
             results["distance"]
             + results["norm_freq"]
             + results["scaled_aoa"]
             + results["imageability_score"]
             + results["semantic_similarity"]
+            + results["orthographic_similarity"]
         )
         return results
 
     def _split_candidates_search(
-        self, ipa: str, embedding, min_seg_length: int, top_k: int, penalty: float
+        self, ipa: str, embedding, min_seg_length: int, top_k: int, transliterated: str
     ) -> pd.DataFrame:
         """Compute candidate pairs based on splitting the IPA transcription."""
+        penalty = 0.1
         if len(ipa) < 2 * min_seg_length:
             return pd.DataFrame(
                 columns=[
@@ -230,6 +245,7 @@ class Phonetic_Similarity:
                     "scaled_aoa",
                     "imageability_score",
                     "semantic_similarity",
+                    "orthographic_similarity",
                     "score",
                 ]
             )
@@ -299,9 +315,6 @@ class Phonetic_Similarity:
             semantic_similarity = np.repeat(
                 semantic_similarity_1d[:, None], top_k, axis=1
             )
-            score_matrix = (
-                avg_distance + freq + aoa + imageability + semantic_similarity
-            ) * (1 - penalty)
 
             # Combine token strings for candidates.
             prefix_words = np.array(
@@ -313,6 +326,31 @@ class Phonetic_Similarity:
             combined_words = np.char.add(
                 np.char.add(prefix_words[:, None], "+"), suffix_words[None, :]
             )
+
+            # combined_words is a 2D array of shape (top_k, top_k) containing strings like "prefix+suffix"
+            combined_words_flat = combined_words.flatten()
+
+            # Compute the similarity for each candidate pair using a list comprehension.
+            orthographic_sim_flat = np.array(
+                [
+                    compute_damerau_levenshtein_similarity(transliterated, word)
+                    for word in combined_words_flat
+                ]
+            )
+
+            # Reshape the flat array back to the 2D shape.
+            orthographic_similarity = orthographic_sim_flat.reshape(
+                combined_words.shape
+            )
+
+            score_matrix = (
+                avg_distance
+                + freq
+                + aoa
+                + imageability
+                + semantic_similarity
+                + orthographic_similarity
+            ) * (1 - penalty)
 
             prefix_ipas = np.array(
                 prefix_results["token_ipa"].astype(str).values, dtype="<U50"
@@ -333,10 +371,12 @@ class Phonetic_Similarity:
                     aoa.flatten(),
                     imageability.flatten(),
                     semantic_similarity.flatten(),
+                    orthographic_similarity.flatten(),
                     score_matrix.flatten(),
                 )
             )
             candidates.extend(candidate_tuples)
+            # TODO: dont recalculate when it has been done in a previous loop
 
         return pd.DataFrame(
             candidates,
@@ -348,6 +388,7 @@ class Phonetic_Similarity:
                 "scaled_aoa",
                 "imageability_score",
                 "semantic_similarity",
+                "orthographic_similarity",
                 "score",
             ],
         )
