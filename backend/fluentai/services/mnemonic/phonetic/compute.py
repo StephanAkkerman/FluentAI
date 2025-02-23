@@ -398,14 +398,14 @@ class Phonetic_Similarity:
         combined = combined.sort_values(by="score", ascending=False)
         # Drop word_embedding column
         combined = combined.drop(columns=["word_embedding"])
-        return combined.head(top_n).reset_index(drop=True)
+        return combined.reset_index(drop=True)
 
 
 if __name__ == "__main__":
     # Example usage
     word_input = "ratatouille"
     language_code = "eng-us"
-    top_n = 25
+    top_n = 250
 
     # Load the G2P model
     phon_sim = Phonetic_Similarity()
