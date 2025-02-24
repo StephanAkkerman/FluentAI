@@ -136,9 +136,10 @@ class Phonetic_Similarity:
         dataset_matrix = np.array(self.dataset["matrix"].tolist())
         self.dimension = dataset_matrix.shape[1]
 
-        # Build FAISS index using MIPS
-        # (https://github.com/facebookresearch/faiss/wiki/MetricType-and-distances#metric_inner_product)
+        # IndexFlatIP = Cosine similarity / Inner product
         self.index = faiss.IndexFlatIP(self.dimension)
+        # faiss.IndexFlatL2 = Euclidean distance
+        # faiss.IndexIVFFlat for faster query times
         self.index.add(dataset_matrix)
 
         model_name = config.get("SEMANTIC_SIM").get("MODEL").lower()
@@ -448,11 +449,10 @@ if __name__ == "__main__":
 
     # Load the G2P model
     phon_sim = Phonetic_Similarity()
-    phon_sim.test(word_input, language_code)
+    # phon_sim.test(word_input, language_code)
 
-    # result = phon_sim.get_candidate_distance("rat+tattoo", language_code)
-    # # result = phon_sim.top_phonetic(word_input, language_code, top_n)
-    # print(result)
+    result = phon_sim.top_phonetic(word_input, language_code, top_n)
+    print(result)
 
-    # # Print where token_ort == "rat+tattoo"
-    # print(result[0][result[0]["token_ort"] == "rat+tattoo"])
+    # Print where token_ort == "rat+tattoo"
+    print(result[0][result[0]["token_ort"] == "rat+tattoo"])
