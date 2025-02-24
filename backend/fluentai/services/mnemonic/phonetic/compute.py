@@ -136,7 +136,8 @@ class Phonetic_Similarity:
         dataset_matrix = np.array(self.dataset["matrix"].tolist())
         self.dimension = dataset_matrix.shape[1]
 
-        # Build FAISS index
+        # Build FAISS index using MIPS
+        # (https://github.com/facebookresearch/faiss/wiki/MetricType-and-distances#metric_inner_product)
         self.index = faiss.IndexFlatIP(self.dimension)
         self.index.add(dataset_matrix)
 
@@ -400,6 +401,44 @@ class Phonetic_Similarity:
         combined = combined.drop(columns=["word_embedding"])
         return combined.reset_index(drop=True)
 
+    def test(self, input_word: str, language_code: str):
+        import numpy as np
+
+        ipa = word2ipa(input_word, language_code, self.g2p_model)
+
+        # For loop
+
+        input_vector = vectorize_input(ipa, self.vectorizer, self.dimension)
+        faiss.normalize_L2(input_vector)
+        # Add the input vector to the index
+        self.index.add(input_vector)
+
+        search_word = "tattoo"
+
+        # Search for the word "rat" in the dataset
+        id1 = int(self.dataset[self.dataset["token_ort"] == search_word].index[0])
+        id2 = len(self.dataset)  # This will be the input word
+
+        # Replace id1 and id2 with the indices of your vectors.
+        vec1 = self.index.reconstruct(id1)
+        vec2 = self.index.reconstruct(id2)
+
+        word1 = self.dataset.iloc[id1]
+        # word2 = self.dataset.iloc[id2]
+        print("Word 1:", word1["token_ort"], word1["token_ipa"])
+        # print("Word 2:", word2["token_ort"], word2["token_ipa"])
+
+        # Compute the Euclidean (L2) distance
+        distance = np.linalg.norm(vec1 - vec2)
+        print("Euclidean distance:", distance)
+
+        # Squared Euclidean distance, matching what IndexFlatL2 returns
+        squared_distance = np.sum((vec1 - vec2) ** 2)
+        print("Squared L2 distance:", squared_distance)
+
+        inner_product = np.dot(vec1, vec2)
+        print("Inner product:", inner_product)
+
 
 if __name__ == "__main__":
     # Example usage
@@ -409,9 +448,11 @@ if __name__ == "__main__":
 
     # Load the G2P model
     phon_sim = Phonetic_Similarity()
+    phon_sim.test(word_input, language_code)
 
-    result = phon_sim.top_phonetic(word_input, language_code, top_n)
-    print(result)
+    # result = phon_sim.get_candidate_distance("rat+tattoo", language_code)
+    # # result = phon_sim.top_phonetic(word_input, language_code, top_n)
+    # print(result)
 
-    # Print where token_ort == "rat+tattoo"
-    print(result[0][result[0]["token_ort"] == "rat+tattoo"])
+    # # Print where token_ort == "rat+tattoo"
+    # print(result[0][result[0]["token_ort"] == "rat+tattoo"])
