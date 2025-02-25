@@ -1,4 +1,3 @@
-import asyncio
 
 import faiss
 import numpy as np

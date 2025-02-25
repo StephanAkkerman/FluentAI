@@ -128,6 +128,15 @@ def create_dataset(method: str, file: str = "en_US_filtered") -> None:
 
 
 def upload_dataset(method: str, file: str):
+    """Uploads the dataset to the Hugging Face Hub.
+
+    Parameters
+    ----------
+    method : str
+        Options are: panphon and clts.
+    file : str
+        Options are: en_US, en_US_filtered, and eng_latn_us_broad.
+    """
     file_name = f"{file}_{method}_mnemonics.parquet"
     path = f"datasets/{file_name}"
     repo_id = "StephanAkkerman/mnemonics"
