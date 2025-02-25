@@ -17,49 +17,6 @@ from fluentai.services.mnemonic.phonetic.ipa2vec import panphon_vec, soundvec
 from fluentai.services.mnemonic.semantic.translator import translate_word
 
 
-def word2ipa(
-    word: str,
-    language_code: str,
-    g2p_model,
-) -> str:
-    """
-    Get the IPA representation of a word.
-
-    Parameters
-    ----------
-    word : str
-        The word to convert to IPA
-    language_code : str, optional
-        The language code of the word, by default "eng-us"
-
-    Returns
-    -------
-    str
-        The IPA representation of the word
-    """
-    # Try searching in the dataset
-    if "eng-us" in language_code:
-        # First try lookup in the .tsv file
-        logger.debug("Loading the IPA dataset")
-        eng_ipa = pd.read_csv(
-            hf_hub_download(
-                repo_id=config.get("PHONETIC_SIM").get("IPA").get("REPO"),
-                filename=config.get("PHONETIC_SIM").get("IPA").get("FILE"),
-                cache_dir="datasets",
-                repo_type="dataset",
-            )
-        )
-
-        # Check if the word is in the dataset
-        ipa = eng_ipa[eng_ipa["token_ort"] == word]["token_ipa"]
-
-        if not ipa.empty:
-            return ipa.values[0].replace(" ", "")
-
-    # Use the g2p model
-    return g2p_model.g2p([f"<{language_code}>:{word}"])
-
-
 def vectorize_input(ipa_input: str, vectorizer, dimension: int) -> np.ndarray:
     """
     Vectorize the input IPA string and pad to match dataset vector dimensions.
@@ -158,6 +115,48 @@ class Phonetic_Similarity:
 
         self.penalty = config.get("PENALTY")
 
+    def word2ipa(
+        self,
+        word: str,
+        language_code: str,
+    ) -> str:
+        """
+        Get the IPA representation of a word.
+
+        Parameters
+        ----------
+        word : str
+            The word to convert to IPA
+        language_code : str, optional
+            The language code of the word, by default "eng-us"
+
+        Returns
+        -------
+        str
+            The IPA representation of the word
+        """
+        # Try searching in the dataset
+        if "eng-us" in language_code:
+            # First try lookup in the .tsv file
+            logger.debug("Loading the IPA dataset")
+            eng_ipa = pd.read_csv(
+                hf_hub_download(
+                    repo_id=config.get("PHONETIC_SIM").get("IPA").get("REPO"),
+                    filename=config.get("PHONETIC_SIM").get("IPA").get("FILE"),
+                    cache_dir="datasets",
+                    repo_type="dataset",
+                )
+            )
+
+            # Check if the word is in the dataset
+            ipa = eng_ipa[eng_ipa["token_ort"] == word]["token_ipa"]
+
+            if not ipa.empty:
+                return ipa.values[0].replace(" ", "")
+
+        # Use the g2p model
+        return self.g2p_model.g2p([f"<{language_code}>:{word}"])
+
     def semantic_sim(self, embedding, single_results: pd.DataFrame) -> list:
         """Calculate the semantic similarity between the input word and the corpus embeddings.
 
@@ -198,7 +197,7 @@ class Phonetic_Similarity:
             for word in words
         ]
 
-    def top_phonetic(
+    async def top_phonetic(
         self,
         input_word: str,
         language_code: str,
@@ -214,13 +213,11 @@ class Phonetic_Similarity:
         logger.debug(f"Finding top {top_n} phonetically similar words to {input_word}.")
 
         # Step 1: Translate and embed the input word.
-        translated, transliterated = asyncio.run(
-            translate_word(input_word, language_code)
-        )
+        translated, transliterated = await translate_word(input_word, language_code)
         embedding = self._get_embedding(translated)
 
         # Step 2: Convert the input word to IPA.
-        ipa = word2ipa(input_word, language_code, self.g2p_model)
+        ipa = self.word2ipa(input_word, language_code)
 
         # Step 3: Perform a full–word search.
         full_results = self._full_word_search(ipa, top_n, embedding, transliterated)
@@ -232,7 +229,7 @@ class Phonetic_Similarity:
 
         # Step 5: Combine the full–word and split candidates, remove duplicates, and sort.
         combined_results = self._combine_results(full_results, split_results, top_n)
-        return combined_results, ipa
+        return combined_results, ipa, translated, transliterated
 
     def _get_embedding(self, translated: str):
         """Encode the translated word and ensure the embedding is 2D."""
@@ -395,7 +392,10 @@ class Phonetic_Similarity:
         self, full_results: pd.DataFrame, split_results: pd.DataFrame, top_n: int
     ) -> pd.DataFrame:
         """Combine full–word and split candidate results, remove duplicates, and sort by score."""
-        combined = pd.concat([full_results, split_results], ignore_index=True)
+        if not split_results.empty:
+            combined = pd.concat([full_results, split_results], ignore_index=True)
+        else:
+            combined = full_results
         combined = combined.drop_duplicates(subset=["token_ort", "token_ipa"])
         combined = combined.sort_values(by="score", ascending=False)
         # Drop word_embedding column
@@ -411,11 +411,9 @@ if __name__ == "__main__":
 
     # Load the G2P model
     phon_sim = Phonetic_Similarity()
-    # phon_sim.test(word_input, language_code)
-    phon_sim.test2()
 
-    # result = phon_sim.top_phonetic(word_input, language_code, top_n)
-    # print(result)
+    result = phon_sim.top_phonetic(word_input, language_code, top_n)
+    print(result)
 
-    # # Print where token_ort == "rat+tattoo"
-    # print(result[0][result[0]["token_ort"] == "rat+tattoo"])
+    # Print where token_ort == "rat+tattoo"
+    print(result[0][result[0]["token_ort"] == "rat+tattoo"])
