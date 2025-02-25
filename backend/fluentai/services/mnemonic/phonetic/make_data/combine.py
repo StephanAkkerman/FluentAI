@@ -27,6 +27,7 @@ def create_dataset(method: str, file: str = "en_US_filtered") -> None:
             filename=f"{file}_{method}.parquet",
             cache_dir="datasets",
             repo_type="dataset",
+            force_download=True,
         )
     )
 
@@ -145,9 +146,9 @@ def upload_dataset(method: str, file: str):
 
 if __name__ == "__main__":
     # Options are: panphon and clts.
-    METHOD = "clts"
+    METHOD = "panphon"
     # Options are: en_US, en_US_filtered, and eng_latn_us_broad.
-    file = "en_US"
+    file = "en_US_filtered"
 
     create_dataset(METHOD, file)
     upload_dataset(METHOD, file)

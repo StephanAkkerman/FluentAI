@@ -131,7 +131,7 @@ def main(
     # Make the directories
     os.makedirs(save_loc, exist_ok=True)
 
-    data_file_name = config.get("PHONETIC_SIM").get("IPA").get("FILE")
+    data_file_name = config.get("PHONETIC_SIM").get("IPA").get("FILE").split(".")[0]
 
     if method == "clts":
         output_file = f"{save_loc}/{data_file_name}_clts.parquet"
@@ -152,6 +152,9 @@ def main(
             repo_type="dataset",
         )
     )
+
+    # Remove any leading ˌ from the token_ipa column
+    ds["token_ipa"] = ds["token_ipa"].str.lstrip("ˌ")
 
     # Perform CLTS vectorization
     if method == "clts":

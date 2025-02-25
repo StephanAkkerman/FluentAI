@@ -16,7 +16,7 @@ WEIGHTS:
 
 # Penalty for using 2 words for the mnemonic
 # 0.1 = -10% on the score
-PENALTY: 0.1
+PENALTY: 0.05
 
 # The number of words to consider for each similarity metric
 WORD_LIMIT: 1000
