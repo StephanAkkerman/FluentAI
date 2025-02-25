@@ -10,9 +10,16 @@ WEIGHTS:
   ORTHOGRAPHIC: 0.66
   SEMANTIC: 1
   IMAGEABILITY: 1
+  FREQUENCY: 0.3
+  # Age of Acquisition
+  AOA: 0.2
 
-# The number of words to consider for each similarity metric
-WORD_LIMIT: 1000
+# Penalty for using 2 words for the mnemonic
+# 0.1 = -10% on the score
+PENALTY: 0.05
+
+# The number of candidates to consider for the mnemonic
+MAX_CANDIDATES: 200
 
 G2P:
   MODEL: "charsiu/g2p_multilingual_byT5_small_100"

@@ -80,9 +80,3 @@ def load_config(config_path: str) -> dict:
 
 config_path = load_config_path()
 config = load_config(config_path)
-
-weights = config["WEIGHTS"]
-total_weight = sum(weights.values())
-weights_percentages = {
-    factor: (weight / total_weight) * 100 for factor, weight in weights.items()
-}
