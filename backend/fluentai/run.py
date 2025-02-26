@@ -62,6 +62,8 @@ class MnemonicPipeline:
                 # Get the top phonetic match
                 best_match = best_matches.iloc[0]
                 keyword = best_match["token_ort"]
+                # Replace + with a comma
+                keyword = keyword.replace("+", ", ")
 
             # Use the provided llm_model if available, otherwise default to the one in config
             if llm_model:
@@ -97,4 +99,4 @@ class MnemonicPipeline:
 
 if __name__ == "__main__":
     pipeline = MnemonicPipeline()
-    asyncio.run(pipeline.generate_mnemonic_img("kat", "dut"))
+    asyncio.run(pipeline.generate_mnemonic_img("ratatouille", "eng-us"))
