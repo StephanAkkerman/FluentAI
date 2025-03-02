@@ -6,7 +6,7 @@ on:
     branches:
       - 'main'
     paths:
-      - 'fluentai/frontend/**'
+      - 'frontend/**'
 
 permissions:
   contents: read
@@ -26,7 +26,7 @@ jobs:
 
       - name: Detect package manager
         id: detect-package-manager
-        working-directory: ./fluentai/frontend
+        working-directory: ./frontend
         run: |
           if [ -f "yarn.lock" ]; then
             echo "manager=yarn" >> $GITHUB_OUTPUT
@@ -56,23 +56,23 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            fluentai/frontend/.next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('fluentai/frontend/**/package-lock.json', 'fluentai/frontend/**/yarn.lock') }}-${{ hashFiles('fluentai/frontend/**/*.[jt]s', 'fluentai/frontend/**/*.[jt]sx') }}
+            frontend/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('frontend/**/package-lock.json', 'frontend/**/yarn.lock') }}-${{ hashFiles('frontend/**/*.[jt]s', 'frontend/**/*.[jt]sx') }}
           restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('fluentai/frontend/**/package-lock.json', 'fluentai/frontend/**/yarn.lock') }}-
+            ${{ runner.os }}-nextjs-${{ hashFiles('frontend/**/package-lock.json', 'frontend/**/yarn.lock') }}-
 
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
-        working-directory: ./fluentai/frontend
+        working-directory: ./frontend
 
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
-        working-directory: ./fluentai/frontend
+        working-directory: ./frontend
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./fluentai/frontend/out
+          path: ./frontend/out
 
   deploy:
     environment:
