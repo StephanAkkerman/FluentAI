@@ -27,7 +27,7 @@ export default function RootLayout({
           </main>
           <StatusChecker />
           <footer className="text-center p-6 text-gray-500 dark:text-gray-400 text-sm">
-            <p>© 2025 FluentAI • Made with ❤️ for language learners</p>
+            <p>© 2025 mnemorai • Made with ❤️ for language learners</p>
           </footer>
         </ToastProvider>
       </body>
