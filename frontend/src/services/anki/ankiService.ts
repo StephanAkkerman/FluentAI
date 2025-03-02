@@ -233,4 +233,35 @@ export class AnkiService {
       throw new Error('Failed to create a new deck in Anki.');
     }
   }
+
+  /**
+   * Updates an existing card in Anki
+   * @param card The updated card data
+   * @param noteId The Anki note ID to update
+   * @returns Promise that resolves when the update is complete
+   */
+  async updateCard(card: Card, noteId: number): Promise<void> {
+    try {
+      // Update the note fields in Anki
+      await axios.post(ANKI_CONFIG.API_URL, {
+        action: 'updateNoteFields',
+        version: 6,
+        params: {
+          note: {
+            id: noteId,
+            fields: {
+              "Word": card.word,
+              "Gender, Personal Connection, Extra Info (Back side)": card.verbalCue,
+              "Pronunciation (Recording and/or IPA)": card.ipa + (card.audioUrl.includes('[sound:') ? card.audioUrl : '')
+            }
+          }
+        }
+      });
+
+      console.log(`Card "${card.word}" updated successfully in Anki.`);
+    } catch (error) {
+      console.error('Error updating card in Anki:', error);
+      throw new Error('Failed to update card in Anki.');
+    }
+  }
 }

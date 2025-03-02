@@ -17,6 +17,9 @@ export interface Card {
   tags?: string[];
   notes?: string;
   testSpelling?: boolean;
+
+  // Anki integration fields
+  noteId?: number;
 }
 
 // Request type for card creation

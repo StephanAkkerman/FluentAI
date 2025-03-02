@@ -11,6 +11,7 @@ import { ModelOptions } from "@/interfaces/ModelInterface";
 import { ModelService } from "@/services/modelService";
 
 interface CardGeneratorProps {
+  card: Card | null;
   onCardCreated: (card: Card) => void;
   onLoading: (loading: boolean) => void;
   onError: (error: string) => void;
@@ -20,6 +21,7 @@ interface CardGeneratorProps {
 const modelService = new ModelService();
 
 export default function CardGenerator({
+  card,
   onCardCreated,
   onLoading,
   onError,
@@ -42,7 +44,6 @@ export default function CardGenerator({
     languageCode: "",
     word: ""
   });
-  const [card, setCard] = useState<Card | null>(null);
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   useEffect(() => {
@@ -87,11 +88,9 @@ export default function CardGenerator({
 
     onLoading(true);
     onError("");
-    setCard(null);
 
     try {
       const newCard = await createCard(input);
-      setCard(newCard);
       onCardCreated(newCard);
     } catch (err: any) {
       onError(err.message || "An unexpected error occurred.");

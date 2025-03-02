@@ -1,9 +1,11 @@
+// Updated FlashcardLibrary.tsx
 import React, { useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, Library, AlertCircle, RefreshCw } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { AnkiService } from '@/services/anki/ankiService';
 import Flashcard from '@/components/Flashcard';
 import { Card as FlashCard } from '@/interfaces/CardInterfaces';
+import { useToast } from '@/contexts/ToastContext';
 
 const ankiService = new AnkiService();
 
@@ -15,6 +17,7 @@ const FlashcardLibrary = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const { showToast } = useToast();
 
   const cardsPerPage = 6;
   const totalPages = Math.ceil(cards.length / cardsPerPage);
@@ -116,6 +119,7 @@ const FlashcardLibrary = () => {
             ipa: note.fields['Pronunciation (Recording and/or IPA)'].value.replace(/\[sound:[^\]]+\]/, '').trim(),
             verbalCue: sanitizedVerbalCue,
             languageCode: 'en',
+            noteId: note.noteId // Store the note ID for updates
           };
         })
       );
@@ -128,6 +132,68 @@ const FlashcardLibrary = () => {
       setError('Failed to load deck');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleCardUpdate = async (updatedCard: FlashCard, index: number): Promise<void> => {
+    const cardIndex = startIndex + index;
+    const originalCard = cards[cardIndex];
+    const noteId = originalCard.noteId;
+
+    if (!noteId) {
+      showToast({
+        type: 'error',
+        title: 'Update Failed',
+        message: 'Cannot update this card in Anki (missing note ID).',
+        duration: 5000
+      });
+      throw new Error('Missing note ID');
+    }
+
+    // Ensure we preserve critical fields like audioUrl and imageUrl
+    const fullUpdatedCard: FlashCard = {
+      ...originalCard,
+      ...updatedCard,
+      // Explicitly ensure these are preserved
+      audioUrl: originalCard.audioUrl,
+      imageUrl: originalCard.imageUrl,
+      noteId: originalCard.noteId
+    };
+
+    try {
+      // Optimistically update the UI first
+      const updatedCards = [...cards];
+      updatedCards[cardIndex] = fullUpdatedCard;
+      setCards(updatedCards);
+
+      // Then save changes to Anki
+      await ankiService.updateCard(fullUpdatedCard, noteId);
+
+      // Show success toast
+      showToast({
+        type: 'success',
+        title: 'Card Updated',
+        message: 'Successfully saved changes to Anki.',
+        duration: 3000
+      });
+
+      return Promise.resolve();
+    } catch (error) {
+      console.error('Failed to update card in Anki:', error);
+
+      // Revert the optimistic update
+      const originalCards = [...cards];
+      setCards(originalCards);
+
+      // Show error toast
+      showToast({
+        type: 'error',
+        title: 'Update Failed',
+        message: 'Could not save changes to Anki.',
+        duration: 5000
+      });
+
+      throw error;
     }
   };
 
@@ -211,11 +277,12 @@ const FlashcardLibrary = () => {
         <div className="space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center items-center">
             {currentCards.map((card, index) => (
-              <div key={index} className="transform transition-all duration-300 hover:scale-105 m-auto">
+              <div key={`${card.noteId || index}`} className="m-auto">
                 <Flashcard
                   card={card}
                   isLoading={false}
                   showFront={true}
+                  onCardUpdate={(updatedCard) => handleCardUpdate(updatedCard, index)}
                 />
               </div>
             ))}
@@ -255,7 +322,6 @@ const FlashcardLibrary = () => {
           </div>
         </div>
       )}
-
 
       {/* Empty State */}
       {!loading && !error && cards.length === 0 && selectedDeck && (
