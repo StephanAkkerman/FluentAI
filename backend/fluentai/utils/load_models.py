@@ -32,6 +32,9 @@ def get_model_dir_name(model: str) -> str:
 
 def download_all_models():
     """Download all models from the Hugging Face Hub and clean them up after loading."""
+    # Make the models dir if it does not exist yet
+    os.makedirs("models", exist_ok=True)
+
     # Get the directory names in /models
     downloaded_models = [
         str(entry)
