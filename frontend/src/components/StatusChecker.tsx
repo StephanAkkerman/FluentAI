@@ -1,23 +1,21 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { ANKI_CONFIG } from "@/config/constants";
+import { useToast } from "@/contexts/ToastContext";
 
 interface APIStatus {
   available: boolean | null;
   name: string;
   description: string;
-  show: boolean;
 }
 
 export default function StatusChecker() {
-  const [statuses, setStatuses] = useState<APIStatus[]>([
-    { name: "AnkiConnect", description: "Anki synchronization", available: null, show: true },
-    { name: "Card Generator", description: "Card creation API", available: null, show: true },
+  const { showToast, hideAllToasts } = useToast();
+  const statusesRef = useRef<APIStatus[]>([
+    { name: "AnkiConnect", description: "Anki synchronization", available: null },
+    { name: "Card Generator", description: "Card creation API", available: null },
   ]);
 
-  // Use a single ref to store the polling interval
   const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Keep track of whether component is mounted
   const isMounted = useRef(true);
 
   // Define the API status check function
@@ -59,7 +57,7 @@ export default function StatusChecker() {
   }, []);
 
   // Set up the polling mechanism
-  const POLLING_INTERVAL = 1000; // 10 seconds between checks
+  const POLLING_INTERVAL = 5000; // 5 seconds between checks
   const SUCCESS_DISPLAY_TIME = 3000; // 3 seconds to display success
 
   useEffect(() => {
@@ -68,8 +66,11 @@ export default function StatusChecker() {
       if (!isMounted.current) return;
 
       // Create a copy to work with
-      const updatedStatuses = [...statuses];
-      let shouldPoll = false;
+      const currentStatuses = [...statusesRef.current];
+      const updatedStatuses = [...currentStatuses];
+      const recoveredServices: string[] = [];
+      let hasServiceDown = false;
+      let statusChanged = false;
 
       // Check each service
       for (let i = 0; i < updatedStatuses.length; i++) {
@@ -78,59 +79,74 @@ export default function StatusChecker() {
 
         // If status changed from not available to available (true transition)
         if (status.available === false && isAvailable) {
-          updatedStatuses[i] = { ...status, available: true, show: true };
-
-          // Set a timeout to hide the status after SUCCESS_DISPLAY_TIME
-          if (isMounted.current) {
-            setTimeout(() => {
-              if (isMounted.current) {
-                setStatuses(current => {
-                  const next = [...current];
-                  next[i] = { ...next[i], show: false };
-                  return next;
-                });
-              }
-            }, SUCCESS_DISPLAY_TIME);
-          }
+          updatedStatuses[i] = { ...status, available: true };
+          recoveredServices.push(status.name);
+          statusChanged = true;
         }
         // If checking for the first time and it's available
         else if (status.available === null && isAvailable) {
-          updatedStatuses[i] = { ...status, available: true, show: true };
-
-          // Set a timeout to hide the status after SUCCESS_DISPLAY_TIME
-          if (isMounted.current) {
-            setTimeout(() => {
-              if (isMounted.current) {
-                setStatuses(current => {
-                  const next = [...current];
-                  next[i] = { ...next[i], show: false };
-                  return next;
-                });
-              }
-            }, SUCCESS_DISPLAY_TIME);
-          }
-        }
-        // If status is already available, maintain its state without showing again
-        else if (status.available === true && isAvailable) {
-          // Keep existing state, don't change 'show' property
           updatedStatuses[i] = { ...status, available: true };
         }
-        // If status is unavailable
+        // If service is unavailable
         else if (!isAvailable) {
-          updatedStatuses[i] = { ...status, available: false, show: true };
-          shouldPoll = true; // We need to keep polling
+          if (status.available !== false) {
+            statusChanged = true;
+          }
+          updatedStatuses[i] = { ...status, available: false };
+          hasServiceDown = true;
         }
       }
 
-      // Update state with all changes at once
-      if (isMounted.current) {
-        setStatuses(updatedStatuses);
-      }
+      // Update statuses ref
+      statusesRef.current = updatedStatuses;
 
-      // If all services are now available, we can stop polling
-      if (!shouldPoll && pollingIntervalRef.current) {
-        clearInterval(pollingIntervalRef.current);
-        pollingIntervalRef.current = null;
+      // Show appropriate toast notifications
+      if (statusChanged) {
+        // Clear existing toasts when status changes
+        hideAllToasts();
+
+        // If any service was recovered, show a success toast for it
+        if (recoveredServices.length > 0) {
+          // Show success toast for specifically recovered services
+          showToast({
+            type: 'success',
+            title: `Service${recoveredServices.length > 1 ? 's' : ''} Recovered`,
+            message: `${recoveredServices.join(", ")} ${recoveredServices.length > 1 ? 'are' : 'is'} now available.`,
+            duration: SUCCESS_DISPLAY_TIME // Show longer so users notice it
+          });
+        }
+
+        // If we still have services down, show an error toast after a brief delay
+        // This prevents the toasts from appearing simultaneously
+        if (hasServiceDown) {
+          setTimeout(() => {
+            if (!isMounted.current) return;
+
+            const unavailableServices = statusesRef.current
+              .filter(s => s.available === false)
+              .map(s => s.name)
+              .join(", ");
+
+            showToast({
+              type: 'error',
+              title: 'Service Interruption',
+              message: `${unavailableServices} ${statusesRef.current.filter(s => s.available === false).length > 1 ? 'are' : 'is'} unavailable. Please check your connections.`,
+              duration: 0 // Keep until resolved
+            });
+          }, recoveredServices.length > 0 ? 300 : 0); // Small delay if we just showed a recovery toast
+        } else if (recoveredServices.length > 0) {
+          // If all services are up after some were down, show an additional "all clear" notification
+          setTimeout(() => {
+            if (!isMounted.current) return;
+
+            showToast({
+              type: 'info',
+              title: 'All Systems Operational',
+              message: 'All services are now running properly.',
+              duration: SUCCESS_DISPLAY_TIME
+            });
+          }, 300); // Small delay after the recovery toast
+        }
       }
     };
 
@@ -149,35 +165,8 @@ export default function StatusChecker() {
         pollingIntervalRef.current = null;
       }
     };
-  }, []); // Empty dependency array - only run on mount
+  }, [showToast, hideAllToasts]); // Include toast functions as dependencies
 
-  return (
-    <div className="space-y-0">
-      {statuses.map((status, index) => (
-        <div
-          key={index}
-          className={`transform transition-all duration-500 ease-in-out overflow-hidden
-            ${status.show ? "max-h-24 mb-4 opacity-100 translate-y-0" : "max-h-0 mb-0 opacity-0 -translate-y-4"}
-            ${status.available === null
-              ? "bg-yellow-100 text-yellow-800"
-              : status.available
-                ? "bg-green-100 text-green-800"
-                : "bg-red-100 text-red-800"
-            }`}
-        >
-          <div className="p-4 text-center rounded">
-            {status.available === null && <p>Checking {status.name} availability...</p>}
-            {status.available === true && (
-              <p>{status.name} is available! ({status.description})</p>
-            )}
-            {status.available === false && (
-              <p>
-                <strong>{status.name} is unavailable.</strong> Ensure the {status.description} is running and accessible.
-              </p>
-            )}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
+  // This component doesn't render anything visible on its own now
+  return null;
 }
