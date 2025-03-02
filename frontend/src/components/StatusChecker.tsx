@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef } from "react";
 import { ANKI_CONFIG } from "@/config/constants";
 import { useToast } from "@/contexts/ToastContext";
