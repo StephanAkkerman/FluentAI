@@ -1,96 +1,174 @@
-import React, { useState, useEffect, useRef } from "react";
+"use client";
+
+import { useEffect, useRef } from "react";
 import { ANKI_CONFIG } from "@/config/constants";
+import { useToast } from "@/contexts/ToastContext";
 
 interface APIStatus {
   available: boolean | null;
   name: string;
   description: string;
-  show: boolean;
 }
 
 export default function StatusChecker() {
-  const [statuses, setStatuses] = useState<APIStatus[]>([
-    { name: "AnkiConnect", description: "Anki synchronization", available: null, show: true },
-    { name: "Card Generator", description: "Card creation API", available: null, show: true },
+  const { showToast, hideAllToasts } = useToast();
+  const statusesRef = useRef<APIStatus[]>([
+    { name: "AnkiConnect", description: "Anki synchronization", available: null },
+    { name: "Card Generator", description: "Card creation API", available: null },
   ]);
 
-  // Use a ref to store the initial statuses
-  const initialStatuses = useRef(statuses);
+  const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const isMounted = useRef(true);
+
+  // Define the API status check function
+  const checkAPIStatus = async (name: string): Promise<boolean> => {
+    try {
+      if (name === "AnkiConnect") {
+        const response = await fetch(ANKI_CONFIG.API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "version", version: 6 }),
+        });
+        if (response.ok) {
+          const data = await response.json();
+          return !!data.result;
+        }
+      }
+      if (name === "Card Generator") {
+        const response = await fetch("http://localhost:8000/create_card/supported_languages");
+        if (response.ok) {
+          return true;
+        }
+      }
+      return false;
+    } catch (error) {
+      console.error(`Error checking ${name}:`, error);
+      return false;
+    }
+  };
+
+  // Cleanup when component unmounts
+  useEffect(() => {
+    return () => {
+      isMounted.current = false;
+      if (pollingIntervalRef.current) {
+        clearInterval(pollingIntervalRef.current);
+        pollingIntervalRef.current = null;
+      }
+    };
+  }, []);
+
+  // Set up the polling mechanism
+  const POLLING_INTERVAL = 5000; // 5 seconds between checks
+  const SUCCESS_DISPLAY_TIME = 3000; // 3 seconds to display success
 
   useEffect(() => {
-    const checkAPIStatuses = async () => {
-      const newStatuses = await Promise.all(
-        initialStatuses.current.map(async (status) => {
-          try {
-            if (status.name === "AnkiConnect") {
-              const response = await fetch(ANKI_CONFIG.API_URL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ action: "version", version: 6 }),
-              });
-              if (response.ok) {
-                const data = await response.json();
-                return { ...status, available: !!data.result, show: true };
-              }
-            }
-            if (status.name === "Card Generator") {
-              const response = await fetch("http://localhost:8000/create_card/supported_languages");
-              if (response.ok) {
-                return { ...status, available: true, show: true };
-              }
-            }
-            return { ...status, available: false, show: true };
-          } catch (error) {
-            console.error(`Error checking ${status.name}:`, error);
-            return { ...status, available: false, show: true };
-          }
-        })
-      );
-      setStatuses(newStatuses);
+    // Function to check all statuses at once
+    const checkAllStatuses = async () => {
+      if (!isMounted.current) return;
 
-      newStatuses.forEach((status, index) => {
-        if (status.available === true) {
-          setTimeout(() => {
-            setStatuses((prev) => {
-              const updated = [...prev];
-              updated[index] = { ...status, show: false };
-              return updated;
-            });
-          }, 3000);
+      // Create a copy to work with
+      const currentStatuses = [...statusesRef.current];
+      const updatedStatuses = [...currentStatuses];
+      const recoveredServices: string[] = [];
+      let hasServiceDown = false;
+      let statusChanged = false;
+
+      // Check each service
+      for (let i = 0; i < updatedStatuses.length; i++) {
+        const status = updatedStatuses[i];
+        const isAvailable = await checkAPIStatus(status.name);
+
+        // If status changed from not available to available (true transition)
+        if (status.available === false && isAvailable) {
+          updatedStatuses[i] = { ...status, available: true };
+          recoveredServices.push(status.name);
+          statusChanged = true;
         }
-      });
+        // If checking for the first time and it's available
+        else if (status.available === null && isAvailable) {
+          updatedStatuses[i] = { ...status, available: true };
+        }
+        // If service is unavailable
+        else if (!isAvailable) {
+          if (status.available !== false) {
+            statusChanged = true;
+          }
+          updatedStatuses[i] = { ...status, available: false };
+          hasServiceDown = true;
+        }
+      }
+
+      // Update statuses ref
+      statusesRef.current = updatedStatuses;
+
+      // Show appropriate toast notifications
+      if (statusChanged) {
+        // Clear existing toasts when status changes
+        hideAllToasts();
+
+        // If any service was recovered, show a success toast for it
+        if (recoveredServices.length > 0) {
+          // Show success toast for specifically recovered services
+          showToast({
+            type: 'success',
+            title: `Service${recoveredServices.length > 1 ? 's' : ''} Recovered`,
+            message: `${recoveredServices.join(", ")} ${recoveredServices.length > 1 ? 'are' : 'is'} now available.`,
+            duration: SUCCESS_DISPLAY_TIME // Show longer so users notice it
+          });
+        }
+
+        // If we still have services down, show an error toast after a brief delay
+        // This prevents the toasts from appearing simultaneously
+        if (hasServiceDown) {
+          setTimeout(() => {
+            if (!isMounted.current) return;
+
+            const unavailableServices = statusesRef.current
+              .filter(s => s.available === false)
+              .map(s => s.name)
+              .join(", ");
+
+            showToast({
+              type: 'error',
+              title: 'Service Interruption',
+              message: `${unavailableServices} ${statusesRef.current.filter(s => s.available === false).length > 1 ? 'are' : 'is'} unavailable. Please check your connections.`,
+              duration: 0 // Keep until resolved
+            });
+          }, recoveredServices.length > 0 ? 300 : 0); // Small delay if we just showed a recovery toast
+        } else if (recoveredServices.length > 0) {
+          // If all services are up after some were down, show an additional "all clear" notification
+          setTimeout(() => {
+            if (!isMounted.current) return;
+
+            showToast({
+              type: 'info',
+              title: 'All Systems Operational',
+              message: 'All services are now running properly.',
+              duration: SUCCESS_DISPLAY_TIME
+            });
+          }, 300); // Small delay after the recovery toast
+        }
+      }
     };
 
-    checkAPIStatuses();
-  }, []); // Empty dependency array since we use initialStatuses.current
+    // Run initial check
+    checkAllStatuses();
 
-  return (
-    <div className="space-y-0">
-      {statuses.map((status, index) => (
-        <div
-          key={index}
-          className={`transform transition-all duration-500 ease-in-out overflow-hidden
-            ${status.show ? "max-h-24 mb-4 opacity-100 translate-y-0" : "max-h-0 mb-0 opacity-0 -translate-y-4"}
-            ${status.available === null
-              ? "bg-yellow-100 text-yellow-800"
-              : status.available
-                ? "bg-green-100 text-green-800"
-                : "bg-red-100 text-red-800"
-            }`}
-        >
-          <div className="p-4 text-center rounded">
-            {status.available === null && <p>Checking {status.name} availability...</p>}
-            {status.available === true && (
-              <p>{status.name} is available! ({status.description})</p>
-            )}
-            {status.available === false && (
-              <p>
-                <strong>{status.name} is unavailable.</strong> Ensure the {status.description} is running and accessible.
-              </p>
-            )}
-          </div>
-        </div>
-      ))}
-    </div>
-  );
+    // Set up single polling interval (only if not already set)
+    if (!pollingIntervalRef.current) {
+      pollingIntervalRef.current = setInterval(checkAllStatuses, POLLING_INTERVAL);
+    }
+
+    // Cleanup on effect change
+    return () => {
+      if (pollingIntervalRef.current) {
+        clearInterval(pollingIntervalRef.current);
+        pollingIntervalRef.current = null;
+      }
+    };
+  }, [showToast, hideAllToasts]); // Include toast functions as dependencies
+
+  // This component doesn't render anything visible on its own now
+  return null;
 }
