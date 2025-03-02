@@ -14,55 +14,142 @@ export default function StatusChecker() {
     { name: "Card Generator", description: "Card creation API", available: null, show: true },
   ]);
 
-  // Use a ref to store the initial statuses
-  const initialStatuses = useRef(statuses);
+  // Use a single ref to store the polling interval
+  const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Keep track of whether component is mounted
+  const isMounted = useRef(true);
+
+  // Define the API status check function
+  const checkAPIStatus = async (name: string): Promise<boolean> => {
+    try {
+      if (name === "AnkiConnect") {
+        const response = await fetch(ANKI_CONFIG.API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action: "version", version: 6 }),
+        });
+        if (response.ok) {
+          const data = await response.json();
+          return !!data.result;
+        }
+      }
+      if (name === "Card Generator") {
+        const response = await fetch("http://localhost:8000/create_card/supported_languages");
+        if (response.ok) {
+          return true;
+        }
+      }
+      return false;
+    } catch (error) {
+      console.error(`Error checking ${name}:`, error);
+      return false;
+    }
+  };
+
+  // Cleanup when component unmounts
+  useEffect(() => {
+    return () => {
+      isMounted.current = false;
+      if (pollingIntervalRef.current) {
+        clearInterval(pollingIntervalRef.current);
+        pollingIntervalRef.current = null;
+      }
+    };
+  }, []);
+
+  // Set up the polling mechanism
+  const POLLING_INTERVAL = 1000; // 10 seconds between checks
+  const SUCCESS_DISPLAY_TIME = 3000; // 3 seconds to display success
 
   useEffect(() => {
-    const checkAPIStatuses = async () => {
-      const newStatuses = await Promise.all(
-        initialStatuses.current.map(async (status) => {
-          try {
-            if (status.name === "AnkiConnect") {
-              const response = await fetch(ANKI_CONFIG.API_URL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ action: "version", version: 6 }),
-              });
-              if (response.ok) {
-                const data = await response.json();
-                return { ...status, available: !!data.result, show: true };
-              }
-            }
-            if (status.name === "Card Generator") {
-              const response = await fetch("http://localhost:8000/create_card/supported_languages");
-              if (response.ok) {
-                return { ...status, available: true, show: true };
-              }
-            }
-            return { ...status, available: false, show: true };
-          } catch (error) {
-            console.error(`Error checking ${status.name}:`, error);
-            return { ...status, available: false, show: true };
-          }
-        })
-      );
-      setStatuses(newStatuses);
+    // Function to check all statuses at once
+    const checkAllStatuses = async () => {
+      if (!isMounted.current) return;
 
-      newStatuses.forEach((status, index) => {
-        if (status.available === true) {
-          setTimeout(() => {
-            setStatuses((prev) => {
-              const updated = [...prev];
-              updated[index] = { ...status, show: false };
-              return updated;
-            });
-          }, 3000);
+      // Create a copy to work with
+      const updatedStatuses = [...statuses];
+      let shouldPoll = false;
+
+      // Check each service
+      for (let i = 0; i < updatedStatuses.length; i++) {
+        const status = updatedStatuses[i];
+        const isAvailable = await checkAPIStatus(status.name);
+
+        // If status changed from not available to available (true transition)
+        if (status.available === false && isAvailable) {
+          updatedStatuses[i] = { ...status, available: true, show: true };
+
+          // Set a timeout to hide the status after SUCCESS_DISPLAY_TIME
+          if (isMounted.current) {
+            setTimeout(() => {
+              if (isMounted.current) {
+                setStatuses(current => {
+                  const next = [...current];
+                  next[i] = { ...next[i], show: false };
+                  return next;
+                });
+              }
+            }, SUCCESS_DISPLAY_TIME);
+          }
         }
-      });
+        // If checking for the first time and it's available
+        else if (status.available === null && isAvailable) {
+          updatedStatuses[i] = { ...status, available: true, show: true };
+
+          // Set a timeout to hide the status after SUCCESS_DISPLAY_TIME
+          if (isMounted.current) {
+            setTimeout(() => {
+              if (isMounted.current) {
+                setStatuses(current => {
+                  const next = [...current];
+                  next[i] = { ...next[i], show: false };
+                  return next;
+                });
+              }
+            }, SUCCESS_DISPLAY_TIME);
+          }
+        }
+        // If status is already available, maintain its state without showing again
+        else if (status.available === true && isAvailable) {
+          // Keep existing state, don't change 'show' property
+          updatedStatuses[i] = { ...status, available: true };
+        }
+        // If status is unavailable
+        else if (!isAvailable) {
+          updatedStatuses[i] = { ...status, available: false, show: true };
+          shouldPoll = true; // We need to keep polling
+        }
+      }
+
+      // Update state with all changes at once
+      if (isMounted.current) {
+        setStatuses(updatedStatuses);
+      }
+
+      // If all services are now available, we can stop polling
+      if (!shouldPoll && pollingIntervalRef.current) {
+        clearInterval(pollingIntervalRef.current);
+        pollingIntervalRef.current = null;
+      }
     };
 
-    checkAPIStatuses();
-  }, []); // Empty dependency array since we use initialStatuses.current
+    // Run initial check
+    checkAllStatuses();
+
+    // Set up single polling interval (only if not already set)
+    if (!pollingIntervalRef.current) {
+      pollingIntervalRef.current = setInterval(checkAllStatuses, POLLING_INTERVAL);
+    }
+
+    // Cleanup on effect change
+    return () => {
+      if (pollingIntervalRef.current) {
+        clearInterval(pollingIntervalRef.current);
+        pollingIntervalRef.current = null;
+      }
+    };
+  }, []); // Empty dependency array - only run on mount
 
   return (
     <div className="space-y-0">
