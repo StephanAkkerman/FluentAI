@@ -30,8 +30,9 @@ export default function FormField({
         children
       ) : (
         <input
-          className={`border rounded p-2 bg-white text-gray-800 dark:border-gray-600 ${error ? "border-red-500" : "border-gray-300 dark:border-gray-600"
+          className={`border rounded-lg p-2 w-full bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ${error ? "border-red-500" : "border-gray-300 dark:border-gray-600"
             }`}
+
           value={value}
           onChange={(e) => onChange?.(e.target.value)}
           required={required}
