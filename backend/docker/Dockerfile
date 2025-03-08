@@ -1,0 +1,121 @@
+# Start with a universal base image for common setup
+FROM ubuntu:22.04 AS universal-base
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+  PYTHONUNBUFFERED=1 \
+  DEBIAN_FRONTEND=noninteractive \
+  TZ=UTC
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  python3.10 \
+  python3-pip \
+  python3-dev \
+  git \
+  curl \
+  wget \
+  ffmpeg \
+  libsndfile1 \
+  build-essential \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Create directories for data and models
+RUN mkdir -p /app/models /app/datasets /app/logs /app/local_data/tts
+
+# CPU version - Built directly from universal base
+FROM universal-base AS cpu
+
+# Copy backend requirements
+COPY backend/requirements.txt /app/
+
+# First, install torch and faiss-cpu
+RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu \
+  && pip3 install faiss-cpu
+
+# Next, install the remaining dependencies (filtering out torch and faiss-gpu)
+RUN grep -v "torch==.*\|torch-.*\|faiss-gpu" requirements.txt > cpu_requirements.txt \
+  && pip3 install --no-cache-dir -r cpu_requirements.txt
+
+# GPU version - Use NVIDIA CUDA image
+FROM nvidia/cuda:12.4.0-runtime-ubuntu22.04 AS gpu-base
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+  PYTHONUNBUFFERED=1 \
+  DEBIAN_FRONTEND=noninteractive \
+  TZ=UTC
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  python3.10 \
+  python3-pip \
+  python3-dev \
+  git \
+  curl \
+  wget \
+  ffmpeg \
+  libsndfile1 \
+  build-essential \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Create directories for data and models
+RUN mkdir -p /app/models /app/datasets /app/logs /app/local_data/tts
+
+# Complete GPU setup
+FROM gpu-base AS gpu
+
+# Copy backend requirements
+COPY backend/requirements.txt backend/gpu-requirements.txt /app/
+
+# Install GPU-specific dependencies
+RUN pip3 install --no-cache-dir -r requirements.txt \
+  && pip3 install --no-cache-dir -r gpu-requirements.txt
+
+# Common steps for both CPU and GPU - using a separate stage for code copying
+FROM ${BUILD_TYPE:-cpu} AS final
+
+# Copy the application code from the backend directory
+COPY backend/ /app/
+
+# Create an entrypoint script
+RUN echo '#!/bin/bash\n\
+  if [ ! -f "/app/config.yaml" ]; then\n\
+  echo "ERROR: Config file not found at /app/config.yaml"\n\
+  echo "Make sure to mount the config file from the host system:"\n\
+  echo "  -v /path/to/FluentAI/config.yaml:/app/config.yaml:ro"\n\
+  exit 1\n\
+  fi\n\
+  \n\
+  # Set config path explicitly\n\
+  export FLUENTAI_CONFIG_PATH=/app/config.yaml\n\
+  echo "Using config from: $FLUENTAI_CONFIG_PATH"\n\
+  \n\
+  # Check if languages.json exists\n\
+  if [ ! -f "/app/data/languages.json" ]; then\n\
+  echo "ERROR: languages.json not found at /app/data/languages.json"\n\
+  echo "Make sure the data directory is properly mounted:"\n\
+  echo "  -v /path/to/FluentAI/data:/app/data:ro"\n\
+  exit 1\n\
+  fi\n\
+  \n\
+  # Start the application using uvicorn\n\
+  uvicorn fluentai.api.app:app --host 0.0.0.0 --port 8000 "$@"\n\
+  ' > /app/entrypoint.sh && chmod +x /app/entrypoint.sh
+
+# Expose port
+EXPOSE 8000
+
+# Set entrypoint
+ENTRYPOINT ["/app/entrypoint.sh"]
+
+# Default command
+CMD ["--host", "0.0.0.0", "--port", "8000"]
