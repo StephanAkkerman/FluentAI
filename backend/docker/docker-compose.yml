@@ -4,10 +4,8 @@ services:
     container_name: fluentai-backend-cpu
     build:
       context: ../..
-      dockerfile: backend/docker/Dockerfile
+      dockerfile: backend/docker/Dockerfile-cpu
       target: final
-      args:
-        - BUILD_TYPE=cpu
     ports:
       - "8000:8000"
     volumes:
@@ -32,10 +30,8 @@ services:
     container_name: fluentai-backend-gpu
     build:
       context: ../..
-      dockerfile: backend/docker/Dockerfile
+      dockerfile: backend/docker/Dockerfile-gpu
       target: final
-      args:
-        - BUILD_TYPE=gpu
     ports:
       - "8001:8000"
     volumes:
