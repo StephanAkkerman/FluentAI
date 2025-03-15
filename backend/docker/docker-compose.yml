@@ -33,7 +33,7 @@ services:
       dockerfile: backend/docker/Dockerfile-gpu
       target: final
     ports:
-      - "8001:8000"
+      - "8000:8000"
     volumes:
       - ../../config.yaml:/app/config.yaml:ro
       - models_data:/app/models
