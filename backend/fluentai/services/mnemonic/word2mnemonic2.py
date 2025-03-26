@@ -41,16 +41,24 @@ class MnemonicGen:
             {
                 "role": "system",
                 "content": "You are Qwen, created by Alibaba Cloud. You are a helpful assistant.",
-            },
-            {"role": "user", "content": prompt},
+            }
         ]
 
-    def generate_mnemonic(self, word):
-        mnemonic = self.model.generate(word)
-        return mnemonic
+    def generate_mnemonic(self, language: str = "Indonesian", word: str = "Kucing"):
+        final_message = {
+            "role": "user",
+            "content": f"Think of a mnemonic to remember the {language} word {word}. Think of an English word or 2 words that sound similar to how Kucing would be pronounced in Indonesian. Also consider that the mnemonic should be an easy to imagine word and a word that is commonly used. Give a list of 10 mnemonic options based on these criteria.",
+        }
+
+        # For some reason using tokenizer.apply_chat_template() here causes weird output
+        input = self.messages + [final_message]
+        print(input)
+        output = self.pipe(input)
+        response = output[0]["generated_text"]
+        logger.debug(f"Generated cue: {response}")
+        return response
 
 
 if __name__ == "__main__":
     mnemonic_gen = MnemonicGen()
-    mnemonic = mnemonic_gen.generate_mnemonic("apple")
-    print(mnemonic)
+    mnemonic = mnemonic_gen.generate_mnemonic()
