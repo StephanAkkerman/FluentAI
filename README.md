@@ -11,9 +11,6 @@
 
 ---
 
-> [!CAUTION]
-> This project is currently under development, please see the issues to see everything that still needs to be done before this is ready to use.
-
 ## Introduction
 
 FluentAI is inspired by the method detailed in the paper [SmartPhone: Exploring Keyword Mnemonic with Auto-generated Verbal and Visual Cues by Jaewook Lee and Andrew Lan](https://arxiv.org/pdf/2305.10436.pdf). The aim is to recreate their approach using accessible, open-source models.
@@ -31,11 +28,10 @@ You can find our docs [here](https://github.com/StephanAkkerman/FluentAI/wiki) a
     - [Building from Source](#building-from-source)
     - [GPU Support](#gpu-support)
 - [Usage](#usage-)
+    - [Docker](#docker-) 
 - [Citation](#citation-)
 - [Contributing](#contributing-)
 - [License](#license-)
-
-
 
 ## Prerequisites 📋
 
@@ -99,6 +95,10 @@ Using FluentAI is simple, after following the steps in [pre-requisites](#pre-req
 ```bash
 python fluentai/services/card_gen/api.py
 ``` 
+
+### Docker 🐋 (Optional)
+
+You can also run FluentAI using Docker. This is a great option if you want to avoid installing dependencies directly on your machine. To do so follow the steps in the Docker [README](backend/docker/README.md).
 
 ### Running the Front-End (Optional)
 
