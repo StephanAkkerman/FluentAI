@@ -2,7 +2,16 @@ import os
 from pathlib import Path
 
 import torch
-from diffusers import AutoPipelineForText2Image, SanaPipeline
+from diffusers import (
+    AutoPipelineForText2Image,
+    SanaPipeline,
+    SanaTransformer2DModel,
+)
+from diffusers import (
+    BitsAndBytesConfig as DiffusersBitsAndBytesConfig,
+)
+from transformers import AutoModel
+from transformers import BitsAndBytesConfig as BitsAndBytesConfig
 
 from fluentai.constants.config import config
 from fluentai.logger import logger
@@ -56,12 +65,55 @@ class ImageGen:
         """Initialize the pipeline."""
         pipe_func = self._get_pipe_func()
         logger.debug(f"Initializing pipeline for model: {self.model}")
-        self.pipe = pipe_func.from_pretrained(
-            self.model,
-            torch_dtype=torch.float16,
-            variant="fp16",
-            cache_dir="models",
-        )
+
+        quantization = self.config.get("QUANTIZATION")
+
+        if quantization is None:
+            self.pipe = pipe_func.from_pretrained(
+                self.model,
+                torch_dtype=torch.float16,
+                variant="fp16",
+                cache_dir="models",
+            )
+        else:
+            if "sana" in self.model_name.lower():
+                if quantization == "8bit":
+                    quant_config = BitsAndBytesConfig(load_in_8bit=True)
+                    logger.debug("Using 8-bit quantization for Sana model")
+                elif quantization == "4bit":
+                    quant_config = BitsAndBytesConfig(load_in_4bit=True)
+                    logger.debug("Using 4-bit quantization for Sana model")
+                else:
+                    raise ValueError(
+                        f"Invalid quantization type. Use '8bit' or '4bit'. Your quantization is: {quantization}"
+                    )
+
+                text_encoder_8bit = AutoModel.from_pretrained(
+                    self.model,
+                    subfolder="text_encoder",
+                    quantization_config=quant_config,
+                    torch_dtype=torch.float16,
+                    cache_dir="models",
+                )
+
+                quant_config = DiffusersBitsAndBytesConfig(load_in_8bit=True)
+                transformer_8bit = SanaTransformer2DModel.from_pretrained(
+                    self.model,
+                    subfolder="transformer",
+                    quantization_config=quant_config,
+                    torch_dtype=torch.float16,
+                    cache_dir="models",
+                )
+
+                self.pipe = SanaPipeline.from_pretrained(
+                    self.model,
+                    text_encoder=text_encoder_8bit,
+                    transformer=transformer_8bit,
+                    torch_dtype=torch.float16,
+                    device_map="balanced",  # Could decrease speed
+                )
+            else:
+                raise NotImplementedError("Quantization not supported for this model.")
 
     @manage_memory(
         targets=["pipe"],
