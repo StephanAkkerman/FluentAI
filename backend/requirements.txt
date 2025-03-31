@@ -1,5 +1,5 @@
 torch==2.5.1
-transformers[sentencepiece]==4.47.1
+transformers[sentencepiece]==4.50.3
 sentence-transformers==3.4.1
 accelerate==1.5.2
 numpy==1.26.4
