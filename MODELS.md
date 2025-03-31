@@ -11,6 +11,8 @@ Unfortunately, there are no current leaderboards or benchmarks for these models.
 ## Image Generation (Text-to-Image)
 - [Text-to-Image Leaderboard](https://huggingface.co/spaces/ArtificialAnalysis/Text-to-Image-Leaderboard)
 - [Artificial Analysis Leaderboard](https://artificialanalysis.ai/text-to-image)
+- [imgsys Leaderboard](https://imgsys.org/rankings)
+- [lmarena Leaderboard](https://lmarena.ai/?leaderboard=)
 
 ## Semantic Similarity (Embeddings)
 - [MTEB Leaderboard](https://huggingface.co/spaces/mteb/leaderboard)
