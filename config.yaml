@@ -46,7 +46,7 @@ IMAGE_GEN:
   # Options are: None, 4bit, 8bit
   QUANTIZATION: None
   DELETE_AFTER_USE: False
-  OFFLOAD: False
+  OFFLOAD: True
   PARAMS:
     num_inference_steps: 40
     height: 512
