@@ -44,7 +44,7 @@ IMAGE_GEN:
   LARGE_MODEL: Efficient-Large-Model/Sana_600M_512px_diffusers # 9GB vram
   OUTPUT_DIR: "imagine/generated-img"
   # Options are: None, 4bit, 8bit
-  QUANTIZATION: 8bit
+  QUANTIZATION: None
   DELETE_AFTER_USE: False
   OFFLOAD: False
   PARAMS:
