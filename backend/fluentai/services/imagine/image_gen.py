@@ -68,7 +68,8 @@ class ImageGen:
 
         quantization = self.config.get("QUANTIZATION")
 
-        if quantization is None:
+        if quantization != "4bit" and quantization != "8bit":
+            logger.debug("Using default model loading without quantization")
             self.pipe = pipe_func.from_pretrained(
                 self.model,
                 torch_dtype=torch.float16,
