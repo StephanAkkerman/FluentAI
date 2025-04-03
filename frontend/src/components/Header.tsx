@@ -19,7 +19,7 @@ export default function Header() {
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
   return (
-    <header className="w-full flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm">
+    <header className="fixed w-full z-50 flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 shadow-sm">
       <div className="flex items-center space-x-4">
         <Image
           src={logo}
@@ -36,6 +36,10 @@ export default function Header() {
         <Link href="/" className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100">
           Home
         </Link>
+        <Link href="/card-gen" className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100">
+          Card Generation
+        </Link>
+
         <Link href="/library" className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100">
           Library
         </Link>
