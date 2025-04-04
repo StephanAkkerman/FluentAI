@@ -1,8 +1,12 @@
 "use client"
 import LoadingScreen from "./LoadingScreen";
-import HowSection from "./HowSection";
-import HeroSection from "./HeroSection";
+import WhySection from "./landing-page/WhySection";
+import HowSection from "./landing-page/HowSection";
+import HeroSection from "./landing-page/HeroSection";
 import React, { useEffect, useState, useRef } from "react";
+
+import { LanguageDock } from "@/components/ui/language-dock";
+
 
 
 
@@ -36,10 +40,16 @@ const LandingPage = () => {
 
 
             <div className="min-h-screen flex flex-col w-full">
-                <HeroSection />
+                <section id="home">
+                    <HeroSection />
+                </section>
+
+                <section id="why" className="duration-300 transition-all -translate-y-[5%]">
+                    <WhySection />
+                </section>
 
                 {/* 2. HOW IT WORKS SECTION */}
-                < section id="how-it-works" className="py-20 " >
+                < section id="how" className="py-20" >
                     <HowSection />
                 </section >
 
@@ -99,30 +109,7 @@ const LandingPage = () => {
                             Languages Available
                         </h2>
                         <div className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
-                            <button className="px-6 py-3 rounded-full bg-[#FF8A5B] text-white font-medium">
-                                Spanish
-                            </button>
-                            <button className="px-6 py-3 rounded-full bg-white border-2 border-[#97E2F9] text-[#5CCCEE] font-medium">
-                                French
-                            </button>
-                            <button className="px-6 py-3 rounded-full bg-white border-2 border-[#F6CBAF] text-[#FF8A5B] font-medium">
-                                German
-                            </button>
-                            <button className="px-6 py-3 rounded-full bg-white border-2 border-[#97E2F9] text-[#5CCCEE] font-medium">
-                                Italian
-                            </button>
-                            <button className="px-6 py-3 rounded-full bg-white border-2 border-[#F6CBAF] text-[#FF8A5B] font-medium">
-                                Japanese
-                            </button>
-                            <button className="px-6 py-3 rounded-full bg-white border-2 border-[#97E2F9] text-[#5CCCEE] font-medium">
-                                Mandarin
-                            </button>
-                            <button className="px-6 py-3 rounded-full bg-white border-2 border-[#F6CBAF] text-[#FF8A5B] font-medium">
-                                Korean
-                            </button>
-                            <button className="px-6 py-3 rounded-full bg-white border-2 border-[#97E2F9] text-[#5CCCEE] font-medium">
-                                Russian
-                            </button>
+                            <LanguageDock />
                         </div>
                     </div>
                 </section >

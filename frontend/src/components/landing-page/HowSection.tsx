@@ -1,6 +1,6 @@
 "use client"
 import React, { useRef, useEffect, useState, ReactNode } from "react";
-import Browser from "./ui/Browser";
+import Browser from "../ui/Browser";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 
 const HowSection = () => {
@@ -10,7 +10,7 @@ const HowSection = () => {
         <>
             <div className="w-full flex items-center justify-center h-48">
                 <h1 className="text-xl font-bold text-white">
-                    Step 1: <br /> Create Your Card
+                    Step 1: <br /> Select Your Target Language
                 </h1>
             </div>
         </>
@@ -28,7 +28,7 @@ const HowSection = () => {
                 setBrowserContent(
                     <div className="w-full flex items-center justify-center h-48">
                         <h1 className="text-xl font-bold text-white">
-                            Step 1: <br /> Create Your Card
+                            Step 1: <br /> Select Your Target Language
                         </h1>
                     </div>
                 );
@@ -36,7 +36,7 @@ const HowSection = () => {
                 setBrowserContent(
                     <div className="w-full flex items-center justify-center h-48">
                         <h1 className="text-xl font-bold text-white">
-                            Step 2: <br /> Customize Your Settings
+                            Step 2: <br /> Build Your Learning Path
                         </h1>
                     </div>
                 );
@@ -44,7 +44,7 @@ const HowSection = () => {
                 setBrowserContent(
                     <div className="w-full flex items-center justify-center h-48">
                         <h1 className="text-xl font-bold text-white">
-                            Step 3: <br /> Share With Your Team
+                            Step 3: <br /> Discover Memory-Boosting Flashcards
                         </h1>
                     </div>
                 );
@@ -52,7 +52,7 @@ const HowSection = () => {
                 setBrowserContent(
                     <div className="w-full flex items-center justify-center h-48">
                         <h1 className="text-xl font-bold text-white">
-                            Step 4: <br /> Learn Via Flashcards
+                            Step 4: <br /> Learn Through Intelligent Practice
                         </h1>
                     </div>
                 );
@@ -112,9 +112,9 @@ const HowSection = () => {
         <section
             ref={sectionRef}
             id="how-it-works"
-            className="relative w-full h-[650vh]"
+            className="relative w-full h-[650vh] "
         >
-            <div className="container mx-auto px-6 sticky top-[8rem]">
+            <div className="container mx-auto px-6 sticky top-[8rem] overflow-hidden">
                 <h2 className=" text-3xl font-bold text-center text-gray-800 mb-12">
                     How It Works
                 </h2>
@@ -126,7 +126,7 @@ const HowSection = () => {
                 >
 
                     <Browser
-                        urlText="https://FluentAI.com"
+                        urlText="https://Mnemora.com"
                         dark={true}
                         className="w-[50%] max-w-[500px]"
                     >
@@ -138,8 +138,8 @@ const HowSection = () => {
                     className="transition-all duration-300  ">
                     <div className="bg-gradient-to-r from-blue-500 to-teal-400 rounded-xl w-[40%] p-1">
                         <div className="bg-gray-50 rounded-xl p-2">
-                            <h3 className="font-bold text-xl">Step 1</h3>
-                            <p className="">First we will select a word we want to learn</p>
+                            <h3 className="font-bold text-xl">Select Your Target Language</h3>
+                            <p className="">Choose the language you want to learn from our growing collection of supported languages. Whether you're interested in Spanish, Japanese, German, or others, Mnemora adapts to your language learning goals.</p>
                         </div>
                     </div>
 
@@ -149,8 +149,8 @@ const HowSection = () => {
                     className="transition-all duration-300 ">
                     <div className="bg-gradient-to-r from-blue-500 to-teal-400 rounded-xl w-[40%] p-1">
                         <div className="bg-gray-50 rounded-xl p-2">
-                            <h3 className="font-bold text-xl">Step 2</h3>
-                            <p className="">Create a card so we can start to learn</p>
+                            <h3 className="font-bold text-xl">Build Your Learning Path</h3>
+                            <p className="">Either select specific words you want to master or let Mnemora suggest an optimized learning route based on frequency and usefulness. You control what you learn and when you learn it.</p>
                         </div>
                     </div>
 
@@ -160,8 +160,8 @@ const HowSection = () => {
                     className="transition-all duration-300 ">
                     <div className="bg-gradient-to-r from-blue-500 to-teal-400 rounded-xl w-[40%] p-1">
                         <div className="bg-gray-50 rounded-xl p-2">
-                            <h3 className="font-bold text-xl">Step 3</h3>
-                            <p className="">Create a card so we can start to learn</p>
+                            <h3 className="font-bold text-xl">Discover Memory-Boosting Flashcards</h3>
+                            <p className="">Mnemora automatically generates personalized flashcards for each word, featuring clever mnemonic phrases and vivid images that connect the foreign word to familiar sounds and concepts.</p>
                         </div>
                     </div>
 

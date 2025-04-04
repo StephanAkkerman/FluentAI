@@ -10,12 +10,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tabler/icons-react": "^3.31.0",
+    "@tsparticles/engine": "^3.8.1",
+    "@tsparticles/react": "^3.0.0",
+    "@tsparticles/slim": "^3.8.1",
     "axios": "^1.7.9",
+    "clsx": "^2.1.1",
     "framer-motion": "^12.6.2",
     "lucide-react": "^0.469.0",
+    "motion": "^12.6.3",
     "next": "15.1.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^3.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
