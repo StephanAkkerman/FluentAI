@@ -6,7 +6,6 @@ import { ThreeDMarquee } from "../ui/3d-marquee";
 const WhySection = () => {
     const sectionRef = useRef(null);
     const titleRef = useRef(null);
-    const isInView = useInView(sectionRef, { once: false, amount: 0.3 });
 
     // Add a state to control when to show content after title animation
     const [shouldShowContent, setShouldShowContent] = useState(false);

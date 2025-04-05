@@ -1,16 +1,11 @@
 "use client"
 import React, { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 import Button from "../ui/Button";
 import { ContainerTextFlip } from "../ui/container-text-flip";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { SparklesCore } from "../ui/sparkles";
+import Flashcard from "../Flashcard";
 import duck from "../../../public/duck.jpg";
-
-interface FlashcardProps {
-    isFlipped: boolean;
-    handleFlip: () => void;
-}
 
 const HeroSection = () => {
     // Create a ref for the section
@@ -21,6 +16,16 @@ const HeroSection = () => {
     const [isFlipped, setIsFlipped] = useState(false);
     // Add state to track if we're past the transition threshold
     const [isPastThreshold, setIsPastThreshold] = useState(false);
+
+    const cardData = {
+        word: "Pato",
+        imageUrl: duck.src,
+        audioUrl: "", // No audio in the original example
+        ipa: "/ˈpɑtoʊ/",
+        verbalCue: "Spanish word for 'duck'",
+        translation: "Duck",
+        languageCode: "es" // Spanish language code
+    };
 
     const transformAnimations = {
         h1Transform: useTransform(
@@ -209,46 +214,15 @@ const HeroSection = () => {
                         className="absolute left-1/2 top-[15%] transition-all duration-300"
                         style={{ transform: transformAnimations.cardTransform }}
                     >
-                        {/* Flashcard that flips during scroll */}
-                        <FlashCard isFlipped={isFlipped} handleFlip={handleFlip} />
+                        {/* Replaced the custom FlashCard with the imported Flashcard component */}
+                        <Flashcard
+                            card={cardData}
+                            isLoading={false}
+                            showFront={!isFlipped}
+                        />
                     </motion.div>
                 </div>
             </div>
-        </div>
-    );
-};
-
-const FlashCard = ({ isFlipped, handleFlip }: FlashcardProps) => {
-    return (
-        <div className="relative w-80 h-96" style={{ perspective: "1000px" }}>
-            <motion.div
-                animate={{ rotateY: isFlipped ? 180 : 0 }}
-                transition={{ duration: 0.7 }}
-                className="absolute w-full h-full bg-gradient-to-r from-blue-500 to-teal-400 rounded-xl shadow-lg border-2 border-[#97E2F9] cursor-pointer"
-                onClick={handleFlip}
-                style={{ transformStyle: "preserve-3d" }}
-            >
-                {/* Front of card */}
-                <div
-                    className="absolute w-full h-full p-6 flex flex-col items-center justify-center"
-                    style={{ backfaceVisibility: "hidden" }}
-                >
-                    <h3 className="text-2xl font-bold text-gray-800 mb-2">Pato</h3>
-                </div>
-                {/* Back of card */}
-                <div
-                    className="absolute w-full h-full p-6 flex flex-col items-center justify-center"
-                    style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
-                >
-                    <Image
-                        src={duck}
-                        alt="duck"
-                        width={250}
-                        height={250}
-                        className="rounded-xl"
-                    />
-                </div>
-            </motion.div>
         </div>
     );
 };

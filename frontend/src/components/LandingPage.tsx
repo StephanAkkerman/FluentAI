@@ -1,5 +1,6 @@
 "use client"
 import LoadingScreen from "./LoadingScreen";
+import WhatSection from "./landing-page/WhatSection"
 import WhySection from "./landing-page/WhySection";
 import HowSection from "./landing-page/HowSection";
 import HeroSection from "./landing-page/HeroSection";
@@ -42,6 +43,11 @@ const LandingPage = () => {
             <div className="min-h-screen flex flex-col w-full">
                 <section id="home">
                     <HeroSection />
+                </section>
+
+
+                <section id="what" className="duration-300 transition-all -translate-y-[5%]">
+                    <WhatSection />
                 </section>
 
                 <section id="why" className="duration-300 transition-all -translate-y-[5%]">
@@ -102,17 +108,7 @@ const LandingPage = () => {
                     </div>
                 </section >
 
-                {/* 4. LANGUAGES SECTION */}
-                < section id="languages" className="py-20 bg-white" >
-                    <div className="container mx-auto px-6">
-                        <h2 className="text-3xl font-bold text-center text-gray-800 mb-12">
-                            Languages Available
-                        </h2>
-                        <div className="flex flex-wrap justify-center gap-4 max-w-4xl mx-auto">
-                            <LanguageDock />
-                        </div>
-                    </div>
-                </section >
+
 
                 {/* 5. FAQ SECTION */}
                 < section id="faq" className="py-20 bg-[#97E2F9] bg-opacity-10" >
