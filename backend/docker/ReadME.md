@@ -1,10 +1,10 @@
-# 🐳 Docker Setup for FluentAI Backend
+# 🐳 Docker Setup for mnemorai Backend
 
-This directory contains Docker configuration files for running the FluentAI backend service.
+This directory contains Docker configuration files for running the mnemorai backend service.
 
 ## 📂 Directory Structure
 ```
-FluentAI/
+mnemorai/
 ├── config.yaml             # Root-level configuration file
 ├── backend/
 │   ├── docker/             # This directory
@@ -14,25 +14,25 @@ FluentAI/
 │   │   └── README.md         
 ```
 ## ⚙️ Configuration
-The Docker setup uses the project's root-level configuration file at /FluentAI/config.yaml. Make sure this file exists and contains the necessary configuration.
+The Docker setup uses the project's root-level configuration file at /mnemorai/config.yaml. Make sure this file exists and contains the necessary configuration.
 
 ## 🚀 Usage
 Run all commands from the docker directory:
 ```
-/FluentAI/backend/docker
+/mnemorai/backend/docker
 ```
 ### Choose the appropriate version for your hardware:
 #### 🖥️ For Linux/Windows with NVIDIA GPU:
 ```
-docker-compose up -d fluentai-gpu
+docker-compose up -d mnemorai-gpu
 ```
 #### 💻 For Linux/Windows CPU only:
 ```
-docker-compose up -d fluentai-cpu
+docker-compose up -d mnemorai-cpu
 ```
 #### 🍎 For Apple Silicon Macs (⚠️ work in progress 🚧):
 ```
-docker-compose up -d fluentai-apple
+docker-compose up -d mnemorai-apple
 ```
 
 ### 🌐 View logs:
@@ -55,7 +55,7 @@ docker-compose down
 
 ### 🔄 Rebuilding after Code Changes
 ```
-docker-compose up -d --build fluentai-[cpu|gpu|apple]
+docker-compose up -d --build mnemorai-[cpu|gpu|apple]
 ```
 ### 💾 Data Persistence
 The following Docker volumes are used for data persistence:
@@ -66,7 +66,7 @@ The following Docker volumes are used for data persistence:
 
 ## ⚠️ Troubleshooting
 ### Missing or incorrect config file
-Make sure the config file exists at /FluentAI/config.yaml. The Docker container mounts this file directly into the container.
+Make sure the config file exists at /mnemorai/config.yaml. The Docker container mounts this file directly into the container.
 ### Out of memory errors
 Increase the memory limit for your Docker container in Docker Desktop settings.
 ### GPU not detected

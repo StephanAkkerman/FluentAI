@@ -2,9 +2,9 @@ import os
 
 import pytest
 
-os.environ["FLUENTAI_CONFIG_PATH"] = "config.yaml"  # noqa
+os.environ["mnemorai_CONFIG_PATH"] = "config.yaml"  # noqa
 
-from fluentai.services.mnemonic.orthographic.compute import (
+from mnemorai.services.mnemonic.orthographic.compute import (
     compute_damerau_levenshtein_similarity,
 )
 
