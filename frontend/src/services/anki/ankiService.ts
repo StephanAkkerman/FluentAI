@@ -1,6 +1,6 @@
-import axios from 'axios';
-import { Card, cardToAnkiNote } from '@/interfaces/CardInterfaces';
 import { ANKI_CONFIG } from '@/config/constants';
+import { Card, cardToAnkiNote } from '@/interfaces/CardInterfaces';
+import axios from 'axios';
 
 export class AnkiService {
   private async getImageAsBase64(imageUrl: string): Promise<string> {
@@ -39,7 +39,7 @@ export class AnkiService {
     }
   }
 
-  async checkAndCreateModel(modelName: string = 'FluentAI Model'): Promise<void> {
+  async checkAndCreateModel(modelName: string = 'mnemorai Model'): Promise<void> {
     try {
       // Check if the model exists
       const response = await axios.post(ANKI_CONFIG.API_URL, {
@@ -107,12 +107,12 @@ export class AnkiService {
 
       // First, convert the image to base64 and store it
       const base64Image = await this.getImageAsBase64(card.imageUrl);
-      const imageFilename = `fluentai-${card.word}-${Date.now()}.jpg`;
+      const imageFilename = `mnemorai-${card.word}-${Date.now()}.jpg`;
       await this.storeMediaFile(imageFilename, base64Image);
 
       // Convert the pronunciation to base64 and store it
       const base64Audio = await this.getImageAsBase64(card.audioUrl);
-      const recordingFilename = `fluentai-${card.word}-${Date.now()}.wav`;
+      const recordingFilename = `mnemorai-${card.word}-${Date.now()}.wav`;
       await this.storeMediaFile(recordingFilename, base64Audio);
 
       // Update the card URLs to use the media files instead
@@ -178,7 +178,7 @@ export class AnkiService {
       const notesInfo = notesInfoResponse.data.result;
 
       // Filter for relevant model
-      return notesInfo.filter((note: any) => note.modelName === 'FluentAI Model');
+      return notesInfo.filter((note: any) => note.modelName === 'mnemorai Model');
     } catch (error) {
       console.error('Error fetching cards from deck:', error);
       throw new Error('Failed to fetch cards from deck.');
