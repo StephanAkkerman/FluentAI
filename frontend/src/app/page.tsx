@@ -21,11 +21,16 @@ export default function Home() {
     languageCode: "en"
   };
 
+  const handleCardUpdate = (updatedCard: Card) => {
+    setCard(updatedCard);
+  };
+
   return (
     <div className="flex flex-col gap-12">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
         <div className="flex gap-12 flex-col">
           <CardGenerator
+            card={card}
             onCardCreated={setCard}
             onLoading={setLoading}
             onError={setError}
@@ -38,6 +43,8 @@ export default function Home() {
             card={card || defaultCard}
             isLoading={loading}
             showFront={!!card}
+            onCardUpdate={handleCardUpdate}
+            disableEdit={card == null}
           />
         </div>
       </div>
