@@ -6,8 +6,8 @@ from transformers import (
     pipeline,
 )
 
-from fluentai.constants.config import config
-from fluentai.logger import logger
+from mnemorai.constants.config import config
+from mnemorai.logger import logger
 
 
 class MnemonicGen:
