@@ -32,11 +32,11 @@ def parse_requirements(filename: str) -> list[str]:
 requirements = parse_requirements("requirements.txt")
 
 setup(
-    name="fluentai",
+    name="mnemorai",
     version="0.1.0",
     packages=find_packages(),
     install_requires=requirements,
-    description="FluentAI short description",
+    description="mnemorai short description",
     url="https://github.com/StephanAkkerman/",
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -45,7 +45,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "fluentai-main=fluentai.main:main",
+            "mnemorai-main=mnemorai.main:main",
         ],
     },
     python_requires=">=3.10",

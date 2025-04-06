@@ -3,10 +3,10 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-os.environ["FLUENTAI_CONFIG_PATH"] = "config.yaml"  # noqa
+os.environ["mnemorai_CONFIG_PATH"] = "config.yaml"  # noqa
 
-from fluentai.constants.config import config
-from fluentai.services.mnemonic.semantic.compute import SemanticSimilarity
+from mnemorai.constants.config import config
+from mnemorai.services.mnemonic.semantic.compute import SemanticSimilarity
 
 model_name = config.get("SEMANTIC_SIM").get("MODEL").lower()
 
@@ -16,7 +16,7 @@ def mock_config(mocker):
     """
     Fixture to mock the config.get method.
     """
-    return mocker.patch("fluentai.services.mnemonic.semantic.compute.config")
+    return mocker.patch("mnemorai.services.mnemonic.semantic.compute.config")
 
 
 @pytest.fixture
@@ -46,7 +46,7 @@ def test_compute_similarity_transformer(mock_config, mock_sentence_transformer):
 
     # Patch 'SentenceTransformer' to return the mock transformer model
     with patch(
-        "fluentai.services.mnemonic.semantic.compute.SentenceTransformer",
+        "mnemorai.services.mnemonic.semantic.compute.SentenceTransformer",
         return_value=mock_sentence_transformer,
     ):
         # Initialize SemanticSimilarity
@@ -85,7 +85,7 @@ def test_compute_similarity_word_not_in_transformer(
 
     # Patch 'SentenceTransformer' to return the mock transformer model
     with patch(
-        "fluentai.services.mnemonic.semantic.compute.SentenceTransformer",
+        "mnemorai.services.mnemonic.semantic.compute.SentenceTransformer",
         return_value=mock_sentence_transformer,
     ):
         # Initialize SemanticSimilarity
@@ -110,7 +110,7 @@ def test_load_semantic_model_transformer(mock_config, mock_sentence_transformer)
 
     # Patch 'SentenceTransformer' to return the mock transformer model
     with patch(
-        "fluentai.services.mnemonic.semantic.compute.SentenceTransformer",
+        "mnemorai.services.mnemonic.semantic.compute.SentenceTransformer",
         return_value=mock_sentence_transformer,
     ):
         # Initialize SemanticSimilarity
@@ -128,7 +128,7 @@ def test_example_function(mocker, mock_config, mock_sentence_transformer, caplog
     """
     Test the example function to ensure it logs similarities correctly.
     """
-    from fluentai.services.mnemonic.semantic.compute import example
+    from mnemorai.services.mnemonic.semantic.compute import example
 
     # Setup mock config to return models
     mock_config.get.return_value = {
@@ -138,7 +138,7 @@ def test_example_function(mocker, mock_config, mock_sentence_transformer, caplog
 
     # Patch 'SentenceTransformer' to return the mock transformer model
     with patch(
-        "fluentai.services.mnemonic.semantic.compute.SentenceTransformer",
+        "mnemorai.services.mnemonic.semantic.compute.SentenceTransformer",
         return_value=mock_sentence_transformer,
     ):
         # Configure the mock models
