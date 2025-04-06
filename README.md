@@ -77,7 +77,7 @@ If you prefer to build from source, follow these steps:
 3. Install the dependencies:
 
    ```bash
-   pip install -r backend/requirements.txt
+   pip install backend/.
    ```
 
 ### Install with GPU Support (Recommended)

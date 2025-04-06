@@ -37,7 +37,7 @@ setup(
     packages=find_packages(),
     install_requires=requirements,
     description="mnemorai short description",
-    url="https://github.com/StephanAkkerman/",
+    url="https://github.com/StephanAkkerman/mnemorai",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
