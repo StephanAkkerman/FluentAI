@@ -53,7 +53,7 @@ export interface AnkiNote {
 export const cardToAnkiNote = (
   card: Card,
   deckName: string,
-  modelName: string = 'FluentAI Model'
+  modelName: string = 'mnemorai Model'
 ): AnkiNote => {
   return {
     deckName,
@@ -68,7 +68,7 @@ export const cardToAnkiNote = (
     options: {
       allowDuplicate: false,
     },
-    tags: card.tags || ['FluentAI'],
+    tags: card.tags || ['mnemorai'],
   };
 };
 

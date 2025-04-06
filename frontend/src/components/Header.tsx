@@ -40,7 +40,7 @@ export default function Header() {
               <div className="relative w-10 h-10 transition-transform duration-300 hover:rotate-12">
                 <Image
                   src={logo}
-                  alt="FluentAI Logo"
+                  alt="mnemora Logo"
                   className="object-contain"
                   fill
                   sizes="2.5rem"
@@ -48,7 +48,7 @@ export default function Header() {
                 />
               </div>
               <h1 className="text-2xl font-bold gradient-text">
-                FluentAI
+                mnemora
               </h1>
             </Link>
           </div>

@@ -1,4 +1,3 @@
-// Updated FlashcardLibrary.tsx
 import React, { useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, Library, AlertCircle, RefreshCw } from 'lucide-react';
 import Button from '@/components/ui/Button';
@@ -329,7 +328,7 @@ const FlashcardLibrary = () => {
           <Library className="w-16 h-16 text-gray-400 mb-4" />
           <h3 className="text-xl font-semibold mb-2">No Cards Found</h3>
           <p className="text-gray-600 dark:text-gray-400 text-center">
-            This deck doesn&apos;t have any FluentAI cards yet. Create some cards first!
+            This deck doesn&apos;t have any mnemorai cards yet. Create some cards first!
           </p>
         </div>
       )}
