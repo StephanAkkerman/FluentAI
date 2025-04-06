@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import logo from "../../public/logo.png";
 
 export default function Header() {
@@ -23,13 +23,13 @@ export default function Header() {
       <div className="flex items-center space-x-4">
         <Image
           src={logo}
-          alt="FluentAI Logo"
+          alt="mnemorai Logo"
           width={50}
           height={50}
           className="transition-transform duration-300 hover:rotate-12"
         />
         <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400">
-          FluentAI
+          mnemorai
         </h1>
       </div>
       <div className="flex items-center space-x-6">

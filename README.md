@@ -1,10 +1,10 @@
-# FluentAI: Learn languages in a flash
+# mnemorai: Learn languages in a flash
 
-![FluentAI Banner](img/banner-withbg.jpg)
+![mnemorai Banner](img/banner.png)
 
 <p align="center">
   <img src="https://img.shields.io/badge/python-3.10-blue.svg" alt="Supported versions">
-  <img src="https://img.shields.io/github/license/StephanAkkerman/FluentAI.svg?color=brightgreen" alt="License">
+  <img src="https://img.shields.io/github/license/StephanAkkerman/mnemorai.svg?color=brightgreen" alt="License">
   <a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Code style: black"></a>
   <a href="https://discord.gg/z56zRXtNR5"><img src="https://dcbadge.limes.pink/api/server/https://discord.gg/z56zRXtNR5?style=flat" alt="Discord Shield"/>
 </p>
@@ -13,12 +13,12 @@
 
 ## Introduction
 
-FluentAI is inspired by the method detailed in the paper [SmartPhone: Exploring Keyword Mnemonic with Auto-generated Verbal and Visual Cues by Jaewook Lee and Andrew Lan](https://arxiv.org/pdf/2305.10436.pdf). The aim is to recreate their approach using accessible, open-source models.
+mnemorai is inspired by the method detailed in the paper [SmartPhone: Exploring Keyword Mnemonic with Auto-generated Verbal and Visual Cues by Jaewook Lee and Andrew Lan](https://arxiv.org/pdf/2305.10436.pdf). The aim is to recreate their approach using accessible, open-source models.
 The pipeline they propose, as shown below, serves as the blueprint for our project. It illustrates the process of automating language learning, blending cutting-edge AI techniques with proven language learning methodology.
 
-![image](https://github.com/StephanAkkerman/FluentAI/assets/45365128/c9ca3190-b136-453d-91cd-f785eac11fa3)
+![image](https://github.com/StephanAkkerman/mnemorai/assets/45365128/c9ca3190-b136-453d-91cd-f785eac11fa3)
 
-You can find our docs [here](https://github.com/StephanAkkerman/FluentAI/wiki) and the list of supported languages [here](https://github.com/StephanAkkerman/FluentAI/wiki/Supported-languages).
+You can find our docs [here](https://github.com/StephanAkkerman/mnemorai/wiki) and the list of supported languages [here](https://github.com/StephanAkkerman/mnemorai/wiki/Supported-languages).
 
 ## Table of Contents 🗂
 
@@ -55,7 +55,7 @@ pip install backend/.
 or install directly from the repository:
 
 ```bash
-pip install git+https://github.com/StephanAkkerman/FluentAI.git
+pip install git+https://github.com/StephanAkkerman/mnemorai.git
 ```
 
 ### Building from Source
@@ -65,19 +65,19 @@ If you prefer to build from source, follow these steps:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/StephanAkkerman/FluentAI.git
+   git clone https://github.com/StephanAkkerman/mnemorai.git
    ```
 
 2. Navigate to the project directory:
 
    ```bash
-   cd FluentAI
+   cd mnemorai
    ```
 
 3. Install the dependencies:
 
    ```bash
-   pip install -r backend/requirements.txt
+   pip install backend/.
    ```
 
 ### Install with GPU Support (Recommended)
@@ -91,14 +91,14 @@ pip install -r backend/gpu-requirements.txt
 
 ## Usage ⌨️
 
-Using FluentAI is simple, after following the steps in [pre-requisites](#pre-requisites) you can start the back-end by executing the following command.
+Using mnemorai is simple, after following the steps in [pre-requisites](#pre-requisites) you can start the back-end by executing the following command.
 ```bash
-python fluentai/services/card_gen/api.py
+python mnemorai/services/card_gen/api.py
 ``` 
 
 ### Docker 🐋 (Optional)
 
-You can also run FluentAI using Docker. This is a great option if you want to avoid installing dependencies directly on your machine. To do so follow the steps in the Docker [README](backend/docker/README.md).
+You can also run mnemorai using Docker. This is a great option if you want to avoid installing dependencies directly on your machine. To do so follow the steps in the Docker [README](backend/docker/README.md).
 
 ### Running the Front-End (Optional)
 
@@ -107,7 +107,7 @@ If you would like to build the front-end yourself you can do so by executing the
 1. Navigate to the `frontend` directory:
 
    ```bash
-   cd fluentai/frontend
+   cd mnemorai/frontend
    ```
 
 2. Install the necessary frontend dependencies:
@@ -116,10 +116,16 @@ If you would like to build the front-end yourself you can do so by executing the
    npm install
    ```
 
+3. Build the front-end:
+
+   ```bash
+   npm run build
+   ```
+
 3. Start the development server:
 
    ```bash
-   npm start
+   npm run dev
    ```
 
 This will launch the front-end and connect it to the API for a seamless user experience.
@@ -129,13 +135,13 @@ This will launch the front-end and connect it to the API for a seamless user exp
 If you use this project in your research, please cite as follows:
 
 ```bibtex
-@misc{FluentAI,
+@misc{mnemorai,
   author  = {Stephan Akkerman, Winston Lam, Tim Koornstra},
-  title   = {FluentAI},
+  title   = {mnemorai},
   year    = {2024},
   publisher = {GitHub},
   journal = {GitHub repository},
-  howpublished = {\url{https://github.com/StephanAkkerman/FluentAI}}
+  howpublished = {\url{https://github.com/StephanAkkerman/mnemorai}}
 }
 ```
 
@@ -143,7 +149,7 @@ If you use this project in your research, please cite as follows:
 
 Contributions are welcome! If you have a feature request, bug report, or proposal for code refactoring, please feel free to open an issue on GitHub. We appreciate your help in improving this project.
 If you would like to make code contributions yourself, please read [CONTRIBUTING.MD](CONTRIBUTING.md).\
-![https://github.com/StephanAkkerman/FluentAI/graphs/contributors](https://contributors-img.firebaseapp.com/image?repo=StephanAkkerman/FluentAI)
+![https://github.com/StephanAkkerman/mnemorai/graphs/contributors](https://contributors-img.firebaseapp.com/image?repo=StephanAkkerman/mnemorai)
 
 ## License 📜
 

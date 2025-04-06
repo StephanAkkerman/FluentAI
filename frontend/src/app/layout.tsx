@@ -1,16 +1,16 @@
-import "./globals.css";
 import Header from "@/components/Header";
 import StatusChecker from "@/components/StatusChecker";
 import { ToastProvider } from "@/contexts/ToastContext";
 import type { Metadata } from "next";
+import "./globals.css";
 
 const isGithubPages = process.env.NODE_ENV === "production" && process.env.GITHUB_PAGES === "true";
 
 export const metadata: Metadata = {
-  title: "FluentAI",
+  title: "mnemorai",
   description: "Learning languages in a flash.",
   icons: {
-    icon: `${isGithubPages ? '/FluentAI' : ''}/logo.png`,
+    icon: `${isGithubPages ? '/mnemorai' : ''}/logo.png`,
   }
 };
 

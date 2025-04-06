@@ -51,24 +51,24 @@ RUN echo '#!/bin/bash\n\
   if [ ! -f "/app/config.yaml" ]; then\n\
   echo "ERROR: Config file not found at /app/config.yaml"\n\
   echo "Make sure to mount the config file from the host system:"\n\
-  echo "  -v /path/to/FluentAI/config.yaml:/app/config.yaml:ro"\n\
+  echo "  -v /path/to/mnemorai/config.yaml:/app/config.yaml:ro"\n\
   exit 1\n\
   fi\n\
   \n\
   # Set config path explicitly\n\
-  export FLUENTAI_CONFIG_PATH=/app/config.yaml\n\
-  echo "Using config from: $FLUENTAI_CONFIG_PATH"\n\
+  export mnemorai_CONFIG_PATH=/app/config.yaml\n\
+  echo "Using config from: $mnemorai_CONFIG_PATH"\n\
   \n\
   # Check if languages.json exists\n\
   if [ ! -f "/app/data/languages.json" ]; then\n\
   echo "ERROR: languages.json not found at /app/data/languages.json"\n\
   echo "Make sure the data directory is properly mounted:"\n\
-  echo "  -v /path/to/FluentAI/data:/app/data:ro"\n\
+  echo "  -v /path/to/mnemorai/data:/app/data:ro"\n\
   exit 1\n\
   fi\n\
   \n\
   # Start the application using uvicorn\n\
-  uvicorn fluentai.api.app:app --host 0.0.0.0 --port 8000 "$@"\n\
+  uvicorn mnemorai.api.app:app --host 0.0.0.0 --port 8000 "$@"\n\
   ' > /app/entrypoint.sh && chmod +x /app/entrypoint.sh
 
 # Expose port

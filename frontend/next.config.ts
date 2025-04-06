@@ -5,7 +5,7 @@ const isGithubPages = process.env.NODE_ENV === "production" && process.env.GITHU
 const nextConfig: NextConfig = {
   /* config options here */
   output: 'export',
-  basePath: isGithubPages ? "/FluentAI" : "",
+  basePath: isGithubPages ? "/mnemorai" : "",
   images: {
     unoptimized: true, // Required for GitHub Pages
   },
