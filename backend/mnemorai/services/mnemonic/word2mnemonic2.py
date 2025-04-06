@@ -15,19 +15,21 @@ class MnemonicGen:
         self.config = config.get("LLM")
 
         self.model_name = (
-            "microsoft/Phi-3-mini-4k-instruct"
+            # "microsoft/Phi-3-mini-4k-instruct" #only works with transformers 4.47.1 or older
             # "Qwen/Qwen2.5-7B-Instruct"
+            "Qwen/Qwen2.5-14B-Instruct"  # https://huggingface.co/Qwen/Qwen2.5-14B-Instruct-GGUF
+            # "microsoft/Phi-4-mini-instruct"
         )
 
         # use recommended settings for phi-3.5
         self.generation_args = {
             "max_new_tokens": 512,
-            "do_sample": True,
-            "num_beams": 1,
-            "top_k": 50,
-            "top_p": 0.95,
-            "return_full_text": False,
-            "temperature": 0.6,
+            # "do_sample": False,  # Default = False
+            # "num_beams": 1,  # Default = 1
+            # "top_k": 50,
+            # # "top_p": 0.95,
+            # "return_full_text": False,
+            # "temperature": 0.6,
         }
 
         self.model = AutoModelForCausalLM.from_pretrained(
@@ -57,19 +59,29 @@ class MnemonicGen:
             }
         ]
 
-    def generate_mnemonic(self, language: str = "Indonesian", word: str = "Kucing"):
-        final_message = {
+    def generate_mnemonic(
+        self, language: str = "Indonesian", word: str = "Kucing", ipa: str = "ku.t͡ʃiŋ"
+    ):
+        #         final_message = {
+        #             "role": "user",
+        #             "content": f"""Think of a mnemonic to remember the {language} word {word}.
+        # Think of an English word or a combination of 2 words that sound similar to how {word} would be pronounced in {language}.
+        # Also consider that the mnemonic should be an easy to imagine word and a word that is commonly used.
+        # Do not simply translate the word, the mnemonic should be a *memory aid* based on sound, not a translation.
+        # Give a list of 10 mnemonic options based on these criteria.
+        # Give your output in JSON format.""",
+        #         }
+
+        final_message2 = {
             "role": "user",
-            "content": f"""Think of a mnemonic to remember the {language} word {word}. 
-Think of an English word or a combination of 2 words that sound similar to how {word} would be pronounced in {language}. 
-Also consider that the mnemonic should be an easy to imagine word and a word that is commonly used. 
-Do not simply translate the word, the mnemonic should be a *memory aid* based on sound, not a translation.
-Give a list of 10 mnemonic options based on these criteria. 
+            "content": f"""Think of an English word or a combination of 2 words that sound similar to how {word} (IPA: {ipa}) would be pronounced in {language}. 
+Give a list of 10 options based on these criteria. 
+Do not simply use the English translation of the word.
 Give your output in JSON format.""",
         }
 
         # For some reason using tokenizer.apply_chat_template() here causes weird output
-        input = self.messages + [final_message]
+        input = self.messages + [final_message2]
         print(input)
         output = self.pipe(input, **self.generation_args)
         response = output[0]["generated_text"]
