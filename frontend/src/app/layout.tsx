@@ -6,7 +6,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "mnemorai",
-  description: "Learning languages in a flash.",
+  description: "Remember more with mnemorai.",
   icons: {
     icon: `/logo.png`,
   }
