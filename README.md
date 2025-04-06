@@ -1,6 +1,6 @@
 # FluentAI: Learn languages in a flash
 
-![FluentAI Banner](img/banner-withbg.jpg)
+![FluentAI Banner](img/banner.png)
 
 <p align="center">
   <img src="https://img.shields.io/badge/python-3.10-blue.svg" alt="Supported versions">
