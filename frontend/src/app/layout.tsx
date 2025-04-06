@@ -4,13 +4,11 @@ import { ToastProvider } from "@/contexts/ToastContext";
 import type { Metadata } from "next";
 import "./globals.css";
 
-const isGithubPages = process.env.NODE_ENV === "production" && process.env.GITHUB_PAGES === "true";
-
 export const metadata: Metadata = {
   title: "mnemorai",
   description: "Learning languages in a flash.",
   icons: {
-    icon: `${isGithubPages ? '/mnemorai' : ''}/logo.png`,
+    icon: `/logo.png`,
   }
 };
 
