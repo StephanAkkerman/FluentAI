@@ -116,10 +116,16 @@ If you would like to build the front-end yourself you can do so by executing the
    npm install
    ```
 
+3. Build the front-end:
+
+   ```bash
+   npm run build
+   ```
+
 3. Start the development server:
 
    ```bash
-   npm start
+   npm run dev
    ```
 
 This will launch the front-end and connect it to the API for a seamless user experience.
