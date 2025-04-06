@@ -1,3 +1,6 @@
+import React, { useState, useEffect, useCallback } from 'react';
+import { ChevronLeft, ChevronRight, Library, AlertCircle, RefreshCw } from 'lucide-react';
+import { AnkiService } from '@/services/anki/ankiService';
 import Flashcard from '@/components/Flashcard';
 import Button from '@/components/ui/Button';
 import { Card as FlashCard } from '@/interfaces/CardInterfaces';
