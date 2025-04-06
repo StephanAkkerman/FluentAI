@@ -1,4 +1,4 @@
-# mnemorai: Learn languages in a flash
+# mnemorai: Remember more with mnemorai
 
 ![mnemorai Banner](img/banner.png)
 
