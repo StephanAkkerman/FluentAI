@@ -48,7 +48,7 @@ class Word2Mnemonic:
             top = None
 
             # Convert the input word to IPA representation
-            ipa = Phonetic_Similarity.word2ipa(word, language_code)
+            ipa = self.phonetic_sim.word2ipa(word=word, language_code=language_code)
 
             translated_word, transliterated_word = await translate_word(
                 word, language_code
