@@ -30,4 +30,3 @@ ftfy==6.3.1
 einops==0.8.1
 bitsandbytes==0.45.4
 peft==0.15.1
-xformers==0.0.29

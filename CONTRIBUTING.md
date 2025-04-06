@@ -11,7 +11,7 @@ git clone https://github.com/StephanAkkerman/mnemorai
 Install the required dev dependencies by running the following command:
 
 ```bash
-pip install -e .[dev]
+pip install -e backend/.
 ```
 
 ## Code Formatting and Linting
