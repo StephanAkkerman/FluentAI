@@ -4,7 +4,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/python-3.10-blue.svg" alt="Supported versions">
-  <img src="https://img.shields.io/github/license/StephanAkkerman/mnemorai.svg?color=brightgreen" alt="License">
+  <img src="https://img.shields.io/github/license/StephanAkkerman/mnemorai.svg?color=g" alt="License">
   <a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Code style: black"></a>
   <a href="https://discord.gg/z56zRXtNR5"><img src="https://dcbadge.limes.pink/api/server/https://discord.gg/z56zRXtNR5?style=flat" alt="Discord Shield"/>
 </p>
