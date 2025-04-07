@@ -17,7 +17,9 @@ class MnemonicGen:
         self.model_name = (
             # "microsoft/Phi-3-mini-4k-instruct" #only works with transformers 4.47.1 or older
             # "Qwen/Qwen2.5-7B-Instruct"
-            "Qwen/Qwen2.5-14B-Instruct"  # https://huggingface.co/Qwen/Qwen2.5-14B-Instruct-GGUF
+            # "Qwen/Qwen2.5-14B-Instruct"
+            "unsloth/Qwen2.5-14B-Instruct-bnb-4bit"
+            # "Qwen/Qwen2.5-14B-Instruct-GGUF"
             # "microsoft/Phi-4-mini-instruct"
         )
 
@@ -38,11 +40,13 @@ class MnemonicGen:
             torch_dtype="auto",
             trust_remote_code=True,
             cache_dir="models",
+            # gguf_file=gguf,
             # quantization_config=bnb_config,
         )
         self.tokenizer = AutoTokenizer.from_pretrained(
             self.model_name,
             cache_dir="models",
+            # gguf_file=gguf,
         )
         self.model.eval()
 
@@ -50,6 +54,7 @@ class MnemonicGen:
             "text-generation",
             model=self.model,
             tokenizer=self.tokenizer,
+            torch_dtype="float16",
         )
 
         self.messages = [
