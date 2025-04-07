@@ -1,4 +1,3 @@
-from peft import PeftModel
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
@@ -41,7 +40,6 @@ class MnemonicGen:
             trust_remote_code=True,
             cache_dir="models",
             # gguf_file=gguf,
-            # quantization_config=bnb_config,
         )
         self.tokenizer = AutoTokenizer.from_pretrained(
             self.model_name,
@@ -67,26 +65,26 @@ class MnemonicGen:
     def generate_mnemonic(
         self, language: str = "Indonesian", word: str = "Kucing", ipa: str = "ku.t͡ʃiŋ"
     ):
+        final_message = {
+            "role": "user",
+            "content": f"""Think of a mnemonic to remember the {language} word {word}.
+        Think of an English word or a combination of 2 words that sound similar to how {word} would be pronounced in {language}.
+        Also consider that the mnemonic should be an easy to imagine word and a word that is commonly used.
+        Do not simply translate the word, the mnemonic should be a *memory aid* based on sound, not a translation.
+        Give a list of 10 mnemonic options based on these criteria.
+        Give your output in JSON format.""",
+        }
+
         #         final_message = {
         #             "role": "user",
-        #             "content": f"""Think of a mnemonic to remember the {language} word {word}.
-        # Think of an English word or a combination of 2 words that sound similar to how {word} would be pronounced in {language}.
-        # Also consider that the mnemonic should be an easy to imagine word and a word that is commonly used.
-        # Do not simply translate the word, the mnemonic should be a *memory aid* based on sound, not a translation.
-        # Give a list of 10 mnemonic options based on these criteria.
+        #             "content": f"""Think of an English word or a combination of 2 words that sound similar to how {word} (IPA: {ipa}) would be pronounced in {language}.
+        # Give a list of 10 options based on these criteria.
+        # Do not simply use the English translation of the word.
         # Give your output in JSON format.""",
         #         }
 
-        final_message2 = {
-            "role": "user",
-            "content": f"""Think of an English word or a combination of 2 words that sound similar to how {word} (IPA: {ipa}) would be pronounced in {language}. 
-Give a list of 10 options based on these criteria. 
-Do not simply use the English translation of the word.
-Give your output in JSON format.""",
-        }
-
         # For some reason using tokenizer.apply_chat_template() here causes weird output
-        input = self.messages + [final_message2]
+        input = self.messages + [final_message]
         print(input)
         output = self.pipe(input, **self.generation_args)
         response = output[0]["generated_text"]
