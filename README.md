@@ -1,4 +1,4 @@
-# mnemorai: Remember more with mnemorai
+# mnemorai: remember more with mnemorai
 
 ![mnemorai Banner](img/banner.png)
 
