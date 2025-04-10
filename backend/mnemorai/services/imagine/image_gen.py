@@ -111,7 +111,7 @@ class ImageGen:
                     text_encoder=text_encoder_8bit,
                     transformer=transformer_8bit,
                     torch_dtype=torch.float16,
-                    device_map="balanced",  # Could decrease speed
+                    device_map="balanced",
                 )
             else:
                 raise NotImplementedError("Quantization not supported for this model.")
