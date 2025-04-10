@@ -7,7 +7,7 @@ faiss-cpu==1.10.0
 gensim==4.3.3
 scipy==1.13.1
 pandas==2.2.3
-diffusers==0.32.2
+diffusers==0.33.1
 numpy==1.26.4
 joblib==1.4.2
 xgboost==2.1.3
