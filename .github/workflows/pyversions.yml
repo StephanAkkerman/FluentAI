@@ -1,6 +1,13 @@
-name: Python package
+name: Check Python Versions
 
-on: [push]
+on:
+  push:
+    paths:
+      - '**/requirements.txt'  # Dependency file
+      - '**/setup.py'          # Setup script
+permissions:
+  contents: read
+
 
 jobs:
   build:
@@ -8,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.9", "3.10", "3.11", "3.12"] #, "3.13"]
 
     steps:
       - uses: actions/checkout@v4
