@@ -6,4 +6,4 @@ faiss-gpu==1.7.2; sys_platform == 'linux'
 --extra-index-url https://download.pytorch.org/whl/cu124
 xformers==0.0.29
 bitsandbytes==0.45.2
-flash_attn==2.7.3; sys_platform == 'linux'
+flash_attn==2.7.4.post1; sys_platform == 'linux'
