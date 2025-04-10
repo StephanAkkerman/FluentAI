@@ -48,5 +48,5 @@ setup(
             "mnemorai-main=mnemorai.main:main",
         ],
     },
-    python_requires=">=3.10",
+    python_requires=">=3.09",
 )
