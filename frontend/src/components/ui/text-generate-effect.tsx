@@ -1,6 +1,6 @@
 "use client";
-import { useEffect } from "react";
-import { motion, stagger, useAnimate } from "motion/react";
+import { useEffect, useRef } from "react";
+import { motion, stagger, useAnimate, useInView } from "motion/react";
 import { cn } from "@/lib/utils";
 
 export const TextGenerateEffect = ({
@@ -15,20 +15,26 @@ export const TextGenerateEffect = ({
     duration?: number;
 }) => {
     const [scope, animate] = useAnimate();
+    const containerRef = useRef(null);
+    const isInView = useInView(containerRef, { once: true, amount: 0.4 });
+
     let wordsArray = words.split(" ");
+
     useEffect(() => {
-        animate(
-            "span",
-            {
-                opacity: 1,
-                filter: filter ? "blur(0px)" : "none",
-            },
-            {
-                duration: duration ? duration : 1,
-                delay: stagger(0.2),
-            }
-        );
-    }, [scope.current]);
+        if (isInView) {
+            animate(
+                "span",
+                {
+                    opacity: 1,
+                    filter: filter ? "blur(0px)" : "none",
+                },
+                {
+                    duration: duration ? duration : 1,
+                    delay: stagger(0.2),
+                }
+            );
+        }
+    }, [isInView, animate, filter, duration]);
 
     const renderWords = () => {
         return (
@@ -51,9 +57,9 @@ export const TextGenerateEffect = ({
     };
 
     return (
-        <div className={cn("font-bold", className)}>
+        <div ref={containerRef} className={cn("font-bold", className)}>
             <div className="mt-4">
-                <div className=" dark:text-white text-black text-2xl leading-snug tracking-wide">
+                <div className=" dark:text-white text-black  leading-snug tracking-wide">
                     {renderWords()}
                 </div>
             </div>

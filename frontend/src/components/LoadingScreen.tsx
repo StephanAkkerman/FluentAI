@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import logo from "../../public/logo.png";
+import logo from "../../public/Main Logo (light).svg";
 
 interface LoadingScreenProps {
     onComplete: () => void;
@@ -67,14 +67,14 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onComplete }) => {
                 <Image
                     src={logo}
                     alt="main logo"
-                    width={130}
-                    height={130}
+                    width={100}
+                    height={100}
                     className="object-contain animate-fadeInGlow rounded-[8rem] cursor-pointer z-10"
                 />
 
                 {/* Title below the logo with a slide-up fade-in effect */}
                 <h1 className="mt-4 text-3xl font-bold animate-textFadeIn text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400">
-                    FlashFluent
+                    mnemorai
                 </h1>
             </div>
         </div>

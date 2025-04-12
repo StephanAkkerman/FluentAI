@@ -8,7 +8,7 @@ const HowSection = () => {
     const sectionRef = useRef(null);
     const [browserContent, setBrowserContent] = useState<ReactNode>(
         <>
-            <div className="w-full flex items-center justify-center h-48">
+            <div className="w-full h-full flex items-center justify-center h-48">
                 <h1 className="text-xl font-bold text-white">
                     Step 1: <br /> Select Your Target Language
                 </h1>
@@ -112,7 +112,7 @@ const HowSection = () => {
         <section
             ref={sectionRef}
             id="how-it-works"
-            className="relative w-full h-[650vh] "
+            className="relative w-full h-[650vh]"
         >
             <div className="container mx-auto px-6 sticky top-[8rem] overflow-hidden">
                 <h2 className=" text-3xl font-bold text-center text-gray-800 mb-12">
@@ -122,23 +122,27 @@ const HowSection = () => {
                 {/* Only render the animated content when section is in view or has been in view */}
                 <motion.div
                     style={{ transform: transformAnimations.browserTransform }}
-                    className="transition-all duration-300"
+                    className="transition-all duration-300 "
                 >
+                    {/* Add a wrapper div with the shadow effect */}
+                    <div className="relative w-full h-full max-w-[500px] max-h-[750px] ">
 
-                    <Browser
-                        urlText="https://Mnemora.com"
-                        dark={true}
-                        className="w-[50%] max-w-[500px]"
-                    >
-                        {browserContent}
-                    </Browser>
+
+                        <Browser
+                            urlText="https://Mnemora.com"
+                            dark={true}
+                            className="cursor-pointer"
+                        >
+                            {browserContent}
+                        </Browser>
+                    </div>
                 </motion.div>
                 <motion.div
                     style={{ transform: transformAnimations.sectionOneTransform, opacity: transformAnimations.sectionOneOpacity }}
                     className="transition-all duration-300  ">
                     <div className="bg-gradient-to-r from-blue-500 to-teal-400 rounded-xl w-[40%] p-1">
                         <div className="bg-gray-50 rounded-xl p-2">
-                            <h3 className="font-bold text-xl">Select Your Target Language</h3>
+                            <h3 className="font-bold text-3xl">Select Your Target Language</h3>
                             <p className="">Choose the language you want to learn from our growing collection of supported languages. Whether you're interested in Spanish, Japanese, German, or others, Mnemora adapts to your language learning goals.</p>
                         </div>
                     </div>
@@ -149,7 +153,7 @@ const HowSection = () => {
                     className="transition-all duration-300 ">
                     <div className="bg-gradient-to-r from-blue-500 to-teal-400 rounded-xl w-[40%] p-1">
                         <div className="bg-gray-50 rounded-xl p-2">
-                            <h3 className="font-bold text-xl">Build Your Learning Path</h3>
+                            <h3 className="font-bold text-3xl">Build Your Learning Path</h3>
                             <p className="">Either select specific words you want to master or let Mnemora suggest an optimized learning route based on frequency and usefulness. You control what you learn and when you learn it.</p>
                         </div>
                     </div>
@@ -160,7 +164,7 @@ const HowSection = () => {
                     className="transition-all duration-300 ">
                     <div className="bg-gradient-to-r from-blue-500 to-teal-400 rounded-xl w-[40%] p-1">
                         <div className="bg-gray-50 rounded-xl p-2">
-                            <h3 className="font-bold text-xl">Discover Memory-Boosting Flashcards</h3>
+                            <h3 className="font-bold text-3xl">Discover Memory-Boosting Flashcards</h3>
                             <p className="">Mnemora automatically generates personalized flashcards for each word, featuring clever mnemonic phrases and vivid images that connect the foreign word to familiar sounds and concepts.</p>
                         </div>
                     </div>

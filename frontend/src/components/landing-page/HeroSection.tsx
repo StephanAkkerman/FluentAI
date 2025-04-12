@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Button from "../ui/Button";
 import { ContainerTextFlip } from "../ui/container-text-flip";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { SparklesCore } from "../ui/sparkles";
 import Flashcard from "../Flashcard";
 import duck from "../../../public/duck.jpg";
@@ -13,6 +13,7 @@ const HeroSection = () => {
     const { scrollYProgress } = useScroll({
         target: sectionRef
     });
+    const isInView = useInView(sectionRef, { once: true });
     const [isFlipped, setIsFlipped] = useState(false);
     // Add state to track if we're past the transition threshold
     const [isPastThreshold, setIsPastThreshold] = useState(false);
@@ -20,33 +21,33 @@ const HeroSection = () => {
     const cardData = {
         word: "Pato",
         imageUrl: duck.src,
-        audioUrl: "", // No audio in the original example
+        audioUrl: "",
         ipa: "/ˈpɑtoʊ/",
         verbalCue: "Spanish word for 'duck'",
         translation: "Duck",
-        languageCode: "es" // Spanish language code
+        languageCode: "es"
     };
 
     const transformAnimations = {
         h1Transform: useTransform(
             scrollYProgress,
             [0, 0.3, 0.8, 0.9],
-            ["translate(4%, -30%)", "translate(-25%, 60%)", "translate(-25%, 60%)", "translate(-25%, 60%)"]
+            ["translate(4%, -30%)", "translate(-25%, 40%)", "translate(-25%, 40%)", "translate(-25%, 0%)"]
         ),
         h2Transform: useTransform(
             scrollYProgress,
             [0, 0.3, 0.8, 0.9],
-            ["translate(15%, -30%)", "translate(-25%, 250%)", "translate(-25%, 250%)", "translate(-25%, 250%)"]
+            ["translate(15%, -30%)", "translate(-25%, 220%)", "translate(-25%, 220%)", "translate(-25%, 0%)"]
         ),
         pTransform: useTransform(
             scrollYProgress,
             [0, 0.3, 0.8, 0.9],
-            ["translate(15%, -30%)", "translate(-25%, 70%)", "translate(-25%, 70%)", "translate(-25%, 70%)"]
+            ["translate(15%, -30%)", "translate(-25%, 60%)", "translate(-25%, 60%)", "translate(-25%, 20%)"]
         ),
         cardTransform: useTransform(
             scrollYProgress,
             [0, 0.3, 0.8, 0.9],
-            ["translate(-50%, 60%)", "translate(30%, 50%)", "translate(30%, 50%)", "translate(30%, 45%)"]
+            ["translate(-50%, 60%)", "translate(30%, 50%)", "translate(30%, 50%)", "translate(30%, 15%)"]
         ),
 
         titleFontSize: useTransform(
@@ -62,7 +63,7 @@ const HeroSection = () => {
         contentOpacity: useTransform(scrollYProgress, [0, 0.3], [0, 1]),
         bgOpacity: useTransform(scrollYProgress, [0, 0.3], [0.3, 0.7]),
         bgWidth: useTransform(scrollYProgress, [0.8, 0.9], ["100%", "95%"]),
-        bgHeight: useTransform(scrollYProgress, [0.7, 1], ["100%", "83%"]),
+        bgHeight: useTransform(scrollYProgress, [0.7, 1], ["100%", "90%"]),
 
         // Add this new animation for text color transition
         gradientTextOpacity: useTransform(
@@ -101,7 +102,9 @@ const HeroSection = () => {
 
 
     return (
-        <div ref={sectionRef} className="relative w-full h-[200vh] ">
+        <motion.div ref={sectionRef} className="relative w-full h-[200vh] " initial={{ opacity: 0, y: -15 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -15 }}
+        >
             {/* This is the container that stays fixed in the viewport */}
             <div className="sticky top-0 h-screen w-full overflow-hidden flex justify-center">
                 {/* Background */}
@@ -223,7 +226,7 @@ const HeroSection = () => {
                     </motion.div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 };
 
