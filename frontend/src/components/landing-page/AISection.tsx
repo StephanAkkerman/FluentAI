@@ -1,6 +1,6 @@
 "use client"
 import React, { useRef, useEffect, useState } from "react";
-import { motion, useScroll, useTransform, Variants } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 // Import the ColourfulText component
 import { ColourfulText } from "../ui/colorful-text";
@@ -46,24 +46,17 @@ const AIPage: React.FC = () => {
         [0, 1]
     );
 
-    // Control video playback based on scroll
     useEffect(() => {
         const updateVideoTime = (value: number) => {
             if (!videoRef.current) return;
 
-            // First time setting video properties
             if (videoRef.current.duration && !isNaN(videoRef.current.duration)) {
-                // Set the current time based on scroll progress
                 const newTime = value * videoRef.current.duration;
 
-                // Only update if the change is significant to avoid performance issues
                 if (Math.abs(videoRef.current.currentTime - newTime) > 0.5) {
                     videoRef.current.currentTime = newTime;
                 }
             }
-
-            // Set the content visibility state based on scroll position
-            // Show content when we're halfway through the section
             setShouldShowContent(value >= 0.55);
         };
 
