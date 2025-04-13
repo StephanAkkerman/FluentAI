@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "mnemorai",
   description: "Remember more with mnemorai.",
   icons: {
-    icon: `/logo.png`,
+    icon: `/Main Logo (light).svg`,
   }
 };
 

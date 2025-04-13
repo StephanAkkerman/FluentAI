@@ -11,8 +11,6 @@ const FooterSection = () => {
     const isInView = useInView(ref, { once: false, amount: 0.3 });
 
 
-
-
     return (
         <>
             {/* Shadow line with animation */}

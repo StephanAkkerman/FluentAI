@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import logo from "../../public/logo.png";
+import lightLogo from "../../public/Main Logo (light).svg";
+import darkLogo from "../../public/Main Logo (dark).svg";
 import { Sun, Moon, Menu, X } from "lucide-react";
 
 export default function Header() {
@@ -39,7 +40,7 @@ export default function Header() {
             <Link href="/" className="flex items-center space-x-3">
               <div className="relative w-10 h-10 transition-transform duration-300 hover:rotate-12">
                 <Image
-                  src={logo}
+                  src={darkMode ? darkLogo : lightLogo}
                   alt="mnemorai Logo"
                   className="object-contain"
                   fill

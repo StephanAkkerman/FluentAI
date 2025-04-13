@@ -10,6 +10,7 @@ interface FlashcardProps {
   showFront?: boolean;
   disableEdit?: boolean;
   onCardUpdate?: (updatedCard: Card) => void;
+  className?: string;
 }
 
 export default function Flashcard({
@@ -17,7 +18,8 @@ export default function Flashcard({
   isLoading,
   showFront = false,
   disableEdit = false,
-  onCardUpdate
+  onCardUpdate,
+  className
 }: FlashcardProps) {
   const [flipped, setFlipped] = useState(!showFront);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -173,7 +175,7 @@ export default function Flashcard({
 
   return (
     <div
-      className="relative w-80 h-96 perspective cursor-pointer group"
+      className={`relative w-80 h-96 perspective cursor-pointer group ${className}`}
       onClick={cardClickHandler}
     >
       <audio ref={audioRef} />
