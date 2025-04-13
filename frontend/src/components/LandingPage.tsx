@@ -8,50 +8,45 @@ import FAQSection from "./landing-page/FAQSection";
 import FooterSection from "./landing-page/FooterSection";
 import React from "react";
 
-
-
-
 const LandingPage = () => {
+  return (
+    <>
+      <div className="min-h-screen flex flex-col w-full">
+        <section id="home">
+          <HeroSection />
+        </section>
 
 
-    return (
-        <>
-            <div className="min-h-screen flex flex-col w-full">
-                <section id="home">
-                    <HeroSection />
-                </section>
+        <section id="what" className="duration-300 transition-all -translate-y-[5%]">
+          <WhatSection />
+        </section>
 
+        <section id="why" className="duration-300 transition-all -translate-y-[5%]">
+          <WhySection />
+        </section>
 
-                <section id="what" className="duration-300 transition-all -translate-y-[5%]">
-                    <WhatSection />
-                </section>
+        {/* 2. HOW IT WORKS SECTION */}
+        < section id="how" className="py-20" >
+          <HowSection />
+        </section >
 
-                <section id="why" className="duration-300 transition-all -translate-y-[5%]">
-                    <WhySection />
-                </section>
+        {/* 3. FEATURES & BENEFITS SECTION */}
+        < section id="features" className="py-20" >
+          <AIPage />
+        </section >
 
-                {/* 2. HOW IT WORKS SECTION */}
-                < section id="how" className="py-20" >
-                    <HowSection />
-                </section >
+        {/* 5. FAQ SECTION */}
+        < section id="faq" >
+          <FAQSection />
+        </section >
 
-                {/* 3. FEATURES & BENEFITS SECTION */}
-                < section id="features" className="py-20" >
-                    <AIPage />
-                </section >
-
-                {/* 5. FAQ SECTION */}
-                < section id="faq" >
-                    <FAQSection />
-                </section >
-
-                {/* 6. FOOTER */}
-                < section >
-                    <FooterSection />
-                </section >
-            </div >
-        </>
-    );
+        {/* 6. FOOTER */}
+        < section >
+          <FooterSection />
+        </section >
+      </div >
+    </>
+  );
 };
 
 export default LandingPage;

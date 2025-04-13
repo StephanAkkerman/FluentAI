@@ -1,7 +1,7 @@
 LOGGING_LEVEL: "DEBUG"
 
 # Anki deck name
-DECK_NAME: "FluentAI"
+DECK_NAME: "mnemorai"
 
 # The weights for the best mnemonic match
 # 1 = 100%
@@ -43,8 +43,10 @@ IMAGE_GEN:
   MEDIUM_MODEL: stabilityai/sdxl-turbo # 6GB vram
   LARGE_MODEL: Efficient-Large-Model/Sana_600M_512px_diffusers # 9GB vram
   OUTPUT_DIR: "imagine/generated-img"
+  # Options are: None, 4bit, 8bit
+  QUANTIZATION: None
   DELETE_AFTER_USE: False
-  OFFLOAD: True
+  OFFLOAD: True # This must be False if quantization != None
   PARAMS:
     num_inference_steps: 40
     height: 512

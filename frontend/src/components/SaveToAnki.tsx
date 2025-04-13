@@ -126,7 +126,8 @@ export default function SaveToAnki({ card, onError }: SaveToAnkiProps) {
       <FormField label="Anki Deck" value={selectedDeck} required>
         <div className="flex gap-2">
           <select
-            className="w-full py-2 px-4 border rounded"
+            className="w-full p-3 border rounded-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 
+                       focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
             value={selectedDeck}
             onChange={(e) => handleDeckChange(e.target.value)}
           >
@@ -142,7 +143,7 @@ export default function SaveToAnki({ card, onError }: SaveToAnkiProps) {
           <button
             type="button"
             onClick={handleCreateDeck}
-            className="p-2 border rounded hover:bg-gray-100"
+            className="p-2 border rounded hover:bg-gray-100 dark:hover:bg-gray-900"
           >
             <Plus className="h-5 w-5" />
           </button>
@@ -150,7 +151,7 @@ export default function SaveToAnki({ card, onError }: SaveToAnkiProps) {
             type="button"
             onClick={fetchDecks}
             disabled={isRefreshing}
-            className="p-2 border rounded hover:bg-gray-100 disabled:opacity-50"
+            className="p-2 border rounded hover:bg-gray-100 dark:hover:bg-gray-900 disabled:opacity-50"
           >
             <RefreshCw
               className={`h-5 w-5 ${isRefreshing ? 'animate-spin' : ''}`}

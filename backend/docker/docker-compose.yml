@@ -1,0 +1,94 @@
+services:
+  # CPU Version
+  mnemorai-cpu:
+    container_name: mnemorai-backend-cpu
+    build:
+      context: ../..
+      dockerfile: backend/docker/Dockerfile-cpu
+      target: final
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../../config.yaml:/app/config.yaml:ro
+      - models_data:/app/models
+      - datasets_data:/app/datasets
+      - local_data:/app/local_data
+      - logs_data:/app/logs
+      - ../../data:/app/data:ro
+    environment:
+      - mnemorai_CONFIG_PATH=/app/config.yaml
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/docs" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # GPU Version
+  mnemorai-gpu:
+    container_name: mnemorai-backend-gpu
+    build:
+      context: ../..
+      dockerfile: backend/docker/Dockerfile-gpu
+      target: final
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../../config.yaml:/app/config.yaml:ro
+      - models_data:/app/models
+      - datasets_data:/app/datasets
+      - local_data:/app/local_data
+      - logs_data:/app/logs
+      - ../../data:/app/data:ro
+    environment:
+      - mnemorai_CONFIG_PATH=/app/config.yaml
+    restart: unless-stopped
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/docs" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+  # # Apple Silicon Version
+  # mnemorai-apple:
+  #   container_name: mnemorai-backend-mac
+  #   build:
+  #     context: ../..
+  #     dockerfile: backend/docker/Dockerfile.mac
+  #   platform: linux/arm64
+  #   ports:
+  #     - "8002:8000"
+  #   volumes:
+  #     - ../../config.yaml:/app/config.yaml:ro
+  #     - models_data:/app/models
+  #     - datasets_data:/app/datasets
+  #     - local_data:/app/local_data
+  #     - logs_data:/app/logs
+  #     - ../../data:/app/data:ro
+  #   environment:
+  #     - mnemorai_CONFIG_PATH=/app/config.yaml
+  #   restart: unless-stopped
+  #   healthcheck:
+  #     test: [ "CMD", "curl", "-f", "http://localhost:8000/docs" ]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+  #     start_period: 40s
+
+volumes:
+  models_data:
+    driver: local
+  datasets_data:
+    driver: local
+  local_data:
+    driver: local
+  logs_data:
+    driver: local

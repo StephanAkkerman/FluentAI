@@ -11,6 +11,7 @@ import { ModelOptions } from "@/interfaces/ModelInterface";
 import { ModelService } from "@/services/modelService";
 
 interface CardGeneratorProps {
+  card: Card | null;
   onCardCreated: (card: Card) => void;
   onLoading: (loading: boolean) => void;
   onError: (error: string) => void;
@@ -20,6 +21,7 @@ interface CardGeneratorProps {
 const modelService = new ModelService();
 
 export default function CardGenerator({
+  card,
   onCardCreated,
   onLoading,
   onError,
@@ -42,7 +44,6 @@ export default function CardGenerator({
     languageCode: "",
     word: ""
   });
-  const [card, setCard] = useState<Card | null>(null);
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   useEffect(() => {
@@ -87,11 +88,9 @@ export default function CardGenerator({
 
     onLoading(true);
     onError("");
-    setCard(null);
 
     try {
       const newCard = await createCard(input);
-      setCard(newCard);
       onCardCreated(newCard);
     } catch (err: any) {
       onError(err.message || "An unexpected error occurred.");
@@ -144,7 +143,8 @@ export default function CardGenerator({
               <button
                 type="button"
                 onClick={() => setShowAdvanced(!showAdvanced)}
-                className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100 transition-colors"
+                className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100 
+                  transition-colors px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-900"
               >
                 {showAdvanced ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                 <span>Advanced Options</span>
@@ -170,7 +170,7 @@ export default function CardGenerator({
                 >
                   <input
                     type="text"
-                    className={`w-full border rounded p-2 bg-white text-gray-800 dark:border-gray-600 
+                    className={`border rounded-lg p-2 w-full bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 
                       ${input.keySentence ? 'opacity-50 cursor-not-allowed' : ''}
                       ${errors.word ? "border-red-500" : "border-gray-300 dark:border-gray-600"}`}
                     value={input.mnemonicKeyword || ""}
