@@ -5,6 +5,6 @@ export const ANKI_CONFIG = {
   VERSION: 6,
   DEFAULT_DECK: 'Model Deck',
   DEFAULT_MODEL: 'Basic',
-  DEFAULT_TAGS: ['FluentAI']
+  DEFAULT_TAGS: ['mnemorai']
 } as const;
 
