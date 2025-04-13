@@ -8,7 +8,7 @@ const HowSection = () => {
     const sectionRef = useRef(null);
     const [browserContent, setBrowserContent] = useState<ReactNode>(
         <>
-            <div className="w-full h-full flex items-center justify-center h-48">
+            <div className="w-full flex items-center justify-center h-48">
                 <h1 className="text-xl font-bold text-white">
                     Step 1: <br /> Select Your Target Language
                 </h1>
