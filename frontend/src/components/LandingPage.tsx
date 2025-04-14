@@ -5,7 +5,7 @@ import HowSection from "./landing-page/HowSection";
 import HeroSection from "./landing-page/HeroSection";
 import AIPage from "./landing-page/AISection";
 import FAQSection from "./landing-page/FAQSection";
-import FooterSection from "./landing-page/FooterSection";
+import CTASection from "./landing-page/CTASection";
 import React from "react";
 
 const LandingPage = () => {
@@ -16,35 +16,39 @@ const LandingPage = () => {
           <HeroSection />
         </section>
 
-
         <section id="what" className="duration-300 transition-all -translate-y-[5%]">
           <WhatSection />
         </section>
 
-        <section id="why" className="duration-300 transition-all -translate-y-[5%]">
+        {/* Full width section - breaks out of container */}
+
+        <section id="why" className="duration-300 transition-all -translate-y-[5%] w-screen relative left-1/2 right-1/2 -mx-[50vw]  ">
           <WhySection />
         </section>
 
-        {/* 2. HOW IT WORKS SECTION */}
-        < section id="how" className="py-20" >
-          <HowSection />
-        </section >
 
-        {/* 3. FEATURES & BENEFITS SECTION */}
-        < section id="features" className="py-20" >
+        {/* 2. HOW IT WORKS SECTION */}
+        <section id="how" className="py-20">
+          <HowSection />
+        </section>
+
+        {/* 3. FEATURES & BENEFITS SECTION - Full width */}
+
+        <section id="features" className="py-20 w-screen relative left-1/2 right-1/2 -mx-[50vw]">
           <AIPage />
-        </section >
+        </section>
+
 
         {/* 5. FAQ SECTION */}
-        < section id="faq" >
+        <section id="faq">
           <FAQSection />
-        </section >
+        </section>
 
-        {/* 6. FOOTER */}
-        < section >
-          <FooterSection />
-        </section >
-      </div >
+        {/* 6. CTA */}
+        <section id="cta" className="pt-10" >
+          <CTASection />
+        </section>
+      </div>
     </>
   );
 };

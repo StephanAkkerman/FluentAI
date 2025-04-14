@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import StatusChecker from "@/components/StatusChecker";
 import { ToastProvider } from "@/contexts/ToastContext";
 import type { Metadata } from "next";
@@ -26,13 +27,7 @@ export default function RootLayout({
             {children}
           </main>
           <StatusChecker />
-          {
-            /* NOTE: Maybe reuse the FooterSection from the landing page?
-            < section >
-              <FooterSection />
-            </section >
-           */
-          }
+          <Footer />
         </ToastProvider>
       </body>
     </html>
