@@ -52,7 +52,7 @@ Before starting, make sure you have the following requirements:
 We have bundled all required dependencies into a package for easy installation. To get started, simply run one of the following commands:
 
 ```bash
-pip install backend/.
+pip install backend/. --extra-index-url https://download.pytorch.org/whl/cu124
 ```
 
 ### Building from Source
@@ -74,7 +74,7 @@ If you prefer to build from source, follow these steps:
 3. Install the dependencies:
 
    ```bash
-   pip install backend/.
+   pip install backend/. --extra-index-url https://download.pytorch.org/whl/cu124
    ```
 
 ## Usage ⌨️
