@@ -6,6 +6,7 @@ on:
     paths:
       - '**/requirements.txt'  # Dependency file
       - '**/setup.py'          # Setup script
+      - '.github/workflows/pyversions.yml' #This file
 permissions:
   contents: read
 
