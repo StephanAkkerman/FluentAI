@@ -13,11 +13,13 @@ class MnemonicGen:
     def __init__(self):
         self.config = config.get("LLM")
 
+        # https://docs.unsloth.ai/get-started/all-our-models
         self.model_name = (
             # "microsoft/Phi-3-mini-4k-instruct" #only works with transformers 4.47.1 or older
             # "Qwen/Qwen2.5-7B-Instruct"
             # "Qwen/Qwen2.5-14B-Instruct"
-            "unsloth/Qwen2.5-14B-Instruct-bnb-4bit"
+            # "unsloth/Qwen2.5-14B-Instruct-bnb-4bit"
+            "unsloth/Qwen2.5-7B-Instruct-bnb-4bit"
             # "Qwen/Qwen2.5-14B-Instruct-GGUF"
             # "microsoft/Phi-4-mini-instruct"
         )
@@ -63,7 +65,7 @@ class MnemonicGen:
         ]
 
     def generate_mnemonic(
-        self, language: str = "Indonesian", word: str = "Kucing", ipa: str = "ku.t͡ʃiŋ"
+        self, language: str = "Indonesian", word: str = "dagings", ipa: str = "ku.t͡ʃiŋ"
     ):
         final_message = {
             "role": "user",
@@ -72,7 +74,7 @@ class MnemonicGen:
         Also consider that the mnemonic should be an easy to imagine word and a word that is commonly used.
         Do not simply translate the word, the mnemonic should be a *memory aid* based on sound, not a translation.
         Give a list of 10 mnemonic options based on these criteria.
-        Give your output in JSON format.""",
+        Give your output in a Python list format. Like so ["option1", ..., "option10"]""",
         }
 
         #         final_message = {
@@ -85,7 +87,7 @@ class MnemonicGen:
 
         # For some reason using tokenizer.apply_chat_template() here causes weird output
         input = self.messages + [final_message]
-        print(input)
+        logger.debug(input)
         output = self.pipe(input, **self.generation_args)
         response = output[0]["generated_text"]
         logger.debug(f"Generated cue: {response}")
