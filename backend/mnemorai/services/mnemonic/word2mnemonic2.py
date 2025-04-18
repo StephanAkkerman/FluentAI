@@ -1,12 +1,16 @@
+import asyncio
+
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
-    BitsAndBytesConfig,
     pipeline,
 )
 
 from mnemorai.constants.config import config
+from mnemorai.constants.languages import G2P_LANGUAGES
 from mnemorai.logger import logger
+from mnemorai.services.mnemonic.phonetic.compute import Phonetic_Similarity
+from mnemorai.services.mnemonic.semantic.translator import translate_word
 
 
 class MnemonicGen:
@@ -56,6 +60,7 @@ class MnemonicGen:
             tokenizer=self.tokenizer,
             torch_dtype="float16",
         )
+        self.phonetic_sim = Phonetic_Similarity()
 
         self.messages = [
             {
@@ -64,9 +69,42 @@ class MnemonicGen:
             }
         ]
 
-    def generate_mnemonic(
-        self, language: str = "Indonesian", word: str = "dagings", ipa: str = "ku.t͡ʃiŋ"
-    ):
+    async def generate_mnemonic(
+        self,
+        word: str,
+        language_code: str,
+        keyword: str = None,
+        key_sentence: str = None,
+    ) -> tuple:
+        """
+        Generate a mnemonic for the input word using the phonetic representation.
+
+        Parameters
+        ----------
+        word : str
+            Foreign word to generate mnemonic for.
+        language_code : str
+            Language code of the input word.
+        keyword : str, optional
+            User-provided keyword to use in the mnemonic.
+        key_sentence : str, optional
+            User-provided key sentence to use as the mnemonic.
+
+        Returns
+        -------
+        tuple
+            A tuple containing the top matches, translated word, transliterated word, and IPA.
+        """
+        # Convert the input word to IPA representation
+        ipa = self.phonetic_sim.word2ipa(word=word, language_code=language_code)
+
+        translated_word, transliterated_word = await translate_word(word, language_code)
+
+        # If a keyword or key sentence is provided, use it directly for scoring
+        if keyword or key_sentence:
+            return None, translated_word, transliterated_word, ipa
+
+        language = G2P_LANGUAGES.get(language_code, "Unknown Language")
         final_message = {
             "role": "user",
             "content": f"""Think of a mnemonic to remember the {language} word {word}.
@@ -77,23 +115,26 @@ class MnemonicGen:
         Give your output in a Python list format. Like so ["option1", ..., "option10"]""",
         }
 
-        #         final_message = {
-        #             "role": "user",
-        #             "content": f"""Think of an English word or a combination of 2 words that sound similar to how {word} (IPA: {ipa}) would be pronounced in {language}.
-        # Give a list of 10 options based on these criteria.
-        # Do not simply use the English translation of the word.
-        # Give your output in JSON format.""",
-        #         }
-
         # For some reason using tokenizer.apply_chat_template() here causes weird output
         input = self.messages + [final_message]
         logger.debug(input)
         output = self.pipe(input, **self.generation_args)
         response = output[0]["generated_text"]
         logger.debug(f"Generated cue: {response}")
-        return response
+
+        # Convert the string of a list to an actual list
+        try:
+            top = eval(response[-1]["content"])
+        except Exception as e:
+            # Retry generating using the LLM for 2 more times
+            logger.error(f"Error parsing response: {e}")
+            logger.debug("Retrying...")
+            # TODO retry logic
+        return top, translated_word, transliterated_word, ipa
 
 
 if __name__ == "__main__":
     mnemonic_gen = MnemonicGen()
-    mnemonic = mnemonic_gen.generate_mnemonic()
+    print(
+        asyncio.run(mnemonic_gen.generate_mnemonic(word="daging", language_code="ind"))
+    )
