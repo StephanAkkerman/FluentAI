@@ -40,7 +40,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd backend
-          python -m pip install --upgrade pip
-          pip install -e . --extra-index-url https://download.pytorch.org/whl/cu124
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+            cd backend
+            python -m pip install --upgrade pip wheel setuptools
+            pip install -e . --extra-index-url https://download.pytorch.org/whl/cu124
+            if [ -f requirements.txt ]; then grep -v '^flash_attn' requirements.txt | pip install -r /dev/stdin; fi
+
