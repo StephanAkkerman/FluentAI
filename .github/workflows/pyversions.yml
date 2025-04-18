@@ -1,6 +1,7 @@
 name: Check Python Versions
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - '**/requirements.txt'  # Dependency file
