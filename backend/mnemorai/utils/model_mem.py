@@ -8,6 +8,18 @@ from mnemorai.logger import logger
 
 
 def manage_memory(targets=None, delete_attrs=None, move_kwargs=None):
+    """
+    Decorator to manage memory by moving specified attributes to GPU before method call and back to CPU after method.
+
+    Args:
+        targets (list[str]): List of attribute names to move to GPU (e.g., ['model', 'pipe']).
+        delete_attrs (list[str]): List of attribute names to delete after method execution.
+        move_kwargs (dict): Additional keyword arguments to pass to the .to() method.
+
+    Returns
+    -------
+    function: Decorated method.
+    """
     if targets is None:
         targets = []
     if delete_attrs is None:
