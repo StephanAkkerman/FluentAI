@@ -12,7 +12,9 @@ G2P:
 # The model to use for generating the mnemonic and creating the verbal cue
 LLM:
   # We recommend the models from unsloth: https://docs.unsloth.ai/get-started/all-our-models
-  MODEL: "unsloth/Qwen2.5-7B-Instruct-bnb-4bit"
+  SMALL_MODEL: "unsloth/Qwen2.5-3B-Instruct-bnb-4bit" # 3GB vram
+  MEDIUM_MODEL: "unsloth/Qwen2.5-7B-Instruct-bnb-4bit" # 6GB vram
+  LARGE_MODEL: "unsloth/Qwen2.5-14B-Instruct-bnb-4bit" # 9GB vram
   # Options are: None, 4bit, 8bit
   # Use None if you use an unsloth model (these are already quantized)
   QUANTIZATION: None
@@ -21,11 +23,11 @@ LLM:
   DELETE_AFTER_USE: False
   OFFLOAD: True
   PARAMS:
-    temperature: 0.3
+    temperature: 0.5
 
 # The model to use for generating the image
 IMAGE_GEN:
-  SMALL_MODEL: stabilityai/stable-diffusion-2
+  SMALL_MODEL: stabilityai/stable-diffusion-2 # 3GB vram
   MEDIUM_MODEL: stabilityai/sdxl-turbo # 6GB vram
   LARGE_MODEL: Efficient-Large-Model/Sana_600M_512px_diffusers # 9GB vram
   OUTPUT_DIR: "imagine/generated-img"

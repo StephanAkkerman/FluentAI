@@ -210,5 +210,5 @@ class VerbalCue:
 
 if __name__ == "__main__":
     vc = VerbalCue()
-    print(asyncio.run(vc.generate_mnemonic(word="daging", language_code="ind")))
+    print(asyncio.run(vc.generate_mnemonic(word="flasche", language_code="ger")))
     # print(vc.generate_cue("bottle", "flashy"))
