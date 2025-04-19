@@ -1,8 +1,8 @@
 import asyncio
 
 import pandas as pd
-from backend.mnemorai.services.imagine.grapheme2phoneme import Grapheme2Phoneme
-from backend.mnemorai.services.imagine.translator import translate_word
+from backend.mnemorai.services.pre.grapheme2phoneme import Grapheme2Phoneme
+from backend.mnemorai.services.pre.translator import translate_word
 from huggingface_hub import hf_hub_download
 from transformers import (
     AutoModelForCausalLM,

@@ -1,5 +1,5 @@
-import pandas as pd
-from huggingface_hub import hf_hub_download
+from backend.mnemorai.services.pre.grapheme2phoneme import Grapheme2Phoneme
+from backend.mnemorai.services.pre.translator import translate_word
 from peft import PeftModel
 from transformers import (
     AutoModelForCausalLM,
@@ -19,8 +19,9 @@ class VerbalCue:
         self.config = config.get("LLM")
         self.offload = self.config.get("OFFLOAD")
         self.model_name = model_name if model_name else self.config.get("MODEL")
+        self.g2p_model = Grapheme2Phoneme()
 
-        # use recommended settings for phi-3.5
+        # Use 512 tokens as default for generation
         self.generation_args = {
             "max_new_tokens": 512,
         }
@@ -102,48 +103,6 @@ class VerbalCue:
             tokenizer=self.tokenizer,
         )
 
-    def word2ipa(
-        self,
-        word: str,
-        language_code: str,
-    ) -> str:
-        """
-        Get the IPA representation of a word.
-
-        Parameters
-        ----------
-        word : str
-            The word to convert to IPA
-        language_code : str, optional
-            The language code of the word, by default "eng-us"
-
-        Returns
-        -------
-        str
-            The IPA representation of the word
-        """
-        # Try searching in the dataset
-        if "eng-us" in language_code:
-            # First try lookup in the .tsv file
-            logger.debug("Loading the IPA dataset")
-            eng_ipa = pd.read_csv(
-                hf_hub_download(
-                    repo_id=config.get("PHONETIC_SIM").get("IPA").get("REPO"),
-                    filename=config.get("PHONETIC_SIM").get("IPA").get("FILE"),
-                    cache_dir="datasets",
-                    repo_type="dataset",
-                )
-            )
-
-            # Check if the word is in the dataset
-            ipa = eng_ipa[eng_ipa["token_ort"] == word]["token_ipa"]
-
-            if not ipa.empty:
-                return ipa.values[0].replace(" ", "")
-
-        # Use the g2p models
-        return self.g2p_model.g2p([f"<{language_code}>:{word}"])
-
     async def generate_mnemonic(
         self,
         word: str,
@@ -171,7 +130,7 @@ class VerbalCue:
             A tuple containing the top matches, translated word, transliterated word, and IPA.
         """
         # Convert the input word to IPA representation
-        ipa = self.phonetic_sim.word2ipa(word=word, language_code=language_code)
+        ipa = self.g2p_model.word2ipa(word=word, language_code=language_code)
 
         translated_word, transliterated_word = await translate_word(word, language_code)
 
