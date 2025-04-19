@@ -30,7 +30,7 @@ Tired of rote memorization? **mnemorai** leverages the power of AI to create uni
 ## Table of Contents 🗂
 
 *   [Key Features](#key-features-)
-*   [How it Works](#how-it-works-)
+*   [How it Works](#how-it-works-%EF%B8%8F)
 *   [Demo](#demo-)
 *   [The Science Behind It](#the-science-behind-it-)
 *   [System Requirements](#system-requirements-%EF%B8%8F)
