@@ -1,5 +1,9 @@
 import asyncio
 
+import pandas as pd
+from backend.mnemorai.services.imagine.grapheme2phoneme import Grapheme2Phoneme
+from backend.mnemorai.services.imagine.translator import translate_word
+from huggingface_hub import hf_hub_download
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
@@ -9,13 +13,12 @@ from transformers import (
 from mnemorai.constants.config import config
 from mnemorai.constants.languages import G2P_LANGUAGES
 from mnemorai.logger import logger
-from mnemorai.services.mnemonic.phonetic.compute import Phonetic_Similarity
-from mnemorai.services.mnemonic.semantic.translator import translate_word
 
 
 class MnemonicGen:
     def __init__(self):
         self.config = config.get("LLM")
+        self.g2p_model = Grapheme2Phoneme()
 
         # https://docs.unsloth.ai/get-started/all-our-models
         self.model_name = (
@@ -60,7 +63,6 @@ class MnemonicGen:
             tokenizer=self.tokenizer,
             torch_dtype="float16",
         )
-        self.phonetic_sim = Phonetic_Similarity()
 
         self.messages = [
             {
@@ -68,6 +70,48 @@ class MnemonicGen:
                 "content": "You are a helpful assistant that generates mnemonics for foreign language vocabulary words. The mnemonic should sound very similar to the foreign word.  Use common English words or short phrases.",
             }
         ]
+
+    def word2ipa(
+        self,
+        word: str,
+        language_code: str,
+    ) -> str:
+        """
+        Get the IPA representation of a word.
+
+        Parameters
+        ----------
+        word : str
+            The word to convert to IPA
+        language_code : str, optional
+            The language code of the word, by default "eng-us"
+
+        Returns
+        -------
+        str
+            The IPA representation of the word
+        """
+        # Try searching in the dataset
+        if "eng-us" in language_code:
+            # First try lookup in the .tsv file
+            logger.debug("Loading the IPA dataset")
+            eng_ipa = pd.read_csv(
+                hf_hub_download(
+                    repo_id=config.get("PHONETIC_SIM").get("IPA").get("REPO"),
+                    filename=config.get("PHONETIC_SIM").get("IPA").get("FILE"),
+                    cache_dir="datasets",
+                    repo_type="dataset",
+                )
+            )
+
+            # Check if the word is in the dataset
+            ipa = eng_ipa[eng_ipa["token_ort"] == word]["token_ipa"]
+
+            if not ipa.empty:
+                return ipa.values[0].replace(" ", "")
+
+        # Use the g2p models
+        return self.g2p_model.g2p([f"<{language_code}>:{word}"])
 
     async def generate_mnemonic(
         self,

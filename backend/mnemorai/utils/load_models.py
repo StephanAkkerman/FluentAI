@@ -2,13 +2,12 @@ import gc
 import os
 
 import torch
+from backend.mnemorai.services.imagine.grapheme2phoneme import Grapheme2Phoneme
 
 from mnemorai.constants.config import config
 from mnemorai.logger import logger
 from mnemorai.services.imagine.image_gen import ImageGen
 from mnemorai.services.imagine.verbal_cue_gen import VerbalCue
-from mnemorai.services.mnemonic.phonetic.grapheme2phoneme import Grapheme2Phoneme
-from mnemorai.services.mnemonic.semantic.compute import SemanticSimilarity
 
 
 def get_model_dir_name(model: str) -> str:
