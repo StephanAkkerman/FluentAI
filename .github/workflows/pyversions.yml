@@ -30,18 +30,18 @@ jobs:
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
 
-    #   - name: Cache pip dependencies
-    #     uses: actions/cache@v4
-    #     with:
-    #       path: ~/.cache/pip
-    #       key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-    #       restore-keys: |
-    #         ${{ runner.os }}-pip-
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       - name: Install dependencies
         run: |
             cd backend
             python -m pip install --upgrade pip wheel setuptools
             pip install -e . --extra-index-url https://download.pytorch.org/whl/cu124
-            if [ -f requirements.txt ]; then grep -v '^flash_attn' requirements.txt | pip install -r /dev/stdin; fi
+            if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 

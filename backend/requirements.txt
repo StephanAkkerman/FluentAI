@@ -35,6 +35,6 @@ einops==0.8.1
 peft==0.15.2
 xformers==0.0.29
 bitsandbytes==0.45.5
-flash_attn==2.7.3; sys_platform == 'linux'
+# flash_attn==2.7.3; sys_platform == 'linux'
 triton-windows<3.2; sys_platform == 'win32' # for torch > 2.4
 triton==3.3.0; sys_platform == 'linux'
