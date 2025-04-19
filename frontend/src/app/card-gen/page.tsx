@@ -3,9 +3,10 @@
 import { useState } from "react";
 import CardGenerator from "../../components/CardGenerator";
 import Flashcard from "../../components/Flashcard";
+import SaveToAnki from "@/components/SaveToAnki";
 import { Card } from "@/interfaces/CardInterfaces";
 
-export default function Home() {
+export default function CardGeneratorPage() {
   const [card, setCard] = useState<Card | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -41,6 +42,14 @@ export default function Home() {
               showFront={!!card}
             />
           </div>
+          {card && (
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 mt-8">
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-4">Save to Anki</h3>
+                <SaveToAnki card={card} onError={setError} />
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
