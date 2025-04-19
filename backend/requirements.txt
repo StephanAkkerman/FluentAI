@@ -6,8 +6,7 @@ transformers[sentencepiece]==4.47.1
 sentence-transformers==3.4.1
 accelerate==1.5.2
 numpy==1.26.4
-faiss-cpu==1.10.0; sys_platform != 'linux'
-faiss-gpu==1.7.2; sys_platform == 'linux'
+faiss-cpu==1.10.0
 gensim==4.3.3
 scipy==1.13.1
 pandas==2.2.3
@@ -37,4 +36,4 @@ xformers==0.0.29
 bitsandbytes==0.45.5
 # flash_attn==2.7.3; sys_platform == 'linux'
 triton-windows<3.2; sys_platform == 'win32' # for torch > 2.4
-triton==3.3.0; sys_platform == 'linux'
+triton==3.1.0; sys_platform == 'linux'
