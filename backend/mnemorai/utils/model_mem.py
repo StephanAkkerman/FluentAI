@@ -1,5 +1,6 @@
 import functools
 import gc
+import inspect
 
 import torch
 
@@ -7,18 +8,6 @@ from mnemorai.logger import logger
 
 
 def manage_memory(targets=None, delete_attrs=None, move_kwargs=None):
-    """
-    Decorator to manage memory by moving specified attributes to GPU before method call and back to CPU after method.
-
-    Args:
-        targets (list[str]): List of attribute names to move to GPU (e.g., ['model', 'pipe']).
-        delete_attrs (list[str]): List of attribute names to delete after method execution.
-        move_kwargs (dict): Additional keyword arguments to pass to the `.to()` method.
-
-    Returns
-    -------
-    function: Decorated method.
-    """
     if targets is None:
         targets = []
     if delete_attrs is None:
@@ -27,45 +16,75 @@ def manage_memory(targets=None, delete_attrs=None, move_kwargs=None):
         move_kwargs = {}
 
     def decorator(method):
-        @functools.wraps(method)
-        def wrapper(self, *args, **kwargs):
-            # Initialize the pipe if it's not already loaded
+        is_async = inspect.iscoroutinefunction(method)
+
+        async def _async_wrapper(self, *args, **kwargs):
+            # before
             if getattr(self, "pipe", None) is None:
                 self._initialize_pipe()
-
-            # Move specified targets to GPU if offloading is enabled
             if getattr(self, "offload", False):
-                for target in targets:
-                    attr = getattr(self, target, None)
-                    if attr is not None:
-                        logger.debug(f"Moving {target} to GPU (cuda).")
-                        attr.to("cuda", **move_kwargs)
+                for t in targets:
+                    obj = getattr(self, t, None)
+                    if obj is not None:
+                        logger.debug(f"Moving {t} to GPU.")
+                        obj.to("cuda", **move_kwargs)
 
             try:
-                # Execute the decorated method
-                result = method(self, *args, **kwargs)
+                result = await method(self, *args, **kwargs)
             finally:
-                # Delete specified attributes if DELETE_AFTER_USE is True
+                # delete attrs
                 if self.config.get("DELETE_AFTER_USE", True):
-                    for attr_name in delete_attrs:
-                        attr = getattr(self, attr_name, None)
-                        if attr is not None:
-                            logger.debug(f"Deleting {attr_name} to free up memory.")
-                            delattr(self, attr_name)
-                            setattr(self, attr_name, None)
+                    for name in delete_attrs:
+                        if hasattr(self, name):
+                            logger.debug(f"Deleting {name} to free memory.")
+                            delattr(self, name)
+                            setattr(self, name, None)
                     gc.collect()
                     torch.cuda.empty_cache()
 
-                # Move specified targets back to CPU if offloading is enabled
+                # move back
                 if getattr(self, "offload", False):
-                    for target in targets:
-                        attr = getattr(self, target, None)
-                        if attr is not None:
-                            logger.debug(f"Moving {target} back to CPU.")
-                            attr.to("cpu", **move_kwargs)
+                    for t in targets:
+                        obj = getattr(self, t, None)
+                        if obj is not None:
+                            logger.debug(f"Moving {t} back to CPU.")
+                            obj.to("cpu", **move_kwargs)
 
             return result
 
-        return wrapper
+        def _sync_wrapper(self, *args, **kwargs):
+            # identical pre/post logic, but sync
+            if getattr(self, "pipe", None) is None:
+                self._initialize_pipe()
+            if getattr(self, "offload", False):
+                for t in targets:
+                    obj = getattr(self, t, None)
+                    if obj is not None:
+                        logger.debug(f"Moving {t} to GPU.")
+                        obj.to("cuda", **move_kwargs)
+
+            try:
+                result = method(self, *args, **kwargs)
+            finally:
+                if self.config.get("DELETE_AFTER_USE", True):
+                    for name in delete_attrs:
+                        if hasattr(self, name):
+                            logger.debug(f"Deleting {name} to free memory.")
+                            delattr(self, name)
+                            setattr(self, name, None)
+                    gc.collect()
+                    torch.cuda.empty_cache()
+
+                if getattr(self, "offload", False):
+                    for t in targets:
+                        obj = getattr(self, t, None)
+                        if obj is not None:
+                            logger.debug(f"Moving {t} back to CPU.")
+                            obj.to("cpu", **move_kwargs)
+
+            return result
+
+        wrapper = _async_wrapper if is_async else _sync_wrapper
+        return functools.wraps(method)(wrapper)
 
     return decorator

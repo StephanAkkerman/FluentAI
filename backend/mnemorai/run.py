@@ -5,14 +5,11 @@ import torch
 from mnemorai.logger import logger
 from mnemorai.services.imagine.image_gen import ImageGen
 from mnemorai.services.imagine.verbal_cue_gen import VerbalCue
-from mnemorai.services.mnemonic.word2mnemonic import Word2Mnemonic
 from mnemorai.services.tts.tts import TTS
 
 
 class MnemonicPipeline:
     def __init__(self):
-        self.w2m = Word2Mnemonic()
-
         # Check if cuda is available
         logger.info(f"cuda available: {torch.cuda.is_available()}")
         logger.info(f"cuda device count: {torch.cuda.device_count()}")
@@ -53,10 +50,6 @@ class MnemonicPipeline:
         str
             The IPA spelling of the best match.
         """
-        best_matches, translated_word, _, ipa = await self.w2m.generate_mnemonic(
-            word, lang_code, keyword, key_sentence
-        )
-
         if not key_sentence:
             if not keyword:
                 # Get the top phonetic match

@@ -1,5 +1,5 @@
-from backend.mnemorai.services.pre.grapheme2phoneme import Grapheme2Phoneme
-from backend.mnemorai.services.pre.translator import translate_word
+import asyncio
+
 from peft import PeftModel
 from transformers import (
     AutoModelForCausalLM,
@@ -11,6 +11,8 @@ from transformers import (
 from mnemorai.constants.config import config
 from mnemorai.constants.languages import G2P_LANGUAGES
 from mnemorai.logger import logger
+from mnemorai.services.pre.grapheme2phoneme import Grapheme2Phoneme
+from mnemorai.services.pre.translator import translate_word
 from mnemorai.utils.model_mem import manage_memory
 
 
@@ -29,6 +31,8 @@ class VerbalCue:
         config_params = self.config.get("PARAMS")
         if config_params:
             self.generation_args.update(config_params)
+
+        logger.debug(f"LLM generation args: {self.generation_args}")
 
         self.mnemonic_messages = [
             {
@@ -79,7 +83,7 @@ class VerbalCue:
             torch_dtype="auto",
             trust_remote_code=True,
             cache_dir="models",
-            quantization_config=bnb_config,
+            # quantization_config=bnb_config,
         )
 
         # Check if LoRA should be enabled
@@ -103,6 +107,9 @@ class VerbalCue:
             tokenizer=self.tokenizer,
         )
 
+    @manage_memory(
+        targets=["model"], delete_attrs=["model", "pipe", "tokenizer"], move_kwargs={}
+    )
     async def generate_mnemonic(
         self,
         word: str,
@@ -127,48 +134,50 @@ class VerbalCue:
         Returns
         -------
         tuple
-            A tuple containing the top matches, translated word, transliterated word, and IPA.
+            A tuple containing the top matches, translated word, transliterated word, IPA, and verbal cue.
         """
         # Convert the input word to IPA representation
         ipa = self.g2p_model.word2ipa(word=word, language_code=language_code)
 
+        # Translate and transliterate the word
         translated_word, transliterated_word = await translate_word(word, language_code)
 
-        # If a keyword or key sentence is provided, use it directly for scoring
-        if keyword or key_sentence:
-            return None, translated_word, transliterated_word, ipa
+        # If a keyword or key sentence is provided do not generate mnemonics
+        if not (keyword or key_sentence):
 
-        language = G2P_LANGUAGES.get(language_code, "Unknown Language")
-        final_message = {
-            "role": "user",
-            "content": f"""Think of a mnemonic to remember the {language} word {word}.
-        Think of an English word or a combination of 2 words that sound similar to how {word} would be pronounced in {language}.
-        Also consider that the mnemonic should be an easy to imagine word and a word that is commonly used.
-        Do not simply translate the word, the mnemonic should be a *memory aid* based on sound, not a translation.
-        Give a list of 10 mnemonic options based on these criteria.
-        Give your output in a Python list format. Like so ["option1", ..., "option10"]""",
-        }
+            language = G2P_LANGUAGES.get(language_code, "Unknown Language")
+            final_message = {
+                "role": "user",
+                "content": f"""Think of a mnemonic to remember the {language} word {word}.
+            Think of an English word or a combination of 2 words that sound similar to how {word} would be pronounced in {language}.
+            Also consider that the mnemonic should be an easy to imagine word and a word that is commonly used.
+            Do not simply translate the word, the mnemonic should be a *memory aid* based on sound, not a translation.
+            Give a list of 10 mnemonic options based on these criteria.
+            Give your output in a Python list format. Like so ["option1", ..., "option10"]""",
+            }
 
-        # For some reason using tokenizer.apply_chat_template() here causes weird output
-        input = self.messages + [final_message]
-        logger.debug(input)
-        output = self.pipe(input, **self.generation_args)
-        response = output[0]["generated_text"]
-        logger.debug(f"Generated cue: {response}")
+            output = self.pipe(
+                self.mnemonic_messages + [final_message], **self.generation_args
+            )
+            response = output[0]["generated_text"]
+            logger.debug(f"Generated mnemonics: {response[-1]['content']}")
 
-        # Convert the string of a list to an actual list
-        try:
-            top = eval(response[-1]["content"])
-        except Exception as e:
-            # Retry generating using the LLM for 2 more times
-            logger.error(f"Error parsing response: {e}")
-            logger.debug("Retrying...")
-            # TODO retry logic
-        return top, translated_word, transliterated_word, ipa
+            # Convert the string of a list to an actual list
+            try:
+                top = eval(response[-1]["content"])
+            except Exception as e:
+                # Retry generating using the LLM for 2 more times
+                logger.error(f"Error parsing response: {e}")
+                logger.debug("Retrying...")
+                # TODO retry logic
 
-    @manage_memory(
-        targets=["model"], delete_attrs=["model", "pipe", "tokenizer"], move_kwargs={}
-    )
+        verbal_cue = self.generate_cue(
+            word1=translated_word,
+            word2=keyword if keyword else top[0],
+        )
+
+        return top, translated_word, transliterated_word, ipa, verbal_cue
+
     def generate_cue(self, word1: str, word2: str) -> str:
         """
         Generate a verbal cue that connects two words.
@@ -190,14 +199,16 @@ class VerbalCue:
             "content": f"Generate a mnemonic sentence for the given input. Start the sentence with 'imagine' and keep it simple. \n Input: English Word: {word1} | Mnemonic Word: {word2}",
         }
         # For some reason using tokenizer.apply_chat_template() here causes weird output
-        output = self.pipe(self.messages + [final_message], **self.generation_args)
+        output = self.pipe(
+            self.verbal_cue_messages + [final_message], **self.generation_args
+        )
         response = output[0]["generated_text"]
-        logger.debug(f"Generated cue: {response}")
+        logger.debug(f"Generated verbal cue: {response}")
 
         return response
 
 
 if __name__ == "__main__":
     vc = VerbalCue()
-    print(vc.generate_cue("hairdresser", "freezer"))
-    print(vc.generate_cue("needing", "broken"))
+    print(asyncio.run(vc.generate_mnemonic(word="daging", language_code="ind")))
+    # print(vc.generate_cue("bottle", "flashy"))
