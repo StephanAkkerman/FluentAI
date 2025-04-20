@@ -6,7 +6,7 @@ import { TextGenerateEffect } from "../ui/text-generate-effect";
 import Flashcard from "../Flashcard";
 import { Card } from "@/interfaces/CardInterfaces";
 import LanguageDock from "@/components/ui/language-dock";
-import { Globe } from "@/components/ui/globeArcs";
+import GlobeSection from "@/components/ui/globeArcs";
 
 import duck from "../../../public/duck.jpg";
 
@@ -21,14 +21,14 @@ const WhatSection = () => {
                 "Track and manage your project issues with ease using our intuitive interface.",
             skeleton: <SkeletonOne />,
             className:
-                "col-span-1 md:col-span-3 border-b md:border-r dark:border-neutral-800",
+                "col-span-1 md:col-span-3 md:border-b md:border-r dark:border-neutral-600",
         },
         {
             title: "Learn quicker through flashcards",
             description:
                 "Create personalized flashcards effortlessly using our advanced AI technology.",
             skeleton: <SkeletonTwo />,
-            className: "border-b col-span-1 md:col-span-3 dark:border-neutral-800",
+            className: "md:border-b col-span-1 md:col-span-3 dark:border-neutral-600",
         },
         {
             title: "Current supported languages",
@@ -36,14 +36,14 @@ const WhatSection = () => {
                 "Our team is constantly working hard to include more languages for you to learn. So stay tuned!",
             skeleton: <SkeletonThree />,
             className:
-                "col-span-1 md:col-span-3 md:border-r dark:border-neutral-800",
+                "col-span-1 md:col-span-3 md:border-r dark:border-neutral-600",
         },
         {
             title: "Global Accessibility",
             description:
                 "Access your personalized dashboard and flashcards from anywhere in the world, 24/7—on any device, in any time zone.",
             skeleton: <SkeletonFour />,
-            className: "col-span-1 md:col-span-3 border-b md:border-none",
+            className: "col-span-1 md:col-span-3  ",
         }
     ];
 
@@ -71,7 +71,7 @@ const WhatSection = () => {
             </motion.div>
 
             <div className="relative" ref={sectionRef} >
-                <div className="grid grid-cols-1 md:grid-cols-6 mt-12 xl:border rounded-md dark:border-neutral-800">
+                <div className="grid grid-cols-1 md:grid-cols-6 mt-12 md:border rounded-md md:dark:border-neutral-600">
                     {features.map((feature, index) => (
                         <AnimatedFeatureCard
                             key={feature.title}
@@ -164,7 +164,7 @@ export const SkeletonOne = () => {
                         duration: 0.5,
                         ease: "easeInOut",
                     }}
-                    className="rounded-xl border border-neutral-200 dark:border-neutral-700 transition-all duration-300"
+                    className="rounded-xl border md:border-neutral-200 md:dark:border-neutral-600 transition-all duration-300"
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                     style={{
@@ -332,7 +332,7 @@ export const SkeletonThree = () => {
         <>
             {/* 4. LANGUAGES SECTION */}
             <div className="container mx-auto px-6 w-[90%] md:w-full">
-                <div className="flex flex-wrap justify-center gap-4 max-w-4xl mt-20 mx-auto">
+                <div className="flex flex-wrap justify-center gap-4 max-w-4xl mt-8 sm:mt-20 mx-auto">
                     <LanguageDock />
                 </div>
             </div>
@@ -343,8 +343,7 @@ export const SkeletonThree = () => {
 export const SkeletonFour = () => {
     return (
         <div className="h-60  flex overflow-hidden items-center justify-end relative bg-transparent dark:bg-transparent">
-            <Globe
-            />
+            <GlobeSection />
 
         </div>
     );

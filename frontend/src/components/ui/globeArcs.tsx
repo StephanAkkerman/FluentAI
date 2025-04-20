@@ -1,18 +1,32 @@
 "use client";
-import React from "react";
-import { motion } from "motion/react";
+
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
-const World = dynamic(() => import("../ui/globe").then((m) => m.World), {
+// dynamically import so this only runs on the client
+const World = dynamic(() => import("./globe").then((m) => m.World), {
     ssr: false,
 });
 
-export function Globe() {
+export default function GlobeSection() {
+    // track dark / light preference
+    const [isDark, setIsDark] = useState(false);
+    useEffect(() => {
+        const mql = window.matchMedia("(prefers-color-scheme: dark)");
+        const update = (e: MediaQueryListEvent | MediaQueryList) => setIsDark(e.matches);
+        update(mql); // set initial
+        mql.addEventListener("change", update);
+        return () => mql.removeEventListener("change", update);
+    }, []);
+
+    // pick white glow in dark mode, navy glow in light mode
+    const atmosphereColor = isDark ? "#FFFFFF" : "#06b6d4";
+
     const globeConfig = {
         pointSize: 4,
         globeColor: "#062056",
         showAtmosphere: true,
-        atmosphereColor: "#FFFFFF",
+        atmosphereColor,
         atmosphereAltitude: 0.1,
         emissive: "#062056",
         emissiveIntensity: 0.1,
@@ -30,6 +44,7 @@ export function Globe() {
         autoRotate: true,
         autoRotateSpeed: 0.5,
     };
+
     const colors = ["#06b6d4", "#3b82f6", "#6366f1"];
     const sampleArcs = [
         {
@@ -395,29 +410,8 @@ export function Globe() {
     ];
 
     return (
-        <div className="flex flex-row items-center justify-center py-20 h-screen md:h-auto dark:bg-black bg-white relative w-full">
-            <div className="max-w-7xl mx-auto w-full relative overflow-hidden h-full md:h-[40rem] px-4">
-                <motion.div
-                    initial={{
-                        opacity: 0,
-                        y: 20,
-                    }}
-                    animate={{
-                        opacity: 1,
-                        y: 0,
-                    }}
-                    transition={{
-                        duration: 1,
-                    }}
-                    className="div"
-                >
-
-                </motion.div>
-                <div className="absolute w-full bottom-0 inset-x-0 h-40 bg-gradient-to-b pointer-events-none select-none from-transparent dark:to-black to-white z-40" />
-                <div className="absolute w-full -bottom-20 h-72 md:h-full z-10">
-                    <World data={sampleArcs} globeConfig={globeConfig} />
-                </div>
-            </div>
+        <div className="w-full  h-[18rem]  absolute">
+            <World globeConfig={globeConfig} data={sampleArcs} />
         </div>
     );
 }
