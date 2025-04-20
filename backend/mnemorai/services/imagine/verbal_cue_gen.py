@@ -20,7 +20,7 @@ class VerbalCue:
     def __init__(self, model_name: str = None):
         self.config = config.get("LLM")
         self.offload = self.config.get("OFFLOAD")
-        self.model_name = model_name if model_name else self.config.get("MODEL")
+        self.model_name = model_name if model_name else self.config.get("MEDIUM_MODEL")
         self.g2p_model = Grapheme2Phoneme()
 
         # Use 512 tokens as default for generation
@@ -65,26 +65,26 @@ class VerbalCue:
         logger.debug(f"Initializing pipeline for LLM with model: {self.model_name}")
 
         bnb_config = None
-        if config.get("LLM").get("QUANTIZATION") == "4bit":
+        q = config.get("LLM", {}).get("QUANTIZATION")
+        if q == "4bit":
             logger.debug("Using 4-bit quantization for LLM")
-            bnb_config = BitsAndBytesConfig(
-                load_in_4bit=True,
-                # bnb_4bit_use_double_quant=True,
-                # bnb_4bit_quant_type="nf4",
-                # bnb_4bit_compute_dtype=torch.bfloat16,
-            )
-        elif config.get("LLM").get("QUANTIZATION") == "8bit":
+            bnb_config = BitsAndBytesConfig(load_in_4bit=True)
+        elif q == "8bit":
             logger.debug("Using 8-bit quantization for LLM")
             bnb_config = BitsAndBytesConfig(load_in_8bit=True)
 
-        self.model = AutoModelForCausalLM.from_pretrained(
-            self.model_name,
-            device_map="cuda" if self.offload else "auto",
-            torch_dtype="auto",
-            trust_remote_code=True,
-            cache_dir="models",
-            # quantization_config=bnb_config,
-        )
+        # build up a dict of kwargs
+        kwargs = {
+            "device_map": "cuda" if self.offload else "auto",
+            "torch_dtype": "auto",
+            "trust_remote_code": True,
+            "cache_dir": "models",
+        }
+        # only include quantization_config if we actually have one
+        if bnb_config is not None:
+            kwargs["quantization_config"] = bnb_config
+
+        self.model = AutoModelForCausalLM.from_pretrained(self.model_name, **kwargs)
 
         # Check if LoRA should be enabled
         if config.get("LLM").get("USE_LORA"):
