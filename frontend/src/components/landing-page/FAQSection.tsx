@@ -60,7 +60,7 @@ const FAQSection = () => {
 
     return (
         <div className="container mx-auto px-6 ">
-            <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
+            <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-white mb-8">
                 Frequently Asked Questions
             </h2>
 
@@ -79,7 +79,7 @@ const FAQSection = () => {
                                 <h3
                                     className={`text-lg font-medium transition-colors duration-300 ${expandedItems[index]
                                         ? 'bg-gradient-to-r from-blue-500 to-teal-400 bg-clip-text text-transparent'
-                                        : 'text-gray-800'
+                                        : 'text-gray-800 dark:text-white'
                                         }`}
                                 >
                                     {item.question}
@@ -87,7 +87,7 @@ const FAQSection = () => {
                                 <svg
                                     className={`w-5 h-5 transition-transform duration-300 ${expandedItems[index]
                                         ? 'rotate-180 text-teal-400'
-                                        : 'text-gray-500'
+                                        : 'text-gray-500 dark:text-white'
                                         }`}
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
@@ -110,7 +110,7 @@ const FAQSection = () => {
                                     : 'max-h-0 opacity-0'
                                     }`}
                             >
-                                <p className="text-gray-600">
+                                <p className="text-gray-600 dark:text-white">
                                     {item.answer}
                                 </p>
                             </div>

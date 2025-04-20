@@ -3,7 +3,11 @@ import React from "react";
 import { FloatingDock } from "@/components/ui/floating-dock";
 import Image from "next/image";
 
-export function LanguageDock() {
+interface LanguageDockProps {
+    className?: string
+}
+
+export function LanguageDock({ className }: LanguageDockProps) {
     const languages = [
         {
             title: "Hello",
@@ -134,10 +138,11 @@ export function LanguageDock() {
     ];
 
     return (
-        <FloatingDock
-            items={languages}
-            mobileClassName="translate-y-20" // only for demo, remove for production
-        />
+        <div className={className}>
+            <FloatingDock
+                items={languages}
+                mobileClassName="translate-y-20" />
+        </div>
     );
 }
 

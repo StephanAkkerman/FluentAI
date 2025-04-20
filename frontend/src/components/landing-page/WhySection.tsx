@@ -31,7 +31,7 @@ const WhySection = () => {
     const titleY = useTransform(
         scrollYProgress,
         [0.2, 0.4],
-        ["300%", "40%"]
+        ["300%", "0%"]
     );
 
     // Monitor scrollYProgress to determine when to show content
@@ -95,17 +95,18 @@ const WhySection = () => {
         visible: { opacity: 1, y: 0 }
     };
 
+
     return (
         <section
             ref={sectionRef}
-            className="relative w-full h-[300vh]"
+            className="relative w-full h-[300vh] pt-[8rem] md:pt-30"
         >
             {/* Main sticky container - adjusted for 80px header */}
             <div className="sticky top-[150px] left-0 w-full h-screen flex flex-col overflow-hidden">
                 {/* Background layer */}
                 <div className="absolute inset-0 w-full h-full">
                     {/* Background overlay */}
-                    <div className="absolute inset-0 w-full h-full z-10 bg-black/80 dark:bg-black/40" />
+                    <div className="absolute inset-0 w-full h-full z-10 bg-black/80 " />
 
                     {/* 3D Marquee Background */}
                     <ThreeDMarquee
@@ -119,7 +120,7 @@ const WhySection = () => {
                     {/* Title with animation */}
                     <motion.div
                         ref={titleRef}
-                        className="flex flex-col items-center justify-center text-center mb-16"
+                        className="flex flex-col items-center justify-center text-center mb-8"
                         style={{
                             scale: titleScale,
                             opacity: titleOpacity,
@@ -139,18 +140,21 @@ const WhySection = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
                             {/* Traditional Learning - Left Column */}
                             <motion.div
-                                className="p-6 rounded-xl border border-gray-700 bg-black/30"
+                                className="p-6 rounded-xl border border-gray-700 bg-black/30 h-[80%] md:h-full"
                                 variants={fadeInLeft}
                                 initial="hidden"
                                 animate={shouldShowContent ? "visible" : "hidden"}
                                 transition={{ duration: 0.6 }}
                             >
-                                <div className="text-red-400 text-4xl mb-4">📚</div>
-                                <h3 className="text-2xl font-bold text-white mb-6 border-b border-gray-700 pb-3">
-                                    Traditional Learning
-                                </h3>
+                                <div className="flex flex-row md:flex-col justify-start items-center md:items-start">
+                                    <div className="text-4xl md:mb-4">📚 </div>
+                                    <h3 className="text-xl md:text-2xl font-bold text-white ml-4 md:ml-0 mb-0  border-gray-700 pb-1">
+                                        Traditional Learning
+                                    </h3>
+                                </div>
+                                <hr className="my-2 border-gray-700" />
 
-                                <ul className="space-y-4">
+                                <ul className="space-y-2 md:space-y-4">
                                     <motion.li
                                         className="flex items-start gap-3 text-gray-300"
                                         variants={fadeInUp}

@@ -5,7 +5,8 @@ import { motion, useInView } from "motion/react";
 import { TextGenerateEffect } from "../ui/text-generate-effect";
 import Flashcard from "../Flashcard";
 import { Card } from "@/interfaces/CardInterfaces";
-import LanguageDock from "../ui/language-dock";
+import LanguageDock from "@/components/ui/language-dock";
+import { Globe } from "@/components/ui/globeArcs";
 
 import duck from "../../../public/duck.jpg";
 
@@ -20,14 +21,14 @@ const WhatSection = () => {
                 "Track and manage your project issues with ease using our intuitive interface.",
             skeleton: <SkeletonOne />,
             className:
-                "col-span-1 lg:col-span-3 border-b lg:border-r dark:border-neutral-800",
+                "col-span-1 md:col-span-3 border-b md:border-r dark:border-neutral-800",
         },
         {
             title: "Learn quicker through flashcards",
             description:
                 "Create personalized flashcards effortlessly using our advanced AI technology.",
             skeleton: <SkeletonTwo />,
-            className: "border-b col-span-1 lg:col-span-3 dark:border-neutral-800",
+            className: "border-b col-span-1 md:col-span-3 dark:border-neutral-800",
         },
         {
             title: "Current supported languages",
@@ -35,31 +36,31 @@ const WhatSection = () => {
                 "Our team is constantly working hard to include more languages for you to learn. So stay tuned!",
             skeleton: <SkeletonThree />,
             className:
-                "col-span-1 lg:col-span-3 lg:border-r dark:border-neutral-800",
+                "col-span-1 md:col-span-3 md:border-r dark:border-neutral-800",
         },
         {
-            title: "Deploy in seconds",
+            title: "Global Accessibility",
             description:
-                "With our blazing fast, state of the art, cutting edge, we are so back cloud servies (read AWS) - you can deploy your model in seconds.",
+                "Access your personalized dashboard and flashcards from anywhere in the world, 24/7—on any device, in any time zone.",
             skeleton: <SkeletonFour />,
-            className: "col-span-1 lg:col-span-3 border-b lg:border-none",
-        },
+            className: "col-span-1 md:col-span-3 border-b md:border-none",
+        }
     ];
 
     return (
-        <div className="relative z-20 py-20 max-w-7xl mx-auto">
+        <div className="relative z-20 pt-20 sm:pt-30 md:pt-20 max-w-7xl mx-auto">
             <motion.div
                 className="px-8"
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.6 }}
             >
-                <h1 className="text-3xl lg:text-5xl lg:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black dark:text-white">
-                    <TextGenerateEffect words={'Learning languages has never been easier'} className="text-3xl" />
+                <h1 className="md:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black dark:text-white">
+                    <TextGenerateEffect words={'Learning languages has never been easier'} className="text-2xl md:text-3xl " />
                 </h1>
 
                 <motion.p
-                    className="text-sm lg:text-base max-w-2xl my-4 mx-auto text-neutral-500 text-center font-normal dark:text-neutral-300"
+                    className="text-sm md:text-base max-w-2xl my-4 mx-auto text-neutral-500 text-center font-normal dark:text-neutral-300"
                     initial={{ opacity: 0 }}
                     animate={isInView ? { opacity: 1 } : { opacity: 0 }}
                     transition={{ duration: 0.6, delay: 0.3 }}
@@ -70,7 +71,7 @@ const WhatSection = () => {
             </motion.div>
 
             <div className="relative" ref={sectionRef} >
-                <div className="grid grid-cols-1 lg:grid-cols-6 mt-12 xl:border rounded-md dark:border-neutral-800">
+                <div className="grid grid-cols-1 md:grid-cols-6 mt-12 xl:border rounded-md dark:border-neutral-800">
                     {features.map((feature, index) => (
                         <AnimatedFeatureCard
                             key={feature.title}
@@ -80,7 +81,7 @@ const WhatSection = () => {
                         >
                             <FeatureTitle>{feature.title}</FeatureTitle>
                             <FeatureDescription>{feature.description}</FeatureDescription>
-                            <div className="h-[90%] w-full">{feature.skeleton}</div>
+                            <div className="h-full w-full">{feature.skeleton}</div>
                         </AnimatedFeatureCard>
                     ))}
                 </div>
@@ -102,7 +103,7 @@ const AnimatedFeatureCard = ({
 }) => {
     return (
         <motion.div
-            className={cn(`p-4 sm:p-8 relative overflow-hidden h-[90%]`, className)}
+            className={cn(`p-4 sm:p-8 relative overflow-hidden h-full`, className)}
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
             transition={{
@@ -141,9 +142,9 @@ export const SkeletonOne = () => {
     const [isHovered, setIsHovered] = useState(false);
 
     return (
-        <div className="relative flex pt-8 w-full items-start justify-center gap-10 h-[80%]">
+        <div className="relative flex sm:pt-8 w-full items-start justify-center gap-10 h-full lg:h-[90%]">
             <div
-                className="flex h-full w-[60%] items-start justify-center"
+                className="flex h-[80%] lg:h-full lg:w-[80%] w-[90%] lg:w-[80%] items-start justify-center"
                 style={{
                     transformStyle: "preserve-3d",
                     transform: "rotateY(-15deg) rotateX(5deg)",
@@ -163,7 +164,7 @@ export const SkeletonOne = () => {
                         duration: 0.5,
                         ease: "easeInOut",
                     }}
-                    className="rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-700 transition-all duration-300"
+                    className="rounded-xl border border-neutral-200 dark:border-neutral-700 transition-all duration-300"
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                     style={{
@@ -175,9 +176,9 @@ export const SkeletonOne = () => {
                     <Image
                         src="/infographic.png"
                         alt="infographic"
-                        width={700}
+                        width={500}
                         height={400}
-                        className="object-cover rounded-xl"
+                        className="object-contain rounded-xl"
                     />
                 </motion.div>
             </div>
@@ -256,7 +257,7 @@ export const SkeletonTwo = () => {
             }}
             whileHover="whileHover"
             whileTap="whileTap"
-            className="rounded-xl  mt-4  dark:bg-neutral-800 dark:border-neutral-700 border border-neutral-100 shrink-0 overflow-hidden"
+            className="rounded-xl mt-4 dark:bg-neutral-800 dark:border-neutral-700 border border-neutral-100  overflow-hidden"
         >
             {/* This wrapper preserves the aspect ratio while scaling down */}
             <div
@@ -299,7 +300,7 @@ export const SkeletonTwo = () => {
             </div>
 
             {/* Second row with more flashcards */}
-            <div className="flex flex-row">
+            <div className="flex flex-row -ml-10 sm:ml-0">
                 {cardData.slice().reverse().map((card, idx) => (
                     <FlashcardWrapper
                         key={"flashcard-second" + idx}
@@ -310,7 +311,7 @@ export const SkeletonTwo = () => {
             </div>
 
             {/* Third row of flashcards */}
-            <div className="flex flex-row -ml-20">
+            <div className="flex flex-row -ml-20 sm:-ml-20">
                 {cardData.map((card, idx) => (
                     <FlashcardWrapper
                         key={"flashcard-third" + idx}
@@ -320,8 +321,8 @@ export const SkeletonTwo = () => {
                 ))}
             </div>
 
-            <div className="absolute left-0 z-[100] inset-y-0 w-20 bg-gradient-to-r from-white dark:from-black to-transparent h-full pointer-events-none" />
-            <div className="absolute right-0 z-[100] inset-y-0 w-20 bg-gradient-to-l from-white dark:from-black to-transparent h-full pointer-events-none" />
+            <div className="absolute left-0 z-[100] inset-y-0 w-5 md:w-20 bg-gradient-to-r from-white dark:from-black to-transparent h-full pointer-events-none" />
+            <div className="absolute right-0 z-[100] inset-y-0 w-5 md:w-20 bg-gradient-to-l from-white dark:from-black to-transparent h-full pointer-events-none" />
         </div>
     );
 };
@@ -330,7 +331,7 @@ export const SkeletonThree = () => {
     return (
         <>
             {/* 4. LANGUAGES SECTION */}
-            <div className="container mx-auto px-6">
+            <div className="container mx-auto px-6 w-[90%] md:w-full">
                 <div className="flex flex-wrap justify-center gap-4 max-w-4xl mt-20 mx-auto">
                     <LanguageDock />
                 </div>
@@ -341,7 +342,10 @@ export const SkeletonThree = () => {
 
 export const SkeletonFour = () => {
     return (
-        <div className="h-60 md:h-60 flex flex-col items-center relative bg-transparent dark:bg-transparent mt-10">
+        <div className="h-60  flex overflow-hidden items-center justify-end relative bg-transparent dark:bg-transparent">
+            <Globe
+            />
+
         </div>
     );
 };

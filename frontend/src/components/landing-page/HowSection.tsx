@@ -115,7 +115,7 @@ const HowSection = () => {
             className="relative w-full h-[650vh]"
         >
             <div className="container mx-auto px-6 sticky top-[8rem] overflow-hidden">
-                <h2 className=" text-3xl font-bold text-center text-gray-800 mb-12">
+                <h2 className=" text-3xl font-bold text-center text-gray-800 dark:text-white mb-12">
                     How It Works
                 </h2>
 
