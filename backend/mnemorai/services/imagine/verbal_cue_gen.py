@@ -37,7 +37,7 @@ class VerbalCue:
         self.mnemonic_messages = [
             {
                 "role": "system",
-                "content": "You are a helpful assistant that generates mnemonics for foreign language vocabulary words. The mnemonic should sound very similar to the foreign word.  Use common English words or short phrases.",
+                "content": "You are a helpful assistant that generates mnemonics for foreign language vocabulary words. The mnemonic should sound very similar to the foreign word. Use common English words or short phrases.",
             }
         ]
 
@@ -153,7 +153,12 @@ class VerbalCue:
             Also consider that the mnemonic should be an easy to imagine word and a word that is commonly used.
             Do not simply translate the word, the mnemonic should be a *memory aid* based on sound, not a translation.
             Give a list of 10 mnemonic options based on these criteria.
-            Give your output in a Python list format. Like so ["option1", ..., "option10"]""",
+            Give your output in a Python list of dictionaries. Like so:
+            [{{'mnemonic': 'flashy', 'score': 0.9}},
+            {{'mnemonic': 'flask', 'score': 0.8}}, 
+            {{'mnemonic': 'flasky', 'score': 0.7}}, 
+            ...                
+            ]""",
             }
 
             output = self.pipe(
