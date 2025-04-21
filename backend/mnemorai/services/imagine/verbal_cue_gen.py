@@ -1,5 +1,6 @@
 import ast
 import asyncio
+import re
 
 from peft import PeftModel
 from transformers import (
@@ -15,6 +16,21 @@ from mnemorai.logger import logger
 from mnemorai.services.pre.grapheme2phoneme import Grapheme2Phoneme
 from mnemorai.services.pre.translator import translate_word
 from mnemorai.utils.model_mem import manage_memory
+
+
+def _parse_mnemonic_list(model_output: str):
+    # 1. grab the first [...] block
+    m = re.search(r"\[.*\]", model_output, re.DOTALL)
+    if not m:
+        raise ValueError("No list literal found in response")
+    list_str = m.group(0)
+
+    # 2. safely evaluate it into Python objects
+    options = ast.literal_eval(list_str)
+
+    # 3. pick the mnemonic with the highest score
+    best = max(options, key=lambda opt: opt["score"])
+    return best["mnemonic"]
 
 
 class VerbalCue:
@@ -203,11 +219,8 @@ class VerbalCue:
             response = output[0]["generated_text"]
             logger.debug(f"Generated mnemonics: {response[-1]['content']}")
 
-            # parse the string into Python objects
-            options = ast.literal_eval(response[-1]["content"])
-
-            # find the dict with the highest score
-            best = max(options, key=lambda opt: opt["score"])
+            # parse the string into Python objects and find best match
+            best = _parse_mnemonic_list(response[-1]["content"])
 
         if key_sentence:
             return best, translated_word, transliterated_word, ipa, key_sentence
@@ -247,7 +260,7 @@ class VerbalCue:
         response = output[0]["generated_text"]
         logger.debug(f"Generated verbal cue: {response}")
 
-        return response
+        return response[-1]["content"]
 
 
 if __name__ == "__main__":

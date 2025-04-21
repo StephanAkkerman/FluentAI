@@ -58,7 +58,7 @@ class MnemonicPipeline:
 
         # Generate a verbal cue
         logger.debug(f"Generating verbal cue for '{word}'...")
-        _, translated_word, _, ipa, key_sentence = vc.generate_mnemonic(
+        _, translated_word, _, ipa, key_sentence = await vc.generate_mnemonic(
             word=word,
             language_code=lang_code,
             keyword=keyword,
@@ -85,4 +85,4 @@ class MnemonicPipeline:
 
 if __name__ == "__main__":
     pipeline = MnemonicPipeline()
-    asyncio.run(pipeline.generate_mnemonic_img("ratatouille", "eng-us"))
+    print(asyncio.run(pipeline.generate_mnemonic_img("ratatouille", "eng-us")))

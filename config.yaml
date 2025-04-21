@@ -8,6 +8,8 @@ G2P:
   MODEL: "charsiu/g2p_multilingual_byT5_small_100"
   TOKENIZER: "google/byt5-small"
   LANGUAGE_JSON: "data/languages.json"
+  IPA_REPO: "StephanAkkerman/english-words-IPA"
+  IPA_FILE: "en_US.csv"
 
 # The model to use for generating the mnemonic and creating the verbal cue
 LLM:

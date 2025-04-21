@@ -74,8 +74,8 @@ class Grapheme2Phoneme:
             logger.debug("Loading the IPA dataset")
             eng_ipa = pd.read_csv(
                 hf_hub_download(
-                    repo_id=config.get("PHONETIC_SIM").get("IPA").get("REPO"),
-                    filename=config.get("PHONETIC_SIM").get("IPA").get("FILE"),
+                    repo_id=config.get("G2P").get("IPA_REPO"),
+                    filename=config.get("G2P").get("IPA_FILE"),
                     cache_dir="datasets",
                     repo_type="dataset",
                 )
