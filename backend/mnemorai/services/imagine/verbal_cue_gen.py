@@ -1,3 +1,4 @@
+import ast
 import asyncio
 
 from peft import PeftModel
@@ -37,8 +38,53 @@ class VerbalCue:
         self.mnemonic_messages = [
             {
                 "role": "system",
-                "content": "You are a helpful assistant that generates mnemonics for foreign language vocabulary words. The mnemonic should sound very similar to the foreign word. Use common English words or short phrases.",
-            }
+                "content": """You are a mnemonic=generation assistant.  
+                When given a foreign word, you must produce **exactly 10** English mnemonics that:
+
+                1. **Sound very similar** (phonetic similarity)  
+                2. **Look similar** (orthographic similarity)  
+                3. Are **semantically related** or evoke a related image  
+                4. Are **common, easy to imagine** words or combination of two words
+
+                **Scoring:**  
+                • phonetic_similarity - weight 0.4  
+                • orthographic_similarity - weight 0.3  
+                • semantic_relatedness - weight 0.2  
+                • imageability - weight 0.1  
+
+                Compute a single composite **score** in [0.00-1.00] for each mnemonic using those weights, then **sort descending** by score.
+
+                **Do not** translate the word.  Mnemonics must be memory aids based on sound and imagery.
+
+                **Output** a Python literal list of dicts, one per line, exactly like this (no extra keys):
+                [
+                    {'mnemonic': '...', 'score': 0.95},
+                    {'mnemonic': '...', 'score': 0.90},
+                    ...
+                    {'mnemonic': '...', 'score': 0.50},
+                ]""",
+            },
+            {
+                "role": "user",
+                "content": """Generate mnemonics to remember the German word 'flasche'.""",
+            },
+            {
+                "role": "assistant",
+                "content": """
+                [
+                    {'mnemonic': 'flashy',   'score': 0.91},
+                    {'mnemonic': 'flash',    'score': 0.89},
+                    {'mnemonic': 'flask',    'score': 0.87},
+                    {'mnemonic': 'flasher',  'score': 0.85},
+                    {'mnemonic': 'fleshy',   'score': 0.82},
+                    {'mnemonic': 'flusher',  'score': 0.78},
+                    {'mnemonic': 'flush',    'score': 0.76},
+                    {'mnemonic': 'flash he', 'score': 0.65},
+                    {'mnemonic': 'flesh he', 'score': 0.60},
+                    {'mnemonic': 'flossier', 'score': 0.55},
+                ]
+                """,
+            },
         ]
 
         self.verbal_cue_messages = [
@@ -148,17 +194,7 @@ class VerbalCue:
             language = G2P_LANGUAGES.get(language_code, "Unknown Language")
             final_message = {
                 "role": "user",
-                "content": f"""Think of a mnemonic to remember the {language} word {word}.
-            Think of an English word or a combination of 2 words that sound similar to how {word} would be pronounced in {language}.
-            Also consider that the mnemonic should be an easy to imagine word and a word that is commonly used.
-            Do not simply translate the word, the mnemonic should be a *memory aid* based on sound, not a translation.
-            Give a list of 10 mnemonic options based on these criteria.
-            Give your output in a Python list of dictionaries. Like so:
-            [{{'mnemonic': 'flashy', 'score': 0.9}},
-            {{'mnemonic': 'flask', 'score': 0.8}}, 
-            {{'mnemonic': 'flasky', 'score': 0.7}}, 
-            ...                
-            ]""",
+                "content": f"""Generate mnemonics to remember the {language} word '{word}'.""",
             }
 
             output = self.pipe(
@@ -167,21 +203,18 @@ class VerbalCue:
             response = output[0]["generated_text"]
             logger.debug(f"Generated mnemonics: {response[-1]['content']}")
 
-            # Convert the string of a list to an actual list
-            try:
-                top = eval(response[-1]["content"])
-            except Exception as e:
-                # Retry generating using the LLM for 2 more times
-                logger.error(f"Error parsing response: {e}")
-                logger.debug("Retrying...")
-                # TODO retry logic
+            # parse the string into Python objects
+            options = ast.literal_eval(response[-1]["content"])
+
+            # find the dict with the highest score
+            best = max(options, key=lambda opt: opt["score"])
 
         verbal_cue = self.generate_cue(
             word1=translated_word,
-            word2=keyword if keyword else top[0],
+            word2=keyword if keyword else best,
         )
 
-        return top, translated_word, transliterated_word, ipa, verbal_cue
+        return best, translated_word, transliterated_word, ipa, verbal_cue
 
     def generate_cue(self, word1: str, word2: str) -> str:
         """
@@ -215,5 +248,5 @@ class VerbalCue:
 
 if __name__ == "__main__":
     vc = VerbalCue()
-    print(asyncio.run(vc.generate_mnemonic(word="flasche", language_code="ger")))
+    print(asyncio.run(vc.generate_mnemonic(word="daging", language_code="ind")))
     # print(vc.generate_cue("bottle", "flashy"))

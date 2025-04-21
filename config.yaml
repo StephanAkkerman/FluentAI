@@ -23,7 +23,7 @@ LLM:
   DELETE_AFTER_USE: False
   OFFLOAD: True
   PARAMS:
-    temperature: 0.5
+    #temperature: 0.5
 
 # The model to use for generating the image
 IMAGE_GEN:
