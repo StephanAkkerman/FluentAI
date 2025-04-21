@@ -2,12 +2,12 @@ import gc
 import os
 
 import torch
-from backend.mnemorai.services.imagine.grapheme2phoneme import Grapheme2Phoneme
 
 from mnemorai.constants.config import config
 from mnemorai.logger import logger
 from mnemorai.services.imagine.image_gen import ImageGen
 from mnemorai.services.imagine.verbal_cue_gen import VerbalCue
+from mnemorai.services.pre.grapheme2phoneme import Grapheme2Phoneme
 
 
 def get_model_dir_name(model: str) -> str:
@@ -47,25 +47,33 @@ def download_all_models():
         logger.info(f"Downloading G2P model: {g2p_model}")
         clean(Grapheme2Phoneme())
 
+    # Use vram to select the model
+    vram = 0
+    if torch.cuda.is_available():
+        vram = torch.cuda.get_device_properties(0).total_memory
+    if vram == 0:
+        raise RuntimeError("No GPU available. Please run on a machine with a GPU.")
+
+    # Default to small
+    model = "SMALL_MODEL"
+    if vram > 9e9:
+        model = "LARGE_MODEL"
+    elif vram > 6e9:
+        model = "MEDIUM_MODEL"
+    elif vram > 3e9:
+        model = "SMALL_MODEL"
+
     # LLM model
-    llm_model = config.get("LLM").get("MODEL")
+    llm_model = config.get("LLM").get(model)
     if get_model_dir_name(llm_model) not in downloaded_models:
         logger.info(f"Downloading LLM model: {llm_model}")
         clean(VerbalCue()._initialize_pipe())
 
     # Image gen
-    image_gen_model = config.get("IMAGE_GEN").get("LARGE_MODEL")
+    image_gen_model = config.get("IMAGE_GEN").get(model)
     if get_model_dir_name(image_gen_model) not in downloaded_models:
         logger.info(f"Downloading image gen model: {image_gen_model}")
         clean(ImageGen()._initialize_pipe())
-
-    # Semantic similarity
-    semantic_similarity_model = config.get("SEMANTIC_SIM").get("MODEL")
-    if get_model_dir_name(semantic_similarity_model) not in downloaded_models:
-        logger.info(
-            f"Downloading semantic similarity model: {semantic_similarity_model}"
-        )
-        clean(SemanticSimilarity())
 
 
 def clean(var):

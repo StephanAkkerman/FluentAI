@@ -52,8 +52,9 @@ class ImageGen:
         elif vram > 3e9:
             self.model = self.config.get("SMALL_MODEL", "stabilityai/sdxl-turbo")
         else:
-            # Maybe a model that can run on CPU
-            self.model = self.config.get("TINY_MODEL", "stabilityai/sdxl-turbo")
+            raise RuntimeError(
+                "Not enough VRAM available for image generation. Please run on a machine with a GPU."
+            )
 
     def _get_pipe_func(self):
         if "sana" in self.model_name.lower():

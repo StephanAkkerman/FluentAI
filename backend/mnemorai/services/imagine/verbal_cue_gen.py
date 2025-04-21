@@ -209,6 +209,10 @@ class VerbalCue:
             # find the dict with the highest score
             best = max(options, key=lambda opt: opt["score"])
 
+        if key_sentence:
+            return best, translated_word, transliterated_word, ipa, key_sentence
+
+        # Generate the verbal cue
         verbal_cue = self.generate_cue(
             word1=translated_word,
             word2=keyword if keyword else best,

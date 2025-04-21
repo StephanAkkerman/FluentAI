@@ -50,27 +50,20 @@ class MnemonicPipeline:
         str
             The IPA spelling of the best match.
         """
-        if not key_sentence:
-            if not keyword:
-                # Get the top phonetic match
-                best_match = best_matches.iloc[0]
-                keyword = best_match["token_ort"]
-                # Replace + with a comma
-                keyword = keyword.replace("+", ", ")
+        # Use the provided llm_model if available, otherwise default to the one in config
+        if llm_model:
+            vc = VerbalCue(model_name=llm_model)
+        else:
+            vc = VerbalCue()
 
-            # Use the provided llm_model if available, otherwise default to the one in config
-            if llm_model:
-                vc = VerbalCue(model_name=llm_model)
-            else:
-                vc = VerbalCue()
-
-            # Generate a verbal cue
-            logger.debug(
-                "Generating verbal cue for '%s'-'%s'...",
-                keyword,
-                translated_word,
-            )
-            key_sentence = vc.generate_cue(translated_word, keyword)
+        # Generate a verbal cue
+        logger.debug(f"Generating verbal cue for '{word}'...")
+        _, translated_word, _, ipa, key_sentence = vc.generate_mnemonic(
+            word=word,
+            language_code=lang_code,
+            keyword=keyword,
+            key_sentence=key_sentence,
+        )
 
         # Use the provided image_model if available, otherwise default to the one in config
         if image_model:
