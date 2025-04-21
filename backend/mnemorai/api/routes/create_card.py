@@ -113,10 +113,14 @@ async def get_image(
     mnemonic_pipe = MnemonicPipeline()
 
     try:
-        image_path, verbal_cue, translation, tts_path, ipa = (
-            await mnemonic_pipe.generate_mnemonic_img(
-                word, language_code, llm_model, image_model, keyword, key_sentence
-            )
+        (
+            image_path,
+            verbal_cue,
+            translation,
+            tts_path,
+            ipa,
+        ) = await mnemonic_pipe.generate_mnemonic_img(
+            word, language_code, llm_model, image_model, keyword, key_sentence
         )
 
         if not os.path.exists(image_path):

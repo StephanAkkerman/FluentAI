@@ -206,7 +206,6 @@ class VerbalCue:
 
         # If a keyword or key sentence is provided do not generate mnemonics
         if not (keyword or key_sentence):
-
             language = G2P_LANGUAGES.get(language_code, "Unknown Language")
             final_message = {
                 "role": "user",
