@@ -5,9 +5,58 @@ import torch
 
 from mnemorai.constants.config import config
 from mnemorai.logger import logger
-from mnemorai.services.imagine.image_gen import ImageGen
-from mnemorai.services.imagine.verbal_cue_gen import VerbalCue
-from mnemorai.services.pre.grapheme2phoneme import Grapheme2Phoneme
+
+
+def select_model(config: dict) -> str:
+    """
+    Pick the heaviest model that fits in available_vram_bytes, based on config.
+
+    Returns
+    -------
+    str
+        The name of the selected model
+    """
+    available_vram_bytes = 0
+    if torch.cuda.is_available():
+        available_vram_bytes = torch.cuda.get_device_properties(0).total_memory
+    else:
+        raise RuntimeError("No GPU vram found.")
+
+    if not isinstance(config, dict):
+        raise RuntimeError("Invalid config: section missing or not a dict")
+
+    # build (required_bytes, model_name) list
+    candidates = []
+    for key, info in config.items():
+        try:
+            gb = float(info["VRAM"])
+            name = str(info["NAME"])
+        except (KeyError, TypeError, ValueError):
+            # skip entries that lack VRAM/NAME or are malformed
+            continue
+        # Multiply by 1e9
+        candidates.append((int(gb * 1e9), name))
+
+    if not candidates:
+        raise RuntimeError(
+            "No valid IMAGE_GEN models found in config; "
+            "each entry needs a NAME (str) and VRAM (number)"
+        )
+
+    # sort descending by VRAM requirement
+    candidates.sort(key=lambda x: x[0], reverse=True)
+
+    # pick the first that fits
+    for required, name in candidates:
+        if available_vram_bytes >= required:
+            return name
+
+    # if nothing fits, report the smallest requirement so user knows the bar
+    smallest = candidates[-1][0]
+    raise RuntimeError(
+        f"Not enough VRAM ({available_vram_bytes} bytes) for any model; "
+        f"need at least {smallest} bytes."
+    )
 
 
 def get_model_dir_name(model: str) -> str:
@@ -44,34 +93,24 @@ def download_all_models():
     # G2P model & tokenizer
     g2p_model = config.get("G2P").get("MODEL")
     if get_model_dir_name(g2p_model) not in downloaded_models:
+        from mnemorai.services.pre.grapheme2phoneme import Grapheme2Phoneme
+
         logger.info(f"Downloading G2P model: {g2p_model}")
         clean(Grapheme2Phoneme())
 
-    # Use vram to select the model
-    vram = 0
-    if torch.cuda.is_available():
-        vram = torch.cuda.get_device_properties(0).total_memory
-    if vram == 0:
-        raise RuntimeError("No GPU available. Please run on a machine with a GPU.")
-
-    # Default to small
-    model = "SMALL_MODEL"
-    if vram > 9e9:
-        model = "LARGE_MODEL"
-    elif vram > 6e9:
-        model = "MEDIUM_MODEL"
-    elif vram > 3e9:
-        model = "SMALL_MODEL"
-
     # LLM model
-    llm_model = config.get("LLM").get(model)
-    if get_model_dir_name(llm_model) not in downloaded_models:
+    llm_model = select_model(config.get("LLM"))
+    if get_model_dir_name(llm_model) in downloaded_models:
+        from mnemorai.services.imagine.verbal_cue_gen import VerbalCue
+
         logger.info(f"Downloading LLM model: {llm_model}")
         clean(VerbalCue()._initialize_pipe())
 
     # Image gen
-    image_gen_model = config.get("IMAGE_GEN").get(model)
+    image_gen_model = select_model(config.get("IMAGE_GEN"))
     if get_model_dir_name(image_gen_model) not in downloaded_models:
+        from mnemorai.services.imagine.image_gen import ImageGen
+
         logger.info(f"Downloading image gen model: {image_gen_model}")
         clean(ImageGen()._initialize_pipe())
 

@@ -15,6 +15,7 @@ from mnemorai.constants.languages import G2P_LANGUAGES
 from mnemorai.logger import logger
 from mnemorai.services.pre.grapheme2phoneme import Grapheme2Phoneme
 from mnemorai.services.pre.translator import translate_word
+from mnemorai.utils.load_models import select_model
 from mnemorai.utils.model_mem import manage_memory
 
 
@@ -37,7 +38,8 @@ class VerbalCue:
     def __init__(self, model_name: str = None):
         self.config = config.get("LLM")
         self.offload = self.config.get("OFFLOAD")
-        self.model_name = model_name if model_name else self.config.get("MEDIUM_MODEL")
+        self.model_name = model_name if model_name else select_model(self.config)
+        logger.debug(f"Selected LLM model: {self.model_name}")
         self.g2p_model = Grapheme2Phoneme()
 
         # Use 512 tokens as default for generation

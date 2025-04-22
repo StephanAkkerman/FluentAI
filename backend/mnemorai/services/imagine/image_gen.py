@@ -15,6 +15,7 @@ from transformers import BitsAndBytesConfig as BitsAndBytesConfig
 
 from mnemorai.constants.config import config
 from mnemorai.logger import logger
+from mnemorai.utils.load_models import select_model
 from mnemorai.utils.model_mem import manage_memory
 
 
@@ -28,11 +29,7 @@ class ImageGen:
             self.model = model
             logger.debug(f"Using provided image model: {self.model}")
         else:
-            if torch.cuda.is_available():
-                vram = torch.cuda.get_device_properties(0).total_memory
-            else:
-                vram = 0
-            self._select_model(vram)
+            self.model = select_model(self.config)
             logger.debug(f"Selected image model based on VRAM: {self.model}")
 
         self.model_name = self.model.split("/")[-1]
@@ -42,19 +39,6 @@ class ImageGen:
 
         # Initialize pipe to None; will be loaded on first use
         self.pipe = None
-
-    def _select_model(self, vram):
-        """Select the appropriate model based on available VRAM."""
-        if vram > 9e9:
-            self.model = self.config.get("LARGE_MODEL", "stabilityai/sdxl-turbo")
-        elif vram > 6e9:
-            self.model = self.config.get("MEDIUM_MODEL", "stabilityai/sdxl-turbo")
-        elif vram > 3e9:
-            self.model = self.config.get("SMALL_MODEL", "stabilityai/sdxl-turbo")
-        else:
-            raise RuntimeError(
-                "Not enough VRAM available for image generation. Please run on a machine with a GPU."
-            )
 
     def _get_pipe_func(self):
         if "sana" in self.model_name.lower():

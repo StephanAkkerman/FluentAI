@@ -14,9 +14,15 @@ G2P:
 # The model to use for generating the mnemonic and creating the verbal cue
 LLM:
   # We recommend the models from unsloth: https://docs.unsloth.ai/get-started/all-our-models
-  SMALL_MODEL: "unsloth/Qwen2.5-3B-Instruct-bnb-4bit" # 3GB vram
-  MEDIUM_MODEL: "unsloth/Qwen2.5-7B-Instruct-bnb-4bit" # 6GB vram
-  LARGE_MODEL: "unsloth/Qwen2.5-14B-Instruct-bnb-4bit" # 9GB vram
+  SMALL_MODEL: 
+    NAME: "unsloth/Qwen2.5-3B-Instruct-bnb-4bit" 
+    VRAM: 3 # 3GB vram
+  MEDIUM_MODEL: 
+    NAME: "unsloth/Qwen2.5-7B-Instruct-bnb-4bit"
+    VRAM: 6 # 6GB vram
+  LARGE_MODEL: 
+    NAME: "unsloth/Qwen2.5-14B-Instruct-bnb-4bit"
+    VRAM: 9 # 9GB vram
   # Options are: None, 4bit, 8bit
   # Use None if you use an unsloth model (these are already quantized)
   QUANTIZATION: None
@@ -29,9 +35,15 @@ LLM:
 
 # The model to use for generating the image
 IMAGE_GEN:
-  SMALL_MODEL: stabilityai/stable-diffusion-2 # 3GB vram
-  MEDIUM_MODEL: stabilityai/sdxl-turbo # 6GB vram
-  LARGE_MODEL: Efficient-Large-Model/Sana_600M_512px_diffusers # 9GB vram
+  SMALL_MODEL: 
+    NAME: stabilityai/stable-diffusion-2
+    VRAM: 3 # 3GB vram
+  MEDIUM_MODEL: 
+    NAME: stabilityai/sdxl-turbo 
+    VRAM: 6 # 6GB vram
+  LARGE_MODEL: 
+    NAME: Efficient-Large-Model/Sana_600M_512px_diffusers
+    VRAM: 9 # 9GB vram, less with quantization
   OUTPUT_DIR: "imagine/generated-img"
   # Options are: None, 4bit, 8bit
   QUANTIZATION: None # only supported for Sana at the moment
