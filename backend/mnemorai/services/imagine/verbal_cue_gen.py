@@ -259,9 +259,10 @@ class VerbalCue:
             self.verbal_cue_messages + [final_message], **self.generation_args
         )
         response = output[0]["generated_text"]
-        logger.debug(f"Generated verbal cue: {response}")
+        verbal_cue = response[-1]["content"]
+        logger.debug(f"Generated verbal cue: {verbal_cue}")
 
-        return response[-1]["content"]
+        return verbal_cue
 
 
 if __name__ == "__main__":

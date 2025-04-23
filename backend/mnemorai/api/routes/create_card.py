@@ -3,7 +3,6 @@ import os
 
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
 
 from mnemorai.constants.config import config
 from mnemorai.constants.languages import G2P_LANGCODES, G2P_LANGUAGES
@@ -11,61 +10,6 @@ from mnemorai.logger import logger
 from mnemorai.run import MnemonicPipeline
 
 create_card_router = APIRouter()
-
-
-# Define Pydantic models for request and responses
-class CreateCardRequest(BaseModel):
-    word: str
-    language_code: str
-
-
-class CreateCardResponse(BaseModel):
-    IPA: str = None  # Placeholder for future implementation
-    recording: str = None  # Placeholder for future implementation
-
-
-@create_card_router.post("/create_card/word_data", response_model=CreateCardResponse)
-async def api_generate_mnemonic(request: CreateCardRequest) -> dict:
-    """
-    Calls the main function to generate a mnemonic for a given word and language code.
-
-    Parameters
-    ----------
-    request : CreateCardRequest
-        The request object containing the word and language code.
-
-    Returns
-    -------
-    dict
-        The response object containing the IPA and recording of the generated mnemonic.
-
-    Raises
-    ------
-    HTTPException
-        If the language code is invalid.
-    HTTPException
-        If an error occurs during the generation process.
-    """
-    # Validate language code if necessary
-    if request.language_code not in G2P_LANGUAGES:
-        raise HTTPException(status_code=400, detail="Invalid language code")
-
-    try:
-        # Data placeholders
-        data = {
-            "IPA": "TODO",  # Replace with actual IPA generation logic
-            "recording": "TODO",  # Replace with actual recording logic
-        }
-
-        # Return the StreamingResponse and metadata
-        return {
-            "IPA": data["IPA"],
-            "recording": data["recording"],
-        }
-
-    except Exception as e:
-        logger.error(f"Error generating mnemonic: {e}")
-        raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
 @create_card_router.get("/create_card/img")
