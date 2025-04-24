@@ -56,25 +56,25 @@ class VerbalCue:
         self.mnemonic_messages = [
             {
                 "role": "system",
-                "content": """You are a mnemonic=generation assistant.  
+                "content": """You are a mnemonic-generation assistant.
                 When given a foreign word, you must produce **exactly 10** English mnemonics that:
 
-                1. **Sound very similar** (phonetic similarity)  
-                2. **Look similar** (orthographic similarity)  
-                3. Are **semantically related** or evoke a related image  
+                1. **Sound very similar** (phonetic similarity)
+                2. **Look similar** (orthographic similarity)
+                3. Are **semantically related** or evoke a related image
                 4. Are **common, easy to imagine** words or combination of two words
 
-                **Scoring:**  
-                • phonetic_similarity - weight 0.4  
-                • orthographic_similarity - weight 0.3  
-                • semantic_relatedness - weight 0.2  
-                • imageability - weight 0.1  
+                **Scoring:**
+                • phonetic_similarity - weight 0.4
+                • orthographic_similarity - weight 0.3
+                • semantic_relatedness - weight 0.2
+                • imageability - weight 0.1
 
                 Compute a single composite **score** in [0.00-1.00] for each mnemonic using those weights, then **sort descending** by score.
 
                 **Do not** translate the word.  Mnemonics must be memory aids based on sound and imagery.
 
-                **Output** a Python literal list of dicts, one per line, exactly like this (no extra keys):
+                **Output** a JSON list of dicts, one per line, exactly like this (no extra keys):
                 [
                     {'mnemonic': '...', 'score': 0.95},
                     {'mnemonic': '...', 'score': 0.90},
@@ -90,13 +90,13 @@ class VerbalCue:
                 "role": "assistant",
                 "content": """
                 [
-                    {'mnemonic': 'flashy',   'score': 0.91},
-                    {'mnemonic': 'flash',    'score': 0.89},
-                    {'mnemonic': 'flask',    'score': 0.87},
-                    {'mnemonic': 'flasher',  'score': 0.85},
-                    {'mnemonic': 'fleshy',   'score': 0.82},
-                    {'mnemonic': 'flusher',  'score': 0.78},
-                    {'mnemonic': 'flush',    'score': 0.76},
+                    {'mnemonic': 'flashy', 'score': 0.91},
+                    {'mnemonic': 'flash', 'score': 0.89},
+                    {'mnemonic': 'flask', 'score': 0.87},
+                    {'mnemonic': 'flasher', 'score': 0.85},
+                    {'mnemonic': 'fleshy', 'score': 0.82},
+                    {'mnemonic': 'flusher', 'score': 0.78},
+                    {'mnemonic': 'flush', 'score': 0.76},
                     {'mnemonic': 'flash he', 'score': 0.65},
                     {'mnemonic': 'flesh he', 'score': 0.60},
                     {'mnemonic': 'flossier', 'score': 0.55},
@@ -112,7 +112,7 @@ class VerbalCue:
             },
             {
                 "role": "user",
-                "content": "Generate a mnemonic sentence for the given input. Start the sentence with 'imagine' and keep it simple. \n Input: English Word: bottle | Mnemonic Word: flashy",
+                "content": "Generate a mnemonic sentence for the given input. Start the sentence with 'imagine' and keep it simple.\nInput: English Word: bottle | Mnemonic Word: flashy",
             },
             {
                 "role": "assistant",
@@ -252,16 +252,17 @@ class VerbalCue:
         """
         final_message = {
             "role": "user",
-            "content": f"Generate a mnemonic sentence for the given input. Start the sentence with 'imagine' and keep it simple. \n Input: English Word: {word1} | Mnemonic Word: {word2}",
+            "content": f"Generate a mnemonic sentence for the given input. Start the sentence with 'imagine' and keep it simple.\nInput: English Word: {word1} | Mnemonic Word: {word2}",
         }
         # For some reason using tokenizer.apply_chat_template() here causes weird output
         output = self.pipe(
             self.verbal_cue_messages + [final_message], **self.generation_args
         )
         response = output[0]["generated_text"]
-        logger.debug(f"Generated verbal cue: {response}")
+        verbal_cue = response[-1]["content"]
+        logger.debug(f"Generated verbal cue: {verbal_cue}")
 
-        return response[-1]["content"]
+        return verbal_cue
 
 
 if __name__ == "__main__":
