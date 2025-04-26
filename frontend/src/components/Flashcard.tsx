@@ -19,7 +19,7 @@ export default function Flashcard({
   card,
   isLoading,
   showFront = false,
-  disableEdit = false,
+  disableEdit = true,
   onCardUpdate,
   width = 320,
   height = 384,

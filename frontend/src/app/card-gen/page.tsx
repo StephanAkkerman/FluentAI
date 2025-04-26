@@ -40,6 +40,7 @@ export default function CardGeneratorPage() {
               card={card || defaultCard}
               isLoading={loading}
               showFront={!!card}
+              disableEdit={false}
             />
           </div>
           {card && (
