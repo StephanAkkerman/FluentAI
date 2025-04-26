@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import { useInView } from "motion/react";
 import dynamic from "next/dynamic";
 

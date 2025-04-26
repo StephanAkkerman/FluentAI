@@ -1,5 +1,5 @@
 "use client"
-import React, { useRef, useEffect, useState, useLayoutEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 
@@ -20,22 +20,18 @@ const AIPage: React.FC = () => {
         offset: ["start end", "end start"]
     });
 
-    // Add responsive state
-    const [windowSize, setWindowSize] = useState<{ width: number; height: number }>(() => ({
-        width: window.innerWidth,
-        height: window.innerHeight
-    }));
+    const [windowSize, setWindowSize] = useState({ width: 0, height: 0 }); // ← safe on server
 
-    // Update window size on resize
-    useLayoutEffect(() => {
-        function handleResize() {
-            setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+    useEffect(() => {
+        const update = () => {
+            if (typeof window !== "undefined") {
+                setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+            }
         }
-        window.addEventListener("resize", handleResize);
-        handleResize();
-        return () => window.removeEventListener("resize", handleResize);
+        update();                          // first run
+        window.addEventListener("resize", update);
+        return () => window.removeEventListener("resize", update);
     }, []);
-
 
     // Screen size breakpoints
     const isSmallScreen = windowSize && windowSize.width < 640;  // sm
@@ -205,7 +201,7 @@ const AIPage: React.FC = () => {
                                     Our AI system builds powerful memory connections by finding words in your native language that sound similar to new vocabulary. These phonetic bridges, combined with vivid imagery, create lasting memory anchors that make recall effortless.
                                 </p>
                                 <p className="text-gray-200">
-                                    Unlike traditional flashcards that rely on repetition alone, Mnemorai creates meaningful associations that work with your brain's natural ability to remember stories and images.
+                                    Unlike traditional flashcards that rely on repetition alone, Mnemorai creates meaningful associations that work with your brain&apos;s natural ability to remember stories and images.
                                 </p>
                             </motion.div>}
 

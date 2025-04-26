@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Button from "../ui/Button";
 import { ContainerTextFlip } from "../ui/container-text-flip";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
@@ -18,22 +18,19 @@ const HeroSection = () => {
     // Add state to track if we're past the transition threshold
     const [isPastThreshold, setIsPastThreshold] = useState(false);
 
-    // Add responsive state
-    const [windowSize, setWindowSize] = useState<{ width: number; height: number }>(() => ({
-        width: window.innerWidth,
-        height: window.innerHeight
-    }));
 
-    // Update window size on resize
-    useLayoutEffect(() => {
-        function handleResize() {
-            setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+    const [windowSize, setWindowSize] = useState({ width: 0, height: 0 }); // ← safe on server
+
+    useEffect(() => {
+        const update = () => {
+            if (typeof window !== "undefined") {
+                setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+            }
         }
-        window.addEventListener("resize", handleResize);
-        handleResize();
-        return () => window.removeEventListener("resize", handleResize);
+        update();                          // first run
+        window.addEventListener("resize", update);
+        return () => window.removeEventListener("resize", update);
     }, []);
-
 
     // Screen size breakpoints
     const isSmallScreen = windowSize && windowSize.width < 640;  // sm

@@ -18,7 +18,7 @@ export const TextGenerateEffect = ({
     const containerRef = useRef(null);
     const isInView = useInView(containerRef, { once: true, amount: 0.4 });
 
-    let wordsArray = words.split(" ");
+    const wordsArray = words.split(" ");
 
     useEffect(() => {
         if (isInView) {

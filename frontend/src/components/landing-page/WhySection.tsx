@@ -1,5 +1,5 @@
 "use client"
-import React, { useRef, useEffect, useState, useLayoutEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ThreeDMarquee } from "../ui/3d-marquee";
 
@@ -10,20 +10,18 @@ const WhySection = () => {
     // Add a state to control when to show content after title animation
     const [shouldShowContent, setShouldShowContent] = useState(false);
 
-    // Add responsive state
-    const [windowSize, setWindowSize] = useState<{ width: number; height: number }>(() => ({
-        width: window.innerWidth,
-        height: window.innerHeight
-    }));
 
-    // Update window size on resize
-    useLayoutEffect(() => {
-        function handleResize() {
-            setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+    const [windowSize, setWindowSize] = useState({ width: 0, height: 0 }); // ← safe on server
+
+    useEffect(() => {
+        const update = () => {
+            if (typeof window !== "undefined") {
+                setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+            }
         }
-        window.addEventListener("resize", handleResize);
-        handleResize();
-        return () => window.removeEventListener("resize", handleResize);
+        update();                          // first run
+        window.addEventListener("resize", update);
+        return () => window.removeEventListener("resize", update);
     }, []);
 
     // Screen size breakpoints
