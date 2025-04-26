@@ -16,6 +16,7 @@ const steps = [
       <div className="w-full aspect-video overflow-hidden">
         <video
           src="/step1.mp4"
+          preload="none"
           autoPlay
           loop
           muted
@@ -31,6 +32,7 @@ const steps = [
       <div className="w-full aspect-video overflow-hidden">
         <video
           src="/step2.mp4"
+          preload="none"
           autoPlay
           loop
           muted
@@ -46,6 +48,7 @@ const steps = [
       <div className="w-full aspect-video overflow-hidden">
         <video
           src="/step3.mp4"
+          preload="none"
           autoPlay
           loop
           muted

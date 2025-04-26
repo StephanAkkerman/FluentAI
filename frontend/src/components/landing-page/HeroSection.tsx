@@ -3,7 +3,6 @@ import React, { useState, useEffect, useRef } from "react";
 import Button from "../ui/Button";
 import { ContainerTextFlip } from "../ui/container-text-flip";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { SparklesCore } from "../ui/sparkles";
 import Flashcard from "../Flashcard";
 import flashe from "../../../public/Flashy_flashe.png";
 
@@ -44,8 +43,6 @@ const HeroSection = () => {
     verbalCue: "Imagine a bottle so flashy, it's like it's got its own built-in disco ball.",
     translation: "Bottle",
     languageCode: "de",
-    width: isSmallScreen ? 170 : isMediumScreen ? 200 : 320,
-    heigth: isSmallScreen ? 200 : isMediumScreen ? 230 : 350
   };
 
   const transformAnimations = {
@@ -128,11 +125,6 @@ const HeroSection = () => {
     >
       {/* This is the container that stays fixed in the viewport */}
       <div className="sticky top-[15%] h-screen w-full max-h-[650px] overflow-hidden flex justify-center">
-        {/* Background */}
-        <motion.div
-          style={{ opacity: transformAnimations.bgOpacity, width: transformAnimations.bgWidth, height: transformAnimations.bgHeight }}
-          className=" inset-0 h-[70%] rounded-xl transition-all duration-300 shadow-xl shadow-[#97E2F9] overflow-hidden min-h-[500px] sm:min-h-[500px] md:min-h-[550px]"
-        />
         {/* Content Container */}
         <div className="absolute inset-0 w-full h-full max-h-[400px] flex items-center justify-center z-40">
           {/* Text Content - positioned absolute */}
@@ -158,19 +150,6 @@ const HeroSection = () => {
                 <div className="absolute top-0 bg-gradient-to-r from-transparent via-blue-500 to-transparent h-px w-3/4" />
                 <div className="absolute top-0 bg-gradient-to-r from-transparent via-teal-400 to-transparent h-[3px] w-1/3 blur-sm" />
                 <div className="absolute top-0 bg-gradient-to-r from-transparent via-teal-400 to-transparent h-px w-1/3" />
-
-                {/* Core sparkles component */}
-                <SparklesCore
-                  background="transparent"
-                  minSize={0.5}
-                  maxSize={0.9}
-                  particleDensity={1600}
-                  className="w-full h-full"
-                  particleColor="#0284c7"
-                />
-
-                {/* Radial gradient to fade edges */}
-                <div className="absolute inset-0 w-full h-full [mask-image:radial-gradient(250px_60px_at_center,white_30%,transparent_80%)]"></div>
               </motion.div>
 
               {/* Actual title text */}
@@ -226,9 +205,6 @@ const HeroSection = () => {
               isLoading={false}
               disableEdit={true}
               showFront={!isFlipped}
-              width={cardData.width}
-              height={cardData.heigth}
-
             />
           </motion.div>
         </div>

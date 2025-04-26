@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useEffect, useState, useRef, CSSProperties } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Speaker, Edit2, Check, X } from "lucide-react";
 import { Card } from "@/interfaces/CardInterfaces";
 import Button from "@/components/ui/Button";
@@ -9,9 +9,7 @@ interface FlashcardProps {
   isLoading: boolean;
   showFront?: boolean;
   disableEdit?: boolean;
-  onCardUpdate?: (updatedCard: Card) => void;
-  width?: number;
-  height?: number;
+  onCardUpdate?: (updatedCard: Card) => Promise<void>;
   className?: string;
 }
 
@@ -21,8 +19,6 @@ export default function Flashcard({
   showFront = false,
   disableEdit = true,
   onCardUpdate,
-  width = 320,
-  height = 384,
   className
 }: FlashcardProps) {
   const [flipped, setFlipped] = useState(!showFront);
@@ -38,11 +34,6 @@ export default function Flashcard({
 
   // Add state for saving status
   const [isSaving, setIsSaving] = useState(false);
-
-  const sizeStyle: CSSProperties = {
-    width: `${width}px`,
-    height: `${height}px`,
-  };
 
 
   useEffect(() => {
@@ -186,8 +177,6 @@ export default function Flashcard({
   return (
     <div
       className={`relative w-80 h-96 perspective cursor-pointer group ${className}`}
-      style={sizeStyle}
-
       onClick={cardClickHandler}
     >
       <audio ref={audioRef} />
@@ -201,12 +190,12 @@ export default function Flashcard({
             <p className="text-blue-500 font-bold animate-pulse">Loading...</p>
           ) : (
             <>
-              <div className="w-full h-64 overflow-hidden rounded-xl">
+              <div className="relative w-full overflow-hidden rounded-xl">
                 <Image
                   src={card.imageUrl || "https://placehold.co/400"}
                   alt={editedWord}
                   width={400}
-                  height={300}
+                  height={400}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -216,10 +205,10 @@ export default function Flashcard({
 
         {/* Back Side */}
         <div
-          className="absolute inset-0 bg-gradient-to-br from-blue-100 to-teal-100 dark:bg-gradient-to-br dark:from-blue-800 dark:to-teal-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 backface-hidden transform rotate-y-180  grid grid-rows-3 p-4 lg:p-6 text-center"
+          className="absolute inset-0 bg-gradient-to-br from-blue-100 to-teal-100 dark:bg-gradient-to-br dark:from-blue-800 dark:to-teal-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 backface-hidden transform rotate-y-180 flex flex-col p-4"
           onClick={e => isEditing && e.stopPropagation()}
         >
-          <div className="relative w-full overflow-hidden rounded-xl mb-4 row-span-2">
+          <div className="relative w-full h-1/2 overflow-hidden rounded-xl mb-2">
             <Image
               src={card.imageUrl || "https://placehold.co/400"}
               alt={editedWord}
@@ -227,7 +216,7 @@ export default function Flashcard({
               className="object-cover"
             />
           </div>
-          <div className="w-full flex flex-col justify-center items-center row-span-1">
+          <div className="w-full flex flex-col justify-center items-center flex-grow">
 
             {isEditing ? (
               <div className="w-full space-y-2" onClick={e => e.stopPropagation()}>
@@ -304,12 +293,12 @@ export default function Flashcard({
               </div>
             ) : (
               <>
-                <h2 className="text-base sm:text-lg lg:text-2xl font-bold text-gray-800 dark:text-gray-200 mb-2">
+                <h2 className="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-200 mb-1">
                   {editedWord || "Your word"}
                 </h2>
 
-                <div className="flex items-center gap-2 mb-2">
-                  <p className="font-mono text-sm sm:text-base lg:text-lg text-gray-600 dark:text-gray-300">
+                <div className="flex items-center justify-center gap-2 mb-1">
+                  <p className="font-mono text-sm md:text-base text-gray-600 dark:text-gray-300">
                     {editedIpa || "IPA pronunciation"}
                   </p>
                   {card.audioUrl && (
@@ -330,7 +319,7 @@ export default function Flashcard({
                   )}
                 </div>
 
-                <p className="text-xs sm:text-sm lg:text-lg italic text-gray-700 dark:text-gray-300">
+                <p className="text-sm md:text-base italic text-gray-700 dark:text-gray-300 text-center">
                   {editedVerbalCue || "This is the key phrase"}
                 </p>
 

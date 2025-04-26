@@ -21,11 +21,9 @@ const LandingPage = () => {
         </section>
 
         {/* Full width section - breaks out of container */}
-
         <section id="why" className="duration-300 transition-all -translate-y-[5%] w-screen relative left-1/2 right-1/2 -mx-[50vw]  ">
           <WhySection />
         </section>
-
 
         {/* 2. HOW IT WORKS SECTION */}
         <section id="how" className="py-20">
@@ -33,7 +31,6 @@ const LandingPage = () => {
         </section>
 
         {/* 3. FEATURES & BENEFITS SECTION - Full width */}
-
         <section id="features" className="py-20 w-screen relative left-1/2 right-1/2 -mx-[50vw]">
           <AIPage />
         </section>
