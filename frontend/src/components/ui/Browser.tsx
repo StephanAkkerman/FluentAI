@@ -37,7 +37,7 @@ const Browser: React.FC<BrowserProps> = ({
         : "text-gray-500";
 
     const contentClasses = dark
-        ? "bg-gray-900"
+        ? "bg-gray-800"
         : "bg-white";
 
     const handleBrowserClick = () => {
@@ -98,7 +98,7 @@ const Browser: React.FC<BrowserProps> = ({
                                 </div>
 
                                 {/* Browser content */}
-                                <div className={`w-full h-[calc(100%-2rem)] ${contentClasses} overflow-auto ${className}`}>
+                                <div className={`flex items-start justify-start h-[calc(100%-2rem)] ${contentClasses} overflow-auto ${className}`}>
                                     {children}
                                 </div>
                             </div>
@@ -149,7 +149,7 @@ const Browser: React.FC<BrowserProps> = ({
                     </div>
 
                     {/* Browser content */}
-                    <div className={`w-full h-full ${contentClasses} ${className}`}>
+                    <div className={`flex w-full h-full items-center justify-center  ${contentClasses} ${className}`}>
                         {children}
                     </div>
                 </div>

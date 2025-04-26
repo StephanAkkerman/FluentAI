@@ -30,7 +30,7 @@ const HeroSection = () => {
             setWindowSize({ width: window.innerWidth, height: window.innerHeight });
         }
         window.addEventListener("resize", handleResize);
-        handleResize();           // measure immediately
+        handleResize();
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 

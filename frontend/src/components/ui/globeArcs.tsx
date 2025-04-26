@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
+import { useInView } from "motion/react";
 import dynamic from "next/dynamic";
 
 // dynamically import so this only runs on the client
@@ -9,24 +10,15 @@ const World = dynamic(() => import("./globe").then((m) => m.World), {
 });
 
 export default function GlobeSection() {
-    // track dark / light preference
-    const [isDark, setIsDark] = useState(false);
-    useEffect(() => {
-        const mql = window.matchMedia("(prefers-color-scheme: dark)");
-        const update = (e: MediaQueryListEvent | MediaQueryList) => setIsDark(e.matches);
-        update(mql); // set initial
-        mql.addEventListener("change", update);
-        return () => mql.removeEventListener("change", update);
-    }, []);
+    const wrapperRef = useRef<HTMLDivElement>(null);
+    const isInView = useInView(wrapperRef, { once: true, amount: 0.1 });
 
-    // pick white glow in dark mode, navy glow in light mode
-    const atmosphereColor = isDark ? "#FFFFFF" : "#06b6d4";
 
     const globeConfig = {
         pointSize: 4,
         globeColor: "#062056",
         showAtmosphere: true,
-        atmosphereColor,
+        atmosphereColor: "#06b6d4",
         atmosphereAltitude: 0.1,
         emissive: "#062056",
         emissiveIntensity: 0.1,
@@ -410,8 +402,9 @@ export default function GlobeSection() {
     ];
 
     return (
-        <div className="w-full  h-[18rem]  absolute">
-            <World globeConfig={globeConfig} data={sampleArcs} />
+        <div ref={wrapperRef} className="w-full h-[18rem]">
+            {isInView && (<World globeConfig={globeConfig} data={sampleArcs} />)}
+
         </div>
     );
 }

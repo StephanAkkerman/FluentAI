@@ -1,6 +1,6 @@
 "use client"
-import React, { useRef, useEffect, useState, ReactNode } from "react";
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import React, { useRef, useEffect, useState, useLayoutEffect } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ThreeDMarquee } from "../ui/3d-marquee";
 
 const WhySection = () => {
@@ -9,6 +9,25 @@ const WhySection = () => {
 
     // Add a state to control when to show content after title animation
     const [shouldShowContent, setShouldShowContent] = useState(false);
+
+    // Add responsive state
+    const [windowSize, setWindowSize] = useState<{ width: number; height: number }>(() => ({
+        width: window.innerWidth,
+        height: window.innerHeight
+    }));
+
+    // Update window size on resize
+    useLayoutEffect(() => {
+        function handleResize() {
+            setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+        }
+        window.addEventListener("resize", handleResize);
+        handleResize();
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    // Screen size breakpoints
+    const isSmallScreen = windowSize && windowSize.width < 768;
 
     const { scrollYProgress } = useScroll({
         target: sectionRef,
@@ -31,7 +50,8 @@ const WhySection = () => {
     const titleY = useTransform(
         scrollYProgress,
         [0.2, 0.4],
-        ["300%", "0%"]
+        isSmallScreen ?
+            ["300%", "50%"] : ["300%", "0%"]
     );
 
     // Monitor scrollYProgress to determine when to show content
@@ -102,7 +122,7 @@ const WhySection = () => {
             className="relative w-full h-[300vh] pt-[8rem] md:pt-30"
         >
             {/* Main sticky container - adjusted for 80px header */}
-            <div className="sticky top-[150px] left-0 w-full h-screen flex flex-col overflow-hidden">
+            <div className="sticky top-[150px] left-0 w-full min-h-[120vh] sm:min-h-[100vh] h-screen flex flex-col overflow-hidden">
                 {/* Background layer */}
                 <div className="absolute inset-0 w-full h-full">
                     {/* Background overlay */}
@@ -120,27 +140,27 @@ const WhySection = () => {
                     {/* Title with animation */}
                     <motion.div
                         ref={titleRef}
-                        className="flex flex-col items-center justify-center text-center mb-8"
+                        className="flex flex-col items-center justify-center text-center md:mb-8"
                         style={{
                             scale: titleScale,
                             opacity: titleOpacity,
                             y: titleY,
                         }}
                     >
-                        <h2 className="text-4xl md:text-5xl font-bold text-white mb-2" >
+                        <h2 className="text-xl sm:text-4xl md:text-5xl font-bold text-white mb-2" >
                             Why Choose Our Approach
                         </h2>
-                        <div className="h-1 w-24 bg-gradient-to-r from-blue-500 to-teal-400 rounded-full my-4"></div>
+                        <div className="h-1 w-24 bg-gradient-to-r from-blue-500 to-teal-400 rounded-full md:my-4"></div>
                     </motion.div>
 
                     {/* Comparison Content */}
                     <motion.div
                         className="w-full max-w-7xl mx-auto translate-y-[5%]"
                     >
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-16">
                             {/* Traditional Learning - Left Column */}
                             <motion.div
-                                className="p-6 rounded-xl border border-gray-700 bg-black/30 h-[80%] md:h-full"
+                                className="p-2 px-4 md:p-6 rounded-xl border border-gray-700 bg-black/30 h-full md:h-full"
                                 variants={fadeInLeft}
                                 initial="hidden"
                                 animate={shouldShowContent ? "visible" : "hidden"}
@@ -154,7 +174,7 @@ const WhySection = () => {
                                 </div>
                                 <hr className="my-2 border-gray-700" />
 
-                                <ul className="space-y-2 md:space-y-4">
+                                <ul className="space-y-1 md:space-y-4">
                                     <motion.li
                                         className="flex items-start gap-3 text-gray-300"
                                         variants={fadeInUp}
@@ -195,18 +215,22 @@ const WhySection = () => {
 
                             {/* Our Approach - Right Column */}
                             <motion.div
-                                className="p-6 rounded-xl border border-blue-500/30 bg-gradient-to-br from-blue-900/20 to-teal-900/20"
+                                className="p-2 px-4 md:p-6 rounded-xl border border-blue-500/30 bg-gradient-to-br from-blue-900/20 to-teal-900/20"
                                 variants={fadeInRight}
                                 initial="hidden"
                                 animate={shouldShowContent ? "visible" : "hidden"}
                                 transition={{ duration: 0.6 }}
                             >
-                                <div className="text-teal-400 text-4xl mb-4">🧠</div>
-                                <h3 className="text-2xl font-bold text-white mb-6 border-b border-blue-500/30 pb-3">
-                                    Our AI Approach
-                                </h3>
+                                <div className="flex flex-row md:flex-col justify-start items-center md:items-start">
+                                    <div className="text-4xl md:mb-4">🧠</div>
+                                    <h3 className="text-xl md:text-2xl font-bold text-white ml-4 md:ml-0 mb-0 pb-1">
+                                        Our AI Approach
+                                    </h3>
 
-                                <ul className="space-y-4">
+                                </div>
+                                <hr className="my-2 border-blue-500/30" />
+
+                                <ul className="space-y-1 md:space-y-4">
                                     <motion.li
                                         className="flex items-start gap-3 text-gray-200"
                                         variants={fadeInUp}
@@ -248,7 +272,7 @@ const WhySection = () => {
 
                         {/* Bottom CTA */}
                         <motion.div
-                            className="mt-12 text-center"
+                            className="mt-4 md:mt-12 text-center"
                             variants={fadeInUp}
                             initial="hidden"
                             animate={shouldShowContent ? "visible" : "hidden"}
