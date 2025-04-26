@@ -120,7 +120,7 @@ const HeroSection = () => {
 
 
   return (
-    <motion.div ref={sectionRef} className="relative w-full h-[200vh]" initial={{ opacity: 0, y: -15 }}
+    <motion.div ref={sectionRef} className="relative w-full h-[150vh]" initial={{ opacity: 0, y: -15 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -15 }}
     >
       {/* This is the container that stays fixed in the viewport */}

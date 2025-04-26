@@ -10,343 +10,290 @@ import GlobeSection from "@/components/ui/globeArcs";
 
 import duck from "../../../public/duck.jpg";
 
-const WhatSection = () => {
-    const sectionRef = useRef(null);
-    const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
-
-    const features = [
-        {
-            title: "Track issues effectively",
-            description:
-                "Track and manage your project issues with ease using our intuitive interface.",
-            skeleton: <SkeletonOne />,
-            className:
-                "col-span-1 md:col-span-3 md:border-b md:border-r dark:border-neutral-600",
-        },
-        {
-            title: "Learn quicker through flashcards",
-            description:
-                "Create personalized flashcards effortlessly using our advanced AI technology.",
-            skeleton: <SkeletonTwo />,
-            className: "md:border-b col-span-1 md:col-span-3 dark:border-neutral-600",
-        },
-        {
-            title: "Current supported languages",
-            description:
-                "Our team is constantly working hard to include more languages for you to learn. So stay tuned!",
-            skeleton: <SkeletonThree />,
-            className:
-                "col-span-1 md:col-span-3 md:border-r dark:border-neutral-600",
-        },
-        {
-            title: "Global Accessibility",
-            description:
-                "Access your personalized dashboard and flashcards from anywhere in the world, 24/7—on any device, in any time zone.",
-            skeleton: <SkeletonFour />,
-            className: "col-span-1 md:col-span-3  ",
-        }
-    ];
-
-    return (
-        <div className="relative z-20 pt-20 sm:pt-30 md:pt-20 max-w-7xl mx-auto">
-            <motion.div
-                className="px-8"
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.6 }}
-            >
-                <h1 className="md:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black dark:text-white">
-                    <TextGenerateEffect words={'Learning languages has never been easier'} className="text-2xl md:text-3xl " />
-                </h1>
-
-                <motion.p
-                    className="text-sm md:text-base max-w-2xl my-4 mx-auto text-neutral-500 text-center font-normal dark:text-neutral-300"
-                    initial={{ opacity: 0 }}
-                    animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-                    transition={{ duration: 0.6, delay: 0.3 }}
-                >
-                    From Image generation to video generation, Everything AI has APIs for
-                    literally everything. It can even create this website copy for you.
-                </motion.p>
-            </motion.div>
-
-            <div className="relative" ref={sectionRef} >
-                <div className="grid grid-cols-1 md:grid-cols-6 mt-12 md:border rounded-md md:dark:border-neutral-600">
-                    {features.map((feature, index) => (
-                        <AnimatedFeatureCard
-                            key={feature.title}
-                            className={feature.className}
-                            index={index}
-                            isInView={isInView}
-                        >
-                            <FeatureTitle>{feature.title}</FeatureTitle>
-                            <FeatureDescription>{feature.description}</FeatureDescription>
-                            <div className="h-full w-full">{feature.skeleton}</div>
-                        </AnimatedFeatureCard>
-                    ))}
-                </div>
-            </div>
-        </div>
-    );
-};
-
 const AnimatedFeatureCard = ({
-    children,
-    className,
-    index,
-    isInView,
+  children,
+  className,
+  index,
+  isInView,
 }: {
-    children?: React.ReactNode;
-    className?: string;
-    index: number;
-    isInView: boolean;
+  children?: React.ReactNode;
+  className?: string;
+  index: number;
+  isInView: boolean;
 }) => {
-    return (
-        <motion.div
-            className={cn(`p-4 sm:p-8 relative overflow-hidden h-full`, className)}
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{
-                duration: 0.5,
-                delay: 0.5 + (index * 0.1),  // Staggered animation
-            }}
-        >
-            {children}
-        </motion.div>
-    );
+  return (
+    <motion.div
+      className={cn(`relative overflow-hidden h-full bg-white dark:bg-gray-800  rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700`, className)}
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      transition={{
+        duration: 0.5,
+        delay: 0.5 + (index * 0.1),  // Staggered animation
+      }}
+    >
+      {children}
+    </motion.div>
+  );
 };
 
 const FeatureTitle = ({ children }: { children?: React.ReactNode }) => {
-    return (
-        <p className="max-w-5xl mx-auto text-left tracking-tight text-black dark:text-white text-xl md:text-2xl md:leading-snug">
-            {children}
-        </p>
-    );
+  return (
+    <p className="p-4 sm:p-6 w-full text-left tracking-tight text-black dark:text-white text-xl md:text-2xl font-semibold">
+      {children}
+    </p>
+  );
 };
 
 const FeatureDescription = ({ children }: { children?: React.ReactNode }) => {
-    return (
-        <p
-            className={cn(
-                "text-sm md:text-base max-w-4xl text-left mx-auto",
-                "text-neutral-500 text-center font-normal dark:text-neutral-300",
-                "text-left max-w-sm mx-0 md:text-sm my-2"
-            )}
-        >
-            {children}
-        </p>
-    );
+  return (
+    <p
+      className="px-4 sm:px-6 md:text-base w-full text-left mt-2 text-neutral-600 dark:text-neutral-400">
+      {children}
+    </p>
+  );
 };
 
 export const SkeletonOne = () => {
-    const [isHovered, setIsHovered] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
-    return (
-        <div className="relative flex sm:pt-8 w-full items-start justify-center gap-10 h-full lg:h-[90%]">
-            <div
-                className="flex h-[80%] lg:h-full lg:w-[80%] w-[90%] lg:w-[80%] items-start justify-center"
-                style={{
-                    transformStyle: "preserve-3d",
-                    transform: "rotateY(-15deg) rotateX(5deg)",
-                    perspective: "1000px"
-                }}
-            >
-                <motion.div
-                    initial={{
-                        transform: "translateZ(5px) translateY(0px)",
-                    }}
-                    animate={isHovered ? {
-                        transform: "translateZ(20px) translateY(-10px)",
-                    } : {
-                        transform: "translateZ(5px) translateY(0px)",
-                    }}
-                    transition={{
-                        duration: 0.5,
-                        ease: "easeInOut",
-                    }}
-                    className="rounded-xl border md:border-neutral-200 md:dark:border-neutral-600 transition-all duration-300"
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}
-                    style={{
-                        boxShadow: isHovered
-                            ? "0 20px 30px rgba(59, 131, 246, 0.3), 0 20px 30px rgba(45, 212, 190, 0.3)"
-                            : "0 5px 15px rgba(0, 0, 0, 0.1)"
-                    }}
-                >
-                    <Image
-                        src="/infographic.png"
-                        alt="infographic"
-                        width={500}
-                        height={400}
-                        className="object-contain rounded-xl"
-                    />
-                </motion.div>
-            </div>
-        </div>
-    );
+  return (
+    <div className="mt-4 relative flex p-4 sm:p-8 w-full items-center justify-center min-h-[250px] md:min-h-[300px]">
+      <div
+        className="flex items-center justify-center w-full max-w-md"
+        style={{
+          transformStyle: "preserve-3d",
+        }}
+      >
+        <motion.div
+          className="relative rounded-lg border border-neutral-200 dark:border-neutral-700 transition-all duration-300 overflow-hidden"
+          style={{
+            transformStyle: "preserve-3d",
+            // Apply rotation directly here
+            boxShadow: isHovered
+              ? "0 25px 50px -12px rgba(0, 0, 0, 0.25)"
+              : "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)"
+          }}
+          animate={isHovered ? {
+            transform: "translateZ(30px) translateY(-10px)",
+          } : {
+            transform: "translateZ(8px) translateY(0px)",
+          }}
+          transition={{
+            duration: 0.5,
+            ease: "easeInOut",
+          }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <Image
+            src="/infographic.png"
+            alt="infographic"
+            width={500}
+            height={400}
+            className="object-contain w-full h-auto"
+          />
+        </motion.div>
+      </div>
+    </div>
+  );
 };
 
 export const SkeletonTwo = () => {
-    // Create multiple card data objects for different words
-    const cardData = [
-        {
-            word: "Pato",
-            imageUrl: duck.src,
-            audioUrl: "",
-            ipa: "/ˈpɑtoʊ/",
-            verbalCue: "Spanish word for 'duck'",
-            translation: "Duck",
-            languageCode: "es"
-        },
-        {
-            word: "Gato",
-            imageUrl: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba",
-            audioUrl: "",
-            ipa: "/ˈɡɑtoʊ/",
-            verbalCue: "Spanish word for 'cat'",
-            translation: "Cat",
-            languageCode: "es"
-        },
-        {
-            word: "Perro",
-            imageUrl: "https://images.unsplash.com/photo-1517849845537-4d257902454a",
-            audioUrl: "",
-            ipa: "/ˈpɛroʊ/",
-            verbalCue: "Spanish word for 'dog'",
-            translation: "Dog",
-            languageCode: "es"
-        },
-        {
-            word: "Casa",
-            imageUrl: "https://images.unsplash.com/photo-1518780664697-55e3ad937233",
-            audioUrl: "",
-            ipa: "/ˈkɑsɑ/",
-            verbalCue: "Spanish word for 'house'",
-            translation: "House",
-            languageCode: "es"
-        },
-        {
-            word: "Libro",
-            imageUrl: "https://images.unsplash.com/photo-1544947950-fa07a98d237f",
-            audioUrl: "",
-            ipa: "/ˈlibɾo/",
-            verbalCue: "Spanish word for 'book'",
-            translation: "Book",
-            languageCode: "es"
-        },
-    ];
+  // Create multiple card data objects for different words
+  const cardData = [
+    {
+      word: "Pato",
+      imageUrl: duck.src,
+      audioUrl: "",
+      ipa: "/ˈpɑtoʊ/",
+      verbalCue: "Spanish word for 'duck'",
+      translation: "Duck",
+      languageCode: "es"
+    },
+    {
+      word: "Gato",
+      imageUrl: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba",
+      audioUrl: "",
+      ipa: "/ˈɡɑtoʊ/",
+      verbalCue: "Spanish word for 'cat'",
+      translation: "Cat",
+      languageCode: "es"
+    },
+    {
+      word: "Perro",
+      imageUrl: "https://images.unsplash.com/photo-1517849845537-4d257902454a",
+      audioUrl: "",
+      ipa: "/ˈpɛroʊ/",
+      verbalCue: "Spanish word for 'dog'",
+      translation: "Dog",
+      languageCode: "es"
+    },
+    {
+      word: "Casa",
+      imageUrl: "https://images.unsplash.com/photo-1518780664697-55e3ad937233",
+      audioUrl: "",
+      ipa: "/ˈkɑsɑ/",
+      verbalCue: "Spanish word for 'house'",
+      translation: "House",
+      languageCode: "es"
+    },
+    {
+      word: "Libro",
+      imageUrl: "https://images.unsplash.com/photo-1544947950-fa07a98d237f",
+      audioUrl: "",
+      ipa: "/ˈlibɾo/",
+      verbalCue: "Spanish word for 'book'",
+      translation: "Book",
+      languageCode: "es"
+    },
+  ];
 
-    const imageVariants = {
-        whileHover: {
-            scale: 1.1,
-            rotate: 0,
-            zIndex: 100,
-        },
-        whileTap: {
-            scale: 1.1,
-            rotate: 0,
-            zIndex: 100,
-        },
-    };
+  const displayCards = [...cardData, ...cardData.slice().reverse(), ...cardData].slice(0, 15);
 
-    const FlashcardWrapper = ({ card, index }: { card: Card; index: number }) => (
-        <motion.div
-            variants={imageVariants}
-            style={{
-                rotate: Math.random() * 20 - 10,
-            }}
-            whileHover="whileHover"
-            whileTap="whileTap"
-            className="rounded-xl mt-4 dark:bg-neutral-800 dark:border-neutral-700 border border-neutral-100  overflow-hidden"
-        >
-            {/* This wrapper preserves the aspect ratio while scaling down */}
-            <div
-                className="relative"
-                style={{
-                    width: '120px',
-                    height: '144px', // Maintains 5:6 aspect ratio (80:96 scaled down)
-                    overflow: 'hidden'
-                }}
-            >
-                <div
-                    className="absolute top-0 left-0 transform origin-top-left"
-                    style={{
-                        transform: 'scale(0.375)',
-                        width: '320px',
-                        height: '384px'
-                    }}
-                >
-                    <Flashcard
-                        card={card}
-                        isLoading={false}
-                        showFront={index % 2 === 0}
-                    />
-                </div>
-            </div>
-        </motion.div>
-    );
+  const imageVariants = {
+    whileHover: {
+      scale: 1.1,
+      rotate: 0,
+      zIndex: 100,
+    },
+    whileTap: {
+      scale: 1.1,
+      rotate: 0,
+      zIndex: 100,
+    },
+  };
 
-    return (
-        <div className="relative flex flex-col items-start p-8 pt-10 gap-5 h-full overflow-hidden rounded-xl">
-            {/* First row of flashcards */}
-            <div className="flex flex-row -ml-20">
-                {cardData.map((card, idx) => (
-                    <FlashcardWrapper
-                        key={"flashcard-first" + idx}
-                        card={card}
-                        index={idx}
-                    />
-                ))}
-            </div>
+  const FlashcardWrapper = ({ card, showFront }: { card: Card; showFront: boolean }) => (
+    <motion.div
+      variants={imageVariants}
+      style={{
+        rotate: Math.random() * 16 - 10,
+      }}
+      whileHover="whileHover"
+      whileTap="whileTap"
+      className="w-full aspect-[5/6] relative cursor-pointer"
+    >
+      <Flashcard
+        card={card}
+        isLoading={false}
+        showFront={showFront}
+        className="w-full h-full"
+      />
+    </motion.div>
+  );
 
-            {/* Second row with more flashcards */}
-            <div className="flex flex-row -ml-10 sm:ml-0">
-                {cardData.slice().reverse().map((card, idx) => (
-                    <FlashcardWrapper
-                        key={"flashcard-second" + idx}
-                        card={card}
-                        index={idx + cardData.length} // Different index to alternate front/back display
-                    />
-                ))}
-            </div>
-
-            {/* Third row of flashcards */}
-            <div className="flex flex-row -ml-20 sm:-ml-20">
-                {cardData.map((card, idx) => (
-                    <FlashcardWrapper
-                        key={"flashcard-third" + idx}
-                        card={card}
-                        index={idx}
-                    />
-                ))}
-            </div>
-
-            <div className="absolute left-0 z-[100] inset-y-0 w-5 md:w-20 bg-gradient-to-r from-white dark:from-black to-transparent h-full pointer-events-none" />
-            <div className="absolute right-0 z-[100] inset-y-0 w-5 md:w-20 bg-gradient-to-l from-white dark:from-black to-transparent h-full pointer-events-none" />
-        </div>
-    );
+  return (
+    <div className="mt-4 relative grid grid-cols-3 gap-2 sm:gap-4 p-4">
+      {/* Show only the first 15 cards for demonstration */}
+      {displayCards.slice(0, 9).map((card, idx) => (
+        <FlashcardWrapper
+          // Use a more robust unique key
+          key={`flashcard-${card.languageCode}-${card.word}-${idx}`}
+          card={card}
+          showFront={idx % 2 === 0} // Alternate front/back shown
+        />
+      ))}
+    </div>
+  );
 };
 
 export const SkeletonThree = () => {
-    return (
-        <>
-            {/* 4. LANGUAGES SECTION */}
-            <div className="container mx-auto px-6 w-[90%] md:w-full">
-                <div className="flex flex-wrap justify-center gap-4 max-w-4xl mt-8 sm:mt-20 mx-auto">
-                    <LanguageDock />
-                </div>
-            </div>
-        </>
-    );
+  return (
+    <>
+      {/* LANGUAGES SECTION */}
+      <div className="mt-4 p-4 sm:p-6 flex items-center justify-center">
+        <div className="flex flex-wrap justify-center gap-4 max-w-md w-full">
+          <LanguageDock />
+        </div>
+      </div>
+    </>
+  );
 };
 
 export const SkeletonFour = () => {
-    return (
-        <div className="h-60  flex overflow-hidden items-center justify-end relative bg-transparent dark:bg-transparent">
-            <GlobeSection />
+  return (
+    <div className="mt-4 flex overflow-hidden items-center justify-center relative min-h-[250px] p-4">
+      <GlobeSection />
+    </div>
+  );
+};
 
+const WhatSection = () => {
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
+
+  const features = [
+    {
+      title: "Personalized Learning Paths",
+      description:
+        "Our AI adapts to your learning style, focusing on areas where you need the most practice to accelerate your fluency.",
+      skeleton: <SkeletonOne />,
+      className:
+        "col-span-1 md:col-span-3",
+    },
+    {
+      title: "Learn quicker with Smart Flashcards",
+      description:
+        "Generate visual and audio flashcards instantly using our advanced AI. Master vocabulary and pronunciation faster.",
+      skeleton: <SkeletonTwo />,
+      className: "col-span-1 md:col-span-3",
+    },
+    {
+      title: "Expanding Language Library",
+      description:
+        "Currently supporting a growing list of languages. Our team is constantly working to add more!",
+      skeleton: <SkeletonThree />,
+      className:
+        "col-span-1 md:col-span-3",
+    },
+    {
+      title: "Learn Anytime, Anywhere",
+      description:
+        "Access your personalized dashboard and flashcards globally, 24/7, on any device. Your learning journey knows no bounds.",
+      skeleton: <SkeletonFour />,
+      className: "col-span-1 md:col-span-3",
+    }
+  ];
+
+  return (
+    <div className="relative z-20 py-24 sm:py-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <motion.div
+        className="mb-16"
+        initial={{ opacity: 0, y: 20 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+        transition={{ duration: 0.6 }}
+      >
+        {/* Ensure TextGenerateEffect component exists and works */}
+        <h1 className="md:leading-tight max-w-5xl mx-auto text-center tracking-tight font-medium text-black dark:text-white">
+          <TextGenerateEffect words={'Learning languages has never been easier'} className="text-3xl md:text-4xl lg:text-5xl" />
+        </h1>
+
+        <motion.p
+          className="text-base md:text-lg max-w-3xl mt-6 mx-auto text-neutral-500 text-center font-normal dark:text-neutral-400"
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >Leverage AI to create personalized flashcards, follow adaptive learning paths, and practice pronunciation, making language acquisition intuitive and effective.</motion.p>
+      </motion.div>
+
+      <div className="relative" ref={sectionRef} >
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-6 md:gap-8">
+          {features.map((feature, index) => (
+            <AnimatedFeatureCard
+              key={feature.title}
+              className={feature.className}
+              index={index}
+              isInView={isInView}
+            >
+              <FeatureTitle>{feature.title}</FeatureTitle>
+              <FeatureDescription>{feature.description}</FeatureDescription>
+              {feature.skeleton}
+            </AnimatedFeatureCard>
+          ))}
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default WhatSection;
