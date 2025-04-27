@@ -23,7 +23,7 @@ const AnimatedFeatureCard = ({
 }) => {
   return (
     <motion.div
-      className={cn(`relative overflow-hidden h-full bg-white dark:bg-gray-800  rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700`, className)}
+      className={cn(`relative overflow-hidden h-full bg-white dark:bg-gray-950  rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700`, className)}
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
       transition={{
