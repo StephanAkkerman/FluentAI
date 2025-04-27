@@ -213,11 +213,11 @@ const HowSection: React.FC = () => {
 
   // --- Flashcard Data ---
   const cardData = {
-    word: "Flasche", // Corrected typo if intended German word
+    word: "Flasche",
     imageUrl: flashe.src,
     audioUrl: "",
-    ipa: "ˈflaʃə", // More standard IPA
-    verbalCue: "Imagine a FLASHy bottle throwing a party with disco lights inside.", // Slightly tweaked cue
+    ipa: "ˈflaʃə",
+    verbalCue: "Imagine a Flashy bottle throwing a party with disco lights inside.",
     translation: "Bottle",
     languageCode: "de",
   };

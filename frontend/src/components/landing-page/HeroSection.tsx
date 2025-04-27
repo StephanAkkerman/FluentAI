@@ -36,7 +36,7 @@ const HeroSection = () => {
   const isMediumScreen = windowSize && windowSize.width >= 640 && windowSize.width < 1024;
 
   const cardData = {
-    word: "Flashe",
+    word: "Flasche",
     imageUrl: flashe.src,
     audioUrl: "",
     ipa: "flaʃə",
