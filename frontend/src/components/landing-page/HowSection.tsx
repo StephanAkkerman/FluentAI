@@ -199,16 +199,15 @@ const HowSection: React.FC = () => {
   }, [scrollYProgress, currentStep, revealThreshold]);
 
   // --- Animations based on Scroll ---
-
   // Title animation
-  const titleY = useTransform(scrollYProgress, [0, 0.05], ["10px", "0px"]);
+  const titleY = useTransform(scrollYProgress, [0, 0.0], ["0px", "50px"]);
   const titleOpacity = useTransform(scrollYProgress, [0, 0.01, 0.7, 0.75], [1, 1, 1, 0]);
 
   // Step Indicator Opacity (Fade out before final card)
   const stepsOpacity = useTransform(scrollYProgress, [0, 0.02, revealThreshold - 0.15, revealThreshold - 0.1], [0, 1, 1, 0]);
 
   // Browser animation (Scale and fade out before final card)
-  const browserScale = useTransform(scrollYProgress, [0, 0.2, 0.5, revealThreshold - 0.1], [0.9, 1, 1, 0.9]); // Scale down slightly on exit
+  const browserScale = useTransform(scrollYProgress, [0, 0.2, 0.5, revealThreshold - 0.1], [0.9, 1, 1, 0.9]);
   const browserOpacity = useTransform(scrollYProgress, [0, 0.02, revealThreshold - 0.1, revealThreshold - 0.05], [0, 1, 1, 0]);
 
   // --- Flashcard Data ---
@@ -226,17 +225,17 @@ const HowSection: React.FC = () => {
     <section
       ref={sectionRef}
       id="how-it-works"
-      className="relative w-full h-[450vh]" // Increased height slightly for comfort
+      className="relative w-full h-[400vh]"
     >
       {/* Sticky container takes full viewport height and centers content */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center">
 
         {/* Max width container for content, centered */}
-        <div className="relative w-full max-w-6xl mx-auto px-4 sm:px-6 h-full flex flex-col items-center justify-center pt-16 sm:pt-20 pb-8">
+        <div className="relative w-full max-w-6xl mx-auto px-4 sm:px-6 h-full flex flex-col items-center justify-center pt-16 sm:pt-20">
 
           {/* --- Title Area --- */}
           <motion.div
-            className="absolute top-10 sm:top-20 left-0 right-0 z-20 text-center px-4" // Positioned absolutely within sticky container
+            className="absolute top-10 sm:top-30 left-0 right-0 z-20 text-center px-4"
             style={{ y: titleY, opacity: titleOpacity }}
           >
             <span className="text-xs sm:text-sm font-medium text-blue-500 dark:text-blue-400 uppercase tracking-wider">Step by step process</span>
@@ -247,7 +246,7 @@ const HowSection: React.FC = () => {
           </motion.div>
 
           {/* --- Main Content Area (Switches between steps and final card) --- */}
-          <div className="relative w-full flex-grow flex flex-col items-center justify-center mt-20 sm:mt-24 md:mt-28">
+          <div className="relative w-full flex-grow flex flex-col items-center justify-center md:mt-20">
             <AnimatePresence mode="wait">
               {!showCard ? (
                 /* --- Scrolling Steps View --- */
@@ -257,17 +256,17 @@ const HowSection: React.FC = () => {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="w-full flex flex-col items-center space-y-6 md:space-y-8"
+                  className="w-full flex flex-col items-center space-y-12 md:space-y-8"
                 >
                   {/* Step Indicators */}
                   <motion.div
-                    className="hidden md:flex justify-center"
+                    className="flex justify-center flex-row"
                     style={{ opacity: stepsOpacity }}
                   >
                     {steps.map((_, idx) => (
                       <div key={idx} className="flex items-center">
                         <div
-                          className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center text-sm md:text-base transition-colors duration-300 ${idx <= currentStep
+                          className={`w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm md:text-base transition-colors duration-300 ${idx <= currentStep
                             ? 'bg-gradient-to-r from-blue-500 to-teal-400 text-white font-semibold'
                             : 'bg-gray-200 dark:bg-gray-800 text-gray-500 dark:text-gray-400'
                             }`}
@@ -293,14 +292,14 @@ const HowSection: React.FC = () => {
                   {/* Browser Mockup */}
                   <motion.div
                     style={{ scale: browserScale, opacity: browserOpacity }}
-                    className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto" // Slightly reduced max-width
+                    className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto"
                   >
                     <div className="relative w-full mx-auto shadow-xl shadow-blue-500/10 rounded-lg">
                       <Browser urlText="https://mnemorai.com" dark>
                         {/* AnimatePresence for content swap */}
                         <AnimatePresence mode="wait">
                           <motion.div
-                            key={currentStep} // Key change triggers animation
+                            key={currentStep}
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
@@ -330,7 +329,7 @@ const HowSection: React.FC = () => {
                   key="reveal-view"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3, delay: 0.05 }} // Slight delay after steps fade
+                  transition={{ duration: 0.3, delay: 0.01 }} // Slight delay after steps fade
                   className="w-full h-full flex flex-col items-center justify-center text-center"
                 >
                   {/* Et Voilà Title */}

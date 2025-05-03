@@ -26,7 +26,7 @@ const LandingPage = () => {
         </section>
 
         {/* 2. HOW IT WORKS SECTION */}
-        <section id="how" className="py-20">
+        <section id="how">
           <HowSection />
         </section>
 

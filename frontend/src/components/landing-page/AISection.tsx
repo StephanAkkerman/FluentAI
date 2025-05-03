@@ -1,5 +1,3 @@
-// src/components/landing-page/AISection.tsx
-
 "use client"
 import React, { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -43,13 +41,10 @@ const AIPage: React.FC = () => {
   const titleY = useTransform(
     scrollYProgress,
     [0.2, 0.3, 0.4, 0.5],
-    isSmallScreen ? ["300%", "100%", "100%", "20%"] :
+    isSmallScreen ? ["300%", "150%", "100%", "0%"] :
       isMediumScreen ? ["300%", "150%", "150%", "0%"] :
         ["300%", "150%", "150%", "0%"]
   );
-
-  // --- REMOVED featuresOpacity ---
-  // const featuresOpacity = useTransform(scrollYProgress, [0.5, 0.65], [0, 1]);
 
   useEffect(() => {
     const updateVideoTime = (value: number) => {
