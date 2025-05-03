@@ -185,7 +185,7 @@ export default function Flashcard({
         style={{ transformStyle: "preserve-3d" }}
       >
         {/* Front Side */}
-        <div className="absolute inset-0 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 backface-hidden flex flex-col justify-center items-center p-6">
+        <div className="absolute inset-0 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 backface-hidden flex flex-col justify-center items-center p-3">
           {isLoading ? (
             <p className="text-blue-500 font-bold animate-pulse">Loading...</p>
           ) : (
@@ -205,10 +205,10 @@ export default function Flashcard({
 
         {/* Back Side */}
         <div
-          className="absolute inset-0 bg-gradient-to-br from-blue-100 to-teal-100 dark:bg-gradient-to-br dark:from-blue-800 dark:to-teal-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 backface-hidden transform rotate-y-180 flex flex-col p-4"
+          className="absolute inset-0 bg-gradient-to-br from-blue-100 to-teal-100 dark:bg-gradient-to-br dark:from-blue-800 dark:to-teal-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 backface-hidden transform rotate-y-180 flex flex-col p-2"
           onClick={e => isEditing && e.stopPropagation()}
         >
-          <div className="relative w-full h-1/2 overflow-hidden rounded-xl mb-2">
+          <div className="relative w-full h-1/2 overflow-hidden rounded-xl mb-1">
             <Image
               src={card.imageUrl || "https://placehold.co/400"}
               alt={editedWord}
@@ -216,7 +216,7 @@ export default function Flashcard({
               className="object-cover"
             />
           </div>
-          <div className="w-full flex flex-col justify-center items-center flex-grow">
+          <div className="w-full flex flex-col justify-center items-center flex-grow overflow-auto">
 
             {isEditing ? (
               <div className="w-full space-y-2" onClick={e => e.stopPropagation()}>

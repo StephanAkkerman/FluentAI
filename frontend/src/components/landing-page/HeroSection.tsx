@@ -162,7 +162,7 @@ const HeroSection = () => {
                 {!isPastThreshold ? (
                   <span>Faster</span>
                 ) : (
-                  <div className="translate-x-[-3%]">
+                  <div className="md:translate-x-[-3%]">
                     <ContainerTextFlip
                       animationDuration={700}
                       interval={2000}

@@ -10,6 +10,9 @@ import GlobeSection from "@/components/ui/globeArcs";
 
 import duck from "../../../public/duck.jpg";
 
+
+const SMALL_SCREEN_BREAKPOINT = 640;
+
 const AnimatedFeatureCard = ({
   children,
   className,
@@ -98,7 +101,49 @@ export const SkeletonOne = () => {
   );
 };
 
+const FlashcardWrapper = ({ card, showFront }: { card: Card; showFront: boolean }) => {
+  const [rotation, setRotation] = useState(0);
+
+  const imageVariants = {
+    whileHover: {
+      scale: 1.1,
+      rotate: 0,
+      zIndex: 100,
+    },
+    whileTap: {
+      scale: 1.1,
+      rotate: 0,
+      zIndex: 100,
+    },
+  };
+
+  useEffect(() => {
+    setRotation(Math.random() * 16 - 8);
+  }, []);
+
+  return (
+    <motion.div
+      variants={imageVariants}
+      style={{
+        rotate: rotation,
+      }}
+      whileHover="whileHover"
+      whileTap="whileTap"
+      className="w-full aspect-[5/6] relative cursor-pointer"
+    >
+      <Flashcard
+        card={card}
+        isLoading={false}
+        showFront={showFront}
+        className="w-full h-full"
+      />
+    </motion.div>
+  );
+};
+
 export const SkeletonTwo = () => {
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
   // Create multiple card data objects for different words
   const cardData = [
     {
@@ -112,7 +157,7 @@ export const SkeletonTwo = () => {
     },
     {
       word: "Gato",
-      imageUrl: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba",
+      imageUrl: "https://images.unsplash.com/photo-1592194996308-7b43878e84a6",
       audioUrl: "",
       ipa: "/ˈɡɑtoʊ/",
       verbalCue: "Spanish word for 'cat'",
@@ -146,57 +191,73 @@ export const SkeletonTwo = () => {
       translation: "Book",
       languageCode: "es"
     },
+    {
+      word: "Sol",
+      imageUrl: "https://images.unsplash.com/photo-1563630381190-77c336ea545a",
+      audioUrl: "",
+      ipa: "/sol/",
+      verbalCue: "Spanish word for 'sun'",
+      translation: "Sun",
+      languageCode: "es"
+    },
+    {
+      word: "Luna",
+      imageUrl: "https://images.unsplash.com/photo-1578615437406-511cafe4a5c7",
+      audioUrl: "",
+      ipa: "/ˈluna/",
+      verbalCue: "Spanish word for 'moon'",
+      translation: "Moon",
+      languageCode: "es"
+    },
+    {
+      word: "Agua",
+      imageUrl: "https://images.unsplash.com/photo-1538300342682-cf57afb97285",
+      audioUrl: "",
+      ipa: "/ˈaɡwa/",
+      verbalCue: "Spanish word for 'water'",
+      translation: "Water",
+      languageCode: "es"
+    },
+    {
+      word: "Arbol",
+      imageUrl: "https://images.unsplash.com/photo-1520262494112-9fe481d36ec3",
+      audioUrl: "",
+      ipa: "/ˈarbol/",
+      verbalCue: "Spanish word for 'tree'",
+      translation: "Tree",
+      languageCode: "es"
+    },
   ];
 
-  const displayCards = [...cardData, ...cardData.slice().reverse(), ...cardData].slice(0, 15);
+  const baseCards = cardData.length >= 9 ? cardData : [...cardData, ...cardData, ...cardData];
+  const displayCards = baseCards.slice(0, 9);
+  useEffect(() => {
+    const checkSize = () => {
+      setIsSmallScreen(window.innerWidth < SMALL_SCREEN_BREAKPOINT);
+    };
 
-  const imageVariants = {
-    whileHover: {
-      scale: 1.1,
-      rotate: 0,
-      zIndex: 100,
-    },
-    whileTap: {
-      scale: 1.1,
-      rotate: 0,
-      zIndex: 100,
-    },
-  };
+    // Initial check
+    checkSize();
 
-  const FlashcardWrapper = ({ card, showFront }: { card: Card; showFront: boolean }) => {
-    const [rotation, setRotation] = useState(0);
+    // Add resize listener
+    window.addEventListener("resize", checkSize);
 
-    useEffect(() => {
-      setRotation(Math.random() * 16 - 8);
-    }, []);
+    // Cleanup listener on component unmount
+    return () => window.removeEventListener("resize", checkSize);
+  }, []); // Empty dependency array ensures this runs only once on mount and cleanup on unmount
 
-    return (
-      <motion.div
-        variants={imageVariants}
-        style={{
-          rotate: rotation,
-        }}
-        whileHover="whileHover"
-        whileTap="whileTap"
-        className="w-full aspect-[5/6] relative cursor-pointer"
-      >
-        <Flashcard
-          card={card}
-          isLoading={false}
-          showFront={showFront}
-          className="w-full h-full"
-        />
-      </motion.div>
-    );
-  };
-
+  // Determine which cards to show based on screen size
+  const cardsToShow = isSmallScreen ? displayCards.slice(0, 4) : displayCards.slice(0, 9);
 
   return (
-    <div className="mt-4 relative grid grid-cols-3 gap-2 sm:gap-4 p-4">
-      {displayCards.slice(0, 9).map((card, idx) => (
+    // Use responsive grid columns: 2 cols on small, 3 cols on sm screens and up
+    // This layout works well for both 4 cards (2x2) and 9 cards (3x3)
+    <div className="mt-4 relative grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 p-4">
+      {cardsToShow.map((card, idx) => (
         <FlashcardWrapper
-          key={`flashcard-${card.languageCode}-${card.word}-${idx}`}
+          key={`flashcard-${card.languageCode}-${card.word}-${idx}`} // Make key more unique if needed
           card={card}
+          // Adjust flip logic if desired, e.g., maybe always show front on mobile?
           showFront={idx % 2 === 0}
         />
       ))}
