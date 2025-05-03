@@ -41,7 +41,7 @@ const AIPage: React.FC = () => {
   const titleY = useTransform(
     scrollYProgress,
     [0.2, 0.3, 0.4, 0.5],
-    isSmallScreen ? ["300%", "150%", "100%", "0%"] :
+    isSmallScreen ? ["350%", "200%", "100%", "0%"] :
       isMediumScreen ? ["300%", "150%", "150%", "0%"] :
         ["300%", "150%", "150%", "0%"]
   );
@@ -56,7 +56,7 @@ const AIPage: React.FC = () => {
           videoRef.current.currentTime = newTime;
         }
       }
-      setShouldShowContent(value >= 0.45); // Keep this threshold
+      setShouldShowContent(value >= 0.45);
     };
 
     const unsubscribe = scrollYProgress.onChange(updateVideoTime);
@@ -67,27 +67,26 @@ const AIPage: React.FC = () => {
 
   // Animation Variants
   const fadeInUp = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
   };
   // Stagger container for the grid items
   const staggerContainer = {
-    hidden: { opacity: 0 }, // Start container as hidden
+    hidden: { opacity: 0 },
     visible: {
-      opacity: 1, // Make container visible
+      opacity: 1,
       transition: {
-        // delayChildren: 0.3, // Optional delay before staggering starts
-        staggerChildren: 0.15 // Time between each child animation
+        staggerChildren: 0.15
       }
     }
   };
   const fadeInLeft = {
-    hidden: { opacity: 0, x: -30 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } } // Slightly longer duration
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } }
   };
   const fadeInRight = {
-    hidden: { opacity: 0, x: 30 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } } // Slightly longer duration
+    hidden: { opacity: 0, x: 20 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } }
   };
 
   const aiFeatures: AIFeature[] = [
@@ -113,7 +112,7 @@ const AIPage: React.FC = () => {
         </div>
 
         {/* Content Container */}
-        <div className="relative z-10 w-full max-w-6xl mx-auto px-4 mt-16">
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-4 mt-20">
           {/* Header */}
           <motion.div className="text-center" style={{ scale: titleScale, opacity: titleOpacity, y: titleY }}>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-white">
@@ -124,44 +123,42 @@ const AIPage: React.FC = () => {
 
           {/* Main Content */}
           <motion.div
-            className="w-full flex flex-col items-center justify-center"
-            // Animate the entire block based on scroll position
+            className="w-full flex flex-col items-center justify-center flex-grow py-4 pt-0"
             initial="hidden"
             animate={shouldShowContent ? "visible" : "hidden"}
-            variants={fadeInUp} // Use simple fadeInUp for the container itself
+            variants={fadeInUp}
           >
             {/* How It Works */}
             {!isSmallScreen &&
               <motion.div
-                className="bg-gray-800/60 border border-gray-700 rounded-2xl p-6 mb-8 max-w-4xl mx-auto shadow-lg backdrop-blur-sm"
-              // Inherits visibility from parent, no extra variants needed here unless you want a secondary animation
+                className="bg-gray-800/60 border border-gray-700 rounded-xl p-5 md:p-6 mb-6 md:mb-8 max-w-3xl mx-auto shadow-lg backdrop-blur-sm"
               >
-                <h3 className="text-2xl font-semibold text-white mb-4">How Mnemorai Works</h3>
-                <p className="text-gray-200 mb-4 text-base md:text-lg">
+                <h3 className="text-xl md:text-2xl font-semibold text-white mb-3">How Mnemorai Works</h3>
+                <p className="text-gray-200 mb-3 text-base md:text-lg">
                   Our AI system builds powerful memory connections by finding words in your native language that sound similar to new vocabulary. These phonetic bridges, combined with vivid imagery, create lasting memory anchors that make recall effortless.
                 </p>
-                <p className="text-gray-200 text-base md:text-lg">
+                <p className="text-gray-200 text-base">
                   Unlike traditional flashcards that rely on repetition alone, Mnemorai creates meaningful associations that work with your brain&apos;s natural ability to remember stories and images.
                 </p>
               </motion.div>}
 
             {/* AI Features Grid */}
             <motion.div
-              className="flex w-full max-w-4xl items-center justify-center"
+              className="w-full max-w-4xl"
               variants={staggerContainer}
             >
               <div
-                className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch justify-items-center"
+                className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5 md:gap-6 items-stretch justify-items-center"
               >
                 {aiFeatures.map((feature, index) => (
                   <motion.div
                     key={index}
-                    className="bg-gray-800/70 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-700 dark:border-gray-600 rounded-2xl p-5 sm:p-6 shadow-lg hover:border-gray-500 transition-colors duration-300 flex flex-col h-full w-full"
+                    className="bg-gray-800/70 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-700 dark:border-gray-600 rounded-xl p-4 sm:p-5 shadow-md hover:border-gray-500 transition-colors duration-300 flex flex-col h-full w-full max-w-md md:max-w-none"
                     variants={index % 2 === 0 ? fadeInLeft : fadeInRight}
                     custom={index}
                     whileHover={{ y: -4 }}
                   >
-                    <div className="flex items-center mb-3">
+                    <div className="flex items-center mb-2 sm:mb-3">
                       <div className="text-xl sm:text-2xl mr-3 p-2 bg-gray-700/50 dark:bg-gray-800/60 rounded-lg">{feature.icon}</div>
                       <h3 className="text-lg sm:text-xl font-semibold text-white">{feature.title}</h3>
                     </div>
@@ -175,14 +172,13 @@ const AIPage: React.FC = () => {
 
             {/* CTA Button */}
             <motion.div
-              className="mt-10 text-center"
-            // Inherits visibility from parent
+              className="mt-4 md:mt-10 text-center"
             >
               <Button
                 text="Try Mnemorai Now"
                 variant="primary"
                 onClick={() => console.log("CTA Clicked!")}
-                className="px-8 py-3 text-lg"
+                className="px-6 py-2.5 sm:px-8 sm:py-3 text-base sm:text-lg"
               />
             </motion.div>
           </motion.div>
