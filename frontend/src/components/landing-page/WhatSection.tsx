@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { motion, useInView } from "motion/react";
@@ -163,34 +163,41 @@ export const SkeletonTwo = () => {
     },
   };
 
-  const FlashcardWrapper = ({ card, showFront }: { card: Card; showFront: boolean }) => (
-    <motion.div
-      variants={imageVariants}
-      style={{
-        rotate: Math.random() * 16 - 10,
-      }}
-      whileHover="whileHover"
-      whileTap="whileTap"
-      className="w-full aspect-[5/6] relative cursor-pointer"
-    >
-      <Flashcard
-        card={card}
-        isLoading={false}
-        showFront={showFront}
-        className="w-full h-full"
-      />
-    </motion.div>
-  );
+  const FlashcardWrapper = ({ card, showFront }: { card: Card; showFront: boolean }) => {
+    const [rotation, setRotation] = useState(0);
+
+    useEffect(() => {
+      setRotation(Math.random() * 16 - 8);
+    }, []);
+
+    return (
+      <motion.div
+        variants={imageVariants}
+        style={{
+          rotate: rotation,
+        }}
+        whileHover="whileHover"
+        whileTap="whileTap"
+        className="w-full aspect-[5/6] relative cursor-pointer"
+      >
+        <Flashcard
+          card={card}
+          isLoading={false}
+          showFront={showFront}
+          className="w-full h-full"
+        />
+      </motion.div>
+    );
+  };
+
 
   return (
     <div className="mt-4 relative grid grid-cols-3 gap-2 sm:gap-4 p-4">
-      {/* Show only the first 15 cards for demonstration */}
       {displayCards.slice(0, 9).map((card, idx) => (
         <FlashcardWrapper
-          // Use a more robust unique key
           key={`flashcard-${card.languageCode}-${card.word}-${idx}`}
           card={card}
-          showFront={idx % 2 === 0} // Alternate front/back shown
+          showFront={idx % 2 === 0}
         />
       ))}
     </div>
