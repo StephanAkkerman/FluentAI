@@ -49,7 +49,7 @@ const HeroSection = () => {
     h1Transform: useTransform(
       scrollYProgress,
       [0, 0.3],
-      isSmallScreen ? ["translate(0%, -30%)", "translate(0%, -20%)"] :
+      isSmallScreen ? ["translate(0%, -40%)", "translate(0%, -30%)"] :
         isMediumScreen ? ["translate(0%, -30%)", "translate(5%, 30%)"] :
           ["translate(4%, -30%)", "translate(-20%, 30%)",]
     ),
@@ -57,14 +57,14 @@ const HeroSection = () => {
     pTransform: useTransform(
       scrollYProgress,
       [0, 0.3],
-      isSmallScreen ? ["translate(0%, -30%)", "translate(0%, -30%)"] :
+      isSmallScreen ? ["translate(0%, -35%)", "translate(0%, -25%)"] :
         isMediumScreen ? ["translate(15%, -30%)", "translate(5%, 45%)"] :
           ["translate(15%, -30%)", "translate(-20%, 40%)"]
     ),
     cardTransform: useTransform(
       scrollYProgress,
       [0, 0.3],
-      isSmallScreen ? ["translate(-50%, 100%)", "translate(-50%, 180%)"] :
+      isSmallScreen ? ["translate(-50%, 50%)", "translate(-50%, 100%)"] :
         isMediumScreen ? ["translate(-50%, 100%)", "translate(35%, 90%)"] :
           ["translate(-42%, 60%)", "translate(30%, 60%)"]
     ),
@@ -72,18 +72,18 @@ const HeroSection = () => {
     titleFontSize: useTransform(
       scrollYProgress,
       [0, 0.3],
-      isSmallScreen ? ["1.5rem", "1.5rem"] :
+      isSmallScreen ? ["1.4rem", "1.4rem"] :
         isMediumScreen ? ["2.2rem", "1.7rem"] :
           ["2.5rem", "3rem"]
     ),
     subtitleFontSize: useTransform(
       scrollYProgress,
       [0, 0.3],
-      isSmallScreen ? ["1.4rem", "1rem"] :
+      isSmallScreen ? ["1.3rem", "0.9rem"] :
         isMediumScreen ? ["2.25rem", "1.2rem"] :
           ["2.25rem", "1.5rem"]
     ),
-    contentOpacity: useTransform(scrollYProgress, [0, 0.3], [0, 1]),
+    contentOpacity: useTransform(scrollYProgress, [0, 0.1], [0, 1]),
     bgOpacity: useTransform(scrollYProgress, [0, 0.3], [0.3, 0.7]),
     bgWidth: useTransform(scrollYProgress, [0.8, 0.9], ["100%", "96%"]),
     bgHeight: useTransform(scrollYProgress, [0.8, 0.81, 0.9], ["100%", "70%", "60%"]),
@@ -124,7 +124,7 @@ const HeroSection = () => {
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -15 }}
     >
       {/* This is the container that stays fixed in the viewport */}
-      <div className="sticky top-[15%] h-screen w-full max-h-[650px] overflow-hidden flex justify-center">
+      <div className="sticky top-[15%] h-screen w-full overflow-hidden flex justify-center">
         {/* Content Container */}
         <div className="absolute inset-0 w-full h-full max-h-[400px] flex items-center justify-center z-40">
           {/* Text Content - positioned absolute */}
