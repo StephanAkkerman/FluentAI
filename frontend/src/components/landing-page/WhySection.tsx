@@ -20,51 +20,56 @@ const WhySection = () => {
     return () => window.removeEventListener("resize", update);
   }, []);
 
-  const isSmallScreen = windowSize && windowSize.width < 768;
+  const isMobileDevice = React.useMemo(() => {
+    return windowSize.width > 0 && windowSize.width < 768;
+  }, [windowSize.width]);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start start", "end end"]
+    offset: ["start start", "end end"],
   });
 
-  const titleScale = useTransform(scrollYProgress, [0.15, 0.3], [1.8, 1]);
-  const titleOpacity = useTransform(scrollYProgress, [0, 0.15], [0, 1]);
-  const titleY = useTransform(
+  // Adjusted transforms for better mobile experience
+  const titleScale = useTransform(
     scrollYProgress,
-    [0.15, 0.3],
-    isSmallScreen ? ["250%", "50%"] : ["200%", "0%"]
+    [0.1, 0.3],
+    isMobileDevice ? [1, 1] : [1.2, 1]
   );
 
-  // Animate glow effect
-  const glowOpacity = useTransform(scrollYProgress, [0.3, 0.4], [0, 0.6]);
-  const glowScale = useTransform(scrollYProgress, [0.3, 0.4], [0.8, 1.1]);
+  const titleOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.15],
+    isMobileDevice ? [0, 1] : [0, 1]
+  );
+
+  const titleY = useTransform(
+    scrollYProgress,
+    [0.1, 0.3],
+    ["100%", "0%"]
+  );
+
+  // Adjusted glow effect for mobile
+  const glowOpacity = useTransform(
+    scrollYProgress,
+    isMobileDevice ? [0.25, 0.35] : [0.3, 0.4],
+    [0, 0.6]
+  );
+
+  const glowScale = useTransform(
+    scrollYProgress,
+    isMobileDevice ? [0.25, 0.35] : [0.3, 0.4],
+    [0.8, 1.1]
+  );
 
   useEffect(() => {
     const unsubscribe = scrollYProgress.onChange(value => {
       setShouldShowContent(value >= 0.3);
     });
     return () => unsubscribe();
-  }, [scrollYProgress]);
+  }, [scrollYProgress, isMobileDevice]);
 
   // Sample images array
-  const images = [
-    "/logo.png",
-    "/logo.png",
-    "/logo.png",
-    "/logo.png",
-    "/logo.png",
-    "/logo.png",
-    "/logo.png",
-    "/logo.png",
-    "/logo.png",
-    "/logo.png",
-    "/logo.png",
-    "/logo.png",
-    "/logo.png",
-    "/logo.png",
-    "/logo.png",
-    "/logo.png",
-  ];
+  const images = Array(16).fill("/logo.png");
 
   const fadeInLeft = {
     hidden: { opacity: 0, x: -40 },
@@ -94,10 +99,10 @@ const WhySection = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-[250vh] pt-[8rem] md:pt-30"
+      className="relative w-full h-[200vh] sm:h-[220vh] md:h-[250vh] pt-12 sm:pt-16 md:pt-30"
     >
       {/* Main sticky container */}
-      <div className="sticky top-[150px] left-0 w-full min-h-[120vh] sm:min-h-[100vh] h-screen flex flex-col overflow-hidden">
+      <div className="sticky top-[120px] sm:top-[120px] md:top-[150px] left-0 w-full min-h-screen h-screen flex flex-col overflow-hidden">
         {/* Background layer */}
         <div className="absolute inset-0 w-full h-full">
           {/* Background overlay - gradient */}
@@ -111,7 +116,7 @@ const WhySection = () => {
 
           {/* Animated glow effect */}
           <motion.div
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-blue-500 blur-[120px] z-5"
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[500px] md:w-[800px] h-[300px] sm:h-[500px] md:h-[800px] rounded-full bg-blue-500 blur-[80px] md:blur-[120px] z-5"
             style={{
               opacity: glowOpacity,
               scale: glowScale
@@ -120,11 +125,11 @@ const WhySection = () => {
         </div>
 
         {/* Content */}
-        <div className="relative z-20 h-full w-full px-4 container mx-auto flex flex-col justify-center">
+        <div className="relative z-20 h-full w-full px-4 container mx-auto flex flex-col justify-center max-w-6xl pb-4">
           {/* Title with animation */}
           <motion.div
             ref={titleRef}
-            className="flex flex-col items-center justify-center text-center md:mb-12"
+            className="flex flex-col items-center justify-center text-center"
             style={{
               scale: titleScale,
               opacity: titleOpacity,
@@ -135,51 +140,53 @@ const WhySection = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.8 }}
-              className="mb-3 text-blue-400 font-medium tracking-wider text-sm md:text-base uppercase"
+              className="mb-2 md:mb-3 text-blue-400 font-medium tracking-wider text-xs sm:text-sm md:text-base uppercase"
             >
               SUPERIOR LEARNING TECHNOLOGY
             </motion.div>
 
-            <h2 className="text-2xl sm:text-5xl md:text-6xl font-extrabold text-white mb-2">
+            <h2 className="text-xl sm:text-4xl md:text-6xl font-extrabold text-white mb-2">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-teal-400">
                 Why Choose
               </span>{" "}
               Our Approach
             </h2>
 
-            <div className="h-1 w-32 bg-gradient-to-r from-blue-500 to-teal-400 rounded-full my-6"></div>
+            <div className="h-1 w-24 sm:w-32 bg-gradient-to-r from-blue-500 to-teal-400 rounded-full my-3 sm:my-4 md:my-6"></div>
 
-            <p className="text-gray-300 max-w-2xl text-sm md:text-lg">
+            <p className="text-gray-300 max-w-2xl text-xs sm:text-sm md:text-lg px-2">
               Our AI-driven approach to learning creates lasting connections in your brain
               that make information retrieval natural and effortless
             </p>
           </motion.div>
 
-          {/* Comparison Content */}
-          <motion.div className="w-full max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
-              {/* Traditional Learning - Left Column */}
+          {/* Comparison Content - Stack on mobile, side-by-side on desktop */}
+          <motion.div className="w-full max-w-7xl mx-auto mt-4 sm:mt-6 md:mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-10">
+              {/* Traditional Learning - Top on mobile, Left on desktop */}
               <motion.div
-                className="p-6 md:p-8 rounded-2xl border border-gray-800 bg-gradient-to-br from-gray-900/50 to-black backdrop-blur-md group hover:border-gray-700 transition-all duration-300"
+                className="p-4 sm:p-6 md:p-8 rounded-2xl border border-gray-800 bg-gradient-to-br from-gray-900/50 to-black backdrop-blur-md group hover:border-gray-700 transition-all duration-300"
                 variants={fadeInLeft}
                 initial="hidden"
                 animate={shouldShowContent ? "visible" : "hidden"}
-                transition={{ duration: 0.6 }}
+                transition={{ duration: 0.6, delay: isMobileDevice ? 0.1 : 0 }}
                 whileHover={{ y: -5, transition: { duration: 0.3 } }}
               >
-                <div className="flex flex-col justify-start items-start mb-6">
-                  <div className="flex items-center space-x-4">
-                    <div className="text-4xl p-3 bg-gray-800/50 rounded-xl">📚</div>
-                    <h3 className="text-2xl md:text-3xl font-bold text-white">
+                <div className="flex flex-col justify-start items-start mb-4 sm:mb-6">
+                  <div className="flex items-center space-x-3 sm:space-x-4">
+                    <div className="text-2xl sm:text-3xl md:text-4xl p-2 sm:p-3 bg-gray-800/50 rounded-xl">📚</div>
+                    <h3 className="text-lg sm:text-xl md:text-3xl font-bold text-white">
                       Traditional Learning
                     </h3>
                   </div>
-                  <div className="w-full h-px bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 my-6"></div>
+                  <div className="w-full h-px bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 my-3 sm:my-4 md:my-6"></div>
                 </div>
 
                 <motion.ul
-                  className="space-y-5"
+                  className="space-y-3 sm:space-y-4 md:space-y-5"
                   variants={staggerItems}
+                  initial="hidden"
+                  animate={shouldShowContent ? "visible" : "hidden"}
                 >
                   {[
                     "Repetitive memorization with minimal context",
@@ -189,41 +196,43 @@ const WhySection = () => {
                   ].map((item, index) => (
                     <motion.li
                       key={index}
-                      className="flex items-start gap-4 text-gray-300 group-hover:text-gray-200 transition-colors duration-300"
+                      className="flex items-start gap-2 sm:gap-3 md:gap-4 text-gray-300 group-hover:text-gray-200 transition-colors duration-300"
                       variants={fadeInUp}
                     >
-                      <span className="text-red-400 mt-1 text-lg font-bold">✗</span>
-                      <p className="text-base md:text-lg">{item}</p>
+                      <span className="text-red-400 mt-0.5 sm:mt-1 text-base sm:text-lg font-bold">✗</span>
+                      <p className="text-sm sm:text-base md:text-lg">{item}</p>
                     </motion.li>
                   ))}
                 </motion.ul>
               </motion.div>
 
-              {/* Our Approach - Right Column */}
+              {/* Our Approach */}
               <motion.div
-                className="p-6 md:p-8 rounded-2xl border border-blue-600/30 bg-gradient-to-br from-blue-900/20 to-blue-800/10 backdrop-blur-md relative overflow-hidden group hover:border-blue-500/50 transition-all duration-300"
+                className="p-4 sm:p-6 md:p-8 rounded-2xl border border-blue-600/30 bg-gradient-to-br from-blue-900/20 to-blue-800/10 backdrop-blur-md relative overflow-hidden group hover:border-blue-500/50 transition-all duration-300"
                 variants={fadeInRight}
                 initial="hidden"
                 animate={shouldShowContent ? "visible" : "hidden"}
-                transition={{ duration: 0.6 }}
+                transition={{ duration: 0.6, delay: isMobileDevice ? 0.2 : 0.1 }}
                 whileHover={{ y: -5, transition: { duration: 0.3 } }}
               >
                 {/* Background glow */}
-                <div className="absolute top-0 -right-20 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl group-hover:bg-blue-500/30 transition-all duration-500"></div>
+                <div className="absolute -top-5 -right-10 w-20 h-20 sm:top-0 sm:-right-20 sm:w-40 sm:h-40 bg-blue-500/20 rounded-full blur-2xl sm:blur-3xl group-hover:bg-blue-500/30 transition-all duration-500"></div>
 
-                <div className="flex flex-col justify-start items-start mb-6 relative z-10">
-                  <div className="flex items-center space-x-4">
-                    <div className="text-4xl p-3 bg-blue-800/30 rounded-xl bg-gradient-to-br from-blue-700/30 to-blue-900/30">🧠</div>
-                    <h3 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-teal-400">
+                <div className="flex flex-col justify-start items-start mb-4 sm:mb-6 relative z-10">
+                  <div className="flex items-center space-x-3 sm:space-x-4">
+                    <div className="text-2xl sm:text-3xl md:text-4xl p-2 sm:p-3 bg-blue-800/30 rounded-xl bg-gradient-to-br from-blue-700/30 to-blue-900/30">🧠</div>
+                    <h3 className="text-lg sm:text-xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-teal-400">
                       Our AI Approach
                     </h3>
                   </div>
-                  <div className="w-full h-px bg-gradient-to-r from-blue-800/30 via-teal-500/30 to-blue-800/30 my-6"></div>
+                  <div className="w-full h-px bg-gradient-to-r from-blue-800/30 via-teal-500/30 to-blue-800/30 my-3 sm:my-4 md:my-6"></div>
                 </div>
 
                 <motion.ul
-                  className="space-y-5 relative z-10"
+                  className="space-y-3 sm:space-y-4 md:space-y-5 relative z-10"
                   variants={staggerItems}
+                  initial="hidden"
+                  animate={shouldShowContent ? "visible" : "hidden"}
                 >
                   {[
                     "Personalized mnemonics crafted for your learning style",
@@ -233,11 +242,11 @@ const WhySection = () => {
                   ].map((item, index) => (
                     <motion.li
                       key={index}
-                      className="flex items-start gap-4 text-gray-200 group-hover:text-white transition-colors duration-300"
+                      className="flex items-start gap-2 sm:gap-3 md:gap-4 text-gray-200 group-hover:text-white transition-colors duration-300"
                       variants={fadeInUp}
                     >
-                      <span className="text-teal-400 mt-1 text-lg font-bold">✓</span>
-                      <p className="text-base md:text-lg">{item}</p>
+                      <span className="text-teal-400 mt-0.5 sm:mt-1 text-base sm:text-lg font-bold">✓</span>
+                      <p className="text-sm sm:text-base md:text-lg">{item}</p>
                     </motion.li>
                   ))}
                 </motion.ul>
@@ -246,18 +255,18 @@ const WhySection = () => {
 
             {/* Bottom CTA */}
             <motion.div
-              className="mt-10 md:mt-16 text-center"
+              className="mt-6 text-center"
               variants={fadeInUp}
               initial="hidden"
               animate={shouldShowContent ? "visible" : "hidden"}
-              transition={{ duration: 0.6, delay: 0.5 }}
+              transition={{ duration: 0.6, delay: isMobileDevice ? 0.4 : 0.3 }}
             >
-              <button className="px-10 py-4 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-semibold text-lg rounded-xl hover:shadow-lg hover:shadow-blue-500/30 hover:scale-105 transition-all duration-300 relative group overflow-hidden">
+              <button className="px-6 py-2.5 sm:px-8 sm:py-3 md:px-10 md:py-4 bg-gradient-to-r from-blue-600 to-teal-500 text-white font-semibold text-base sm:text-lg rounded-xl hover:shadow-lg hover:shadow-blue-500/30 hover:scale-105 transition-all duration-300 relative group overflow-hidden">
                 <span className="relative z-10">Start Learning Smarter</span>
-                <span className="absolute inset-0 bg-gradient-to-r from-blue-500 to-teal-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                <span className="absolute inset-0 bg-gradient-to-r from-blue-500 to-teal-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></span>
               </button>
 
-              <p className="text-gray-400 mt-4 text-sm">
+              <p className="text-gray-400 mt-3 sm:mt-4 text-xs sm:text-sm">
                 Join thousands of students already using our AI approach
               </p>
             </motion.div>

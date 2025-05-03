@@ -35,7 +35,6 @@ const LandingPage = () => {
           <AIPage />
         </section>
 
-
         {/* 5. FAQ SECTION */}
         <section id="faq">
           <FAQSection />
