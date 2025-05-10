@@ -5,13 +5,11 @@ import FormField from "./ui/FormField";
 import Button from "./ui/Button";
 import { createCard } from "../app/api/createCard";
 import { getSupportedLanguages } from "@/app/api/languageService";
-import SaveToAnki from "./SaveToAnki";
 import { Card, CreateCardRequest } from "@/interfaces/CardInterfaces";
 import { ModelOptions } from "@/interfaces/ModelInterface";
 import { ModelService } from "@/services/modelService";
 
 interface CardGeneratorProps {
-  card: Card | null;
   onCardCreated: (card: Card) => void;
   onLoading: (loading: boolean) => void;
   onError: (error: string) => void;
@@ -21,7 +19,6 @@ interface CardGeneratorProps {
 const modelService = new ModelService();
 
 export default function CardGenerator({
-  card,
   onCardCreated,
   onLoading,
   onError,
@@ -213,15 +210,6 @@ export default function CardGenerator({
           </form>
         </div>
       </div>
-
-      {card && (
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 transition-all duration-300 mt-8">
-          <div className="p-6">
-            <h3 className="text-xl font-bold mb-4">Save to Anki</h3>
-            <SaveToAnki card={card} onError={onError} />
-          </div>
-        </div>
-      )}
     </>
   );
 }
