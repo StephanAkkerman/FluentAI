@@ -101,7 +101,7 @@ const AIPage: React.FC = () => {
       ref={sectionRef}
       className="relative w-full h-[300vh]"
     >
-      <div className="sticky top-0 left-0 w-full min-h-[100vh] h-screen flex items-center justify-center overflow-hidden">
+      <div className="sticky top-0 left-0 w-full min-h-[130vh] sm:min-h-[120vh] h-screen flex items-center overflow-hidden">
         {/* Background */}
         <div className="absolute inset-0 w-full h-full">
           <video ref={videoRef} className="absolute inset-0 w-full h-full object-cover" preload="auto" muted playsInline>
@@ -112,7 +112,7 @@ const AIPage: React.FC = () => {
         </div>
 
         {/* Content Container */}
-        <div className="relative z-10 w-full max-w-6xl mx-auto px-4 mt-20">
+        <div className="relative z-10 w-full max-w-6xl mx-auto px-4 ">
           {/* Header */}
           <motion.div className="text-center" style={{ scale: titleScale, opacity: titleOpacity, y: titleY }}>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-white">
@@ -123,13 +123,13 @@ const AIPage: React.FC = () => {
 
           {/* Main Content */}
           <motion.div
-            className="w-full flex flex-col items-center justify-center flex-grow py-4 pt-0"
+            className="w-full flex flex-col items-center flex-grow py-4 pt-0"
             initial="hidden"
             animate={shouldShowContent ? "visible" : "hidden"}
             variants={fadeInUp}
           >
             {/* How It Works */}
-            {!isSmallScreen &&
+            {!isMediumScreen && !isSmallScreen &&
               <motion.div
                 className="bg-gray-800/60 border border-gray-700 rounded-xl p-5 md:p-6 mb-6 md:mb-8 max-w-3xl mx-auto shadow-lg backdrop-blur-sm"
               >

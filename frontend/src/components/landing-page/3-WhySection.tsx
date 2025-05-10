@@ -29,24 +29,7 @@ const WhySection = () => {
     offset: ["start start", "end end"],
   });
 
-  // Adjusted transforms for better mobile experience
-  const titleScale = useTransform(
-    scrollYProgress,
-    [0.1, 0.3],
-    isMobileDevice ? [1, 1] : [1.2, 1]
-  );
 
-  const titleOpacity = useTransform(
-    scrollYProgress,
-    [0, 0.15],
-    isMobileDevice ? [0, 1] : [0, 1]
-  );
-
-  const titleY = useTransform(
-    scrollYProgress,
-    [0.1, 0.3],
-    ["100%", "0%"]
-  );
 
   // Adjusted glow effect for mobile
   const glowOpacity = useTransform(
@@ -71,38 +54,22 @@ const WhySection = () => {
   // Sample images array
   const images = Array(16).fill("/logo.png");
 
-  const fadeInLeft = {
-    hidden: { opacity: 0, x: -40 },
-    visible: { opacity: 1, x: 0 }
-  };
 
-  const fadeInRight = {
-    hidden: { opacity: 0, x: 40 },
-    visible: { opacity: 1, x: 0 }
-  };
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0 }
   };
 
-  const staggerItems = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
+
 
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-[200vh] sm:h-[220vh] md:h-[250vh] pt-12 sm:pt-16 md:pt-30"
+      className="relative w-full h-[220vh] sm:h-[220vh] md:h-[250vh] pt-12 sm:pt-16 md:pt-30"
     >
       {/* Main sticky container */}
-      <div className="sticky top-[120px] sm:top-[120px] md:top-[150px] left-0 w-full min-h-screen h-screen flex flex-col overflow-hidden">
+      <div className="sticky top-[120px] sm:top-[120px] md:top-[150px] left-0 w-full h-[150vh] lg:h-screen  flex flex-col overflow-hidden">
         {/* Background layer */}
         <div className="absolute inset-0 w-full h-full">
           {/* Background overlay - gradient */}
@@ -125,20 +92,21 @@ const WhySection = () => {
         </div>
 
         {/* Content */}
-        <div className="relative z-20 h-full w-full px-4 container mx-auto flex flex-col justify-center max-w-6xl pb-4">
+        <div className="relative z-20 h-full w-full px-4 container mx-auto flex flex-col justify-start max-w-6xl pb-4">
           {/* Title with animation */}
           <motion.div
             ref={titleRef}
-            className="flex flex-col items-center justify-center text-center"
-            style={{
-              scale: titleScale,
-              opacity: titleOpacity,
-              y: titleY,
-            }}
+            initial={{ opacity: 0, y: 80 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.8 }}
+            className="flex flex-col items-center text-center mt-10"
+
           >
             <motion.div
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
               transition={{ delay: 0.2, duration: 0.8 }}
               className="mb-2 md:mb-3 text-blue-400 font-medium tracking-wider text-xs sm:text-sm md:text-base uppercase"
             >
@@ -165,11 +133,11 @@ const WhySection = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-10">
               {/* Traditional Learning - Top on mobile, Left on desktop */}
               <motion.div
-                className="p-4 sm:p-6 md:p-8 rounded-2xl border border-gray-800 bg-gradient-to-br from-gray-900/50 to-black backdrop-blur-md group hover:border-gray-700 transition-all duration-300"
-                variants={fadeInLeft}
-                initial="hidden"
-                animate={shouldShowContent ? "visible" : "hidden"}
-                transition={{ duration: 0.6, delay: isMobileDevice ? 0.1 : 0 }}
+                className="p-4 sm:p-6 md:p-8 rounded-2xl border border-gray-800 bg-gradient-to-br from-gray-900/50 to-black backdrop-blur-md group hover:border-gray-700 "
+                initial={{ opacity: 0, x: -80 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
                 whileHover={{ y: -5, transition: { duration: 0.3 } }}
               >
                 <div className="flex flex-col justify-start items-start mb-4 sm:mb-6">
@@ -184,9 +152,7 @@ const WhySection = () => {
 
                 <motion.ul
                   className="space-y-3 sm:space-y-4 md:space-y-5"
-                  variants={staggerItems}
-                  initial="hidden"
-                  animate={shouldShowContent ? "visible" : "hidden"}
+
                 >
                   {[
                     "Repetitive memorization with minimal context",
@@ -208,11 +174,11 @@ const WhySection = () => {
 
               {/* Our Approach */}
               <motion.div
-                className="p-4 sm:p-6 md:p-8 rounded-2xl border border-blue-600/30 bg-gradient-to-br from-blue-900/20 to-blue-800/10 backdrop-blur-md relative overflow-hidden group hover:border-blue-500/50 transition-all duration-300"
-                variants={fadeInRight}
-                initial="hidden"
-                animate={shouldShowContent ? "visible" : "hidden"}
-                transition={{ duration: 0.6, delay: isMobileDevice ? 0.2 : 0.1 }}
+                className="p-4 sm:p-6 md:p-8 rounded-2xl border border-blue-600/30 bg-gradient-to-br from-blue-900/20 to-blue-800/10 backdrop-blur-md relative overflow-hidden group hover:border-blue-500/50"
+                initial={{ opacity: 0, x: 80 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
                 whileHover={{ y: -5, transition: { duration: 0.3 } }}
               >
                 {/* Background glow */}
@@ -230,9 +196,7 @@ const WhySection = () => {
 
                 <motion.ul
                   className="space-y-3 sm:space-y-4 md:space-y-5 relative z-10"
-                  variants={staggerItems}
-                  initial="hidden"
-                  animate={shouldShowContent ? "visible" : "hidden"}
+
                 >
                   {[
                     "Personalized mnemonics crafted for your learning style",

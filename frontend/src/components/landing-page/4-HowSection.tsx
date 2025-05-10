@@ -246,7 +246,7 @@ const HowSection: React.FC = () => {
           </motion.div>
 
           {/* --- Main Content Area (Switches between steps and final card) --- */}
-          <div className="relative w-full flex-grow flex flex-col items-center justify-center md:mt-20">
+          <div className="relative w-full flex-grow flex flex-col items-center justify-center mt-28 md:mt-20">
             <AnimatePresence mode="wait">
               {!showCard ? (
                 /* --- Scrolling Steps View --- */
@@ -256,7 +256,7 @@ const HowSection: React.FC = () => {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
-                  className="w-full flex flex-col items-center space-y-12 md:space-y-8"
+                  className="w-full flex flex-col items-center  md:mt-0 space-y-12 md:space-y-8"
                 >
                   {/* Step Indicators */}
                   <motion.div

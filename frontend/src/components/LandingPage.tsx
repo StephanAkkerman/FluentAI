@@ -1,11 +1,11 @@
 "use client"
-import WhatSection from "./landing-page/WhatSection"
-import WhySection from "./landing-page/WhySection";
-import HowSection from "./landing-page/HowSection";
-import HeroSection from "./landing-page/HeroSection";
-import AIPage from "./landing-page/AISection";
-import FAQSection from "./landing-page/FAQSection";
-import CTASection from "./landing-page/CTASection";
+import WhatSection from "./landing-page/2-WhatSection"
+import WhySection from "./landing-page/3-WhySection";
+import HowSection from "./landing-page/4-HowSection";
+import HeroSection from "./landing-page/1-HeroSection";
+import AIPage from "./landing-page/5-AISection";
+import FAQSection from "./landing-page/6-FAQSection";
+import CTASection from "./landing-page/7-CTASection";
 import React from "react";
 
 const LandingPage = () => {
