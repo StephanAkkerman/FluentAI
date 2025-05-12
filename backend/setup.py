@@ -33,7 +33,7 @@ requirements = parse_requirements("requirements.txt")
 
 setup(
     name="mnemorai",
-    version="0.1.0",
+    version="1.0.0",
     packages=find_packages(),
     install_requires=requirements,
     description="mnemorai short description",
@@ -48,5 +48,5 @@ setup(
             "mnemorai-main=mnemorai.main:main",
         ],
     },
-    python_requires=">=3.10",
+    python_requires=">=3.9,<3.13",
 )

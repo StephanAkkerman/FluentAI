@@ -41,15 +41,17 @@ export default function AutoCompleteInput({
         type="text"
         value={inputValue}
         onChange={(e) => handleChange(e.target.value)}
-        className="border rounded p-2 w-full bg-white text-gray-800 dark:text-black-200 dark:border-gray-600"
+        //className="border rounded p-2 w-full bg-white text-gray-800 dark:text-black-200 dark:border-gray-600"
+        className="border rounded-lg p-2 w-full bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600 
+                         focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
         placeholder={placeholder}
       />
       {isFocused && filteredSuggestions.length > 0 && (
-        <ul className="absolute left-0 w-full border bg-white mt-1 z-10 max-h-60 overflow-y-auto rounded shadow-lg dark:border-gray-700">
+        <ul className="absolute left-0 w-full border mt-1 z-10 max-h-60 overflow-y-auto rounded shadow-lg bg-gray-50 dark:bg-gray-700 border-gray-300 dark:border-gray-600">
           {filteredSuggestions.map((s, idx) => (
             <li
               key={idx}
-              className="p-2 hover:bg-gray-200 cursor-pointer text-gray-800"
+              className="p-2 hover:bg-gray-200 dark:hover:bg-gray-900 cursor-pointer text-gray-800 dark:text-white"
               onMouseDown={() => handleSelect(s)}
             >
               {s}

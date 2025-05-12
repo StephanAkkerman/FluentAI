@@ -3,98 +3,53 @@ LOGGING_LEVEL: "DEBUG"
 # Anki deck name
 DECK_NAME: "mnemorai"
 
-# The weights for the best mnemonic match
-# 1 = 100%
-WEIGHTS:
-  PHONETIC: 1
-  ORTHOGRAPHIC: 0.66
-  SEMANTIC: 1
-  IMAGEABILITY: 1
-  FREQUENCY: 0.3
-  # Age of Acquisition
-  AOA: 0.2
-
-# Penalty for using 2 words for the mnemonic
-# 0.1 = -10% on the score
-PENALTY: 0.05
-
-# The number of candidates to consider for the mnemonic
-MAX_CANDIDATES: 200
-
+# The model to use for grapheme to phoneme conversion (G2P)
 G2P:
   MODEL: "charsiu/g2p_multilingual_byT5_small_100"
   TOKENIZER: "google/byt5-small"
   LANGUAGE_JSON: "data/languages.json"
+  IPA_REPO: "StephanAkkerman/english-words-IPA"
+  IPA_FILE: "en_US.csv"
 
+# The model to use for generating the mnemonic and creating the verbal cue
 LLM:
-  MODEL: "microsoft/Phi-3-mini-4k-instruct"
-  TOKENIZER: "microsoft/Phi-3-mini-4k-instruct"
+  # We recommend the models from unsloth: https://docs.unsloth.ai/get-started/all-our-models
+  SMALL_MODEL: 
+    NAME: "unsloth/Qwen2.5-3B-Instruct-bnb-4bit" 
+    VRAM: 3 # 3GB vram
+  MEDIUM_MODEL: 
+    NAME: "unsloth/Qwen2.5-7B-Instruct-bnb-4bit"
+    VRAM: 6 # 6GB vram
+  LARGE_MODEL: 
+    NAME: "unsloth/Qwen2.5-14B-Instruct-bnb-4bit"
+    VRAM: 9 # 9GB vram
   # Options are: None, 4bit, 8bit
+  # Use None if you use an unsloth model (these are already quantized)
   QUANTIZATION: None
-  USE_LORA: True
+  USE_LORA: False
   LORA: "StephanAkkerman/Phi-3-mini-4k-instruct-QLoRA-4bit-Mnemonic"
   DELETE_AFTER_USE: False
   OFFLOAD: True
   PARAMS:
-    temperature: 0.3
+    #temperature: 0.5
 
+# The model to use for generating the image
 IMAGE_GEN:
-  SMALL_MODEL: stabilityai/stable-diffusion-2
-  MEDIUM_MODEL: stabilityai/sdxl-turbo # 6GB vram
-  LARGE_MODEL: Efficient-Large-Model/Sana_600M_512px_diffusers # 9GB vram
+  SMALL_MODEL: 
+    NAME: stabilityai/stable-diffusion-2
+    VRAM: 3 # 3GB vram
+  MEDIUM_MODEL: 
+    NAME: stabilityai/sdxl-turbo 
+    VRAM: 6 # 6GB vram
+  LARGE_MODEL: 
+    NAME: Efficient-Large-Model/Sana_600M_512px_diffusers
+    VRAM: 9 # 9GB vram, less with quantization
   OUTPUT_DIR: "imagine/generated-img"
   # Options are: None, 4bit, 8bit
-  QUANTIZATION: None
+  QUANTIZATION: None # only supported for Sana at the moment
   DELETE_AFTER_USE: False
-  OFFLOAD: True
+  OFFLOAD: True # This must be False if quantization != None
   PARAMS:
     num_inference_steps: 40
     height: 512
     width: 512
-
-# Semantic similarity
-SEMANTIC_SIM:
-  MODEL: dunzhang/stella_en_400M_v5
-  EVAL:
-    DATASET: "StephanAkkerman/semantic-similarity"
-    MODELS:
-      - fasttext
-      - jinaai/jina-embeddings-v3
-      - intfloat/multilingual-e5-small
-      - paraphrase-multilingual-MiniLM-L12-v2
-      - dunzhang/stella_en_400M_v5 # requires einops xformers (and optionally triton)
-      - dunzhang/stella_en_1.5B_v5 # very tiny performance increase compared to 400M
-
-IMAGEABILITY:
-  EMBEDDINGS:
-    # Model is also used to get the right embeddings dataset in the evaluation
-    MODEL: dunzhang/stella_en_400M_v5
-    REPO: StephanAkkerman/imageability-embeddings
-    EVAL:
-      DATASET: StephanAkkerman/imageability
-      MODELS:
-        - fasttext
-        - paraphrase-multilingual-MiniLM-L12-v2
-        - dunzhang/stella_en_400M_v5
-  PREDICTOR:
-    REPO: StephanAkkerman/imageability-predictor
-    FILE: stacking_regressor-dunzhang_stella_en_400M_v5.joblib
-    EVAL:
-      DATASET: StephanAkkerman/imageability
-      MODELS: # TODO
-        - OLS
-  PREDICTIONS:
-    REPO: StephanAkkerman/imageability-predictions
-    FILE: predictions.csv
-
-PHONETIC_SIM:
-  EVAL: "StephanAkkerman/english-words-human-similarity"
-  IPA:
-    REPO: "StephanAkkerman/english-words-IPA"
-    FILE: "en_US_filtered.csv"
-  EMBEDDINGS:
-    METHOD: panphon
-    REPO: StephanAkkerman/english-words-IPA-embeddings
-
-ORTHOGRAPHIC_SIM:
-  EVAL: "StephanAkkerman/orthographic-similarity-ratings"

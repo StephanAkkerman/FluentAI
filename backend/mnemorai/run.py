@@ -5,14 +5,11 @@ import torch
 from mnemorai.logger import logger
 from mnemorai.services.imagine.image_gen import ImageGen
 from mnemorai.services.imagine.verbal_cue_gen import VerbalCue
-from mnemorai.services.mnemonic.word2mnemonic import Word2Mnemonic
 from mnemorai.services.tts.tts import TTS
 
 
 class MnemonicPipeline:
     def __init__(self):
-        self.w2m = Word2Mnemonic()
-
         # Check if cuda is available
         logger.info(f"cuda available: {torch.cuda.is_available()}")
         logger.info(f"cuda device count: {torch.cuda.device_count()}")
@@ -53,31 +50,20 @@ class MnemonicPipeline:
         str
             The IPA spelling of the best match.
         """
-        best_matches, translated_word, _, ipa = await self.w2m.generate_mnemonic(
-            word, lang_code, keyword, key_sentence
+        # Use the provided llm_model if available, otherwise default to the one in config
+        if llm_model:
+            vc = VerbalCue(model_name=llm_model)
+        else:
+            vc = VerbalCue()
+
+        # Generate a verbal cue
+        logger.debug(f"Generating verbal cue for '{word}'...")
+        _, translated_word, _, ipa, key_sentence = await vc.generate_mnemonic(
+            word=word,
+            language_code=lang_code,
+            keyword=keyword,
+            key_sentence=key_sentence,
         )
-
-        if not key_sentence:
-            if not keyword:
-                # Get the top phonetic match
-                best_match = best_matches.iloc[0]
-                keyword = best_match["token_ort"]
-                # Replace + with a comma
-                keyword = keyword.replace("+", ", ")
-
-            # Use the provided llm_model if available, otherwise default to the one in config
-            if llm_model:
-                vc = VerbalCue(model_name=llm_model)
-            else:
-                vc = VerbalCue()
-
-            # Generate a verbal cue
-            logger.debug(
-                "Generating verbal cue for '%s'-'%s'...",
-                keyword,
-                translated_word,
-            )
-            key_sentence = vc.generate_cue(translated_word, keyword)
 
         # Use the provided image_model if available, otherwise default to the one in config
         if image_model:
@@ -99,4 +85,4 @@ class MnemonicPipeline:
 
 if __name__ == "__main__":
     pipeline = MnemonicPipeline()
-    asyncio.run(pipeline.generate_mnemonic_img("ratatouille", "eng-us"))
+    print(asyncio.run(pipeline.generate_mnemonic_img("ratatouille", "eng-us")))

@@ -1,9 +1,9 @@
-# mnemorai: Remember more with mnemorai
+# mnemorai: remember more with mnemorai
 
 ![mnemorai Banner](img/banner.png)
 
 <p align="center">
-  <img src="https://img.shields.io/badge/python-3.10-blue.svg" alt="Supported versions">
+  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/StephanAkkerman/mnemorai/pyversions.yml?label=python%203.9%20%7C%203.10%20%7C%203.11%20%7C%203.12">
   <img src="https://img.shields.io/github/license/StephanAkkerman/mnemorai.svg?color=g" alt="License">
   <a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Code style: black"></a>
   <a href="https://discord.gg/z56zRXtNR5"><img src="https://dcbadge.limes.pink/api/server/https://discord.gg/z56zRXtNR5?style=flat" alt="Discord Shield"/>
@@ -26,7 +26,6 @@ You can find our docs [here](https://github.com/StephanAkkerman/mnemorai/wiki) a
 - [Installation](#installation-)
     - [Using `pip`](#using-pip)
     - [Building from Source](#building-from-source)
-    - [GPU Support](#gpu-support)
 - [Usage](#usage-)
     - [Docker](#docker-) 
 - [Citation](#citation-)
@@ -35,11 +34,15 @@ You can find our docs [here](https://github.com/StephanAkkerman/mnemorai/wiki) a
 
 ## Prerequisites 📋
 
+### Hardware
+This project will work only if you have a Windows or Linux device with a GPU that supports CUDA. The recommended amount of VRAM to run mnemorai is minumum 8GB.
+
+### Software
 Before starting, make sure you have the following requirements:
 
 - [Anki](https://apps.ankiweb.net/) installed on your device.
 - [Anki-Connect](https://foosoft.net/projects/anki-connect/) This add-on allows you to add cards to Anki from the command line.
-- [Python](https://www.python.org/downloads/) 3.10 installed on your device.
+- [Python](https://www.python.org/downloads/) installed on your device (check the supported versions at the top).
 - [React](https://react.dev) installed on your device (optional).
 
 ## Installation ⚙️
@@ -49,13 +52,7 @@ Before starting, make sure you have the following requirements:
 We have bundled all required dependencies into a package for easy installation. To get started, simply run one of the following commands:
 
 ```bash
-pip install backend/.
-```
-
-or install directly from the repository:
-
-```bash
-pip install git+https://github.com/StephanAkkerman/mnemorai.git
+pip install backend/. --extra-index-url https://download.pytorch.org/whl/cu128
 ```
 
 ### Building from Source
@@ -77,17 +74,8 @@ If you prefer to build from source, follow these steps:
 3. Install the dependencies:
 
    ```bash
-   pip install backend/.
+   pip install backend/. --extra-index-url https://download.pytorch.org/whl/cu124
    ```
-
-### Install with GPU Support (Recommended)
-
-If you would like to run the code on a GPU, you can install the `torch` package with CUDA support.
-After installing the required dependencies, run the following command:
-
-```bash
-pip install -r backend/gpu-requirements.txt
-```
 
 ## Usage ⌨️
 
@@ -102,7 +90,7 @@ You can also run mnemorai using Docker. This is a great option if you want to av
 
 ### Running the Front-End (Optional)
 
-If you would like to build the front-end yourself you can do so by executing these commands.
+If you would like to build and host the front-end yourself you can do so by executing these commands.
 
 1. Navigate to the `frontend` directory:
 
