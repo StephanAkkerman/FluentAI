@@ -42,11 +42,13 @@ export default function CardGenerator({
     word: ""
   });
   const [showAdvanced, setShowAdvanced] = useState(false);
-
+  const [loading, setLoading] = useState(false);
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
         onLoading(true);
+        setLoading(true);
         const [languageResponse, modelResponse] = await Promise.all([
           getSupportedLanguages(),
           modelService.getAvailableModels()
@@ -59,6 +61,7 @@ export default function CardGenerator({
         onError("Failed to load data.");
       } finally {
         onLoading(false);
+        setLoading(false);
       }
     };
 
@@ -84,6 +87,7 @@ export default function CardGenerator({
     if (!validate()) return;
 
     onLoading(true);
+    setLoading(true);
     onError("");
 
     try {
@@ -93,6 +97,7 @@ export default function CardGenerator({
       onError(err.message || "An unexpected error occurred.");
     } finally {
       onLoading(false);
+      setLoading(false);
     }
   };
 
@@ -205,6 +210,7 @@ export default function CardGenerator({
               text="Create Card"
               variant="primary"
               type="submit"
+              disabled={loading}
               className="w-full py-3 text-lg font-bold transform hover:scale-105 transition-transform duration-200 hover:shadow-lg mt-6"
             />
           </form>
