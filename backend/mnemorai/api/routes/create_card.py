@@ -1,3 +1,4 @@
+import asyncio
 import base64
 import os
 
@@ -10,6 +11,7 @@ from mnemorai.logger import logger
 from mnemorai.run import MnemonicPipeline
 
 create_card_router = APIRouter()
+_image_lock = asyncio.Lock()
 
 
 @create_card_router.get("/create_card/img")
@@ -51,45 +53,61 @@ async def get_image(
         If the language code is invalid, the generated image is not found,
         or an error occurs during the generation process.
     """
-    if language_code not in G2P_LANGUAGES:
-        raise HTTPException(status_code=400, detail="Invalid language code")
-
-    mnemonic_pipe = MnemonicPipeline()
-
-    try:
-        (
-            image_path,
-            verbal_cue,
-            translation,
-            tts_path,
-            ipa,
-        ) = await mnemonic_pipe.generate_mnemonic_img(
-            word, language_code, llm_model, image_model, keyword, key_sentence
+    # if someone’s already in here, reject immediately
+    if _image_lock.locked():
+        logger.warning(
+            "Image generation is already in progress. Please wait for the current process to finish."
         )
-
-        if not os.path.exists(image_path):
-            raise HTTPException(status_code=500, detail="Generated image not found")
-
-        with open(image_path, "rb") as image_file:
-            image_bytes = image_file.read()
-
-        with open(tts_path, "rb") as tts_file:
-            tts_bytes = tts_file.read()
-
         return JSONResponse(
+            status_code=200,
             content={
-                "image": base64.b64encode(image_bytes).decode("utf-8"),
-                "verbal_cue": verbal_cue,
-                "translation": translation.title(),
-                "tts_file": base64.b64encode(tts_bytes).decode("utf-8"),
-                "ipa": ipa,
-            }
+                "status": "busy",
+                "message": "Still generating your last card please wait a moment before trying again",
+            },
         )
-    except HTTPException as e:
-        raise e
-    except Exception as e:
-        logger.error(f"Error generating mnemonic: {e}")
-        raise HTTPException(status_code=500, detail=f"Internal Server Error: {e}")
+
+    async with _image_lock:
+        if language_code not in G2P_LANGUAGES:
+            raise HTTPException(status_code=400, detail="Invalid language code")
+
+        mnemonic_pipe = MnemonicPipeline()
+
+        try:
+            (
+                image_path,
+                verbal_cue,
+                translation,
+                tts_path,
+                ipa,
+            ) = await mnemonic_pipe.generate_mnemonic_img(
+                word, language_code, llm_model, image_model, keyword, key_sentence
+            )
+
+            if not os.path.exists(image_path):
+                raise HTTPException(status_code=500, detail="Generated image not found")
+
+            with open(image_path, "rb") as image_file:
+                image_bytes = image_file.read()
+
+            with open(tts_path, "rb") as tts_file:
+                tts_bytes = tts_file.read()
+
+            return JSONResponse(
+                content={
+                    "image": base64.b64encode(image_bytes).decode("utf-8"),
+                    "verbal_cue": verbal_cue,
+                    "translation": translation.title(),
+                    "tts_file": base64.b64encode(tts_bytes).decode("utf-8"),
+                    "ipa": ipa,
+                }
+            )
+        except HTTPException as e:
+            raise e
+        except Exception as e:
+            logger.error(f"Error generating mnemonic: {e}")
+            # Show complete traceback in development mode
+            logger.debug(f"Error generating mnemonic: {e}", exc_info=True)
+            raise HTTPException(status_code=500, detail=f"Internal Server Error: {e}")
 
 
 @create_card_router.get("/create_card/supported_languages")

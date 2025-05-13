@@ -1,12 +1,14 @@
 import asyncio
 import unicodedata
-from functools import lru_cache
 
 import pandas as pd
 from googletrans import Translator
+from httpx import Timeout
 
 from mnemorai.logger import logger
 from mnemorai.utils.lang_codes import map_language_code
+
+shared_translator = Translator(timeout=Timeout(None), list_operation_max_concurrency=50)
 
 
 def is_latin_script(word: str) -> bool:
@@ -99,23 +101,26 @@ async def get_translation(
     str
         The translated word.
     """
+    logger.debug(f"Getting the translation for {word} from {src} to {target}...")
     try:
-        async with Translator() as translator:
-            translation = await translator.translate(word, src=src, dest=target)
+        async with Translator() as shared_translator:
+            translation = await shared_translator.translate(word, src=src, dest=target)
             if return_pronunciation:
                 return translation.pronunciation
             return translation.text
     except Exception as e:
         logger.error(f"Error translating {word} from {src} to {target}: {e}")
+        # Show full traceback
+        logger.debug(e, exc_info=True)
 
     # Detect the language of the word
-    async with Translator() as translator:
-        detected_lang = await translator.detect(word)
+    async with Translator() as shared_translator:
+        detected_lang = await shared_translator.detect(word)
         logger.info(
             f"Could not comprehend original language code ({src}), detected {detected_lang.lang} with {detected_lang.confidence} confidence."
         )
 
-        translation = await translator.translate(
+        translation = await shared_translator.translate(
             word, src=detected_lang.lang, dest=target
         )
         if return_pronunciation:
@@ -123,7 +128,6 @@ async def get_translation(
         return translation.text
 
 
-@lru_cache(maxsize=10000)
 async def translate_word(word, src_lang_code, target_lang_code: str = "en") -> tuple:
     """
     Translates a word from the source language to target languages.
