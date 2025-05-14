@@ -15,7 +15,7 @@
 
 ---
 
-Tired of rote memorization? **mnemorai** leverages the power of AI to create unique, memorable connections for new vocabulary. Inspired by the research paper [SmartPhone: Exploring Keyword Mnemonic with Auto-generated Verbal and Visual Cues](https://arxiv.org/pdf/2305.10436.pdf), this tool automatically generates:
+Tired of looking at boring flash cards and manually having to create them yourself? **mnemorai** leverages the power of AI to create unique, memorable connections for new vocabulary. Inspired by the research paper [SmartPhone: Exploring Keyword Mnemonic with Auto-generated Verbal and Visual Cues](https://arxiv.org/pdf/2305.10436.pdf), this tool automatically generates:
 
 *   **Phonetic Keyword Matches:** Finds words in your native language that sound similar to the target word.
 *   **Engaging Verbal Cues:** Creates short, catchy sentences linking the keyword and the target word's meaning.
@@ -92,25 +92,19 @@ Our implementation automates this process using AI, drawing inspiration from the
 
 **Operating System:**
 
-*   Tested on: Ubuntu 24.04 LTS
-*   Likely Compatible: Other Linux distributions, macOS. Windows via WSL2 might work but is untested.
+mnemorai is designed to run on **Linux** and **Windows**. It has been tested on Ubuntu 22.04 and Windows 10 and 11.
 
 **Hardware (Backend):**
 
-*   **Minimum (for GPU acceleration):**
-    *   **CPU:** Modern multi-core processor (e.g., AMD Ryzen 7 7000 series / Intel Core i7 12th Gen or newer recommended)
-    *   **RAM:** 32 GB recommended (16 GB might work but could lead to swapping)
-    *   **GPU:** NVIDIA GPU with **at least 12 GB VRAM** (e.g., RTX 3060 12GB, RTX 4070, RTX 3090/4090). **VRAM is the most critical factor.**
-    *   **Storage:** ~20-50 GB free space for models and dependencies.
-*   **Minimum (CPU Only):**
-    *   **CPU:** Modern multi-core processor.
-    *   **RAM:** 16 GB+
-    *   **Storage:** ~10-20 GB free space.
-    *   **Note:** Running on CPU only is **significantly slower** (minutes per card vs. seconds on GPU).
-*   **Recommended:**
-    *   **CPU:** Faster multi-core processor.
-    *   **RAM:** 32 GB or more.
-    *   **GPU:** NVIDIA GPU with 16 GB+ VRAM (e.g., RTX 4080/4090) for faster generation and potentially larger models.
+An NVIDIA GPU is necessary for the backend to function optimally. The software can run on CPU (theoretically), but performance will be significantly slower and is not recommended.
+
+- **Minimum**:
+    - **RAM:** 16 GB
+    - **GPU**: NVIDIA GPU with at least 6 GB VRAM
+
+- **Recommended**:
+    - **RAM:** 32 GB or more
+    - **GPU**: NVIDIA GPU with 12 GB VRAM
 
 **Software:**
 
