@@ -142,7 +142,7 @@ An NVIDIA GPU is necessary for the backend to function optimally. The software c
         cd backend
         pip install -r gpu-requirements.txt
         ```
-
+        
 5.  **Configure AnkiConnect:**
     *   Open Anki, go to `Tools` -> `Add-ons` -> `AnkiConnect` -> `Config`.
     *   Restart Anki after changing the config.
