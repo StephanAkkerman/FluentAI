@@ -1,10 +1,12 @@
 name: Check Python Versions
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - '**/requirements.txt'  # Dependency file
       - '**/setup.py'          # Setup script
+      - '.github/workflows/pyversions.yml' #This file
 permissions:
   contents: read
 
@@ -38,7 +40,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd backend
-          python -m pip install --upgrade pip
-          pip install -e .
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+            cd backend
+            python -m pip install --upgrade pip wheel setuptools
+            pip install -e . --extra-index-url https://download.pytorch.org/whl/cu128
+            if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+

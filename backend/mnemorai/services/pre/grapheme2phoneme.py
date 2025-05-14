@@ -1,3 +1,5 @@
+import pandas as pd
+from huggingface_hub import hf_hub_download
 from transformers import AutoTokenizer, T5ForConditionalGeneration
 
 from mnemorai.constants.config import config
@@ -43,6 +45,50 @@ class Grapheme2Phoneme:
         # Remove the leading ˈ
         ipa = ipa.removeprefix("ˈ")
         return ipa
+
+    def word2ipa(
+        self,
+        word: str,
+        language_code: str,
+    ) -> str:
+        """
+        Get the IPA representation of a word.
+
+        Use the IPA dataset if available, otherwise use the G2P model.
+
+        Parameters
+        ----------
+        word : str
+            The word to convert to IPA
+        language_code : str, optional
+            The language code of the word, by default "eng-us"
+
+        Returns
+        -------
+        str
+            The IPA representation of the word
+        """
+        # Try searching in the dataset
+        if "eng-us" in language_code:
+            # First try lookup in the .tsv file
+            logger.debug("Loading the IPA dataset")
+            eng_ipa = pd.read_csv(
+                hf_hub_download(
+                    repo_id=config.get("G2P").get("IPA_REPO"),
+                    filename=config.get("G2P").get("IPA_FILE"),
+                    cache_dir="datasets",
+                    repo_type="dataset",
+                )
+            )
+
+            # Check if the word is in the dataset
+            ipa = eng_ipa[eng_ipa["token_ort"] == word]["token_ipa"]
+
+            if not ipa.empty:
+                return ipa.values[0].replace(" ", "")
+
+        # Use the g2p models
+        return self.g2p([f"<{language_code}>:{word}"])
 
 
 def example():
