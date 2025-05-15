@@ -115,6 +115,13 @@ An NVIDIA GPU is necessary for the backend to function optimally. The software c
 *   (Optional Frontend) Node.js and npm/yarn.
 
 ## Installation 🛠️
+We provide two installation methods: **Docker** and **Local Installation**. The local installation is recommended for most users, while Docker is useful for containerized environments.
+
+### Docker 🐋
+
+For a containerized setup, refer to the Docker instructions: [backend/docker/README.md](backend/docker/README.md).
+
+### Local Installation
 
 1.  **Clone the Repository:**
     ```bash
@@ -182,10 +189,6 @@ An NVIDIA GPU is necessary for the backend to function optimally. The software c
         Visit [https://demo.mnemorai.com](https://demo.mnemorai.com). This site will connect to **your locally running backend API** (`http://localhost:8000`). Ensure your backend is running first!
 
 4.  **Generate Cards:** Use the web interface (local or demo) to input words and languages, customize models if desired, and generate your mnemonic flashcards. They will be automatically saved to your selected Anki deck.
-
-## Docker 🐋
-
-For a containerized setup, refer to the Docker instructions: [backend/docker/README.md](backend/docker/README.md).
 
 ## Citation ✍️
 
