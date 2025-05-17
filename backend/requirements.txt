@@ -6,7 +6,7 @@ torchvision==0.20.1
 transformers[sentencepiece]==4.47.1
 diffusers==0.33.1
 datasets==3.5.0
-accelerate==1.5.2
+accelerate==1.7.0
 huggingface-hub==0.30.2
 bitsandbytes==0.45.5
 peft==0.15.2
