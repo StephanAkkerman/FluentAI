@@ -76,7 +76,7 @@ const sections = [
     opacityValues: ["0", "1", "1", "0"],
     title: "Create Your Smart Flashcard",
     description:
-      "Click 'Create Card' to let Mnemorai automatically translate your word, devise a personalized mnemonic, and generate a matching image. Or, use 'Advanced Options' to input your own details before Mnemorai creates the perfect visual aid.",
+      "Click 'Create Card' to let Mnemorai automatically translate your word, devise a personalized mnemonic, and generate a matching image.",
     icon: "🪄",
     color: "from-teal-500 to-emerald-500",
   },
@@ -87,7 +87,7 @@ const sections = [
     opacityValues: ["0", "1", "1", "0"],
     title: "Review & Save Your Card",
     description:
-      "Your mnemonic flashcard is ready! Fine-tune any details if needed, then save your masterpiece to your library and organize it into your preferred learning deck.",
+      "Your mnemonic flashcard is ready! Fine-tune any details if needed, then save your masterpiece to your library.",
     icon: "💾",
     color: "from-blue-500 to-teal-400",
   },
@@ -137,7 +137,7 @@ const SectionBlock: React.FC<SectionBlockProps> = ({ data, scrollYProgress }) =>
   return (
     <motion.div
       style={{ opacity, y: transformY }}
-      className="w-full sm:w-4/5 md:w-3/4 lg:w-2/3 mx-auto" // Positioning handled by parent flexbox
+      className="w-full -mt-10 md:mt-0 sm:w-4/5 md:w-3/4 lg:w-2/3 mx-auto" // Positioning handled by parent flexbox
     >
       <motion.div
         className={`bg-gradient-to-r ${data.color} rounded-2xl p-[1px] shadow-lg`}
@@ -146,14 +146,14 @@ const SectionBlock: React.FC<SectionBlockProps> = ({ data, scrollYProgress }) =>
         animate={isEntering ? "visible" : "hidden"} // Trigger based on entry
       >
         <div className="bg-gray-50 dark:bg-gray-900/90 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-gray-200 dark:border-gray-800">
-          <motion.div variants={contentVariants} className="flex items-center mb-3 sm:mb-4">
-            <div className="text-2xl sm:text-3xl mr-3 p-2 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 rounded-lg">{data.icon}</div>
-            <h3 className="font-bold text-lg sm:text-xl md:text-2xl bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300">
+          <motion.div variants={contentVariants} className="flex items-center mb-0 sm:mb-4">
+            <div className="mr-3 p-2 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 rounded-lg">{data.icon}</div>
+            <h3 className="font-bold text-sm sm:text-xl md:text-2xl bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300">
               {data.title}
             </h3>
           </motion.div>
           <motion.div variants={contentVariants} className="h-px w-full bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-700 to-transparent mb-3 sm:mb-4" />
-          <motion.p variants={contentVariants} className="text-sm md:text-base text-gray-700 dark:text-gray-300">
+          <motion.p variants={contentVariants} className="text-xs md:text-base text-gray-700 dark:text-gray-300">
             {data.description}
           </motion.p>
         </div>
@@ -174,7 +174,7 @@ const HowSection: React.FC = () => {
   const [browserContent, setBrowserContent] = useState<ReactNode>(steps[0].content);
 
   // Determine when to switch to the final card view
-  const revealThreshold = 0.8; // Point at which the final card starts appearing
+  const revealThreshold = 0.70; // Point at which the final card starts appearing
   const [showCard, setShowCard] = useState(false);
 
   useEffect(() => {
@@ -201,13 +201,12 @@ const HowSection: React.FC = () => {
   // --- Animations based on Scroll ---
   // Title animation
   const titleY = useTransform(scrollYProgress, [0, 0.0], ["0px", "50px"]);
-  const titleOpacity = useTransform(scrollYProgress, [0, 0.01, 0.7, 0.75], [1, 1, 1, 0]);
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.01], [1, 1]);
 
   // Step Indicator Opacity (Fade out before final card)
   const stepsOpacity = useTransform(scrollYProgress, [0, 0.02, revealThreshold - 0.15, revealThreshold - 0.1], [0, 1, 1, 0]);
 
   // Browser animation (Scale and fade out before final card)
-  const browserScale = useTransform(scrollYProgress, [0, 0.2, 0.5, revealThreshold - 0.1], [0.9, 1, 1, 0.9]);
   const browserOpacity = useTransform(scrollYProgress, [0, 0.02, revealThreshold - 0.1, revealThreshold - 0.05], [0, 1, 1, 0]);
 
   // --- Flashcard Data ---
@@ -228,14 +227,14 @@ const HowSection: React.FC = () => {
       className="relative w-full h-[400vh]"
     >
       {/* Sticky container takes full viewport height and centers content */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center">
+      <div className="sticky top-0 h-screen max-h-[1000px] w-full overflow-hidden flex flex-col items-center justify-center">
 
         {/* Max width container for content, centered */}
         <div className="relative w-full max-w-6xl mx-auto px-4 sm:px-6 h-full flex flex-col items-center justify-center pt-16 sm:pt-20">
 
           {/* --- Title Area --- */}
           <motion.div
-            className="absolute top-10 sm:top-30 left-0 right-0 z-20 text-center px-4"
+            className=" top-10 sm:top-30 left-0 right-0 z-20 text-center px-4"
             style={{ y: titleY, opacity: titleOpacity }}
           >
             <span className="text-xs sm:text-sm font-medium text-blue-500 dark:text-blue-400 uppercase tracking-wider">Step by step process</span>
@@ -246,7 +245,7 @@ const HowSection: React.FC = () => {
           </motion.div>
 
           {/* --- Main Content Area (Switches between steps and final card) --- */}
-          <div className="relative w-full flex-grow flex flex-col items-center justify-center mt-28 md:mt-20">
+          <div className="relative w-full flex-grow flex flex-col items-center justify-center mt-16 md:mt-20">
             <AnimatePresence mode="wait">
               {!showCard ? (
                 /* --- Scrolling Steps View --- */
@@ -291,10 +290,10 @@ const HowSection: React.FC = () => {
 
                   {/* Browser Mockup */}
                   <motion.div
-                    style={{ scale: browserScale, opacity: browserOpacity }}
+                    style={{ opacity: browserOpacity }}
                     className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto"
                   >
-                    <div className="relative w-full mx-auto shadow-xl shadow-blue-500/10 rounded-lg">
+                    <div className="relative w-full md:min-h-[250px] h-full mx-auto shadow-xl shadow-blue-500/10 rounded-lg">
                       <Browser urlText="https://mnemorai.com" dark>
                         {/* AnimatePresence for content swap */}
                         <AnimatePresence mode="wait">
@@ -313,7 +312,7 @@ const HowSection: React.FC = () => {
                   </motion.div>
 
                   {/* Explanatory Text Blocks Container */}
-                  <div className="relative w-full h-40 sm:h-48 flex items-center justify-center">
+                  <div className="relative w-full sm:w-[80%] md:w-full h-40 sm:h-48 flex items-center justify-center">
                     {/* Position blocks absolutely within this container for smooth overlap */}
                     {sections.map((sec, idx) => (
                       <div key={idx} className="absolute inset-0 flex items-center justify-center">
@@ -330,7 +329,7 @@ const HowSection: React.FC = () => {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.3, delay: 0.01 }} // Slight delay after steps fade
-                  className="w-full h-full flex flex-col items-center justify-center text-center"
+                  className="w-full  flex flex-col items-center justify-center text-center"
                 >
                   {/* Et Voilà Title */}
                   <motion.div
@@ -353,21 +352,16 @@ const HowSection: React.FC = () => {
                     </p>
                   </motion.div>
 
-                  {/* Flashcard with Glow */}
-                  <motion.div
-                    className="relative w-full max-w-xs sm:max-w-sm md:max-w-md" // Control card size
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.6, delay: 0.3, type: "spring", stiffness: 100 }}
-                  >
+
+                  <div className="scale-[0.6] sm:scale-[0.7] md:scale-[1] -mt-20 sm:-mt-16 md:mt-0">
                     {/* Glow effect */}
                     <div className="absolute -inset-2 sm:-inset-3 md:-inset-4 bg-gradient-to-r from-blue-500/20 to-teal-400/20 rounded-3xl blur-lg sm:blur-xl opacity-60 animate-pulse"></div>
                     <Flashcard isLoading={false} card={cardData} className="mx-auto" />
-                  </motion.div>
+                  </div>
 
                   {/* CTA Button */}
                   <motion.div
-                    className="mt-6 sm:mt-8 md:mt-10"
+                    className="-mt-16 sm:-mt-10 md:mt-10"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.5, delay: 0.6 }}

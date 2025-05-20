@@ -32,8 +32,8 @@ const HeroSection = () => {
   }, []);
 
   // Screen size breakpoints
-  const isSmallScreen = windowSize && windowSize.width < 640;  // sm
-  const isMediumScreen = windowSize && windowSize.width >= 640 && windowSize.width < 1024;
+  const isSmallScreen = windowSize && windowSize.width < 750;  // sm
+  const isMediumScreen = windowSize && windowSize.width >= 750 && windowSize.width < 1024;
 
   const cardData = {
     word: "Flasche",
@@ -50,7 +50,7 @@ const HeroSection = () => {
       scrollYProgress,
       [0, 0.3],
       isSmallScreen ? ["translate(0%, -40%)", "translate(0%, -30%)"] :
-        isMediumScreen ? ["translate(0%, -30%)", "translate(5%, 30%)"] :
+        isMediumScreen ? ["translate(0%, -30%)", "translate(-10%, 70%)"] :
           ["translate(4%, -30%)", "translate(-20%, 30%)",]
     ),
 
@@ -58,14 +58,14 @@ const HeroSection = () => {
       scrollYProgress,
       [0, 0.3],
       isSmallScreen ? ["translate(0%, -35%)", "translate(0%, -25%)"] :
-        isMediumScreen ? ["translate(15%, -30%)", "translate(5%, 45%)"] :
+        isMediumScreen ? ["translate(15%, -30%)", "translate(-10%, 75%)"] :
           ["translate(15%, -30%)", "translate(-20%, 40%)"]
     ),
     cardTransform: useTransform(
       scrollYProgress,
       [0, 0.3],
       isSmallScreen ? ["translate(-50%, 50%)", "translate(-50%, 100%)"] :
-        isMediumScreen ? ["translate(-50%, 100%)", "translate(35%, 90%)"] :
+        isMediumScreen ? ["translate(-50%, 60%)", "translate(10%, 50%)"] :
           ["translate(-42%, 60%)", "translate(30%, 60%)"]
     ),
 
@@ -142,11 +142,11 @@ const HeroSection = () => {
             >
               {/* Sparkles container */}
               <motion.div
-                className="absolute w-full sm:w-[80%] lg:w-full h-[67vh] sm:h-[22rem] top-[3rem] lg:top-[4.5rem] max-h-[450px] z-0 flex justify-center sm:justify-start "
+                className="absolute w-full sm:w-[80%] lg:w-full h-[67vh] sm:h-[22rem] top-[3rem] lg:top-[4.5rem] max-h-[450px] z-0 flex justify-center md:justify-start "
                 style={{ opacity: transformAnimations.sparklesOpacity, animationDuration: '300ms' }}
               >
                 {/* Gradients */}
-                <div className="absolute  top-0 bg-gradient-to-r from-transparent via-blue-500 to-transparent h-[2px] w-3/4 blur-sm" />
+                <div className="absolute top-0 bg-gradient-to-r from-transparent via-blue-500 to-transparent h-[2px] w-3/4 blur-sm" />
                 <div className="absolute top-0 bg-gradient-to-r from-transparent via-blue-500 to-transparent h-px w-3/4" />
                 <div className="absolute top-0 bg-gradient-to-r from-transparent via-teal-400 to-transparent h-[3px] w-1/3 blur-sm" />
                 <div className="absolute top-0 bg-gradient-to-r from-transparent via-teal-400 to-transparent h-px w-1/3" />
@@ -179,7 +179,7 @@ const HeroSection = () => {
                 Using AI Mnemonics
               </motion.h2>
             </motion.div>
-            <motion.div className="flex flex-col items-center sm:items-start  text-center sm:text-left"
+            <motion.div className={`flex flex-col ${isPastThreshold && !isSmallScreen ? "text-left items-start" : "text-center items-center"}`}
               style={{ opacity: transformAnimations.contentOpacity, transform: transformAnimations.pTransform, animationDuration: '300ms' }}>
               <p className="text-gray-600 dark:text-white mb-8 text-xs sm:text-lg w-[70%]">
                 Create personalized flashcards with <br /> powerful memory techniques that  <br /> make
@@ -193,20 +193,22 @@ const HeroSection = () => {
           </motion.div>
 
           {/* Flashcard container - positioned absolute */}
-          <motion.div
-            className="absolute left-1/2 -top-[20%] transition-all duration-300 "
-            style={{ transform: transformAnimations.cardTransform }}
-          >
-            {/* Replaced the custom FlashCard with the imported Flashcard component */}
+          <div className="scale-[0.8] sm:scale-[1] -mt-[30rem]  ">
+            <motion.div
+              className="absolute left-1/2 -top-[20%] transition-all duration-300 "
+              style={{ transform: transformAnimations.cardTransform }}
+            >
+              {/* Replaced the custom FlashCard with the imported Flashcard component */}
 
-            <Flashcard
-              key={isSmallScreen ? "sm" : isMediumScreen ? "md" : "lg"}
-              card={cardData}
-              isLoading={false}
-              disableEdit={true}
-              showFront={!isFlipped}
-            />
-          </motion.div>
+              <Flashcard
+                key={isSmallScreen ? "sm" : isMediumScreen ? "md" : "lg"}
+                card={cardData}
+                isLoading={false}
+                disableEdit={true}
+                showFront={!isFlipped}
+              />
+            </motion.div>
+          </div>
         </div>
       </div>
     </motion.div >

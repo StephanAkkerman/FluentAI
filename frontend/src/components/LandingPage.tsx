@@ -16,7 +16,7 @@ const LandingPage = () => {
           <HeroSection />
         </section>
 
-        <section id="what" className="duration-300 transition-all -translate-y-[5%]">
+        <section id="what" className="duration-300 transition-all -translate-y-[10%] md:-translate-y-[15%]">
           <WhatSection />
         </section>
 
