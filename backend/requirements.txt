@@ -3,7 +3,7 @@ torch==2.5.1
 torchaudio==2.5.1
 torchvision==0.20.1
 # Huggingface dependencies
-transformers[sentencepiece]==4.47.1
+transformers[sentencepiece]==4.52.3
 diffusers==0.33.1
 datasets==3.6.0
 accelerate==1.7.0
