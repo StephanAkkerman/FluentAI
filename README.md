@@ -147,7 +147,7 @@ For a containerized setup, refer to the Docker instructions: [backend/docker/REA
     *   Install GPU-specific requirements:
         ```bash
         cd backend
-        pip install -r gpu-requirements.txt
+        pip install -r requirements.txt --index-url https://download.pytorch.org/whl/cu128
         ```
         
 5.  **Configure AnkiConnect:**
